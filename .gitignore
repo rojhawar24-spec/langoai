@@ -1,0 +1,4 @@
+node_modules/
+dist/
+api-proxy/node_modules/
+api-proxy/.env
