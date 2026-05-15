@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -12,19 +12,32 @@ import FloatingChatButton from "@/components/FloatingChatButton";
 import AIChat from "@/components/AIChat";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
-import DashboardPage from "@/pages/DashboardPage";
 
-import ProfilePage from "@/pages/ProfilePage";
-import SettingsPage from "@/pages/SettingsPage";
-import PremiumPage from "@/pages/PremiumPage";
-import GrammarPage from "@/pages/GrammarPage";
-import VocabularyPage from "@/pages/VocabularyPage";
-import TestPage from "@/pages/TestPage";
-import MistakesPage from "@/pages/MistakesPage";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import TermsPage from "@/pages/TermsPage";
-import WordOfTheDayPage from "@/pages/WordOfTheDayPage";
-import ArenaPage from "@/pages/ArenaPage";
+// Eager imports for auth pages (always needed)
+// Lazy imports for feature pages (loaded on demand)
+const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
+const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
+const SettingsPage = lazy(() => import("@/pages/SettingsPage"));
+const PremiumPage = lazy(() => import("@/pages/PremiumPage"));
+const GrammarPage = lazy(() => import("@/pages/GrammarPage"));
+const VocabularyPage = lazy(() => import("@/pages/VocabularyPage"));
+const TestPage = lazy(() => import("@/pages/TestPage"));
+const MistakesPage = lazy(() => import("@/pages/MistakesPage"));
+const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
+const TermsPage = lazy(() => import("@/pages/TermsPage"));
+const WordOfTheDayPage = lazy(() => import("@/pages/WordOfTheDayPage"));
+const ArenaPage = lazy(() => import("@/pages/ArenaPage"));
+
+function LoadingSpinner() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+        <p className="mt-2 text-slate-600 dark:text-slate-400">Loading...</p>
+      </div>
+    </div>
+  );
+}
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const [chatOpen, setChatOpen] = useState(false);
@@ -43,6 +56,16 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Component to wrap lazy pages with Suspense - keeps ProtectedRoute outside for better UX
+const LazyPage = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+);
+
+// Pre-wrapped protected routes for cleaner JSX
+const ProtectedRouteWrapper = ({ children }: { children: React.ReactNode }) => (
+  <ProtectedRoute>{children}</ProtectedRoute>
+);
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -53,19 +76,62 @@ export default function App() {
             <Routes>
               <Route path="/login" element={<><LoginPage /><Footer minimal /></>} />
               <Route path="/register" element={<><RegisterPage /><Footer minimal /></>} />
-              <Route path="/privacy" element={<PrivacyPolicyPage />} />
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/dashboard" element={<ProtectedRoute><AuthenticatedLayout><DashboardPage /></AuthenticatedLayout></ProtectedRoute>} />
-
-              <Route path="/grammar" element={<ProtectedRoute><AuthenticatedLayout><GrammarPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/vocabulary" element={<ProtectedRoute><AuthenticatedLayout><VocabularyPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/tests" element={<ProtectedRoute><AuthenticatedLayout><TestPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><AuthenticatedLayout><SettingsPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/premium" element={<ProtectedRoute><AuthenticatedLayout><PremiumPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/mistakes" element={<ProtectedRoute><AuthenticatedLayout><MistakesPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/wotd" element={<ProtectedRoute><AuthenticatedLayout><WordOfTheDayPage /></AuthenticatedLayout></ProtectedRoute>} />
-              <Route path="/arena" element={<ProtectedRoute><AuthenticatedLayout><ArenaPage /></AuthenticatedLayout></ProtectedRoute>} />
+              <Route path="/privacy" element={
+                <LazyPage><PrivacyPolicyPage /></LazyPage>
+              } />
+              <Route path="/terms" element={
+                <LazyPage><TermsPage /></LazyPage>
+              } />
+              <Route path="/dashboard" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><DashboardPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/grammar" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><GrammarPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/vocabulary" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><VocabularyPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/tests" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><TestPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><SettingsPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/premium" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><PremiumPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/mistakes" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><MistakesPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/wotd" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><WordOfTheDayPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
+              <Route path="/arena" element={
+                <ProtectedRouteWrapper>
+                  <LazyPage><AuthenticatedLayout><ArenaPage /></AuthenticatedLayout></LazyPage>
+                </ProtectedRouteWrapper>
+              } />
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>

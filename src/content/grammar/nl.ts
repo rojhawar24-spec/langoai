@@ -55,4 +55,27 @@ Dutch has two definite articles: **de** and **het**.
       { question: "___ kinderen (the children)", options: ["De","Het","Een","Die"], answer: "De" },
     ],
   },
+  {
+    id: "nl-gram-3", title: "Word Order (Woordvolgorde)", level: 2, topic: "Sentences",
+    body: `## Word Order in Dutch
+
+Dutch follows **SVO** word order (Subject-Verb-Object), but changes in subordinate clauses.
+
+**Main clauses:**
+- Standard SVO: Ik lees een boek (I read a book)
+- With time/place: Morgen lees ik thuis (Tomorrow I read at home)
+
+**Subordinate clauses (after dat, want, omdat, etc.):**
+- Subject comes AFTER the verb: Ik weet dat jij leest (I know that you read)
+
+**Questions with question words:**
+- Wie leest het boek? (Who reads the book?) - no inversion needed with "wie"
+
+**Important:** Separable verbs split in main clauses:
+- Ik bel *aan* → Ik bel later *aan*`,
+    exercises: [
+      { question: "___ ik wil leren (I want to learn)", options: ["Wat","Waar","Hoe","Waarom"], answer: "Wat" },
+      { question: "Hij leest ___ (the book)", options: ["een boek","een boeken","een het boek","een de boek"], answer: "een boek" },
+    ],
+  },
 ];

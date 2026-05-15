@@ -357,6 +357,30 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* ========== LEGEND BUTTON ========== */}
+        <div className="mb-4">
+          <button
+            onClick={() => navigate("/arena")}
+            className="group relative w-full overflow-hidden rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 p-1 shadow-xl shadow-amber-200 transition-all duration-300 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-300 dark:border-amber-600 dark:from-amber-900/50 dark:via-yellow-900/50 dark:to-orange-900/50 dark:shadow-amber-900/60">
+            <div className="flex items-center justify-center gap-4 rounded-xl bg-white/70 px-6 py-4 backdrop-blur-md dark:bg-black/30">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-200 to-yellow-300 text-2xl shadow-md dark:from-amber-700 dark:to-yellow-600 dark:shadow-amber-900/50">
+                🏆
+              </div>
+              <div className="text-left">
+                <p className="text-lg font-extrabold text-amber-900 dark:text-amber-100">
+                  Legend
+                </p>
+                <p className="text-sm font-medium text-amber-700 dark:text-amber-300">
+                  Seizoen levels. Ontgrendel, speel, verdien XP.
+                </p>
+              </div>
+              <svg className="h-5 w-5 text-amber-600 transition-transform group-hover:translate-x-1 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </button>
+        </div>
+
         {/* ========== CONTINUE LEARNING BUTTON ========== */}
         <div className="mb-8">
           <button
@@ -457,6 +481,19 @@ export default function DashboardPage() {
             <span className="text-4xl">🏆</span>
             <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">Legend</h3>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Seizoen levels. Ontgrendel, speel, verdien XP.</p>
+          </button>
+        </div>
+
+        {/* ========== WORD OF THE DAY ========== */}
+        <div className="mt-6">
+          <button onClick={() => navigate("/wotd")} className="w-full rounded-xl border-2 border-slate-200 bg-gradient-to-r from-indigo-50 to-purple-50 p-6 text-left transition hover:border-indigo-300 hover:shadow-md dark:border-slate-700 dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-800 dark:hover:border-indigo-500">
+            <div className="flex items-start gap-4">
+              <span className="text-4xl">🌟</span>
+              <div className="flex-1">
+                <h3 className="font-semibold text-slate-900 dark:text-white">Word of the Day</h3>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Learn a new word daily. Expand your vocabulary!</p>
+              </div>
+            </div>
           </button>
         </div>
       </div>
