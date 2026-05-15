@@ -1,5 +1,6 @@
 import { useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { BookOpen, Wrench, FileText, Trophy, Star } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslate } from "@/i18n/I18nContext";
 import { getDailyGoalProgress } from "@/utils/progress";
@@ -10,6 +11,7 @@ import { getResumeRoute } from "@/utils/savePosition";
 import { useBadgeChecker } from "@/hooks/useBadgeChecker";
 import BadgeNotification from "@/components/BadgeNotification";
 import AdSlot from "@/components/AdSlot";
+import { RealismButton } from "@/components/ui/RealismButton";
 const LEARNING_LANGUAGES = [
   { code: "en", nameKey: "lang.en" as const, flag: "🇬🇧", color: "from-blue-400 to-indigo-500" },
   { code: "nl", nameKey: "lang.nl" as const, flag: "🇳🇱", color: "from-orange-400 to-amber-500" },
@@ -359,26 +361,19 @@ export default function DashboardPage() {
 
         {/* ========== LEGEND BUTTON ========== */}
         <div className="mb-4">
-          <button
+          <RealismButton
+            text={
+              <span className="flex items-center gap-3">
+                <Trophy className="w-6 h-6" />
+                <span>
+                  <strong>Legend</strong>
+                  <br />
+                  <span className="text-white/70 text-sm font-normal">Seizoen levels. Ontgrendel, speel, verdien XP.</span>
+                </span>
+              </span>
+            }
             onClick={() => navigate("/arena")}
-            className="group relative w-full overflow-hidden rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 p-1 shadow-xl shadow-amber-200 transition-all duration-300 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-300 dark:border-amber-600 dark:from-amber-900/50 dark:via-yellow-900/50 dark:to-orange-900/50 dark:shadow-amber-900/60">
-            <div className="flex items-center justify-center gap-4 rounded-xl bg-white/70 px-6 py-4 backdrop-blur-md dark:bg-black/30">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-200 to-yellow-300 text-2xl shadow-md dark:from-amber-700 dark:to-yellow-600 dark:shadow-amber-900/50">
-                🏆
-              </div>
-              <div className="text-left">
-                <p className="text-lg font-extrabold text-amber-900 dark:text-amber-100">
-                  Legend
-                </p>
-                <p className="text-sm font-medium text-amber-700 dark:text-amber-300">
-                  Seizoen levels. Ontgrendel, speel, verdien XP.
-                </p>
-              </div>
-              <svg className="h-5 w-5 text-amber-600 transition-transform group-hover:translate-x-1 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </div>
-          </button>
+          />
         </div>
 
         {/* ========== CONTINUE LEARNING BUTTON ========== */}
@@ -460,41 +455,77 @@ export default function DashboardPage() {
 
         <AdSlot variant="banner" className="mb-6" />
 
-        {/* ========== QUICK-ACTION CARDS ========== */}
+        {/* ========== QUICK-ACTION BUTTONS ========== */}
         <div className="grid gap-4 sm:grid-cols-2">
-          <button onClick={() => navigate("/grammar")} className="rounded-xl border-2 border-slate-200 bg-white p-6 text-left transition hover:border-indigo-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-indigo-500">
-            <span className="text-4xl">📖</span>
-            <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">Grammar Lessons</h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Step-by-step grammar guides with exercises.</p>
-          </button>
-          <button onClick={() => navigate("/mistakes")} className="rounded-xl border-2 border-slate-200 bg-white p-6 text-left transition hover:border-red-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-red-500">
-            <span className="text-4xl">🔧</span>
-            <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">Mistake Review</h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Learn from your mistakes & improve.</p>
-          </button>
-          <button onClick={() => navigate("/tests")} className="rounded-xl border-2 border-slate-200 bg-white p-6 text-left transition hover:border-amber-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-amber-500">
-            <span className="text-4xl">📝</span>
-            <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">Tests & Quizzes</h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Challenge yourself +{XP_REWARDS.TEST_PASSED} XP on pass.</p>
-          </button>
-          <button onClick={() => navigate("/arena")} className="rounded-xl border-2 border-slate-200 bg-white p-6 text-left transition hover:border-amber-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-amber-500">
-            <span className="text-4xl">🏆</span>
-            <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">Legend</h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Seizoen levels. Ontgrendel, speel, verdien XP.</p>
-          </button>
+          <RealismButton
+            text={
+              <span className="flex items-center gap-3">
+                <BookOpen className="w-6 h-6" />
+                <span>
+                  <strong>Grammar Lessons</strong>
+                  <br />
+                  <span className="text-white/70 text-sm font-normal">Step-by-step grammar guides with exercises.</span>
+                </span>
+              </span>
+            }
+            onClick={() => navigate("/grammar")}
+          />
+          <RealismButton
+            text={
+              <span className="flex items-center gap-3">
+                <Wrench className="w-6 h-6" />
+                <span>
+                  <strong>Mistake Review</strong>
+                  <br />
+                  <span className="text-white/70 text-sm font-normal">Learn from your mistakes & improve.</span>
+                </span>
+              </span>
+            }
+            onClick={() => navigate("/mistakes")}
+          />
+          <RealismButton
+            text={
+              <span className="flex items-center gap-3">
+                <FileText className="w-6 h-6" />
+                <span>
+                  <strong>Tests & Quizzes</strong>
+                  <br />
+                  <span className="text-white/70 text-sm font-normal">Challenge yourself +{XP_REWARDS.TEST_PASSED} XP on pass.</span>
+                </span>
+              </span>
+            }
+            onClick={() => navigate("/tests")}
+          />
+          <RealismButton
+            text={
+              <span className="flex items-center gap-3">
+                <Trophy className="w-6 h-6" />
+                <span>
+                  <strong>Legend</strong>
+                  <br />
+                  <span className="text-white/70 text-sm font-normal">Seizoen levels. Ontgrendel, speel, verdien XP.</span>
+                </span>
+              </span>
+            }
+            onClick={() => navigate("/arena")}
+          />
         </div>
 
         {/* ========== WORD OF THE DAY ========== */}
         <div className="mt-6">
-          <button onClick={() => navigate("/wotd")} className="w-full rounded-xl border-2 border-slate-200 bg-gradient-to-r from-indigo-50 to-purple-50 p-6 text-left transition hover:border-indigo-300 hover:shadow-md dark:border-slate-700 dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-800 dark:hover:border-indigo-500">
-            <div className="flex items-start gap-4">
-              <span className="text-4xl">🌟</span>
-              <div className="flex-1">
-                <h3 className="font-semibold text-slate-900 dark:text-white">Word of the Day</h3>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Learn a new word daily. Expand your vocabulary!</p>
-              </div>
-            </div>
-          </button>
+          <RealismButton
+            text={
+              <span className="flex items-center gap-3">
+                <Star className="w-6 h-6" />
+                <span>
+                  <strong>Word of the Day</strong>
+                  <br />
+                  <span className="text-white/70 text-sm font-normal">Learn a new word daily. Expand your vocabulary!</span>
+                </span>
+              </span>
+            }
+            onClick={() => navigate("/wotd")}
+          />
         </div>
       </div>
     </div>
