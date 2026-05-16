@@ -7,8 +7,56 @@ export interface GrammarLesson {
   title: string;
   level: number;
   topic: string;
-  body: string;         // markdown‑ish body
+  body: string;         // markdown‑ish body (fallback / introductory text)
   exercises: GrammarExercise[];
+
+  // ── Structured section fields (all optional, backwards-compatible) ──
+
+  /** Short overview / intro shown at the top of the lesson */
+  overview?: string;
+
+  /** Slug used as the first in-page scroll anchor when a lesson opens */
+  anchorSectionId?: string;
+
+  /** Main rules / formula table */
+  rulesTable?: GrammarRuleRow[];
+
+  /** Verb conjugation / word‑form table */
+  conjugationTable?: { header: string; rows: string[][] };
+
+  /** Time expressions, trigger words, signals */
+  timeExpressions?: { header: string; rows: string[][] };
+
+  /** Long-form detailed teaching sections, rendered inside accordions */
+  details?: { title: string; body: string }[];
+
+  /** Callout rows (Remember / Tip / Note / Key Point) */
+  callouts?: {
+    type: "remember" | "tip" | "note" | "key";
+    label: string;
+    text: string;
+  }[];
+
+  /** Common mistakes table */
+  commonMistakes?: {
+    incorrect: string;
+    correct: string;
+    explanation: string;
+  }[];
+
+  /** Quick review / summary bullets */
+  review?: string[];
+
+  /** Q&A table (extends exercises but rendered as a numbered practice table) */
+  qa?: { question: string; answer: string }[];
+}
+
+/** One row in the main rules table */
+export interface GrammarRuleRow {
+  rule: string;
+  structure: string;
+  example: string;
+  usage: string;
 }
 
 export interface GrammarExercise {
