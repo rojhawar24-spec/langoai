@@ -1,6 +1,7 @@
 import type { GrammarLesson } from "../types";
 
 export const nlGrammar: GrammarLesson[] = [
+  // ── Les 1: Er is / Er zijn ─────────────────────────────
   {
     id: "nl-gram-1",
     title: "Er is / Er zijn (Basis existentie)",
@@ -137,5 +138,70 @@ export const nlGrammar: GrammarLesson[] = [
       },
     ],
   },
-];
 
+  // ── Les 2: OTT Regelmatige werkwoorden ──────────────────
+  {
+    id: "nl-gram-ott-simple",
+    title: "OTT: Regelmatige werkwoorden",
+    level: 1,
+    topic: "Werkwoorden",
+    anchorSectionId: "rules",
+
+    overview:
+      "De **onvoltooid tegenwoordige tijd** (OTT) gebruik je voor wat nu, altijd of regelmatig gebeurt. De meeste werkwoorden eindigen op **-en**. De stam maak je door -en weg te halen.",
+
+    rulesTable: [
+      {
+        rule:     "Stam afleiden",
+        structure:"infinitief minus -en",
+        example:  "werken → werk-, leren → leer-, spelen → speel-",
+        usage:    "Bepaal altijd eerst de stam voor elke vervoeging."
+      },
+      {
+        rule:     "Uitgangen OTT",
+        structure:"stam / stam+t / stam+t / stam+en / stam+en / stam+en",
+        example:  "ik werk, jij werkt, hij werkt, wij werken, jullie werken, zij werken",
+        usage:    "De standaarduitgangen voor regelmatige werkwoorden."
+      },
+    ],
+
+    conjugationTable: {
+      header: "Persoon | ik | jij | hij/zij/het | wij | jullie | zij/ze",
+      rows: [
+        ["werken",  "werk",  "werkt", "werkt",  "werken", "werken", "werken"],
+        ["leren",   "leer",  "leert", "leert",   "leren",  "leren",  "leren"],
+        ["spelen",  "speel", "speelt","speelt",  "spelen", "spelen", "spelen"],
+      ]
+    },
+
+    details: [
+      {
+        title: "Stamwisseling: k → s, z → s",
+        body: "Sommige werkwoorden veranderen de **k** of **z** in **s** in de stam:\n\n| Infinitief | Stam | ik-vorm |\n|------------|------|--------|\n| **zoeken** | zoek- | ik zoek |\n| **zeggen** | zeg-  | ik zeg |"
+      },
+    ],
+
+    callouts: [
+      {
+        type:  "remember",
+        label: "Let op",
+        text:  "Niet alle werkwoorden volgen deze regel: *zijn* en *hebben* zijn onregelmatig. Die leer je apart."
+      },
+    ],
+
+    review: [
+      "Stam = infinitief zonder -en",
+      "OTT: ik stam, jij/u stam+t, hij/zij stam+t",
+      "Meervoud: wij/jullie/zij + hele werkwoord (stam+en)",
+    ],
+
+    qa: [
+      { question: "Wat is de stam van 'werken'?", answer: "werk" },
+      { question: "Welke uitgang krijgt 'jij' bij 'leren'?", answer: "leert" },
+      { question: "Hoe zeg je 'wij spelen'?", answer: "wij spelen" },
+    ],
+
+    body: "—",
+    exercises: [],
+  },
+];

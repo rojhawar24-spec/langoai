@@ -1,18 +1,17 @@
 // Minimal dataset to unblock Vite build.
 // Word Of The Day page expects ALL_WOTD_WORDS exported from this module.
 
-import type { VocabWord } from "@/content/types";
+import type { WOTDWord } from "@/utils/wotd";
 
-export const ALL_WOTD_WORDS: VocabWord[] = [
+export const ALL_WOTD_WORDS: WOTDWord[] = [
   // Dutch
   {
     id: "wotd-nl-1",
     word: "boek",
     translation: "book",
     languageCode: "nl",
-    partOfSpeech: "zelfstandig naamwoord",
-    example: "Het boek ligt op tafel.",
-    topic: "Basis",
+    emoji: "📖",
+    hint: "You read it",
   },
   // English fallback
   {
@@ -20,9 +19,8 @@ export const ALL_WOTD_WORDS: VocabWord[] = [
     word: "table",
     translation: "table",
     languageCode: "en",
-    partOfSpeech: "noun",
-    example: "The table is in the kitchen.",
-    topic: "Basis",
+    emoji: "🪑",
+    hint: "You eat on it",
   },
 ];
 

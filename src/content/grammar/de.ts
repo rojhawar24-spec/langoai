@@ -1,402 +1,207 @@
 import type { GrammarLesson } from "../types";
 
 export const deGrammar: GrammarLesson[] = [
-  /* ═══════════════════════════════════════════════════════════
-   * de-gram-1 — Präsens (Present Tense)
-   * ═══════════════════════════════════════════════════════════ */
+  // ── Les 1: Er is / Er zijn ─────────────────────────────
   {
     id: "de-gram-1",
-    title: "Präsens (Gegenwartstijd / Present Tense)",
+    title: "Er is / Er zijn (Basis existentie)",
     level: 1,
-    topic: "Verbs",
+    topic: "Grammatica",
     anchorSectionId: "rules",
 
     overview:
-      "Het **Präsens** in het Duits wordt gebruikt voor gewoonten, feiten, huidige acties en permanente toestanden. De spelling verandert voor *du, er/sie/es*: voeg **-st** of **-t** toe.",
+      "De **onvoltooid tegenwoordige tijd** (OTT) gebruik je voor wat nu, altijd of regelmatig gebeurt. De meeste werkwoorden eindigen op **-en**. De stam maak je door **-en** weg te halen.",
 
-    body: `## Präsens (German Present Tense)
-Het Präsens wordt gebruikt voor gewoonten en feiten.
-**Standaard vervoeging:**
-- Ich mache (Ik maak/doe)
-- Du machst (Jij maakt/doet)
-- Er/Sie/Es macht (Hij/Zij/Het maakt/doet)
-- Wir machen (Wij maken/doen)
-- Ihr macht (Jullie maken/doen)
-- Sie machen (Zij/Ze maken/doen)
-**Key onregelmatig:** zijn (to be)*en hebben (to have)*
-Zijn: Ich bin, Du bist, Er ist, Wir sind, Ihr seid, Sie sind
-Hebben: Ich habe, Du hast, Er hat, Wir haben, Ihr habt, Sie haben`,
+    body: `## Er is / Er zijn
+
+**Er is** = 1 ding (enkelvoud)
+- Er is een stoel.
+- Er is een probleem.
+
+**Er zijn** = meerdere dingen (meervoud)
+- Er zijn twee stoelen.
+- Er zijn veel mensen.
+
+**Negatief**
+- Er is geen tijd.
+- Er zijn geen stoelen.
+
+**Vragen**
+- Is er tijd?
+- Zijn er stoelen?`,
+
     rulesTable: [
       {
-        rule:     "ich / wir / ihr / Sie",
-        structure:"stam (geen verandering)",
-        example:  "ich mache, wir machen, ihr macht",
-        usage:    "Deze personen krijgen geen extra letter",
+        rule: "Er is",
+        structure: "er + is + (enkelvoud)",
+        example: "Er is een stoel.",
+        usage: "Aanwezigheid van 1 ding / enkelvoud",
       },
       {
-        rule:     "du → stam + -st",
-        structure:"stam + -st",
-        example:  "DU machest = du machst",
-        usage:    "'du' krijgt altijd -st (informatief 'je' ook)",
+        rule: "Er zijn",
+        structure: "er + zijn + (meervoud)",
+        example: "Er zijn twee stoelen.",
+        usage: "Aanwezigheid van meerdere dingen / meervoud",
       },
       {
-        rule:     "er/sie/es → stam + -t",
-        structure:"stam + -t",
-        example:  "er macht, sie macht, es macht",
-        usage:    "3e persoon enkelvoud krijgt -t (geen -st)",
+        rule: "Negatief",
+        structure: "er + is/zijn + geen + (zelfstandig naamwoord)",
+        example: "Er is geen koffie. Er zijn geen stoelen.",
+        usage: "Geen = ontkenning van bestaan/aanwezigheid",
       },
       {
-        rule:     "Sie (formeel) → stam + -en",
-        structure:"stam + -en",
-        example:  "Sie machen (formeel 'u')",
-        usage:    "Formeel 'Sie' gebruik je met -en",
-      },
-      {
-        rule:     "Negatief",
-        structure:"konjunktiv + nicht + stam",
-        example:  "Ich mache nicht (Ik maak niet)",
-        usage:    "Negatie: stam + nicht",
-      },
-      {
-        rule:     "Vraagzin",
-        structure:"stam + onderwerp + rest?",
-        example:  "Machst du Kaffee? (Maak je koffie?)",
-        usage:    "Aan het begin van de zin: stam",
-      },
-      {
-        rule:     "Stam afleiden",
-        structure:"infinitief minus -en",
-        example:  "machen → mach-, sprechen → sprech-",
-        usage:    "Eerst stap voor elk Duits werkwoord",
+        rule: "Vraagvorm",
+        structure: "Is/Zijn + er + …?",
+        example: "Is er tijd? Zijn er stoelen?",
+        usage: "Voor vragen: Is/Zijn voorop",
       },
     ],
 
     conjugationTable: {
-      header: "Persoon | machen (maken) | sprechen (spreken) | sein (zijn) | haben (hebben)",
+      header: "Vorm | Gebruik | Voorbeeld",
       rows: [
-        ["ich",       "mache",       "spreche",      "bin",     "habe"],
-        ["du",        "machst",      "sprichst",     "bist",    "hast"],
-        ["er/sie/es", "macht",       "spricht",      "ist",     "hat"],
-        ["wir",       "machen",      "sprechen",     "sind",    "haben"],
-        ["ihr",       "macht",       "sprecht",      "seid",    "habt"],
-        ["Sie / sie", "machen",      "sprechen",     "sind",    "haben"],
-      ],
-    },
-
-    timeExpressions: {
-      header: "Tijdsuitdrukking | Regel | Voorbeeld",
-      rows: [
-        ["jeden Tag / jede Woche", "Gewoonte = Präsens", "Ich arbeite jeden Tag."],
-        ["immer / oft / manchmal", "Gewoonte = Präsens", "Sie fährt oft nach Berlin."],
-        ["jetzt / zurzeit / heute", "Nu = Präsens", "Ich lerne jetzt Deutsch."],
-        ["nie / selten", "Gewoonte = Präsens", "Er isst nie Gemüse."],
-        ["am Montag / am Samstag", "Vaste dag = Präsens", "Wir gehen am Samstag."],
+        ["er is", "enkelvoud", "Er is een probleem."],
+        ["er zijn", "meervoud", "Er zijn twee problemen."],
       ],
     },
 
     details: [
       {
-        title: "1. Stam afleiden en -st / -t",
-        body: `## Stam vormen in het Présens
-Elk Duits stamwerkwoord heeft een stam: infinitief minus **-en**.
-\\| Werkwoord \\| Infinitief \\| Stam \\|
-\\|-------------\\|------------\\|-------\\|
-| machen | machen | mach- |
-| sprechen | sprechen | sprech- |
-| gehen | gehen | geh- |
-| spielen | spielen | spiel- |
-| wohnen | wohnen | wohn- |
-> **Uitzondering:** Werkwoord op **-d** of **-t** verandert niet: *legen → liegt* (geen extra letter na d/t)`,
-      },
-      {
-        title: "2. Onregelmatige: zijn en hebben",
-        body: `## Twee belangrijkste onregelmatige werkwoorden
-### ZIJN (to be)
-\\| Persoon \\| Vorm \\|
-\\|---------\\|------\\|
-| ich | **bin** |
-| du | **bist** |
-| er/sie/es | **ist** |
-| wir | **sind** |
-| ihr | **seid** |
-| Sie / sie | **sind** |
-### HEBEN (to have)
-\\| Persoon \\| Vorm \\|
-\\|---------\\|------\\|
-| ich | **habe** |
-| du | **hast** |
-| er/sie/es | **hat** |
-| wir | **haben** |
-| ihr | **habt** |
-| Sie / sie | **haben** |
-\\> 💡 Deze twee moet je uit je hoofd leren — ze zijn de meest gebruikte!`,
-      },
-      {
-        title: "3. Vraagzinnen en inversie",
-        body: `## Fragen im Präsens
-In Duits staat de stam **eerst** in vragen:
-\\| Aanbieding \\| Vraag \\|
-\\|------------\\|-------\\|
-| Du sprichst Deutsch | **Sprichst** du Deutsch? |
-| Er lernt Deutsch | **Lernt** er Deutsch? |
-| Ich mache Hausaufgaben | **Machst** du die Hausaufgaben? |
-> ❌ *Du sprächest?* → ✅ *Sprichst du?* (stam eerst, geen 'du' beginnen)`,
+        title: "Kernpunt",
+        body: `## Onthoud
+
+- **Enkelvoud** → **er is**
+- **Meervoud** → **er zijn**
+
+> Let op: **er** is een vulwoord; het zelfstandig naamwoord (enkelvoud/meervoud) bepaalt is/zijn.`,
       },
     ],
 
     callouts: [
       {
-        type:  "tip",
-        label: "💡 Tip",
-        text:  "Leer de stam van 10-15 veelgebruikte werkwoorden: machen, sprechen, gehen, wohnen, lernen, spielen, arbeiten, essen, trinken, lesen.",
-      },
-      {
-        type:  "key",
-        label: "🔑 Sleutel",
-        text:  "'du' krijgt altijd -st; 'er/sie/es' krijgt altijd -t. Dit is de belangrijkste regel van het Präsens.",
-      },
-      {
-        type:  "remember",
-        label: "🔔 Onthoud",
-        text:  "Zijn en hebben zijn onregelmatig — je moet hun vormen los leren: bin/bist/ist/sind, habe/hast/hat/haben.",
+        type: "key",
+        label: "Key",
+        text: "Enkelvoud = **er is**; meervoud = **er zijn**.",
       },
     ],
 
     commonMistakes: [
       {
-        incorrect:  "Ich sprechen Deutsch.",
-        correct:    "Ich spreche Deutsch.",
-        explanation: "'Ich' krijgt de stam (geen -en): 'sprechen' → 'spreche'.",
+        incorrect: "Er zijn een probleem.",
+        correct: "Er is een probleem.",
+        explanation: "**Een** is enkelvoud → gebruik **er is**.",
       },
       {
-        incorrect:  "Er sprich Deutsch.",
-        correct:    "Er spricht Deutsch.",
-        explanation: "'Er' krijgt -t: 'spricht', niet 'sprich' (dat is de stam alleen).",
-      },
-      {
-        incorrect:  "Du machst → Machst du?",
-        correct:    "Sprichst du? — stam eerst in vragen.",
-        explanation: "In vragen staat de stam HEEL aan het begin: 'Sprichst du?'",
-      },
-      {
-        incorrect:  "Ich bin müde. → Ich binst müde?",
-        correct:    "Bist du müde?",
-        explanation: "'Bin' is alleen voor 'ich'. Voor 'du' gebruik je 'bist'.",
+        incorrect: "Er is twee stoelen.",
+        correct: "Er zijn twee stoelen.",
+        explanation: "**Twee** is meervoud → gebruik **er zijn**.",
       },
     ],
 
     review: [
-      "Präsens = gewoonten, feiten, nu",
-      "du → stam + -st; er/sie/es → stam + -t",
-      "Vraag: stam eerst: Sprichst du?",
-      "Zijn en hebben zijn onregelmatig — leer ze uit je hoofd",
+      "**Er is** = enkelvoud",
+      "**Er zijn** = meervoud",
+      "Negatief: **geen** na is/zijn",
+      "Vragen: **Is/Zijn er …?**",
     ],
 
     qa: [
       {
-        question: "Wat is de juiste vervoeging: 'Ich ___ (machen) das.'",
-        answer:  "mache — 'ich' krijgt de stam, geen -en of -st.",
+        question: "Maak correct: 'Er ___ een probleem.'",
+        answer: "Er **is** een probleem (enkelvoud).",
       },
       {
-        question: "Vraagzin: '___ (sprechen) du Deutsch?'",
-        answer:  "Sprichst — dalijk eerst, dan 'du'.",
+        question: "Maak correct: 'Er ___ twee problemen.'",
+        answer: "Er **zijn** twee problemen (meervoud).",
       },
       {
-        question: "Wat is onregelmatig: 'Ich ___ (sein) müde.'",
-        answer:  "bin — het onregelmatige Präsens van sein heeft bijzondere vormen.",
-      },
-      {
-        question: "Hij/zij/het van 'machen'?",
-        answer:  "macht — 3e persoon enkelvoud krijgt -t.",
+        question: "Vraagzin: 'Er is tijd.' → '…?'",
+        answer: "**Is er** tijd?",
       },
     ],
 
     exercises: [
-      { question: "Ich ___ Deutsch.",    options: ["machen","mache","machst","gemacht"], answer: "mache" },
-      { question: "Du ___ müde.",    options: ["bin","bist","ist","sind"],     answer: "bist" },
-      { question: "Wir ___ aus Berlin.", options: ["komme","kommst","kommt","kommen"], answer: "kommen" },
-      { question: "Er ___ eine Katze.", options: ["hat","habe","hast","haben"], answer: "hat" },
-      { question: "___ du Kaffee trinken?", options: ["Trinkst","Trinkt","Trinken","Getrunken"], answer: "Trinkst" },
+      {
+        question: "Kies: Er ___ een boek op tafel.",
+        options: ["is", "zijn"],
+        answer: "is",
+      },
+      {
+        question: "Kies: Er ___ twee boeken op tafel.",
+        options: ["is", "zijn"],
+        answer: "zijn",
+      },
+      {
+        question: "Kies: Er ___ geen stoelen in de kamer.",
+        options: ["is", "zijn"],
+        answer: "zijn",
+      },
     ],
   },
 
-  /* ═══════════════════════════════════════════════════════════
-   * de-gram-2 — Der, Die, Das (Duits naar Nederlands)
-   * ═══════════════════════════════════════════════════════════ */
+  // ── Les 2: OTT Regelmatige werkwoorden ──────────────────
   {
-    id: "de-gram-2",
-    title: "Der, Die, Das (Grammatical Gender)",
+    id: "de-gram-ott-simple",
+    title: "OTT: Regelmatige werkwoorden",
     level: 1,
-    topic: "Nouns",
+    topic: "Werkwoorden",
     anchorSectionId: "rules",
 
     overview:
-      "Duits kent drie geslachtsartikelen — **der** (mannelijk), **die** (vrouwelijk of meervoud), **das** (onzijdig) — en het onbepaalde **ein / eine**. Leer het artikel met elk zelfstandig naamwoord mee!",
-
-    body: `## Dutch & German — De/ Het vs Der/ Die/ Das
-In het Duits zijn er drie geslachtsartikelen, in het Nederlands er twee: **de/en het**.
-| Duits | Nederlands | Voorbeeld |
-|-------|-----------|----------|
-| **der** (manne) | de | der Mann → de man |
-| **die** (vrouw/mv) | de | die Frau → de vrouw, die Kinder → de kinderen |
-| **das** (onzijdig) | het | das Kind → het kind |
-| **ein / eine** | een | ein Buch → een boek`,
+      "De **onvoltooid tegenwoordige tijd** (OTT) gebruik je voor wat nu, altijd of regelmatig gebeurt. De meeste Duitse werkwoorden eindigen op **-en**. De stam maak je door **-en** weg te halen.",
 
     rulesTable: [
       {
-        rule:     "Der — mannelijk",
-        structure:"der + mannelijk zelfstandig naamwoord",
-        example:  "der Mann, der Lehrer, der Tisch",
-        usage:    "Mannelijke zelfstandige naamwoorden in het Duits",
+        rule:     "Stam afleiden",
+        structure:"infinitief minus -en",
+        example:  "machen → mach-, lernen → lern-, spielen → spiel-",
+        usage:    "Bepaal altijd eerst de stam voor elke vervoeging."
       },
       {
-        rule:     "Die — vrouwelijk",
-        structure:"die + vrouwelijk zelfstandig naamwoord",
-        example:  "die Frau, die Zeitung, die Freiheit",
-        usage:    "Vrouwelijke zelfstandige naamwoorden in het Duits",
-      },
-      {
-        rule:     "Die — meervoud",
-        structure:"die + meervoud",
-        example:  "die Bücher, die Kinder, die Häuser",
-        usage:    "Alle meervouden in het Duits gebruiken 'die'",
-      },
-      {
-        rule:     "Das — onzijdig",
-        structure:"das + onzijdig zelfstandig naamwoord",
-        example:  "das Kind, das Haus, das Mädchen",
-        usage:    "Onzijdige zelfstandige naamwoorden in het Duits",
-      },
-      {
-        rule:     "Ein — onbepaald mannelijk/onzijdig",
-        structure:"ein + [manne/onzij] zelfstandig naamwoord",
-        example:  "ein Mann, ein Kind",
-        usage:    "Onbepaald lidwoord voor mannelijk en onzijdig",
-      },
-      {
-        rule:     "Eine — onbepaald vrouwelijk",
-        structure:"eine + vrouwelijk zelfstandig naamwoord",
-        example:  "eine Frau",
-        usage:    "Onbepaald lidwoord alleen voor vrouwelijk",
+        rule:     "Uitgangen OTT",
+        structure:"stam / stam+t / stam+t / stem+en / stam+en / stem+en",
+        example:  "ich mache, du machst, er macht, wir machen, ihr macht, sie machen",
+        usage:    "De standaarduitgangen voor regelmatige Duitse werkwoorden."
       },
     ],
 
     conjugationTable: {
-      header: "Duits (artikel) | Nederlands | Uitleg",
+      header: "Persoon | ik | jij | hij/zij/het | wij | jullie | zij/ze",
       rows: [
-        ["der (manne)",   "de",           "de man → der Mann (kaal peen A)"],
-        ["die (vrouw)",   "de",           "de vrouw → die Frau (eind op -e)"],
-        ["die (meerv)",   "de",           "de kinderen → die Kinder (altijd 'die')"],
-        ["das (onzijdig)","het",          "het huis → das Haus"],
-        ["ein Mann",      "een man",     "onbepaald mannelijk"],
-        ["eine Frau",     "een vrouw",   "onbepaald vrouwelijk"],
-      ],
-    },
-
-    timeExpressions: {
-      header: "Einde van het woord | Verwachte geslacht | Voorbeeld",
-      rows: [
-        ["-ung",  "vrouwelijk → die",  "die Zeitung → de krant"],
-        ["-keit / -heit", "vrouwelijk → die", "die Freiheit → de vrijheid"],
-        ["-chen / -lein", "onzijdig → das", "das Mädchen → het meisje"],
-        ["-ling", "mannelijk → der",  "der Schüler → de leerling"],
-        ["-er",  "mannelijk → der",  "der Lehrer → de leraar"],
-        ["-e",   "vaak mannelijk → der", "der Vater → de vader"],
-      ],
+        ["machen",  "mach",  "machst", "macht",  "machen", "macht", "machen"],
+        ["lernen",  "lern",  "lernst", "lernt",   "lernen", "lernt", "lernen"],
+        ["spielen", "spiel", "spielst","spielt",  "spielen","spielt","spielen"],
+      ]
     },
 
     details: [
       {
-        title: "1. Geslacht raden: ezelsbruggetjes",
-        body: `## Tips om het geslacht te raden
-\\| Einde van het woord \\| Geslacht \\| Voorbeeld \\|
-\\|--------------------\\|---------\\|----------\\|
-| -ung, -keit, -heit | vrouwelijk (die) | die Zeitung, die Freiheit |
-| -chen, -lein | onzijdig (das) | das Mädchen, das Tischlein |
-| -ling | mannelijk (der) | der Lehrling |
-| -er | meestal mannelijk (der) | der Lehrer, der Vater |
-> ⚠️ **Braakuitzondering:** Leer altijd het lidwoord met het woord mee!`,
-      },
-      {
-        title: "2. Het Nederlands equivalent",
-        body: `## Nederlands: de vs het
-Nederlands heeft geen geslacht, dus enkel **de** (gemeen vrouwelijk) of **het** (onzijdig).
-\\| Duits geslacht \\| Nederlands lidwoord \\|
-\\|--------------\\|------------\\|
-| Mannelijk (der) | de |
-| Vrouwelijk (die) | de |
-| Meervoud (die) | de |
-| Onzijdig (das) | het |
-> 💡 '*Die*' in het Duits is dus zowel vrouwelijk als meervoud — maar in het Nederlands is dat allemaal **de**.`,
+        title: "Stamwisseling: k/z → st/zt",
+        body: "Sommige Duitse werkwoorden veranderen de **k** of **z** in **st** of **zt** in de stam:\n\n| Infinitief | Stam | ik-vorm |\n|------------|------|--------|\n| **machen** | mach- | ich mache |\n| **lernen** | lern- | ich lerne |"
       },
     ],
 
     callouts: [
       {
         type:  "remember",
-        label: "🔔 Onthoud",
-        text:  "Leer elk Duits woord samen met zijn lidwoord: 'der Mann — de man', 'das Kind — het kind'.",
-      },
-      {
-        type:  "key",
-        label: "🔑 Sleutel",
-        text:  "Meervouden in het Duits gebruiken altijd 'die' → het Nederlands wordt altijd 'de'.",
-      },
-      {
-        type:  "tip",
-        label: "💡 Tip",
-        text:  "Woorden op -ung zijn bijna altijd vrouwelijk (die): die Zeitung → de krant.",
-      },
-    ],
-
-    commonMistakes: [
-      {
-        incorrect:  "Das Mann ist groß.",
-        correct:    "Der Mann ist groß.",
-        explanation: "'Mann' is mannelijk in het Duits → gebruik 'der' (niet 'das').",
-      },
-      {
-        incorrect:  "Die Kind ist groß.",
-        correct:    "Das Kind ist groß.",
-        explanation: "'Kind' is onzijdig in het Duits → gebruik 'das' (niet 'die').",
-      },
-      {
-        incorrect:  "Der Bücher sind auf dem Tisch.",
-        correct:    "Die Bücher sind auf dem Tisch.",
-        explanation: "Meervouden in het Duits gebruiken altijd 'die'.",
+        label: "Let op",
+        text:  "Niet alle werkwoorden volgen deze regel: *sein*, *haben* en *werden* zijn onregelmatig. Die leer je apart."
       },
     ],
 
     review: [
-      "Duits = 3 geslachten: der (manne), die (vrouw/mv), das (onzijdig) → NL = 2: de / het",
-      "Meervoud = altijd 'die' in Duits = altijd 'de' in het Nederlands",
-      "Woorden op -ung / -heit / -keit → vrouwelijk = die",
-      "Woorden op -chen / -lein → onzijdig = das",
-      "Leer het Duits lidwoord met het Nederlands meeleert",
+      "Stam = infinitief zonder -en",
+      "OTT: ik stam, jij/u stam+t, hij/zij stam+t",
+      "Meervoud: wij/jullie/zij + hele werkwoord (stam+en)",
     ],
 
     qa: [
-      {
-        question: "Duits: '___ Haus' → Nederlands: 'het huis'. Welk lidwoord?",
-        answer:  "Das — 'das' is het onzijdige artikel in het Duits.",
-      },
-      {
-        question: "Meervoud: '___ Kinder' → Nederlands: 'de kinderen'. Wat is het Duits artikel?",
-        answer:  "Die — meervouden in het Duits gebruiken altijd 'die'.",
-      },
-      {
-        question: "'___ Zeitung' is fout. Hoe moet het?",
-        answer:  "Die Zeitung — woorden op -ung zijn altijd vrouwelijk ('die').",
-      },
+      { question: "Wat is de stam van 'machen'?", answer: "mach-" },
+      { question: "Welke uitgang krijgt 'du' bij 'machen'?", answer: "du machst" },
+      { question: "Hoe zeg je 'wij spielen'?", answer: "wir spielen" },
     ],
 
-    exercises: [
-      { question: "___ Mann (de man)",            options: ["Der","Die","Das","Ein"], answer: "Der" },
-      { question: "___ Frau (de vrouw)",          options: ["Der","Die","Das","Ein"], answer: "Die" },
-      { question: "___ Kind (het kind)",          options: ["Der","Die","Das","Ein"], answer: "Das" },
-      { question: "___ Kinder (de kinderen)",     options: ["Der","Die","Das","Ein"], answer: "Die" },
-      { question: "___ Buch (het boek)",          options: ["Der","Die","Das","Ein"], answer: "Das" },
-      { question: "___ Haus (het huis)",          options: ["Der","Die","Das","Ein"], answer: "Das" },
-    ],
+    body: "—",
+    exercises: [],
   },
 ];
