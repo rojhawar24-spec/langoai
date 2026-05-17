@@ -42,27 +42,32 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const { user, updateProfile, isAuthenticated } = useAuth();
   const [uiLanguage, setUILanguageState] = useState<UILanguage>(getStoredLanguage);
 
-  // Sync with user profile if available
-  useEffect(() => {
-    if (isAuthenticated && user?.interfaceLanguage) {
-      const lang = user.interfaceLanguage as UILanguage;
-      if (["en", "nl", "fr", "de", "es"].includes(lang)) {
-        setUILanguageState(lang);
-        localStorage.setItem(STORAGE_KEY, lang);
-      }
-    }
-  }, [isAuthenticated, user?.interfaceLanguage]);
+   // Sync with user profile if available
+   useEffect(() => {
+     if (isAuthenticated && user?.interfaceLanguage) {
+       const lang = user.interfaceLanguage as UILanguage;
+       if (["en", "nl", "fr", "de", "es"].includes(lang)) {
+         // If user picks an interface language, use it for ALL UI language content.
+         setUILanguageState(lang);
+         localStorage.setItem(STORAGE_KEY, lang);
+         // Also set learning language to match UI language when syncing from profile
+         if (user.currentLanguage !== lang) {
+           updateProfile({ interfaceLanguage: lang, currentLanguage: lang });
+         }
+       }
+     }
+   }, [isAuthenticated, user?.interfaceLanguage, user?.currentLanguage, updateProfile]);
 
-  const setUILanguage = useCallback(
-    (lang: UILanguage) => {
-      setUILanguageState(lang);
-      localStorage.setItem(STORAGE_KEY, lang);
-      if (isAuthenticated && user) {
-        updateProfile({ interfaceLanguage: lang });
-      }
-    },
-    [isAuthenticated, user, updateProfile]
-  );
+   const setUILanguage = useCallback(
+     (lang: UILanguage) => {
+       setUILanguageState(lang);
+       localStorage.setItem(STORAGE_KEY, lang);
+       if (isAuthenticated && user) {
+         updateProfile({ interfaceLanguage: lang, currentLanguage: lang });
+       }
+     },
+     [isAuthenticated, user, updateProfile]
+   );
 
   const t = useCallback(
     (key: TranslationKey): string => {

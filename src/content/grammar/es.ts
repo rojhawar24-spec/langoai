@@ -13,7 +13,30 @@ export const esGrammar: GrammarLesson[] = [
   anchorSectionId: "rules",
 
   overview:
-    "De **Presente** (tegenwoordige tijd) gebruik je voor gewoontes, feiten en wat nu gebeurt. Spaanse werkwoorden eindigen op **-AR**, **-ER** of **-IR**. De stam krijg je door die uitgang weg te halen.",
+    "La **Presente** se usa para hablar de costumbres, hechos y lo que ocurre ahora. Los verbos españoles terminan en **-AR**, **-ER** o **-IR**: quita la terminación de la raíz para conjugarlos.",
+
+  conceptCards: [
+    {
+      title: "Stam bepalen",
+      structure: "infinitivo -ar/-er/-ir → stam",
+      example: "hablar → habl-, comer → com-, vivir → viv-",
+    },
+    {
+      title: "-AR uitgangen",
+      structure: "-o / -as / -a / -amos / -áis / -an",
+      example: "hablo · hablas · habla · hablamos · habláis · hablan",
+    },
+    {
+      title: "-ER / -IR uitgangen",
+      structure: "-o / -es / -e / -imos / -ídos / -en",
+      example: "como · comes · come · comemos · coméis · comen",
+    },
+    {
+      title: "Onregelmatig",
+      structure: "ser / estar / tener / ir (uit je hoofd)",
+      example: "soy · estoy · tengo · voy",
+    },
+  ],
 
   rulesTable: [
     {

@@ -13,7 +13,30 @@ export const enGrammar: GrammarLesson[] = [
   anchorSectionId: "rules",
 
   overview:
-    "De **Present Simple** (tegenwoordige tijd) gebruik je voor gewoontes, feiten en routines. De basisvorm is het hele werkwoord zonder **to**. Alleen bij **he / she / it** komt er een extra **-s** achter.",
+    "The **Present Simple** is used for habits, facts, and routines. Most verbs use their base form — only **he / she / it** takes an **-s** at the end.",
+
+  conceptCards: [
+    {
+      title: "I / you / we / they",
+      structure: "persoon + base verb (geen to)",
+      example: "I work · you play · we live · they speak",
+    },
+    {
+      title: "He / she / it",
+      structure: "persoon + verb + s",
+      example: "he works · she plays · it rains",
+    },
+    {
+      title: "To be (zijn)",
+      structure: "am / are / is (volledig onregelmatig)",
+      example: "I am · you are · he/she/it is · we are",
+    },
+    {
+      title: "To have (hebben)",
+      structure: "have → has (alleen he/she/it)",
+      example: "I have · you have · he/she/it has · they have",
+    },
+  ],
 
   rulesTable: [
     {

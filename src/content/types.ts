@@ -49,6 +49,13 @@ export interface GrammarLesson {
 
   /** Q&A table (extends exercises but rendered as a numbered practice table) */
   qa?: { question: string; answer: string }[];
+
+  /** Quick overview concept cards, rendered above the rules table */
+  conceptCards?: {
+    title: string;
+    structure: string;
+    example: string;
+  }[];
 }
 
 /** One row in the main rules table */

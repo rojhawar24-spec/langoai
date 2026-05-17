@@ -13,7 +13,30 @@ export const frGrammar: GrammarLesson[] = [
   anchorSectionId: "rules",
 
   overview:
-    "De **onvoltooid tegenwoordige tijd** (le présent) gebruik je voor gewoontes, feiten en wat nu gebeurt. De meeste Franse werkwoorden eindigen op **-ER**. De stam maak je door **-er** weg te halen.",
+    "Le **présent** utilis pour parler de ce que tu fais maintenant, de tes habitudes ou de vérités générales. La plupart des verbes français en **-ER** se conjuguent en retirant **-er** et en ajoutant les six terminaisons.",
+
+  conceptCards: [
+    {
+      title: "Stam bepalen",
+      structure: "infinitif -er → stam",
+      example: "parler → parl-, aimer → aim-, regarder → regard-",
+    },
+    {
+      title: "Terminaisons -ER",
+      structure: "-e / -es / -e / -ons / -ez / -ent",
+      example: "je parle · tu parles · il parle · nous parlons · vous parlez · ils parlent",
+    },
+    {
+      title: "3e persoon enkelvoud",
+      structure: "il/elle/on + (stam + e)",
+      example: "il parle, elle aime, on regarde",
+    },
+    {
+      title: "Elision: j'",
+      structure: "klinker / stomme h → j' + uitgang",
+      example: "j'aime, j'habite (geen *je aime*)",
+    },
+  ],
 
   rulesTable: [
     {

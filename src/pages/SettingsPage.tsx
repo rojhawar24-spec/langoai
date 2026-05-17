@@ -387,31 +387,31 @@ function PreferencesSection({
 
       <hr className="border-slate-200 dark:border-slate-700" />
 
-      {/* Learning language */}
-      <div>
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
-          Learning Language
-        </h3>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {LEARNING_LANGUAGES.map((lang) => {
-            const isActive = user.currentLanguage === lang.code;
-            return (
-              <button
-                key={lang.code}
-                onClick={() => updateProfile({ currentLanguage: lang.code })}
-                className={`flex items-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition ${
-                  isActive
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300"
-                    : "border-slate-200 text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:text-slate-400"
-                }`}
-              >
-                <span>{lang.flag}</span>
-                <span>{lang.name}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+       {/* Learning language */}
+       <div>
+         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
+           Learning Language
+         </h3>
+         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+           {LEARNING_LANGUAGES.map((lang) => {
+             const isActive = user.currentLanguage === lang.code;
+             return (
+               <button
+                 key={lang.code}
+                 onClick={() => updateProfile({ currentLanguage: lang.code, interfaceLanguage: lang.code })}
+                 className={`flex items-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition ${
+                   isActive
+                     ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300"
+                     : "border-slate-200 text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:text-slate-400"
+                 }`}
+               >
+                 <span>{lang.flag}</span>
+                 <span>{lang.name}</span>
+               </button>
+             );
+           })}
+         </div>
+       </div>
     </div>
   );
 }

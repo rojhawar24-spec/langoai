@@ -1,122 +1,145 @@
 import type { GrammarLesson } from "../types";
 
 export const deGrammar: GrammarLesson[] = [
-  // ── Les 1: Er is / Er zijn ─────────────────────────────
+  // ── Les 1: Präsens (Gegenwart) ─────────────────────────────
   {
     id: "de-gram-1",
-    title: "Er is / Er zijn (Basis existentie)",
+    title: "Präsens — Grundlagen",
     level: 1,
-    topic: "Grammatica",
+    topic: "Grammatik",
     anchorSectionId: "rules",
 
     overview:
-      "De **onvoltooid tegenwoordige tijd** (OTT) gebruik je voor wat nu, altijd of regelmatig gebeurt. De meeste werkwoorden eindigen op **-en**. De stam maak je door **-en** weg te halen.",
+      "Mit der **Präsens** sprichst du über Dinge, die jetzt geschehen, immer geschehen oder regelmäßig geschehen. Die meisten deutschen Verben enden auf **-en**: entferne **-en** um den **Stamm** zu erhalten.",
 
-    body: `## Er is / Er zijn
+    body: `## Präsens (Gegenwart)
 
-**Er is** = 1 ding (enkelvoud)
-- Er is een stoel.
-- Er is een probleem.
+Mit der **Präsens** sagst du, was jetzt geschieht, was immer geschieht oder was regelmäßig geschieht.
 
-**Er zijn** = meerdere dingen (meervoud)
-- Er zijn twee stoelen.
-- Er zijn veel mensen.
+- Ich **lerne** Deutsch. (jetzt)
+- Sie **wohnt** in Berlin. (immer)
+- Wir **gehen** jeden Samstag einkaufen. (regelmäßig)
 
-**Negatief**
-- Er is geen tijd.
-- Er zijn geen stoelen.
+**Verben auf -en**
+- Die meisten deutschen Verben enden auf **-en**.
+- Der **Stamm** = Infinitiv ohne **-en**.
+- lernen → **lern**- ist der Stamm
 
-**Vragen**
-- Is er tijd?
-- Zijn er stoelen?`,
+**Umgangssprachlich**
+- In der Umgangssprache sagst du häufig **ich mach(e)** oder **wir geh** statt der vollständigen Formen.
+- Die verkürzten Formen sind in Alltagssituationen völlig normal.
+
+**Negation**
+- Ich **lerne** nicht Deutsch.
+- Sie **wohnt** nicht in Berlin.
+
+**Fragesätze**
+- **Lernst** du Deutsch?
+- **Wohnt** sie in Berlin?`,
 
     rulesTable: [
       {
-        rule: "Er is",
-        structure: "er + is + (enkelvoud)",
-        example: "Er is een stoel.",
-        usage: "Aanwezigheid van 1 ding / enkelvoud",
+        rule:     "Stamm bestimmen",
+        structure:"Infinitiv ohne -en",
+        example:  "lernen → lern-, spielen → spiel-, machen → mach-",
+        usage:    "Zuerst immer den Stamm bestimmen.",
       },
       {
-        rule: "Er zijn",
-        structure: "er + zijn + (meervoud)",
-        example: "Er zijn twee stoelen.",
-        usage: "Aanwezigheid van meerdere dingen / meervoud",
+        rule:     "Personale Endungen",
+        structure:"-e / -st / -t / -en / -t / -en",
+        example:  "ich lern**e**, du lern**st**, er/sie/es lern**t**, wir lern**en**, ihr lern**t**, sie/Sie lern**en**",
+        usage:    "Die sechs Endungen für regelmäßige Verben.",
       },
       {
-        rule: "Negatief",
-        structure: "er + is/zijn + geen + (zelfstandig naamwoord)",
-        example: "Er is geen koffie. Er zijn geen stoelen.",
-        usage: "Geen = ontkenning van bestaan/aanwezigheid",
+        rule:     "Umgangssprachliche Formen",
+        structure:"Stamm (ohne Endung or + e)",
+        example:  "ich mach(e), wir geh(en)",
+        usage:    "In der gesprochenen Sprache: die Endung wird oft weggelassen oder nur -e.",
       },
       {
-        rule: "Vraagvorm",
-        structure: "Is/Zijn + er + …?",
-        example: "Is er tijd? Zijn er stoelen?",
-        usage: "Voor vragen: Is/Zijn voorop",
+        rule:     "Negation",
+        structure:"Subjekt + Stamm + nicht + …",
+        example:  "Ich lerne nicht. Sie wohnt nicht hier.",
+        usage:    "**nicht** verneint das gesamte Verb or die Aussage.",
       },
     ],
 
     conjugationTable: {
-      header: "Vorm | Gebruik | Voorbeeld",
+      header: "Verb | ich | du | er/sie/es | wir | ihr | sie/Sie",
       rows: [
-        ["er is", "enkelvoud", "Er is een probleem."],
-        ["er zijn", "meervoud", "Er zijn twee problemen."],
-      ],
+        ["machen", "mache", "machst", "macht", "machen", "macht", "machen"],
+        ["lernen", "lerne", "lernst", "lernt", "lernen", "lernt", "lernen"],
+        ["spielen","spiele","spielst","spielt","spielen","spielt","spielen"],
+      ]
     },
 
     details: [
       {
-        title: "Kernpunt",
-        body: `## Onthoud
+        title: "Umgangssprache & formelles Alternativ",
+        body: `## Regelmäßige Verben – Präsens
 
-- **Enkelvoud** → **er is**
-- **Meervoud** → **er zijn**
+| Person | Endung | Beispiel *lernen* |
+|--------|--------|-------------------|
+| ich    | -**e** | ich **lerne** |
+| du     | -**st**| du **lernst** |
+| er/sie/es | -**t**| er **lernt** |
+| wir    | -**en**| wir **lernen** |
+| ihr    | -**t** | ihr **lernt** |
+| sie/Sie | -**en**| sie **lernen** |
 
-> Let op: **er** is een vulwoord; het zelfstandig naamwoord (enkelvoud/meervoud) bepaalt is/zijn.`,
+> **Merke:** In der **gesprochenen Sprache** wird die Endung oft weggelassen oder auf **-e** reduziert:
+> - ich mach**e** · wir geh**en** · du lern**st**
+> - **Sie** und **wir** haben immer die vollständige Endung **-en** in der formellen und schriftlichen Sprache.
+> - **Umgangssprachlich** ist auch die **-t**-Endung bei du zwischendurch wegfallen: *du lern*, *du geh*
+
+> **Tip:** Die vollständigen Endungen (-e, -st, -t, -en, -t, -en) lernst du zuerst, dann übst du die umgangssprachlichen Einschränkungen.`,
       },
     ],
 
     callouts: [
       {
         type: "key",
-        label: "Key",
-        text: "Enkelvoud = **er is**; meervoud = **er zijn**.",
+        label: "Merke",
+        text: "Personale Endungen: **-e / -st / -t / -en / -t / -en**. Immer zuerst den **Stamm** bestimmen.",
       },
     ],
 
     commonMistakes: [
       {
-        incorrect: "Er zijn een probleem.",
-        correct: "Er is een probleem.",
-        explanation: "**Een** is enkelvoud → gebruik **er is**.",
+        incorrect: "Er lernst Deutsch.",
+        correct: "Ich lerne Deutsch.",
+        explanation: "**Ich** ist der Subjekt → es braucht die **1. Person Endung -e**.",
       },
       {
-        incorrect: "Er is twee stoelen.",
-        correct: "Er zijn twee stoelen.",
-        explanation: "**Twee** is meervoud → gebruik **er zijn**.",
+        incorrect: "Wir lernen.",
+        correct: "Ihr lernt.",
+        explanation: "**Ihr** ist 2. Person Plural → Endung **-t** (ihr lern**t**).",
       },
     ],
 
     review: [
-      "**Er is** = enkelvoud",
-      "**Er zijn** = meervoud",
-      "Negatief: **geen** na is/zijn",
-      "Vragen: **Is/Zijn er …?**",
+      "Präsens = jetzt, immer, regelmäßig",
+      "Stamm = Infinitiv ohne -en",
+      "Endungen: -e / -st / -t / -en / -t / -en",
+      "Umgangssprache: Endungen oft reduziert",
     ],
 
     qa: [
       {
-        question: "Maak correct: 'Er ___ een probleem.'",
-        answer: "Er **is** een probleem (enkelvoud).",
+        question: "Bilde korrekt: 'Ich ___ Deutsch.'",
+        answer: "Ich **lerne** Deutsch (1. Person: -e Endung).",
       },
       {
-        question: "Maak correct: 'Er ___ twee problemen.'",
-        answer: "Er **zijn** twee problemen (meervoud).",
+        question: "Bilde korrekt: 'Er ___ Deutsch.'",
+        answer: "Er **lernt** Deutsch (3. Person: -t Endung).",
       },
       {
-        question: "Vraagzin: 'Er is tijd.' → '…?'",
-        answer: "**Is er** tijd?",
+        question: "Negation: 'Ich lerne Deutsch' → '…?'",
+        answer: "Ich **lerne nicht** Deutsch.",
+      },
+      {
+        question: "Was ist der Stamm von 'machen'?",
+        answer: "**mach**-",
       },
     ],
 
@@ -152,32 +175,51 @@ export const deGrammar: GrammarLesson[] = [
 
     rulesTable: [
       {
-        rule:     "Stam afleiden",
-        structure:"infinitief minus -en",
+        rule:     "Stamm bestimmen",
+        structure:"Infinitiv ohne -en",
         example:  "machen → mach-, lernen → lern-, spielen → spiel-",
-        usage:    "Bepaal altijd eerst de stam voor elke vervoeging."
+        usage:    "Zuerst immer den Stamm bestimmen.",
       },
       {
-        rule:     "Uitgangen OTT",
-        structure:"stam / stam+t / stam+t / stem+en / stam+en / stem+en",
+        rule:     "Endungen Präsens",
+        structure:"-e / -st / -t / -en / -t / -en",
         example:  "ich mache, du machst, er macht, wir machen, ihr macht, sie machen",
-        usage:    "De standaarduitgangen voor regelmatige Duitse werkwoorden."
+        usage:    "Die Endungen für regelmäßige Verben.",
       },
     ],
 
     conjugationTable: {
-      header: "Persoon | ik | jij | hij/zij/het | wij | jullie | zij/ze",
+      header: "Verb | ich | du | er/sie/es | wir | ihr | sie/Sie",
       rows: [
-        ["machen",  "mach",  "machst", "macht",  "machen", "macht", "machen"],
-        ["lernen",  "lern",  "lernst", "lernt",   "lernen", "lernt", "lernen"],
-        ["spielen", "spiel", "spielst","spielt",  "spielen","spielt","spielen"],
+        ["machen", "mache", "machst", "macht", "machen", "macht", "machen"],
+        ["lernen", "lerne", "lernst", "lernt", "lernen", "lernt", "lernen"],
+        ["spielen","spiele","spielst","spielt","spielen","spielt","spielen"],
       ]
     },
 
     details: [
       {
-        title: "Stamwisseling: k/z → st/zt",
-        body: "Sommige Duitse werkwoorden veranderen de **k** of **z** in **st** of **zt** in de stam:\n\n| Infinitief | Stam | ik-vorm |\n|------------|------|--------|\n| **machen** | mach- | ich mache |\n| **lernen** | lern- | ich lerne |"
+        title: "Umgangssprachliche Verkürzungen",
+        body: `## Präsens-Tabelle
+
+| Person | Endung | Beispiel |
+|--------|--------|----------|
+| ich    | -e | ich **mache** |
+| du     | -st | du **machst** |
+| er/sie/es | -t | er **macht** |
+| wir    | -en | wir **machen** |
+| ihr    | -t | ihr **macht** |
+| sie/Sie | -en | sie **machen** |
+
+## Umgangssprache
+
+In der **gesprochenen Umgangssprache** fallen Endungen oft weg oder werden auf **-e** beschränkt:
+
+- Ich mach**e** dich fertig. *(vollständig)*
+- Wir geh**en** nach Haus. *(vollständig)*  
+- Du lern**st** super! *(vollständig)*
+
+> **Tip:** Die vollständigen Endungen lernst du zuerst wie in der Schule. Die umgangssprachlichen Auslassungen sind etwas, das du später durch Wiederholung übst.`,
       },
     ],
 
@@ -185,20 +227,43 @@ export const deGrammar: GrammarLesson[] = [
       {
         type:  "remember",
         label: "Let op",
-        text:  "Niet alle werkwoorden volgen deze regel: *sein*, *haben* en *werden* zijn onregelmatig. Die leer je apart."
+        text:  "Nicht alle Verben folgen dieser Regel: *sein*, *haben* und *werden* sind unregelmäßig. Die lernst du separat.",
       },
     ],
 
     review: [
-      "Stam = infinitief zonder -en",
-      "OTT: ik stam, jij/u stam+t, hij/zij stam+t",
-      "Meervoud: wij/jullie/zij + hele werkwoord (stam+en)",
+      "Stamm = Infinitiv ohne -en",
+      "OTT: ich stam, du stam+st, er/sie stam+t",
+      "Mehrzahl: wir/ihr/sie + ganzes Verb (stam+en)",
     ],
 
     qa: [
-      { question: "Wat is de stam van 'machen'?", answer: "mach-" },
-      { question: "Welke uitgang krijgt 'du' bij 'machen'?", answer: "du machst" },
-      { question: "Hoe zeg je 'wij spielen'?", answer: "wir spielen" },
+      { question: "Was ist der Stamm von 'machen'?", answer: "mach-" },
+      { question: "Welche Endung bekommt 'du' bei 'machen'?", answer: "du machst" },
+      { question: "Wie sagst du 'wir spielen'?", answer: "wir spielen" },
+    ],
+
+    conceptCards: [
+      {
+        title: "Stamm bestimmen",
+        structure: "Infinitiv minus -en",
+        example: "machen → mach-, lernen → lern-, spielen → spiel-",
+      },
+      {
+        title: "ich (1. Person)",
+        structure: "Stamm + e",
+        example: "ich mache · ich lerne · ich spiele",
+      },
+      {
+        title: "du (2. Person)",
+        structure: "Stamm + st",
+        example: "du machst · du lernst · du spielst",
+      },
+      {
+        title: "er/sie/es (3. Person)",
+        structure: "Stamm + t",
+        example: "er macht · sie lernt · es spielt",
+      },
     ],
 
     body: "—",

@@ -52,9 +52,9 @@ export default function DashboardPage() {
     checkBadges({ totalXP: user.totalXP, streak: computedStreak });
   }, [user.totalXP, computedStreak]);
 
-  function selectLanguage(code: string) {
-    updateProfile({ currentLanguage: code });
-  }
+   function selectLanguage(code: string) {
+     updateProfile({ currentLanguage: code, interfaceLanguage: code });
+   }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">

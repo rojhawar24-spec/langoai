@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslate } from "@/i18n/I18nContext";
 import { getGrammarLessons, getTests, LANGUAGE_FLAGS } from "@/content/index";
 import type { GrammarLesson } from "@/content/types";
 import { createXPAwarder, XP_REWARDS } from "@/utils/xp";
@@ -38,7 +39,8 @@ const lvlColors: Record<Level, { bg: string; light: string; dot: string }> = {
 export default function GrammarPage() {
   const { user, updateProfile } = useAuth();
   const nav = useNavigate();
-  const lang = user?.currentLanguage ?? "en";
+  const { t } = useTranslate();
+  const lang = user?.interfaceLanguage ?? "en"; // Use the synchronized language for everything
   const allLessons = useMemo(() => getGrammarLessons(lang), [lang]);
   const allTests   = useMemo(() => getTests(lang), [lang]);
 
