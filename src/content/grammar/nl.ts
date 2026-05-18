@@ -150,82 +150,77 @@ De sjwa is de meest voorkomende klinker.
   ],
   conjugationTable: undefined,
   timeExpressions: {
-    header: "Alfabet – klank per letter",
+    header: "Letter|Spelling|Klank|Voorbeelden",
     rows: [
-      ["A", "‘aa’", "**a** (kort, als in *zak*) **aa** (lang, als in *zaak*) **a** dof (schwa-achtig, in uitgangen zoals -baar)", "*kat, man* / *maan, laten* / *bruikbaar*"],
-      ["B", "‘bee’", "**b** (stemhebbend, als in *bed*) Aan het woordeinde klinkt **b** als **p**!", "*been, boven* / *web* klinkt als *wep*"],
-      ["C", "‘see’", "**k** vóór a/o/u/medeklinker **s** vóór e/i/ij", "*cadeau, club* / *cel, citroen*"],
-      ["D", "‘dee’", "**d** (stemhebbend) Aan het woordeinde klinkt **d** als **t**!", "*dak, onder* / *hond* klinkt als *hont*"],
-      ["E", "‘ee’", "**e** (kort, als in *pet*) **ee** (lang, als in *peet*) **doffe e** / sjwa (als in *de, lopen*)", "*bed, rek* / *heel, eten* / *de, tafel*"],
-      ["F", "‘ef’", "**f** (stemloos)", "*fiets, straf*"],
-      ["G", "‘gee’ (hard) / ‘zjee’ (zacht, België)", "**g** (harde keelklank, als ch in *loch*) In het zuiden zacht, als Franse *g* in *garçon* maar stemhebbend. g en ch zijn **dezelfde klank**!", "*goed, dag, liggen* / *lachen* klinkt hetzelfde"],
-      ["H", "‘haa’", "**h** (ademtoon, stemhebbend)", "*huis, hand*"],
-      ["I", "‘ie’", "**i** (kort, als in *pit*) **ie** (lang, als in *piet*) In leenwoorden soms als **ie** of **ai**", "*kip, kind* / *lief, hier* / *ski* (sk-ie)"],
-      ["J", "‘jee’", "**j** (als Engelse *y* in *yes*)", "*ja, jas, mooi*"],
-      ["K", "‘kaa’", "**k** (stemloos)", "*kat, boek*"],
-      ["L", "‘el’", "**l** (als in *land*) Kan aan het eind “dik” worden (dikke l), vooral na klinkers", "*licht, bal*"],
+      ["A", "‘aa’", "**a** kort (*zak*); **aa** lang (*zaak*); doffe **a** in uitgangen (-baar)", "*kat, man* / *maan, laten* / *bruikbaar*"],
+      ["B", "‘bee’", "**b** stemhebbend<br/><span class='text-xs text-slate-400'>einde: b klinkt als **p**</span>", "*been, boven* / *web* → *wep*"],
+      ["C", "‘see’", "**k** voor a/o/u/medeklinker<br/>**s** voor e/i/ij", "*cadeau, club* / *cel, citroen*"],
+      ["D", "‘dee’", "**d** stemhebbend<br/><span class='text-xs text-slate-400'>einde: d klinkt als **t**</span>", "*dak, onder* / *hond* → *hont*"],
+      ["E", "‘ee’", "**e** kort (*pet*); **ee** lang (*peet*); doffe **e** / sjwa (*de, lopen*)", "*bed, rek* / *heel, eten* / *de, tafel*"],
+      ["F", "‘ef’", "**f** stemloos", "*fiets, straf*"],
+      ["G", "‘gee’ hard / ‘zjee’ zacht (BE)", "harde keelklank (als ch in *loch*); zuiden = Franse **g**<br/>g en **ch** zijn **dezelfde klank**", "*goed, dag, liggen* / *lachen* klinkt hetzelfde"],
+      ["H", "‘haa’", "**h** ademtoon, stemhebbend", "*huis, hand*"],
+      ["I", "‘ie’", "**i** kort (*pit*); **ie** lang (*piet*)<br/>leenwoorden: *ie* of *ai*", "*kip, kind* / *lief, hier* / *ski*"],
+      ["J", "‘jee’", "**j** als Engelse *y* in *yes*", "*ja, jas, mooi*"],
+      ["K", "‘kaa’", "**k** stemloos", "*kat, boek*"],
+      ["L", "‘el’", "**l** zoals in *land*<br/>kan ‘dik’ zijn na klinkers", "*licht, bal*"],
       ["M", "‘em’", "**m**", "*maan, hem*"],
-      ["N", "‘en’", "**n** / vóór k of g als **ng** (zie NG) Aan het eind vaak niet uitgesproken in -en (doffe e)", "*neus, man* / *denken* klinkt als *deng-ken*"],
-      ["O", "‘oo’", "**o** (kort, als in *pot*) **oo** (lang, als in *poot*)", "*dom, wol* / *boom, wonen*"],
-      ["P", "‘pee’", "**p** (stemloos)", "*paard, kip*"],
-      ["Q", "‘kuu’", "**k** + **w** (qua, qu- wordt kw-)", "*quiz, quiche* (k- + w)"],
-      ["R", "‘er’", "**r** (rollend, keel-r of Gooise r – afhankelijk van streek)", "*rood, hoor, werken*"],
-      ["S", "‘es’", "**s** (stemloos)", "*slang, mes*"],
-      ["T", "‘tee’", "**t** (stemloos)", "*tafel, kat*"],
-      ["U", "‘uu’", "**u** (kort, als in *put*) **uu** (lang, als in *puut*) **oe** (in leenwoorden)", "*bus, hut* / *muur, duur* / *team* (spreek uit: *tiem*)"],
-      ["V", "‘vee’", "**v** (stemhebbend, als in *vel*) Komt NOOIT aan het eind van een Nederlands woord; dan verandert spelling in f", "*vader, oven* / *lief* (niet *liev*)"],
-      ["W", "‘wee’", "**w** (tussen Engelse *w* en *v* in, zachte lip-tand klank)", "*water, mooi, leeuw*"],
+      ["N", "‘en’", "**n**; voor **k/g** wordt **ng**<br/>uitgang **-en** klinkt als doffe **e**", "*neus, man* / *deng-ken*"],
+      ["O", "‘oo’", "**o** kort (*pot*); **oo** lang (*poot*)", "*dom, wol* / *boom, wonen*"],
+      ["P", "‘pee’", "**p** stemloos", "*paard, kip*"],
+      ["Q", "‘kuu’", "**k** + **w** (qua/qu- → kw-)", "*quiz, quiche*"],
+      ["R", "‘er’", "**r** rollend; keel-r of Gooise r; afhankelijk van streek", "*rood, hoor, werken*"],
+      ["S", "‘es’", "**s** stemloos", "*slang, mes*"],
+      ["T", "‘tee’", "**t** stemloos", "*tafel, kat*"],
+      ["U", "‘uu’", "**u** kort (*put*); **uu** lang (*puut*); **oe** in leenwoorden", "*bus, hut* / *muur, duur* / *team* → *tiem*"],
+      ["V", "‘vee’", "**v** stemhebbend<br/><span class='text-xs text-slate-400'>komt NOOIT aan het eind</span>", "*vader, oven* / *lief*"],
+      ["W", "‘wee’", "**w** tussen Engelse w en v", "*water, mooi, leeuw*"],
       ["X", "‘iks’", "**ks** (als in *taxi*)", "*examen, luxe*"],
-      ["Y", "‘ei’ / ‘i-grec’", "**ie** (als in *yoghurt*) of **ei/ij** (in *yoghurt* soms *jogurt*, in *y* als letter) Meestal leenwoord: klinkt als *ie* of *ai*", "*yoghurt* (jogurt) / *y-as* (ei-as)"],
-      ["Z", "‘zet’", "**z** (stemhebbend, als in *zien*) Aan het woordeinde klinkt **z** als **s**!", "*zee, dozen* / *huis* (uit *huizen* → *huis* klinkt als *huis* met s)"]
+      ["Y", "‘ei’ / ‘i-grec’", "meestal leenwoord: **ie** of **ai**<br/>in *y-as* soms **ei/ij**", "*yoghurt* → *jogurt* / *y-as* (ei-as)"],
+      ["Z", "‘zet’", "**z** stemhebbend<br/><span class='text-xs text-slate-400'>einde: z klinkt als **s**</span>", "*zee, dozen* / *huis* (uit *huizen*)"],
     ]
   },
   details: [
     {
       title: "Korte en lange klinkers (volledig overzicht)",
-      body: `| Kort | Voorbeeld | Lang | Open lettergreep | Gesloten dubbel |
-|------|-----------|------|-----------------|-----------------|
-| a | kat | aa | ma-nen | maan |
-| e | pet | ee | be-ken | been |
-| i | pit | ie | (altijd ie) | lief |
-| o | pot | oo | bo-men | boom |
-| u | put | uu | mu-ren | muur |
-| doffe e | de, lopen | – | – | – |`
+      body: `| klank | type | voorbeelden | open lettergreep | gesloten dubbel |
+|-------|------|-------------|-----------------|-----------------|
+| a | kort | kat, man, bak | ma-nen (lang) | maan |
+| e | kort | pet, net, bek | be-ken (lang) | been |
+| i | kort | pit, net, dik | – | lief (altijd ie) |
+| o | kort | pot, kop, ton | bo-men (lang) | boom |
+| u | kort | put, kus, hut | mu-ren (lang) | muur |
+| doffe e (sjwa) | kort | de, te, lopen | – | – |`
     },
     {
-      title: "Tweeklanken en combinaties met glijders",
-      body: `**Echte diftongen**  
-- ei/ij = /ɛi/ (e + ie): tijd, reis  
-- au/ou = /ʌu/ (a + oe): auto, hout  
-- ui = /œy/ (getuite u + ie): huis, muis  
-
-**Combinaties**  
-- aai = lange aa + i: draai  
-- ooi = lange oo + i: mooi  
-- oei = oe + i: groei  
-- eeuw = lange ee + oe-achtige w: leeuw  
-- ieuw = lange ie + oe-achtige w: nieuw  
-- uw = uu + w: duw  
-
-**Let op:** eu is een lange monoftong (/øː/) zoals in *peur*, niet glijdend.`
+      title: "Echte diftongen",
+      body: `**Echte diftongen** (glijdende klanken)\n| diftong | klank / uitleg | voorbeelden |\n|---------|----------------|-------------|\n| **ei / ij** | /ɛi/ (e + ie) | *tijd, mijn, reis* |\n| **au / ou** | /ʌu/ (a + oe) | *auto, hout, blauw* |\n| **ui** | /œy/ (getuite u + ie) | *huis, muis, duim* |`
+    },
+    {
+      title: "Combinaties met glijders (w / i)",
+      body: `| combinatie | uitleg | voorbeelden |\n|------------|--------|-------------|\n| **aai** | lange aa + i | *draai* |\n| **ooi** | lange oo + i | *mooi* |\n| **oei** | oe + i | *groei* |\n| **eeuw** | lange ee + w-glijder | *leeuw* |\n| **ieuw** | lange ie + w-glijder | *nieuw* |\n| **uw** | uu + w | *duw* |\n\n> **Let op:** **eu** is géén diftong, maar een lange monoftong (/'øː'/), zoals het *oe* in het Franse *peur*: *neus, deur, leuk*.`
     },
     {
       title: "Medeklinkers in detail",
-      body: `- **g/ch:** beide /x/, raspende keelklank. Geen verschil.  
-- **sch:** s+ch, nooit sh.  
-- **ng:** één klank, zoals in Engelse *sing*.  
-- **nk:** ng+k. *bank* = bang-k.  
-- **Finale devoicing:** aan het woordeinde verliest een stemhebbende medeklinker zijn stem. *hond* → hont, *web* → wep, *huis* → huiss. Bij meervoud hoor je de stem weer: honden (d), webben (b), huizen (z).  
-- **w:** zachte klank tussen Engelse w en v; onderlip raakt boventanden zachtjes aan.  
-- **r:** rollend, huig-r of Gooise r; consistentie is belangrijk.  
-- **j:** als y in *yes*.`
+      body: `| medeklinker | klank / uitleg |
+|-------------|----------------|
+| **g / ch** | beide /x/, raspende keelklank; geen verschil |
+| **sch-** | s + ch; nooit als Engelse *sh* |
+| **ng** | één nasaal klank (als Engelse *sing*) |
+| **nk** | ng + k; *bank* = *bang-k* |
+| **Finale devoicing** | stemhebbend → stemloos aan woord-einde: d→t, b→p, z→s; in meervoud komt de stem terug |
+| **w** | zachte klank tussen Engelse *w* en *v*; onderlip raakt boventanden |
+| **r** | rollend; keel-r of Gooise r; streeafhankelijk |
+| **j** | als *y* in Engelse *yes* |`
     },
     {
       title: "Spellingregels die uitspraak sturen",
-      body: `- Lange klinker in gesloten lettergreep → dubbele klinker: *boom, been*.  
-- Lange klinker in open lettergreep → één klinker: *bo-men, be-ken*.  
-- Korte klinker in open lettergreep bestaat niet; om kort te blijven bij verbuiging → verdubbel medeklinker: *bommen, kippen*.  
-- Werkwoordsuitgangen -en → sjwa + eventueel zwakke n: *lopen* → lopuh.`
+      body: `| regel | voorbeelden |
+|-------|-------------|
+| Lange klinker in gesloten lettergreep → dubbele klinker | *boom, been* |
+| Lange klinker in open lettergreep → één klinker | *bo-men, be-ken* |
+| Korte klinker kort houden bij verbuiging → verdubbel medeklinker | *bommen, kippen* |
+| Werkwoordsuitgangen -en → doffe e + eventueel zwakke n | *lopen* → *lopuh* |`
     }
   ],
   callouts: [
