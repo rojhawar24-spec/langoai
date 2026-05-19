@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+// Add font imports only for GrammarLessonDesign page (client-side)
+const FONT_IMPORT_CSS = "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');";
 import {
   CheckCircle2,
   BookOpen,
@@ -20,41 +23,6 @@ import {
 } from "@/components/ui/accordion";
 
 type TableTheme = "indigo" | "emerald" | "amber" | "slate";
-
-/* ── Unified table style (colour: indigo | emerald | amber | slate) ── */
-const unifiedTable: Record<TableTheme, {
-  th: string; td: string; odd: string;
-  col0?: string; colN?: string;
-}> = {
-  indigo: {
-    th: "bg-indigo-600 text-white",
-    td: "px-3 py-2.5 text-sm text-slate-700 dark:text-slate-300 border-t border-indigo-100 dark:border-indigo-800/30",
-    odd: "bg-indigo-50/40 dark:bg-indigo-900/10",
-    col0: "font-semibold text-slate-900 dark:text-slate-100",
-    colN: "text-slate-600 dark:text-slate-400 text-center font-mono",
-  },
-  emerald: {
-    th: "bg-emerald-600 text-white",
-    td: "px-3 py-2.5 text-sm text-slate-700 dark:text-slate-300 border-t border-emerald-100 dark:border-emerald-800/30",
-    odd: "bg-emerald-50/40 dark:bg-emerald-900/10",
-    col0: "font-semibold text-slate-900 dark:text-slate-100",
-    colN: "text-slate-600 dark:text-slate-400 text-center font-mono",
-  },
-  amber: {
-    th: "bg-amber-600 text-white",
-    td: "px-3 py-2.5 text-sm text-slate-700 dark:text-slate-300 border-t border-amber-100 dark:border-amber-800/30",
-    odd: "bg-amber-50/40 dark:bg-amber-900/10",
-    col0: "font-semibold text-slate-900 dark:text-slate-100",
-    colN: "text-slate-600 dark:text-slate-400 text-center font-mono",
-  },
-  slate: {
-    th: "bg-slate-600 text-white",
-    td: "px-3 py-2.5 text-sm text-slate-700 dark:text-slate-300 border-t border-slate-100 dark:border-slate-700/50",
-    odd: "bg-slate-50/60 dark:bg-slate-800/30",
-    col0: "font-semibold text-slate-800 dark:text-slate-100",
-    colN: "text-slate-600 dark:text-slate-400 text-center font-mono",
-  },
-};
 
 // ─── Multilingual UI labels ──────────────────────────────────────────────
 const UI_LABELS: Record<string, Record<string, string>> = {
@@ -230,40 +198,49 @@ function RichTable<T extends readonly string[]>({
   );
 }
 
-type CalloutColor = "amber" | "indigo" | "emerald" | "rose";
+type CalloutColor = "indigo";
 
-const calloutTheme: Record<CalloutColor, { bg: string; border: string; icon: string; text: string }> = {
+const calloutTheme: Record<CalloutColor, { bg: string; border: string; label: string; text: string }> = {
   indigo: {
-    bg: "bg-gradient-to-br from-indigo-50/80 to-white dark:from-indigo-900/20 dark:to-slate-800/50",
-    border: "border-indigo-200 dark:border-indigo-700/50",
-    icon: "text-indigo-600 dark:text-indigo-400",
-    text: "text-indigo-900 dark:text-indigo-200",
-  },
-  emerald: {
-    bg: "bg-gradient-to-br from-emerald-50/80 to-white dark:from-emerald-900/20 dark:to-slate-800/50",
-    border: "border-emerald-200 dark:border-emerald-700/50",
-    icon: "text-emerald-600 dark:text-emerald-400",
-    text: "text-emerald-900 dark:text-emerald-200",
-  },
-  amber: {
-    bg: "bg-gradient-to-br from-amber-50/80 to-white dark:from-amber-900/20 dark:to-slate-800/50",
-    border: "border-amber-200 dark:border-amber-700/50",
-    icon: "text-amber-600 dark:text-amber-400",
-    text: "text-amber-900 dark:text-amber-200",
-  },
-  rose: {
-    bg: "bg-gradient-to-br from-rose-50/80 to-white dark:from-rose-900/20 dark:to-slate-800/50",
-    border: "border-rose-200 dark:border-rose-700/50",
-    icon: "text-rose-600 dark:text-rose-400",
-    text: "text-rose-900 dark:text-rose-200",
+    bg: "bg-white dark:bg-slate-800/50",
+    border: "border-l-4 border-amber-500",
+    label: "text-amber-600 dark:text-amber-400",
+    text: "text-slate-700 dark:text-slate-300",
   },
 };
 
-const calloutEmoji: Record<string, string> = {
-  remember: "💡",
-  tip: "💡",
-  note: "📌",
-  key: "⭐",
+const unifiedTable: Record<
+  TableTheme,
+  { th: string; td: string; odd: string; col0: string; colN: string }
+> = {
+  indigo: {
+    th: "bg-indigo-50 dark:bg-indigo-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-indigo-700 dark:text-indigo-300",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+  emerald: {
+    th: "bg-emerald-50 dark:bg-emerald-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-emerald-700 dark:text-emerald-300",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+  amber: {
+    th: "bg-amber-50 dark:bg-amber-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-amber-700 dark:text-amber-300",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+  slate: {
+    th: "bg-slate-100 dark:bg-slate-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-slate-900 dark:text-slate-100",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -271,14 +248,15 @@ const calloutEmoji: Record<string, string> = {
  * ═══════════════════════════════════════════════════════ */
 
 function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string }) {
-   return (
-     <h2 className="flex items-center gap-2.5 text-base sm:text-lg lg:text-xl font-extrabold text-slate-900 dark:text-white -mb-0.5">
-       <span className="h-px w-6 bg-indigo-400 dark:bg-indigo-500 flex-shrink-0" />
-       {icon && <span className="flex-shrink-0">{icon}</span>}
-       {label}
-     </h2>
-   );
- }
+  return (
+    <h2 className="font-display flex items-center gap-2.5 text-base sm:text-lg lg:text-xl font-extrabold text-slate-900 dark:text-white -mb-0.5">
+      <span className="h-px w-6 bg-indigo-400 dark:bg-indigo-500 flex-shrink-0" />
+      {icon && <span className="flex-shrink-0">{icon}</span>}
+      {label}
+    </h2>
+  );
+}
+
 
 /* ═══════════════════════════════════════════════════════
   * SECTION CARD
@@ -325,6 +303,21 @@ function GrammarLessonDesign({
   onTest: () => void;
   onBack?: () => void;
 }) {
+  useEffect(() => {
+    // Ensure fonts are loaded only on this page.
+    const id = "langoai-grammar-fonts";
+    if (document.getElementById(id)) return;
+
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = FONT_IMPORT_CSS;
+    document.head.appendChild(style);
+
+    return () => {
+      style.remove();
+    };
+  }, []);
+
   // ── Detect language from lesson ID (e.g. "en-gram-1" → "en") ──
   const langCode = lesson.id.split("-")[0]?.toLowerCase() ?? "nl";
   const labels = UI_LABELS[langCode] ?? UI_LABELS["nl"];
@@ -543,7 +536,7 @@ function GrammarLessonDesign({
             return (
               <strong
                 key={i}
-                className="font-bold text-emerald-700 dark:text-emerald-300"
+                className="font-bold text-amber-700 dark:text-amber-400"
               >
                 {part.slice(2, -2)}
               </strong>
@@ -558,7 +551,7 @@ function GrammarLessonDesign({
             return (
               <code
                 key={i}
-                className="rounded bg-slate-200/60 dark:bg-slate-700/50 px-1.5 py-0.5 text-xs font-mono text-indigo-700 dark:text-indigo-300 font-semibold"
+                className="rounded bg-slate-200/60 dark:bg-slate-700/50 px-1.5 py-0.5 text-xs font-mono text-amber-700 dark:text-amber-400 font-semibold"
               >
                 {part.slice(1, -1)}
               </code>
@@ -575,7 +568,7 @@ function GrammarLessonDesign({
    * ════════════════════════════════════════════════ */
 
   return (
-     <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+    <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 lg:px-8 font-sans">
       {/* HEADER */}
       <header className="mb-10">
         <div className="flex items-center gap-2.5 mb-3 flex-wrap">
@@ -595,7 +588,7 @@ function GrammarLessonDesign({
             {lesson.topic}
           </span>
         </div>
-         <h1 className="text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-extrabold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
+         <h1 className="font-display text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-extrabold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
            {lesson.title}
          </h1>
         {lesson.overview && (
@@ -656,7 +649,7 @@ function GrammarLessonDesign({
             <div className="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700/50 shadow-sm mt-3">
               <table className="w-full border-collapse min-w-[500px]">
                 <thead>
-                  <tr className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-700 dark:to-emerald-600">
+                  <tr className="bg-gradient-to-r from-indigo-600 to-indigo-500 dark:from-indigo-700 dark:to-indigo-600">
                     {lesson.conjugationTable.header
                       .split("|")
                       .map((h, i) => (
@@ -685,7 +678,7 @@ function GrammarLessonDesign({
                           className={`px-3 py-2.5 border-t border-slate-100 dark:border-slate-700/50 text-sm ${
                             ci === 0
                               ? "font-bold text-slate-900 dark:text-slate-100"
-                              : "text-slate-600 dark:text-slate-400 text-center font-mono"
+                              : "text-slate-700 dark:text-slate-300"
                           }`}
                         >
                           {cell}
@@ -727,9 +720,9 @@ function GrammarLessonDesign({
                         <span className={`shrink-0 w-7 h-7 rounded-lg ${themed.badge} flex items-center justify-center text-[13px] font-black ${themed.titleText}`}>
                           {i + 1}
                         </span>
-<h3 className={`font-extrabold text-base leading-snug ${themed.titleText}`}>
-  {r.rule}
-</h3>
+                        <h3 className={`font-display font-extrabold text-base leading-snug ${themed.titleText}`}>
+                          {r.rule}
+                        </h3>
                       </div>
 
 <div className="space-y-2">
@@ -855,37 +848,18 @@ function GrammarLessonDesign({
               icon={<AlertCircle className="w-5 h-5 text-slate-400" />}
               label={labels.importantPoints}
             />
-            <div className="grid gap-4 sm:grid-cols-2 mt-4">
-              {lesson.callouts.map((c, i) => {
-                const colorMap: Record<string, CalloutColor> = {
-                  remember: "indigo",
-                  tip: "emerald",
-                  note: "amber",
-                  key: "rose",
-                };
-                const entryColor = colorMap[c.type] ?? "indigo";
-                const t = calloutTheme[entryColor];
-                const emoji = calloutEmoji[c.type] ?? "💡";
-                
-                return (
-                  <div
-                    key={i}
-                    className={`group rounded-2xl border ${t.border} ${t.bg} p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <span className="flex-shrink-0 text-2xl">{emoji}</span>
-                      <div className="flex-1">
-                        <p className={`text-xs font-bold uppercase tracking-wider mb-1.5 ${t.text}`}>
-                          {c.label}
-                        </p>
-                        <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                          {c.text}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="space-y-2.5 mt-4">
+              {lesson.callouts.map((c, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-3 rounded-lg border-l-4 border-amber-500 bg-white dark:bg-slate-800/50 p-4 shadow-sm"
+                >
+                  <span className="text-amber-600 dark:text-amber-400 font-bold text-sm min-w-[1.5rem]">{i + 1}.</span>
+                  <p className="flex-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                    <RenderMarkdown text={c.text} />
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
         )}

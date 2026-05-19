@@ -3,531 +3,424 @@ import type { GrammarLesson } from "../types";
 export const nlGrammar: GrammarLesson[] = [
   {
     id: "nl-uitspraak-1",
-    title: "Nederlandse Uitspraak: Van Makkelijk naar Moeilijk",
+    title: "Uitspraak & Klanken",
     level: 1,
     topic: "Uitspraak",
-    overview: `Nederlandse uitspraak is een bouwpakket: leer eerst de losse klanken (a, e, i, o, u, g, sch, ui…), snap daarna de regels (open lettergrepen, eindverscherping, stomme e), en zet ze in elkaar tot vloeiende zinnen. Van simpele woorden tot tongbrekers – stap voor stap, niveau voor niveau.`,
-    anchorSectionId: "alfabet",
+    body: "Een compleet overzicht van de Nederlandse uitspraak: het alfabet, klinkers, medeklinkers, tweeklanken en de belangrijkste regels.",
+    overview:
+      "Nederlands heeft een rijke klankleer met korte en lange klinkers, echte tweeklanken en bijzondere medeklinkers zoals de harde g en eindklankverscherping. In deze les leer je alles van A tot Z — inclusief valkuilen en oefenvragen.",
 
-     /* ── Alfabet-tabel (timeExpressions = alfabet-kolommen) ─────────── */
-timeExpressions: {
-  header: "Letter|Spelling|Klank|Voorbeelden",
-  rows: [
-    ["A", "‘aa’", "**a** kort (*zak*); **aa** lang (*zaak*); doffe **a** in uitgangen (-baar)", "*kat, man* / *maan, laten* / *bruikbaar*"],
-    ["B", "‘bee’", "**b** stemhebbend<br/><span class='text-xs text-slate-400'>einde: b klinkt als **p**</span>", "*been, boven* / *web* → *wep*"],
-    ["C", "‘see’", "**k** voor a/o/u/medeklinker<br/>**s** voor e/i/ij", "*cadeau, club* / *cel, citroen*"],
-    ["D", "‘dee’", "**d** stemhebbend<br/><span class='text-xs text-slate-400'>einde: d klinkt als **t**</span>", "*dak, onder* / *hond* → *hont*"],
-    ["E", "‘ee’", "**e** kort (*pet*); **ee** lang (*peet*); doffe **e** / sjwa (*de, lopen*)", "*bed, rek* / *heel, eten* / *de, tafel*"],
-    ["F", "‘ef’", "**f** stemloos", "*fiets, straf*"],
-    ["G", "‘gee’ hard", "harde keelklank (als ch in *loch*); g en **ch** zijn **dezelfde klank**", "*goed, dag, liggen* / *lachen* klinkt hetzelfde"],
-    ["H", "‘haa’", "**h** ademtoon", "*huis, hand*"],
-    ["I", "‘ie’", "**i** kort (*pit*); **ie** lang (*piet*)", "*kip, kind* / *lief, hier*"],
-    ["J", "‘jee’", "**j** als Engelse *y* in *yes*", "*ja, jas, mooi*"],
-    ["K", "‘kaa’", "**k** stemloos", "*kat, boek*"],
-    ["L", "‘el’", "**l** zoals in *land*", "*licht, bal*"],
-    ["M", "‘em’", "**m**", "*maan, hem*"],
-    ["N", "‘en’", "**n**; voor **k/g** wordt **ng**; uitgang **-en** klinkt als doffe **e**", "*neus, man* / *denken*"],
-    ["O", "‘oo’", "**o** kort (*pot*); **oo** lang (*poot*)", "*dom, wol* / *boom, wonen*"],
-    ["P", "‘pee’", "**p** stemloos", "*paard, kip*"],
-    ["Q", "‘kuu’", "**k** + **w** (qu- → kw-)", "*quiz*"],
-    ["R", "‘er’", "**r** rollend of keel-r; NIET Engels", "*rood, hoor, werken*"],
-    ["S", "‘es’", "**s** stemloos", "*slang, mes*"],
-    ["T", "‘tee’", "**t** stemloos", "*tafel, kat*"],
-    ["U", "‘uu’", "**u** kort (*put*); **uu** lang (*muur*)", "*bus, hut* / *muur, duur*"],
-    ["V", "‘vee’", "**v** stemhebbend; einde: v→f", "*vader, oven* / *leef*"],
-    ["W", "‘wee’", "**w** tussen Engelse w en v (labiodentaal)", "*water, mooi, leeuw*"],
-    ["X", "‘iks’", "**ks**", "*examen = eksamen*"],
-    ["Y", "‘ei’", "leenwoord: **ie** of **ai**", "*yoghurt → jogurt*"],
-    ["Z", "‘zet’", "**z** stemhebbend; einde: z→s", "*zee, dozen* / *huis*"]
-  ]
-},    /* ── Hoofdregels-kaarten ─────────────────────────────────────────── */
+    // ── Alphabet table (timeExpressions slot) ──────────────────────────
+    timeExpressions: {
+      header: "Letter|Naam|Klank(en)|Voorbeeld",
+      rows: [
+        ["A", "'aa'", "kort a / lang aa / doffe a", "kat · maan · bruikbaar"],
+        ["B", "'bee'", "b (woordeinde → p)", "been · web → wep"],
+        ["C", "'see'", "k vóór a/o/u · s vóór e/i", "club · cel"],
+        ["D", "'dee'", "d (woordeinde → t)", "dak · hond → hont"],
+        ["E", "'ee'", "kort e / lang ee / doffe e (sjwa)", "bed · heel · de"],
+        ["F", "'ef'", "f", "fiets"],
+        ["G", "'gee'", "harde g (raspend, = ch)", "goed · lachen"],
+        ["H", "'haa'", "h", "huis"],
+        ["I", "'ie'", "kort i / lang ie", "pit · lief"],
+        ["J", "'jee'", "j (als Engelse y)", "ja"],
+        ["K", "'kaa'", "k", "kat"],
+        ["L", "'el'", "l", "land"],
+        ["M", "'em'", "m", "maan"],
+        ["N", "'en'", "n · vóór k/g als ng", "neus · denken"],
+        ["O", "'oo'", "kort o / lang oo", "pot · boom"],
+        ["P", "'pee'", "p", "paard"],
+        ["Q", "'kuu'", "kw", "quiz"],
+        ["R", "'er'", "rollend · keel-r of Gooise r", "rood"],
+        ["S", "'es'", "s", "slang"],
+        ["T", "'tee'", "t", "tafel"],
+        ["U", "'uu'", "kort u / lang uu", "put · muur"],
+        ["V", "'vee'", "v (nooit aan woordeinde)", "vader · lief"],
+        ["W", "'wee'", "zachte w (tussen v en w)", "water"],
+        ["X", "'iks'", "ks", "examen"],
+        ["Y", "'ei' of 'i-grec'", "ie of ei/ij", "yoghurt · y-as"],
+        ["Z", "'zet'", "z (woordeinde → s)", "zee · huis → huiss"],
+      ],
+    },
+
+    // ── Rules cards ────────────────────────────────────────────────────
     rulesTable: [
-      /* NIVEAU 1 */
       {
-        rule: "Korte klinker – gesloten lettergreep",
-        structure: "CVC (medeklinker-klinker-medeklinker) → klinker is altijd kort",
-        example: "kat, bed, kip, pot, put",
-        usage: "Één klinker, één medeklinker erna → kort uitspreken"
+        rule: "Open en gesloten lettergreep",
+        structure: "Gesloten (eindigt op medeklinker) = korte klinker\nOpen (eindigt op klinker) = lange klinker",
+        example: "kat (gesloten, kort) · ma-nen (open, lang aa)",
+        usage: "Bepaalt altijd de klinkerlengte. Dit is de ijzeren basisregel van de Nederlandse spelling en uitspraak.",
       },
       {
-        rule: "Lange klinker – open lettergreep",
-        structure: "CV (eindigt op klinker) → schrijf één teken voor lang; twee tekens in gesloten lettergreep",
-        example: "la-ten (aa), bo-men (oo), stuu-ren (uu)",
-        usage: "Open deur = één letter; dichte deur = dubbele klinker (*laat, boom*)"
+        rule: "Dubbele medeklinker = korte klinker",
+        structure: "Korte klinker behouden → verdubbel de medeklinker",
+        example: "kat → katten · bed → bedden · bom → bommen",
+        usage: "Zonder dubbele medeklinker zou de lettergreep open worden en de klinker lang klinken.",
       },
       {
-        rule: "Medeklinker verdubbelen",
-        structure: "Korte klinker behouden bij verbuiging → **dubbele medeklinker**",
-        example: "kat → katten, kip → kippen, put → putten",
-        usage: "Dubbele medeklinker 'sluit de deur' en houdt de klinker kort"
-      },
-      /* NIVEAU 2 */
-      {
-        rule: "Eindklankverscherping (finale devoicing)",
-        structure: "Stemhebbend → stemloos aan het **woordeinde**: d→t, b→p, v→f, z→s",
-        example: "*hond → hont, web → wep, leef, huis*",
-        usage: "Verleng het woord om de echte letter te horen: *honden* → d is terug"
+        rule: "Doffe e (sjwa)",
+        structure: "Zwakke lettergrepen bevatten een sjwa: ə",
+        example: "lopen → lopuh · vrolijk → vroo-luhk · de, te, je, me, we",
+        usage: "De sjwa is de meest voorkomende klank in het Nederlands. Nooit de volle e uitspreken in zwakke lettergrepen.",
       },
       {
-        rule: "g en ch – dezelfde klank",
-        structure: "**/x/** (harde keelschraap) – zowel **g** als **ch** zijn identiek",
-        example: "*goed, lachen, gracht, school*",
-        usage: "Nooit als Engelse g of sh; sch = s + harde g"
+        rule: "Eindklankverscherping",
+        structure: "Stemhebbende medeklinker aan het woordeinde → stemloos",
+        example: "hond → hont · web → wep · huis → huiss",
+        usage: "Zodra een klinker volgt keert de stem terug: honden (d), huizen (z), webben (b).",
+      },
+      {
+        rule: "g en ch zijn gelijk",
+        structure: "g = ch = raspende keelklank (als in Schots loch)",
+        example: "goed · dag · lachen · ligt — licht en ligt klinken gelijk",
+        usage: "Nooit de g als zachte Engelse g uitspreken. Altijd de harde keelklank.",
+      },
+      {
+        rule: "sch = s + ch",
+        structure: "sch wordt uitgesproken als s gevolgd door de harde ch",
+        example: "school = s-ch-ool (niet sjool) · schip · schoon",
+        usage: "Nooit als Engelse sh uitspreken. De s en ch zijn beide hoorbaar.",
       },
       {
         rule: "ng en nk",
-        structure: "**ng** = één nasale klank [ŋ]; **nk** = ng + k [ŋk]",
-        example: "*lang, bang, zingen / bank, stank, drank*",
-        usage: "ng is één klank; nooit een aparte k erachter bij *lang*"
-      },
-      /* NIVEAU 3 */
-      {
-        rule: "Tweeklanken (diftongen)",
-        structure: "**ei/ij** = è+ie; **ui** = u+ie (getuit); **au/ou** = a+oe",
-        example: "*klein, huis, koud, blauw*",
-        usage: "Glijd van de eerste naar de tweede klank binnen één lettergreep"
+        structure: "ng = één nasale klank (als Engels sing)\nnk = ng + k",
+        example: "ring · zingen · bank (= bang-k)",
+        usage: "De g in ng wordt niet apart uitgesproken. Bij nk klinkt de k duidelijk door.",
       },
       {
-        rule: "eu – geen tweeklank!",
-        structure: "**/øː/** – stilstaande lange monoftong (zoals Frans *peur*)",
-        example: "*neus, deur, leuk*",
-        usage: "Lippen tuiten, tong niet bewegen; NIET 'uu' of 'ee+u'"
+        rule: "w is labiodentaal",
+        structure: "Nederlandse w = zachte v-achtige klank (niet Engelse w)",
+        example: "water · wereld · wiel",
+        usage: "De lippen raken elkaar niet zoals bij de Engelse w. De tanden en lip raken elkaar lichtjes.",
       },
-      /* NIVEAU 4 */
-      {
-        rule: "Stomme e (sjwa [ə])",
-        structure: "Onbeklemtoonde lettergrepen: -en, -ig, -lijk, be-, ge-, ver- → **'uh'**",
-        example: "*lopen → lopuh, aardig → aarduhg, beginnen → buhginnuh*",
-        usage: "In spreektaal verdwijnt de n in -en altijd; zeg nooit *lopenne*"
-      },
-      {
-        rule: "Klemtoon",
-        structure: "Meestal **eerste lettergreep**; leenwoorden op het **einde**; scheidbare werkwoorden op het **voorvoegsel**",
-        example: "*váder, hotél, óp-staan*",
-        usage: "Klemtoon kan betekenis veranderen: *vóórkomen* vs. *voorkómen*"
-      }
     ],
 
-    /* ── Gedetailleerde secties (accordion) ─────────────────────────── */
+    // ── Conjugation table: Klinkers overzicht ─────────────────────────
+    conjugationTable: {
+      header: "Type|Kort|Lang|Bijzonderheid",
+      rows: [
+        ["a-klank", "a — kat", "aa — maan", "Dubbel aa in gesloten lettergreep"],
+        ["e-klank", "e — pet", "ee — peet", "Doffe e (sjwa) in: de, lopen, -lijk"],
+        ["i-klank", "i — pit", "ie — lief", "ie altijd lang, ook in open lettergreep"],
+        ["o-klank", "o — pot", "oo — boom", "oe = lange klinker: boek, moeder"],
+        ["u-klank", "u — put", "uu — muur", "eu = zuivere lange klinker: neus, deur"],
+        ["Tweeklank ei/ij", "—", "/ɛi/", "eind · tijd · meisje — identiek aan ou/au"],
+        ["Tweeklank au/ou", "—", "/ʌu/", "auto · hout · blauw — identiek aan ei/ij"],
+        ["Tweeklank ui", "—", "/œy/", "huis · muis · duim — getuite u + ie-glide"],
+      ],
+    },
+
+    // ── Detailed accordion sections ────────────────────────────────────
     details: [
       {
-        title: "NIVEAU 1 – Korte klinkers (alle 5)",
-        body: `| Letter | Klank | Voorbeeldwoorden (10 per klank) |
-|--------|-------|---------------------------------|
-| **a** | [ɑ] korte donkere a | kat, man, das, bal, zak, pan, trap, jas, arm, bank |
-| **e** | [ɛ] korte è | bed, les, pen, vel, rek, fles, step, bel, stem, vest |
-| **i** | [ɪ] korte i | kip, zit, lip, vis, ring, dik, pit, kin, blik, film |
-| **o** | [ɔ] korte ò | pot, kop, sok, bol, bos, tol, vol, stof, hol, rok |
-| **u** | [ʏ] korte u | put, zus, rug, bus, nul, kus, hut, gum, dun, vlug |
+        title: "Klinkers: kort, lang en de doffe e",
+        body: `**IJzeren regel:** de lettergreepstructuur bepaalt de klinkerlengte.
 
-> **Pro-regel:** Korte klinker + meervoud? Dubbel de medeklinker: *kat → katten, kip → kippen, put → putten.*`
+• **Gesloten lettergreep** (eindigt op medeklinker) = korte klinker: *kat, bed, pit, pot, put*
+• **Lange klinker in gesloten lettergreep** = twee klinkertekens: *maan, been, wiel, boom, muur*
+• **Open lettergreep** (eindigt op klinker) = één klinkerteken maar lang geluid: *ma-nen, be-ken, bo-men, mu-ren*
+
+**De doffe e / sjwa (ə)**
+De sjwa is de meest voorkomende klank in het Nederlands en komt voor in alle zwakke lettergrepen. Voorbeelden: *de, te, je, me, we* en uitgangen op *-en*: *lopen* klinkt als *lopuh*, niet *lópen*. Ook in *-lijk*: *vrolijk* → *vroo-luhk*.
+
+**Bijzonderheden:**
+• *ie* is altijd lang — ook in open lettergreep schrijf je *ie*: *lie-ve*
+• *oe* is een lange klinker: *boek, moeder*
+• *eu* is een **zuivere lange klinker** (geen tweeklank!): *neus, deur, leuk* — zoals Frans *peur*`,
       },
       {
-        title: "NIVEAU 1 – Lange klinkers (open vs. gesloten)",
-        body: `| Klank | Open lettergreep | Gesloten lettergreep | Voorbeelden |
-|-------|-----------------|---------------------|-------------|
-| [aː] | a (*la-ten*) | aa (*laat*) | maan, vader, water, straat, schaap |
-| [eː] | e (*ge-ven*) | ee (*geef*) | been, zee, keer, veel, steen |
-| [i]  | ie (*lief*) | – | dier, bier, vier, wiel, ziel |
-| [oː] | o (*bo-men*) | oo (*boom*) | boom, wonen, kool, zoon, groot |
-| [y]  | u (*stu-ren*) | uu (*stuur*) | muur, duur, vuur, schuur, uur |
+        title: "Tweeklanken (diftongen): de echte glijders",
+        body: `Tweeklanken zijn klanken waarbij de mond tijdens de uitspraak beweegt van de ene klinkerpositie naar de andere.
 
-> **Ezelsbrug:** "Open deur = één letter minder!" *la-ten* (open → één a), *laat* (gesloten → aa).`
+| Tweeklank | IPA | Omschrijving | Voorbeeld |
+|-----------|-----|--------------|-----------|
+| ei / ij | /ɛi/ | Korte e + ie-glide | eind, tijd, meisje |
+| au / ou | /ʌu/ | Open a + oe-glide | auto, hout, blauw |
+| ui | /œy/ | Getuite korte u + ie-glide | huis, muis, duim |
+
+> *ei/ij* en *au/ou* zijn exact dezelfde klank — er is geen enkel verschil in uitspraak!
+
+**Combinaties met halfklinkers** (lange klinker + j/w):
+
+| Combinatie | Uitspraak | Voorbeeld |
+|------------|-----------|-----------|
+| aai | aa + i | draai |
+| ooi | oo + i | mooi |
+| oei | oe + i | groei |
+| eeuw | ee + oe | leeuw |
+| ieuw | ie + oe | nieuw |
+| uw | uu + w | duw |
+
+**Let op:** *eu* is géén tweeklank maar een zuivere, lange klinker. De mond beweegt niet!`,
       },
       {
-        title: "NIVEAU 1 – De stomme e (sjwa [ə])",
-        body: `De 'uh'-klank in **onbeklemtoonde** lettergrepen.
+        title: "Medeklinkers: de grote valkuilen",
+        body: `**g en ch — identiek**
+De *g* en *ch* zijn in het Nederlands dezelfde raspende keelklank (velaire fricatief), vergelijkbaar met de Schotse uitspraak van *loch*. *Licht* en *ligt* klinken daardoor precies hetzelfde.
 
-| Waar? | Spelling | Voorbeelden |
-|-------|----------|-------------|
-| Lidwoord | de | *de man → duh* |
-| Uitgang -en | en | *lopen → lopuh, werken → werkuh* |
-| Uitgang -ig | ig | *aardig → aarduhg, twintig → twintuhg* |
-| Uitgang -lijk | lijk | *mogelijk → mooguh-luhk* |
-| Voorvoegsel be- | be | *beginnen → buh-ginnuh* |
-| Voorvoegsel ge- | ge | *geloven → guh-loovuh* |
-| Voorvoegsel ver- | ver | *vertellen → vuh-telluh* |
+**sch = s + ch**
+De combinatie *sch* wordt uitgesproken als een gewone *s* gevolgd door de harde *ch*-klank. Nooit als de Engelse *sh*! Dus *school* = s-ch-ool, niet *sjool*.
 
-> **Onthouden:** De **n** in **-en** verdwijnt in de spreektaal altijd. Zeg dus *lopuh*, nooit *lopenne*.`
+**ng en nk**
+• *ng* is één enkele nasale klank, zoals in het Engelse *sing*: *ring, zingen*
+• *nk* = ng + k: *bank* klinkt als *bang-k*
+
+**Eindklankverscherping (finale devoicing)**
+Aan het woordeinde worden stemhebbende medeklinkers stemloos:
+• d → t: *hond → hont, bed → bet*
+• b → p: *web → wep, heb → hep*
+• z → s: *huis → huiss, reis → reiss*
+
+Zodra er een klinker volgt keert de oorspronkelijke klank terug: *honden* (d), *huizen* (z), *webben* (b).
+
+**Overige bijzonderheden**
+• *r* mag rollend, keel-r of Gooise r zijn — alle varianten zijn correct
+• *w* is een zachte v-achtige klank (labiodentaal), niet de Engelse bilabiale *w*
+• *j* klinkt als de Engelse *y* in *yes*
+• *sj* = Engelse *sh*: *sjaal, douche*`,
       },
       {
-        title: "NIVEAU 2 – Alle medeklinkers",
-        body: `| Letter(s) | Klank | Voorbeelden | Bijzonderheid |
-|-----------|-------|-------------|---------------|
-| p | [p] | pen, op, kip | |
-| b | [b] → [p] eind | bed, rib | *rib → rip* |
-| t | [t] | tak, kat | |
-| d | [d] → [t] eind | dak, hond | *hond → hont* |
-| k / c | [k] | kat, cola | |
-| f | [f] | fiets, leef | |
-| v | [v] → [f] eind | vel, oven | *leven maar leef* |
-| s | [s] | sok, baas | |
-| z | [z] → [s] eind | zoon, huis | *huizen maar huis* |
-| g / ch | [ɣ/χ] harde g | goed, lachen | Schrapend in de keel |
-| h | [h] | hoed, hand | |
-| m | [m] | man, kom | |
-| n | [n] | neus, been | |
-| ng | [ŋ] | lang, zingen | Één nasale klank |
-| nk | [ŋk] | bank, drank | ng + k |
-| l | [l] | lip, bal | |
-| r | [r] rollend | rood, trein | NIET de Engelse r |
-| j | [j] | jas, jaar | Als y in *yes* |
-| w | [ʋ] labiodentaal | water, eeuw | Zachte v, onderlip op tanden |
-| sch | [sχ] | school, schrijven | s + harde g, NOOIT sk |
+        title: "Spellingregels en klinkerlengtecontrole",
+        body: `De Nederlandse spelling is grotendeels fonetisch en volgt vaste regels voor klinkerlengtecontrole.
 
-> **Pro-regel eindverscherping:** Verleng het woord en je hoort de echte letter: *honden* → d, *leven* → v, *huizen* → z.`
+**Regel 1 — Open lettergreep = lange klinker (één letter)**
+*la-ten, bo-men, mu-ren, be-ken*
+
+**Regel 2 — Gesloten lettergreep = korte klinker**
+*kat, bed, pit, pot, put*
+
+**Regel 3 — Gesloten lettergreep met lange klinker = dubbel klinkerteken**
+*maan, been, boom, muur*
+
+**Regel 4 — Korte klinker behouden bij verbuiging → dubbele medeklinker**
+*kat → katten, bed → bedden, bom → bommen*
+
+**Regel 5 — Lange klinker bij verbuiging → één medeklinker na open lettergreep**
+*maan → manen (ma-nen), boom → bomen (bo-men)*
+
+| Enkelvoud | Meervoud | Lettergreep | Uitleg |
+|-----------|----------|-------------|--------|
+| kat | katten | gesloten | kort a, dubbel t om kort te houden |
+| maan | manen | open | lang aa, één n na open lettergreep |
+| bom | bommen | gesloten | kort o, dubbel m |
+| boom | bomen | open | lang oo, één m |`,
       },
-      {
-        title: "NIVEAU 3 – Alle tweeklanken (diftongen)",
-        body: `| Tweeklank | Klank | Voorbeelden (veel) | Mondbeweging |
-|-----------|-------|--------------------|--------------|
-| ij / ei | [ɛi] | rijk, mijn, klein, lei, trein, bij, ijs, tijd, ei, zei | Begin met è (*bed*), glij naar ie |
-| ui | [œy] | huis, tuin, muis, zuid, bruid, vuil, duim, sluis, buis | Begin met u (*put*), glij naar ie |
-| ou / au | [ʌu] | koud, blauw, fout, lauw, trouw, goud, pauze, nauw, klauw | Donkere a + oe |
-| aai | [aːi] | draai, taai, zwaai, maai, haai, kraai, vlaai | Lange aa + ie |
-| ooi | [oːi] | mooi, hooi, kooi, tooi, dooi | Lange oo + ie |
-| eeuw | [eːu] | leeuw, sneeuw, meeuw, schreeuw | Lange ee + oe |
-| ieuw | [iu] | nieuw, kieuw, benieuwd | Ie + oe |
-| uw | [yu] | duw, ruw, huw, stuw | Uu + oe |
-
-> **UI-truc:** Zeg u (als in *put*) en maak tegelijk een glimlach alsof je ie gaat zeggen. Dat is de ui.
-
-> **IJ/EI-truc:** Zeg è (*bed*) en schuif snel door naar ie. *Klein* = klè-ie-n. Géén a erbij!
-
-> **eu is GEEN tweeklank!** Het is een lange monoftong [øː] zoals het Franse *peur*: *neus, deur, leuk*. Lippen tuiten, tong stilhouden.`
-      },
-      {
-        title: "NIVEAU 4 – Klemtoonregels",
-        body: `**1. Meestal eerste lettergreep:** váder, móeder, wérken, étentje.
-
-**2. Onbeklemtounde voorvoegsels** be-, ge-, her-, ont-, ver-: behóud, gelóof, herháal, ontsnáp, vertél.
-
-**3. Scheidbare werkwoorden:** klemtoon op het scheidbare stuk: óp-staan, áán-komen, méé-gaan.
-
-**4. Leenwoorden:** klemtoon op laatste of voorlaatste lettergreep: hotél, banáán, politíe, universitéit, interessánt.
-
-**5. Klemtoon verandert betekenis:**
-
-• vóórkomen (klemtoon op voor) → gebeuren
-• voorkómen (klemtoon op ko) → verhinderen
-• óverleggen (klemtoon op o) → bespreken
-• overléggen (klemtoon op le) → document tonen / aanleveren
-• dóórzichtig (klemtoon op door) → transparant`
-      },
-      {
-        title: "NIVEAU 4 – R en W in detail",
-        body: `**De Nederlandse R:**
-• Rollende tong-r (tip van tong trilt tegen tandkast)
-• Of huig-r (achter in de keel)
-• Géén Engelse r (tong krult omhoog zonder trilling)
-• Oefen: *rood, groen, trein, herfst*
-
-**De Nederlandse W:**
-• Breng je onderlip zacht tegen je boventanden (labiodentaal)
-• Zoals een v, maar met minder druk en zonder wrijving
-• Lippen NIET ronden zoals bij de Engelse w
-• Oefen: *water, waar, eeuw, nieuw*`
-      },
-      {
-        title: "Oefenschema – 7 dagen naar 100/100",
-        body: `| Dag | Focus | Activiteit |
-|-----|-------|-----------|
-| 1 | Korte & lange klinkers | Leer de 5 korte + 5 lange klinkers; lees 50 woorden hardop |
-| 2 | Tweeklanken | Oefen ui, ij/ei, ou/au met de mondbeweging-trukken |
-| 3 | Medeklinkers & eindverscherping | Test jezelf met 40 woorden uit de medeklinkerstabel |
-| 4 | Stomme e & zinnen | Lees zinnen en schrap de n'en in -en |
-| 5 | Klemtoon & leenwoorden | Zoek 20 leenwoorden en bepaal de klemtoon |
-| 6 | Toets | Maak de 100 vragen en verbeter fouten |
-| 7 | Vrij lezen | Lees een Nederlandse tekst hardop, neem jezelf op |
-
-> **Tip:** Neem jezelf op en vergelijk met de regels. Fouten hoor je beter dan je ze ziet.`
-      }
     ],
 
-      /* ── Callouts ────────────────────────────────────────────────────── */
-      callouts: [
-        {
-          type: "key",
-          label: "Open/gesloten lettergreep",
-          text: "<span class='text-blue-600'>Een korte klinker staat altijd in een gesloten lettergreep; een lange klinker in een open lettergreep schrijf je met één teken, in een gesloten met twee.</span>"
-        },
-        {
-          type: "note",
-          label: "ie en oe zijn speciaal",
-          text: "<span class='text-blue-600'>De ie is altijd lang, ongeacht de lettergreep (lief, niet lif). De oe is ook een lange klinker (boek, moeder).</span>"
-        },
-        {
-          type: "tip",
-          label: "eu is geen tweeklank",
-          text: "<span class='text-blue-600'>Houd de lippen getuit en beweeg de tong niet. Zeg 'leuk', niet 'luuk' en niet 'lee-uk'.</span>"
-        },
-        {
-          type: "remember",
-          label: "Eindverscherping truc",
-          text: "<span class='text-blue-600'>Verleng het woord en je hoort de echte letter: honden → d, leven → v, huizen → z.</span>"
-        }
-      ],
+    // ── Callouts ───────────────────────────────────────────────────────
+    callouts: [
+      {
+        type: "key",
+        label: "IJzeren regel: lettergreepstructuur",
+        text: "**Open lettergreep** = lange klinker (één teken). **Gesloten lettergreep** = korte klinker. Dit principe stuurt alle andere spellingregels.",
+      },
+      {
+        type: "remember",
+        label: "ei/ij en au/ou zijn identiek",
+        text: "**ei/ij** en **au/ou** zijn identiek: er is **geen verschil in uitspraak**. Het onderscheid is puur historisch en spellingtechnisch.",
+      },
+      {
+        type: "tip",
+        label: "eu is geen tweeklank",
+        text: "**eu** in neus, deur en leuk is een **zuivere, stilstaande klinker**. De mond beweegt niet tijdens de uitspraak — anders dan bij ei, ou en ui.",
+      },
+      {
+        type: "note",
+        label: "Doffe e overal",
+        text: "**De sjwa (ə)** is de **meest voorkomende klank** in het Nederlands. Alle zwakke lettergrepen en uitgangen op **-en** worden met een sjwa uitgesproken.",
+      },
+      {
+        type: "key",
+        label: "Eindklankverscherping",
+        text: "**Elke stemhebbende medeklinker** (d, b, z, v, g) aan het woordeinde wordt stemloos: **d→t, b→p, z→s**. Bij verbuiging keert de stem terug.",
+      },
+      {
+        type: "tip",
+        label: "g = ch altijd",
+        text: "**g en ch** zijn in het Nederlands dezelfde raspende keelklank. Licht en ligt klinken identiek. Nooit de zachte Engelse g gebruiken.",
+      },
+    ],
 
-    /* ── Veelgemaakte fouten (40 stuks) ─────────────────────────────── */
+    // ── Common mistakes ────────────────────────────────────────────────
     commonMistakes: [
-      { incorrect: "goed (met d)", correct: "goet", explanation: "**Eindverscherping**: d→t aan het woordeinde" },
-      { incorrect: "hond (met d)", correct: "hont", explanation: "Verleng: *honden* → dan hoor je de d terug" },
-      { incorrect: "huis (met z)", correct: "huis (scherpe s)", explanation: "z→s aan het eind; *huizen* heeft wel z" },
-      { incorrect: "man (met lange aa)", correct: "man (korte a)", explanation: "Gesloten lettergreep: één a = kort" },
-      { incorrect: "maan (met korte a)", correct: "maan (lange aa)", explanation: "Dubbele a = altijd lang" },
-      { incorrect: "ui als au/ooi", correct: "ui = u+ie (getuit)", explanation: "Begin bij u van *put*, glij naar ie" },
-      { incorrect: "ij/ei als aai", correct: "klèin = è+ie", explanation: "Begin bij è van *bed*, schuif naar ie" },
-      { incorrect: "sch als sk", correct: "sgg (s + harde g)", explanation: "**sch** is s + keelschraap, nooit sk" },
-      { incorrect: "-en als volle e+n", correct: "-uh (sjwa)", explanation: "Stomme e, de n valt weg in spreektaal" },
-      { incorrect: "r Engels", correct: "rollende of huig-r", explanation: "Engelse r is niet Nederlands" },
-      { incorrect: "w Engels (oe-achtig)", correct: "labiodentaal (zachte v)", explanation: "Lippen NIET ronden" },
-      { incorrect: "ee/oo als eej/ow", correct: "monoftong (zuiver)", explanation: "Nederlandse ee/oo zijn zuiver, zonder naklank" },
-      { incorrect: "lang als lank", correct: "lang (ng)", explanation: "**ng** is één nasaal, nooit een k erachter" },
-      { incorrect: "bang als bank", correct: "bang (ng)", explanation: "Idem als hierboven" },
-      { incorrect: "bomen als boo-men", correct: "bo-men (lange o)", explanation: "Open lettergreep: één o is al lang" },
-      { incorrect: "sturen met korte u", correct: "stuu-ren (lange uu)", explanation: "Open lettergreep: u lang" },
-      { incorrect: "leven als lefen", correct: "leven (v blijft v)", explanation: "v middenin blijft stemhebbend" },
-      { incorrect: "leef met v", correct: "leef (f)", explanation: "Eind-v verscherpt tot f" },
-      { incorrect: "vriend met w", correct: "v (onderlip op tanden)", explanation: "v is stemhebbende f, niet zoals Engelse w" },
-      { incorrect: "nu met Engelse u", correct: "nuu (lange uu)", explanation: "Open lettergreep: u is lang" },
-      { incorrect: "hut met lange uu", correct: "hut (korte u)", explanation: "Gesloten lettergreep: korte u" },
-      { incorrect: "kamer met korte a", correct: "káámer (lange a)", explanation: "Open lettergreep: a lang" },
-      { incorrect: "zee als zeej", correct: "zee (zuiver ee)", explanation: "Monoftong, niet diftongeren" },
-      { incorrect: "rood met Engelse r", correct: "root (rollende r, eind-d→t)", explanation: "r rollend; eind-d verscherpt" },
-      { incorrect: "blauw met Engelse w", correct: "blauw (labiodentale w)", explanation: "w is zacht v-achtig, lippen plat" },
-      { incorrect: "nieuw als niew", correct: "nie-oe (ieuw)", explanation: "**ieuw** is ie+oe, geen aparte w" },
-      { incorrect: "uil met oo-klank", correct: "uil = u+ie+l", explanation: "Begin met korte u" },
-      { incorrect: "herfst met volle e", correct: "herfst (korte e)", explanation: "Gesloten lettergreep" },
-      { incorrect: "chemie met Engelse ch", correct: "chemi met harde g", explanation: "**ch** = g in Nederlandse leenwoorden" },
-      { incorrect: "kleding met Engelse -ing", correct: "klée-ding (ng)", explanation: "ng is nasaal [ŋ]" },
-      { incorrect: "appel als aapel", correct: "appel (korte a)", explanation: "Dubbele p bewaakt de korte a" },
-      { incorrect: "internet met Engelse r", correct: "in-tér-net (r rollend)", explanation: "Rollende r" },
-      { incorrect: "direct met d", correct: "direkt (eind-t)", explanation: "Eindverscherping d→t" },
-      { incorrect: "universiteit klemtoon op uni", correct: "universitéit", explanation: "Leenwoord: klemtoon op -teit" },
-      { incorrect: "opbellen klemtoon op bel", correct: "óp-bellen", explanation: "Scheidbaar werkwoord: klemtoon op het voorvoegsel" },
-      { incorrect: "eu als uu (leuk)", correct: "leuk (eu = [øː])", explanation: "**eu** is de stilstaande klank, zoals Frans *peur*" },
-      { incorrect: "schip als skip", correct: "sggip (s+g)", explanation: "sch is s + harde keelschraap" },
-      { incorrect: "lachen met Engelse ch", correct: "laggen (harde g)", explanation: "**ch** en **g** zijn dezelfde klank" },
-      { incorrect: "meisje als meesje", correct: "mei-sje (ei als è+i)", explanation: "**ei** is een tweeklank, geen lange ee" },
-      { incorrect: "bomen met korte o", correct: "bo-men (oo)", explanation: "Één o in open lettergreep is lang; bom-men is kort met dubbele m" }
+      {
+        incorrect: "meisje als mee-sje",
+        correct: "mei-sje",
+        explanation: "ei/ij is een tweeklank (e + i), geen lange ee-klank",
+      },
+      {
+        incorrect: "huis als huus",
+        correct: "h-ui-s (getuite u + i)",
+        explanation: "ui is een tweeklank met een getuite korte u gevolgd door een ie-glide",
+      },
+      {
+        incorrect: "leuk als luuk",
+        correct: "leuk (zuivere eu)",
+        explanation: "eu is een lange monoftong, geen tweeklank — de mond beweegt niet",
+      },
+      {
+        incorrect: "school als sjool",
+        correct: "s-ch-ool",
+        explanation: "sch is s + harde ch-klank, nooit de Engelse sh",
+      },
+      {
+        incorrect: "ring met harde aparte g",
+        correct: "ring (ng-klank als één nasaal)",
+        explanation: "ng is één enkele nasale klank, zoals in het Engelse sing",
+      },
+      {
+        incorrect: "hond met hoorbare d",
+        correct: "hont",
+        explanation: "Eindklankverscherping: d aan het woordeinde wordt t",
+      },
+      {
+        incorrect: "web met hoorbare b",
+        correct: "wep",
+        explanation: "Eindklankverscherping: b aan het woordeinde wordt p",
+      },
+      {
+        incorrect: "bomen met korte o",
+        correct: "boo-men (lange oo)",
+        explanation: "Open lettergreep bo- geeft een lange klinker, ook al staat er maar één o",
+      },
+      {
+        incorrect: "bommen met lange oo",
+        correct: "bom-men (korte o)",
+        explanation: "Dubbele m sluit de lettergreep en houdt de klinker kort",
+      },
+      {
+        incorrect: "lopen als lo-pén",
+        correct: "lopuh (doffe e)",
+        explanation: "De uitgang -en is altijd een sjwa, nooit de volle e-klank",
+      },
+      {
+        incorrect: "auto als ooto",
+        correct: "auw-to (a + oe)",
+        explanation: "au/ou is een tweeklank: begin bij de a en glijd naar de oe",
+      },
+      {
+        incorrect: "leeuw als leew",
+        correct: "lee-uw (ee + oe-glide)",
+        explanation: "De w-achtige oe-glide moet hoorbaar zijn na de lange ee",
+      },
+      {
+        incorrect: "w als Engelse w (bilabiaal)",
+        correct: "zachte v-achtige klank (labiodentaal)",
+        explanation: "De Nederlandse w: tanden en lip raken elkaar lichtjes. Lippen raken elkaar niet.",
+      },
+      {
+        incorrect: "de en te als dee en tee",
+        correct: "də en tə (sjwa)",
+        explanation: "Lidwoorden en voorzetsels hebben altijd een doffe e, nooit de volle ee-klank",
+      },
     ],
 
-    /* ── Snelle herhaling ────────────────────────────────────────────── */
+    // ── Quick review ───────────────────────────────────────────────────
     review: [
-      "**Korte klinker** in gesloten lettergreep (kat); **lange klinker** in open lettergreep met één teken (ma-nen) of dubbel in gesloten (maan).",
-      "**Stomme e** (sjwa) in de, te, lopen, vrolijk – niet voluit uitspreken; de n in -en valt weg.",
-      "**ei = ij** ([ɛi]), **au = ou** ([ʌu]), **ui** ([œy] = getuite u + ie).",
-      "**eu** is een stilstaande lange monoftong [øː], zoals in het Franse *peur*. GEEN tweeklank.",
-      "**g en ch** zijn dezelfde harde keelklank [χ]; **sch** = s + ch, nooit sh.",
-      "**ng** is één nasale klank [ŋ]; **nk** = ng + k. Nooit een aparte k bij *lang*.",
-      "**Eindverscherping**: hond→hont, web→wep, leef, huis; verleng voor de echte letter.",
-      "**Verdubbel medeklinker** om korte klinker te bewaken (bommen); open lettergreep = lange klinker (bomen).",
-      "Uitgang **-en** → in spreektaal altijd *uh* (lopuh, werkuh); **-ig** → *uhg* (aarduhg).",
-      "**Klemtoon**: 1e lettergreep (vader); voorvoegsels (behoud); scheidbaar (óp-staan); leenwoorden (hotél)."
+      "Korte klinkers staan in gesloten lettergrepen: kat · bed · pit · pot · put",
+      "Lange klinkers in gesloten lettergrepen schrijf je met twee tekens: maan · been · boom · muur",
+      "Open lettergreep heeft één klinkerteken maar klinkt lang: ma-nen · bo-men · mu-ren",
+      "Doffe e (sjwa) in zwakke lettergrepen: de · te · lopen · vrolijk — nooit voluit e zeggen",
+      "ei/ij en au/ou zijn identieke tweeklanken — het onderscheid is alleen spellingtechnisch",
+      "ui is een tweeklank: getuite korte u gevolgd door een ie-glide — huis · muis · duim",
+      "eu is een zuivere lange klinker, geen tweeklank: neus · deur · leuk",
+      "g en ch zijn dezelfde harde keelklank: goed · dag · lachen · licht",
+      "sch wordt uitgesproken als s + harde ch: school · schip — nooit als Engelse sh",
+      "ng is één nasale klank; nk = ng + k: ring · zingen · bank",
+      "Eindklankverscherping: d→t · b→p · z→s aan het woordeinde",
+      "Dubbele medeklinker houdt de klinker kort: katten · bedden · bommen",
+      "Nederlandse w is labiodentaal (zachte v-achtige klank), niet de Engelse bilabiale w",
     ],
 
-    /* ── Q&A oefenvragen ─────────────────────────────────────────────── */
+    // ── Q&A practice ──────────────────────────────────────────────────
     qa: [
-      /* DEEL A – Klinkers en spelling */
-      { question: "Waarom is de a in *tak* kort?", answer: "Gesloten lettergreep door de k: één a in CVC-structuur = altijd kort [ɑ]." },
-      { question: "Schrijf de uitspraak van *been* in gewone letters.", answer: "been (lange ee)." },
-      { question: "*Laten* heeft een lange a; waarom schrijf je maar één a?", answer: "Open lettergreep: la-ten eindigt op klinker, dus één a is al lang." },
-      { question: "Zeg hardop: *bakken*. Waarom zit er een dubbele k?", answer: "Dubbele k bewaakt de korte a; zonder zou het *baken* zijn (lange a)." },
-      { question: "Wat is het verschil in uitspraak tussen *man* en *maan*?", answer: "*man* heeft korte a [ɑ]; *maan* heeft lange aa [aː]." },
-      { question: "Is de u in *put* hetzelfde als in *muren*? Leg uit.", answer: "Nee: *put* is korte [ʏ] (gesloten lettergreep); *muren* heeft lange [y] (open lettergreep mu-ren)." },
-      { question: "*Sturen* – is de u lang of kort?", answer: "Lang: stuu-ren (open lettergreep)." },
-      { question: "Waarom schrijf je *boom* met oo maar *bomen* met één o?", answer: "*boom*: gesloten lettergreep → dubbele oo. *bo-men*: open lettergreep → één o al lang." },
-      { question: "Hoeveel stomme e's zitten in *mogelijk*?", answer: "Twee: *moguh-luhk* (de e in -ge- en de e in -lijk zijn beide sjwa)." },
-      { question: "Hoe klinkt 'de' in *de kat*?", answer: "*duh* – stomme e (sjwa)." },
-      /* DEEL B – Medeklinkers en eindverscherping */
-      { question: "Hoe spreek je *hond* uit? Waarom?", answer: "*hont* – eindklankverscherping: d→t aan het woordeinde." },
-      { question: "*Goed* klinkt als…?", answer: "*goet* – eind-d→t." },
-      { question: "*Leven* → *leef*. Wat gebeurt er met de v?", answer: "v→f aan het woordeinde (eindverscherping)." },
-      { question: "Spreek uit: *school*, *schat*, *schrijven*.", answer: "*sggool*, *sggat*, *sggrijven* (s + harde keelschraap)." },
-      { question: "Wat is het verschil tussen *licht* en *ligt* in uitspraak?", answer: "Beide eindigen op [t]; *licht* = ch-t, *ligt* = g→t; ze klinken identiek." },
-      { question: "Zeg *lang*. Welke fout mag je niet maken?", answer: "Niet *lank* zeggen: ng is één nasale klank [ŋ], geen aparte k." },
-      { question: "*Bank* – welke twee klanken zitten in de nk?", answer: "[ŋk] = ng + k." },
-      { question: "*Web* wordt uitgesproken als…?", answer: "*wep* – eind-b→p (eindverscherping)." },
-      { question: "Hoe spreek je de w in *water* correct uit?", answer: "Labiodentaal: onderlip zacht op boventanden, zachte v-klank, lippen niet ronden." },
-      { question: "*Examen* – hoe spreek je de x uit?", answer: "*eksamen* – x = ks." },
-      /* DEEL C – Tweeklanken */
-      { question: "Hoe vorm je de klank **ui**?", answer: "Begin met korte u (als in *put*), glij naar ie (lippen spreiden)." },
-      { question: "Geef de mondbeweging van **ij/ei**.", answer: "Begin met è-stand (als in *bed*), schuif snel naar ie." },
-      { question: "Welke tweeklank zit in *koud*?", answer: "[ʌu] – ou/au." },
-      { question: "*Mooi* bevat de tweeklank…?", answer: "[oːi] – ooi." },
-      { question: "*Leeuw* – welke twee klanken versmelten?", answer: "Lange ee + oe = [eːu]." },
-      { question: "*Nieuw* – geef de correcte uitspraak.", answer: "*nie-oe* – ieuw is ie + oe." },
-      { question: "Zit er in *neus* een tweeklank? Leg uit.", answer: "Nee: eu is een monoftong [øː] (stilstaande klank), geen tweeklank." },
-      { question: "Waarom is *ui* lastig voor anderstaligen?", answer: "Omdat ze moeten beginnen met een korte u (getuite lippen) en glijden naar ie – een combinatie die in de meeste talen niet bestaat." },
-      { question: "*Sneeuw* – spreek uit zonder Engelse w.", answer: "*snee-oe* – de w is een zachte labiodentale glijder, niet zoals Engelse w." },
-      { question: "Welke woorden hebben de tweeklank [ʌu]? Noem er drie.", answer: "*koud, blauw, fout* (ou/au)." },
-      /* DEEL D – Stomme e */
-      { question: "Hoe spreek je *lopen* uit in de spreektaal?", answer: "*lopuh* – de n valt weg, e wordt sjwa." },
-      { question: "*Hartelijk* – uitspraak van -lijk?", answer: "*hartuh-luhk* – beide e's zijn sjwa." },
-      { question: "Hoe klinkt *beginnen* – hoe klinkt be-?", answer: "*buh-* – het voorvoegsel be- is altijd onbeklemtoond en sjwa." },
-      { question: "Waarom klinkt de e in *bed* niet stom?", answer: "Omdat *bed* klemtoon heeft en in een gesloten lettergreep staat; het is een beklemtoonde volle e [ɛ]." },
-      { question: "Lees *de mooie lente* – benoem de stomme e's.", answer: "*duh mooi-uh len-tuh*: de = duh, mooie = mooi-uh, lente = len-tuh." },
-      /* DEEL E – Klemtoon */
-      { question: "Waar valt de klemtoon in *vader*?", answer: "Eerste lettergreep: *váder*." },
-      { question: "*Hotel* – klemtoon?", answer: "Laatste lettergreep: *hotél* (leenwoord)." },
-      { question: "*Aankomen* – leg de klemtoon uit.", answer: "*áán-komen*: scheidbaar werkwoord, klemtoon op het voorvoegsel." },
-      { question: "*Voorkomen* – geef twee betekenissen en klemtoon.", answer: "*vóórkomen* (gebeuren) vs. *voorkómen* (verhinderen)." },
-      { question: "*Universiteit* – waarom klemtoon op -teit?", answer: "Leenwoord met Franse/Latijnse invloed; klemtoon valt altijd op de laatste zware lettergreep." },
-      /* DEEL F – Zinnen analyseren */
-      { question: "Analyseer: *De hond blaft naar de maan.*", answer: "*hond→hont* (eindverscherping), *de→duh* (stomme e), *maan* (lange aa), *blaft* (al t)." },
-      { question: "Analyseer: *Wij schrijven een lang verhaal.*", answer: "*schrijven→sggrijven* (sch=s+g), *lang* (ng nasaal), *verhaal→vuh-haal* (ver- sjwa)." },
-      { question: "Analyseer: *De zon schijnt in de tuin.*", answer: "*schijnt→sggèint* (sch+ij tweeklank), *tuin* (ui tweeklank), *de→duh* (sjwa)." },
-      { question: "Analyseer: *Jullie lopen naar de grote school.*", answer: "*lopen→lopuh* (stomme e), *grote→grotuh* (e stom), *school→sggool* (sch)." },
-      { question: "Analyseer: *Mijn nichtje heeft een nieuw huis.*", answer: "*mijn* (ij tweeklank), *nichtje→nichtjuh* (e stom), *nieuw→nie-oe*, *huis* (ui tweeklank, s scherp)." },
-      /* DEEL G – Fonetisch schrijven */
-      { question: "Schrijf de uitspraak van *chirurg* in gewone letters.", answer: "*ggirurgg* – ch = harde g, eind-g ook harde g." },
-      { question: "Schrijf de uitspraak van *herinneren*.", answer: "*huh-rin-nuh-ruh* – her- = sjwa, -en = sjwa." },
-      { question: "Schrijf de uitspraak van *verschrikkelijk*.", answer: "*vuh-sggrik-kuh-luhk* – ver- sjwa, sch = s+g, -lijk = luhk." },
-      { question: "Schrijf de uitspraak van *samenvatting*.", answer: "*saa-muh-vat-ting* – open aa, -en sjwa, ng nasaal." },
-      { question: "Hoe spreek je *excuus* correct uit?", answer: "*ekskuus* – x = ks, uu lang, eind-s scherp." },
-      /* Extra ezelsbruggetjes */
-      { question: "Wat is de ezelsbrug voor de ui-klank?", answer: "\"Kus (u) en lach (ie) tegelijk\" – begin met getuite u, glij naar ie-lach." },
-      { question: "Wat is de ezelsbrug voor sch?", answer: "\"Sssst + grom = school\" – s + harde keelschraap." },
-      { question: "Hoe onthoud je de open lettergreep?", answer: "\"Open deur, letter weg!\" – één klinker in open lettergreep is al lang." },
-      { question: "Hoe onthoud je eindverscherping?", answer: "\"Verleng het woord en je hoort de echte letter.\" *hond → honden* = d terug." },
-      { question: "Wat is het verschil tussen ng en nk?", answer: "*ng* = één nasaal [ŋ] (lang); *nk* = ng + k [ŋk] (bank). Bij *lang* nooit een k erachter!" }
+      {
+        question: "Hoe spreek je het woord hond uit?",
+        answer: "hont — de d aan het woordeinde wordt t door eindklankverscherping",
+      },
+      {
+        question: "Wat is de juiste uitspraak van school?",
+        answer: "s-ch-ool — de sch is s + harde keelklank ch, nooit als sjool",
+      },
+      {
+        question: "Welk woord heeft een lange oo-klank en waarom?",
+        answer: "boom — de lettergreep is gesloten en de lange klinker wordt met twee tekens (oo) geschreven",
+      },
+      {
+        question: "Hoe klinkt de eu in het woord neus?",
+        answer: "Als de Franse eu in peur — een zuivere, stilstaande lange klinker. De mond beweegt niet.",
+      },
+      {
+        question: "Hoe spreek je meisje correct uit?",
+        answer: "mei-sje — ei is een tweeklank (e + i), geen lange ee-klank",
+      },
+      {
+        question: "Wat is de klank van ui in het woord muis?",
+        answer: "Een getuite korte u gevolgd door een ie-glide (/œy/) — zeg eerst een korte u met getuite lippen, dan ie",
+      },
+      {
+        question: "Hoe spreek je het woord ringen uit?",
+        answer: "ring-uh — ng is één nasale klank, de uitgang -en is een sjwa (doffe e)",
+      },
+      {
+        question: "Waarom schrijf je bomen met één o maar bommen met twee m-en?",
+        answer: "bomen: de lettergreep bo- is open, dus de klinker is lang (oo). bommen: dubbele m sluit de lettergreep en houdt de o kort.",
+      },
+      {
+        question: "Hoe klinkt het woord lachen?",
+        answer: "la-ch-en — de ch is dezelfde harde keelklank als de g in goed. De uitgang -en is een sjwa.",
+      },
+      {
+        question: "Wat is het verschil in uitspraak tussen ei en ij?",
+        answer: "Geen enkel verschil — beide klinken als /ɛi/ (e + ie-glide). Het onderscheid is alleen historisch en spellingtechnisch.",
+      },
+      {
+        question: "Hoe spreek je het woord web uit?",
+        answer: "wep — de b aan het woordeinde wordt p door eindklankverscherping",
+      },
+      {
+        question: "Wat is de doffe e en waar komt die voor?",
+        answer: "De doffe e (sjwa, ə) is een korte, onbeklemtoonde klinker in zwakke lettergrepen: de, te, je, lopen (lopuh), vrolijk (vroo-luhk)",
+      },
     ],
 
-    /* ── Concept cards (boven de regelstabel) ───────────────────────── */
-    conceptCards: [
-      { title: "korte a", structure: "/ɑ/", example: "kat, man, bak" },
-      { title: "lange aa", structure: "/aː/", example: "maan, la-ten" },
-      { title: "korte e", structure: "/ɛ/", example: "pet, net, bek" },
-      { title: "lange ee", structure: "/eː/", example: "been, le-pel" },
-      { title: "ie", structure: "/i/ (altijd lang)", example: "lief, wiel, bier" },
-      { title: "oe", structure: "/u/ (altijd lang)", example: "boek, moe-der" },
-      { title: "korte o", structure: "/ɔ/", example: "pot, kop, ton" },
-      { title: "lange oo", structure: "/oː/", example: "boom, bo-men" },
-      { title: "korte u", structure: "/ʏ/", example: "put, kus, hut" },
-      { title: "lange uu", structure: "/y/", example: "muur, du-ren" },
-      { title: "eu (monoftong)", structure: "/øː/", example: "neus, deur, leuk" },
-      { title: "ei / ij", structure: "/ɛi/", example: "tijd, mijn, reis" },
-      { title: "au / ou", structure: "/ʌu/", example: "auto, hout, blauw" },
-      { title: "ui", structure: "/œy/", example: "huis, muis, duim" },
-      { title: "doffe e (sjwa)", structure: "/ə/", example: "de, lo-pen, vrolijk" }
-    ],
-
-    /* ── Oefeningen (multiple choice quiz) ──────────────────────────── */
+    // ── Exercises ─────────────────────────────────────────────────────
     exercises: [
       {
-        question: "Hoe spreek je 'hond' uit?",
-        options: ["hond (met d)", "hont (met t)", "hoond (met oo)"],
-        answer: "hont (met t)"
+        question: "Hoe klinkt de uitgang -en in lopen?",
+        options: ["Volle ee-klank", "Doffe e (sjwa)", "Korte i", "Lange oo"],
+        answer: "Doffe e (sjwa)",
       },
       {
-        question: "Wat is de juiste uitspraak van 'school'?",
-        options: ["shool", "sgool (s + harde g)", "skool"],
-        answer: "sgool (s + harde g)"
+        question: "Welke tweeklank zit in het woord huis?",
+        options: ["ei/ij", "au/ou", "ui", "eu"],
+        answer: "ui",
       },
       {
-        question: "Welk woord heeft een lange oo?",
-        options: ["bom", "boom", "bommen"],
-        answer: "boom"
+        question: "Hoe wordt de d in hond uitgesproken?",
+        options: ["Als zachte d", "Als t (eindklankverscherping)", "Als n", "Stil"],
+        answer: "Als t (eindklankverscherping)",
       },
       {
-        question: "Hoe klinkt 'eu' in 'neus'?",
-        options: ["als uu", "als de Franse eu in 'peur' (stilstaand)", "als ee + u"],
-        answer: "als de Franse eu in 'peur' (stilstaand)"
+        question: "Wat is de juiste uitspraak van sch in school?",
+        options: ["Als Engelse sh", "Als s + harde ch", "Als sk", "Als sz"],
+        answer: "Als s + harde ch",
       },
       {
-        question: "Hoe spreek je 'meisje' correct uit?",
-        options: ["mee-sje", "meis-je (ei als e+i)", "mais-je"],
-        answer: "meis-je (ei als e+i)"
+        question: "Welke klinker is een zuivere lange klinker (geen tweeklank)?",
+        options: ["ei", "ou", "ui", "eu"],
+        answer: "eu",
       },
       {
-        question: "Wat is de klank van de 'ui' in 'muis'?",
-        options: ["uu", "au", "korte u met tuitlippen, dan ie"],
-        answer: "korte u met tuitlippen, dan ie"
-      },
-      {
-        question: "Hoe spreek je 'ringen' uit?",
-        options: ["rin-gen (met harde g)", "ring-ng", "ring-uh (ng + doffe e)"],
-        answer: "ring-uh (ng + doffe e)"
-      },
-      {
-        question: "Waarom schrijf je 'bomen' met één o en 'bommen' met dubbel m?",
+        question: "Waarom schrijf je katten met twee t-en maar manen met één n?",
         options: [
-          "bomen heeft lange oo en open lettergreep, bommen korte o en moet gesloten blijven",
-          "dat is willekeur",
-          "bomen heeft korte o, bommen lange oo"
+          "Willekeurige spellingregel",
+          "katten: korte a behouden (gesloten lettergreep); manen: open lettergreep geeft lange aa",
+          "katten is een meervoud; manen niet",
+          "Er is geen verschil in klank",
         ],
-        answer: "bomen heeft lange oo en open lettergreep, bommen korte o en moet gesloten blijven"
+        answer: "katten: korte a behouden (gesloten lettergreep); manen: open lettergreep geeft lange aa",
       },
-      {
-        question: "Wat is juist voor 'lachen'?",
-        options: ["lash-en", "la-ch-en, met de ch die gelijk is aan de harde g", "lak-hen"],
-        answer: "la-ch-en, met de ch die gelijk is aan de harde g"
-      },
-      {
-        question: "Hoe klinkt 'web' aan het einde?",
-        options: ["web (b hoorbaar)", "wep (p)", "wef"],
-        answer: "wep (p)"
-      },
-      {
-        question: "Welke klank heeft 'ng' in 'lang'?",
-        options: ["n + harde g", "één nasale klank [ŋ]", "n + k"],
-        answer: "één nasale klank [ŋ]"
-      },
-      {
-        question: "Hoe klinkt de 'e' in 'lopen' (spreektaal)?",
-        options: ["volle e + n", "uh (sjwa), n valt weg", "lange ee"],
-        answer: "uh (sjwa), n valt weg"
-      },
-      {
-        question: "Wat is de uitspraak van 'schrijven'?",
-        options: ["shrijven", "sgrijven (s + harde g)", "skrijven"],
-        answer: "sgrijven (s + harde g)"
-      },
-      {
-        question: "Waar valt de klemtoon in 'opstaan'?",
-        options: ["op 'staan'", "op 'op'", "gelijk verdeeld"],
-        answer: "op 'op'"
-      },
-      {
-        question: "Hoe spreek je 'nieuw' correct uit?",
-        options: ["niew (Engelse w)", "nie-oe (ie + oe)", "nuu"],
-        answer: "nie-oe (ie + oe)"
-      }
     ],
-
-     /* ── body (fallback markdown) ────────────────────────────────────── */
-     body: `## Nederlandse Uitspraak – Van Makkelijk naar Moeilijk
-
-### Alfabet en Uitspraak
-| Letter | Spelling | Klank | Voorbeelden |
-|--------|----------|-------|-------------|
-| A | 'aa' | <span class='text-green-600'>a kort (zak); aa lang (zaak); doffe a in uitgangen (-baar)</span> | kat, man / maan, laten / bruikbaar |
-| B | 'bee' | <span class='text-blue-600'>b stemhebbend</span><br/><span class='text-xs text-slate-400'>einde: b klinkt als p</span> | been, boven / web → wep |
-| C | 'see' | <span class='text-blue-600'>k voor a/o/u/medeklinker</span><br/><span class='text-blue-600'>s voor e/i/ij</span> | cadeau, club / cel, citroen |
-| D | 'dee' | <span class='text-blue-600'>d stemhebbend</span><br/><span class='text-xs text-slate-400'>einde: d klinkt als t</span> | dak, onder / hond → hont |
-| E | 'ee' | <span class='text-blue-600'>e kort (pet); ee lang (peet); doffe e / sjwa (de, lopen)</span> | bed, rek / heel, eten / de, tafel |
-| F | 'ef' | <span class='text-blue-600'>f stemloos</span> | fiets, straf |
-| G | 'gee' hard | <span class='text-blue-600'>harde keelklank (als ch in loch); g en ch zijn dezelfde klank</span> | goed, dag, liggen / lachen klinkt hetzelfde |
-| H | 'haa' | <span class='text-blue-600'>h ademtoon</span> | huis, hand |
-| I | 'ie' | <span class='text-blue-600'>i kort (pit); ie lang (piet)</span> | kip, kind / lief, hier |
-| J | 'jee' | <span class='text-blue-600'>j als Engelse y in yes</span> | ja, jas, mooi |
-| K | 'kaa' | <span class='text-blue-600'><strong>k</strong> stemloos</span> | kat, boek, kleur, font |
-| L | 'el' | <span class='text-blue-600'><strong>l</strong> zoals in *land*</span> | licht, bal |
-| M | 'em' | <span class='text-blue-600'><strong>m</strong></span> | maan, hem |
-| N | 'en' | <span class='text-blue-600'><strong>n</strong>; voor <strong>k/g</strong> wordt <strong>ng</strong>; uitgang <-en> klinkt als doffe <strong>e</strong></span> | neus, man / denken |
-| O | 'oo' | <span class='text-blue-600'><strong>o</strong> kort (*pot*); <strong>oo</strong> lang (*poot*)</span> | dom, wol / boom, wonen |
-| P | 'pee' | <span class='text-blue-600'><strong>p</strong> stemloos</span> | paard, kip |
-| Q | 'kuu' | <span class='text-blue-600'><strong>k</strong> + <strong>w</strong> (qu- → kw-)</span> | quiz |
-| R | 'er' | <span class='text-blue-600'><strong>r</strong> rollend of keel-r; NIET Engels</span> | rood, hoor, werken |
-| S | 'es' | <span class='text-blue-600'><strong>s</strong> stemloos</span> | slang, mes |
-| T | 'tee' | <span class='text-blue-600'><strong>t</strong> stemloos</span> | tafel, kat |
-| U | 'uu' | <span class='text-blue-600'><strong>u</strong> kort (*put*); <strong>uu</strong> lang (*muur*)</span> | bus, hut / muur, duur |
-| V | 'vee' | <span class='text-blue-600'><strong>v</strong> stemhebbend; einde: v→f</span> | vader, oven / leef |
-| W | 'wee' | <span class='text-blue-600'><strong>w</strong> tussen Engelse w en v (labiodentaal)</span> | water, mooi, leeuw |
-| X | 'iks' | <span class='text-blue-600'><strong>ks</strong></span> | examen = eksamen |
-| Y | 'ei' | <span class='text-blue-600'>leenwoord: <strong>ie</strong> of <strong>ai</strong></span> | yoghurt → jogurt |
-| Z | 'zet' | <span class='text-blue-600'><strong>z</strong> stemhebbend; einde: z→s</span> | zee, dozen / huis |
-
-Zie de secties hierboven voor de volledige opbouw: klinkers, medeklinkers, tweeklanken, stomme e, klemtoon en de Incorrect→Correct→Waarom tabel.`
-  }
+  },
 ];
