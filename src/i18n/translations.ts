@@ -43,8 +43,8 @@ const en: Dict = {
   "arena.back":"← Dashboard","arena.subtitle":"Complete seasons. Earn XP. Become fluent.","arena.noContent":"No content for {lang}","arena.noContentNote":"Add seasons to public/arena-questions.json","arena.active":"Active","arena.done":"Done","arena.locked":"Locked","arena.levelComplete":"Completed","arena.levelLocked":"","arena.levelQuestions":"{count} questions","arena.tryAgain":"Try again","arena.backToSeasons":"← All Seasons",
   // TestPage
   "testpage.back":"← Dashboard","testpage.testsTitle":"📝 {flag} Tests","testpage.allLevels":"All Levels","testpage.levelFocus":"Showing all levels - tap a level to focus","testpage.noTests":"No tests found","testpage.questions":"questions","testpage.passRequirement":"Pass:{score}%","testpage.xpBonus":"+Bonus XP","testpage.matchPassed":"Test Passed!","testpage.matchPracticing":"Keep Practicing!","testpage.score":"Score","testpage.xpEarned":"XP Earned","testpage.backToTests":"← Back to Tests","testpage.dashboard":"Dashboard",
-  // GrammarPage
-  "grammarpage.back":"← Dashboard","grammarpage.searchPlaceholder":"Search lessons...","grammarpage.allLevels":"All Levels","testpage.levelFocus":"Showing all levels - tap a level to focus","testpage.lessons":"lessons","testpage.results":"results","testpage.clear":"clear","testpage.noLessons":"No lessons found",
+// GrammarPage
+   "grammarpage.back":"← Dashboard","grammarpage.searchPlaceholder":"Search lessons...","grammarpage.allLevels":"All Levels","testpage.lessons":"lessons","testpage.results":"results","testpage.clear":"clear","testpage.noLessons":"No lessons found",
   // VocabPage
   "vocabpage.back":"Back to Dashboard","vocabpage.learnedCount":"{learned}/{total} learned",
   // MistakesPage

@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import {
-  Bell,
   CheckCircle2,
-  Key,
-  Lightbulb,
-  Pin,
   BookOpen,
   FileText,
   HelpCircle,
   Target,
   AlertCircle,
-  Clock,
   ArrowLeft,
 } from "lucide-react";
 import type { GrammarLesson } from "@/content/types";
@@ -235,71 +230,6 @@ function RichTable<T extends readonly string[]>({
   );
 }
 
-/* ═══════════════════════════════════════════════════════
- * Q&A TABLE – now receives labels for dynamic headers
- * ═══════════════════════════════════════════════════════ */
-
-function QATable({
-  qa,
-  labels,
-}: {
-  qa: { question: string; answer: string }[];
-  labels: Record<string, string>;
-}) {
-  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
-  const toggle = (i: number) =>
-    setRevealed((prev) => ({ ...prev, [i]: !prev[i] }));
-
-  return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm">
-      <table className="w-full border-collapse min-w-[500px]">
-        <thead>
-          <tr>
-            <th className="bg-slate-600 text-white font-semibold text-[11px] uppercase tracking-wider px-3 py-2.5 text-left w-12">
-              #
-            </th>
-            <th className="bg-slate-600 text-white font-semibold text-[11px] uppercase tracking-wider px-3 py-2.5 text-left">
-              {labels.question}
-            </th>
-            <th className="bg-slate-600 text-white font-semibold text-[11px] uppercase tracking-wider px-3 py-2.5 text-left">
-              {labels.answer}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {qa.map((item, i) => (
-            <tr
-              key={i}
-              className={
-                i % 2 === 1 ? "bg-slate-50/60 dark:bg-slate-800/30" : undefined
-              }
-            >
-              <td className="px-3 py-2.5 text-sm font-bold text-slate-400 dark:text-slate-500 text-center">
-                {i + 1}
-              </td>
-              <td className="px-3 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200">
-                {item.question}
-              </td>
-              <td className="px-3 py-2.5 text-sm">
-                <button
-                  onClick={() => toggle(i)}
-                  className={`font-medium rounded-lg px-3 py-1.5 text-xs transition-all ${
-                    revealed[i]
-                      ? "text-emerald-700 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-900/30 shadow-inner"
-                      : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
-                  }`}
-                >
-                  {revealed[i] ? item.answer : labels.tapToReveal}
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
 type CalloutColor = "amber" | "indigo" | "emerald" | "rose";
 
 const calloutTheme: Record<CalloutColor, { bg: string; border: string; icon: string; text: string }> = {
@@ -341,14 +271,14 @@ const calloutEmoji: Record<string, string> = {
  * ═══════════════════════════════════════════════════════ */
 
 function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <h2 className="flex items-center gap-2.5 text-base font-extrabold text-slate-900 dark:text-white -mb-0.5">
-      <span className="h-px w-6 bg-indigo-400 dark:bg-indigo-500 flex-shrink-0" />
-      {icon && <span className="flex-shrink-0">{icon}</span>}
-      {label}
-    </h2>
-  );
-}
+   return (
+     <h2 className="flex items-center gap-2.5 text-base sm:text-lg lg:text-xl font-extrabold text-slate-900 dark:text-white -mb-0.5">
+       <span className="h-px w-6 bg-indigo-400 dark:bg-indigo-500 flex-shrink-0" />
+       {icon && <span className="flex-shrink-0">{icon}</span>}
+       {label}
+     </h2>
+   );
+ }
 
 /* ═══════════════════════════════════════════════════════
   * SECTION CARD
@@ -529,58 +459,68 @@ function GrammarLessonDesign({
       (match) => `<ul class="my-3 space-y-1.5 pl-1">\n${match}\n</ul>`
     );
 
-    html = html.replace(
-      /\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,
-      (_full, headerRow, bodyRows) => {
-        const headers = headerRow
-          .split("|")
-          .map((h: string) => h.trim())
-          .filter(Boolean);
-        const rows = bodyRows
-          .trim()
-          .split("\n")
-          .map((r: string) =>
-            r
-              .split("|")
-              .map((c: string) => c.trim())
-              .filter(Boolean)
-          );
-        return `
-          <div class="overflow-x-auto my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm">
-            <table class="w-full border-collapse">
-              <thead>
-                <tr>
-                  ${headers
-                    .map(
-                      (h: string) =>
-                        `<th class="bg-[${accent}] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2.5 text-left">${h}</th>`
+     html = html.replace(
+       /\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,
+       (_full, headerRow, bodyRows) => {
+         const headers = headerRow
+           .split("|")
+           .map((h: string) => h.trim())
+           .filter(Boolean);
+         const rows = bodyRows
+           .trim()
+           .split("\n")
+           .map((r: string) =>
+             r
+               .split("|")
+               .map((c: string) => c.trim())
+               .filter(Boolean)
+           );
+         return `
+           <div class="overflow-x-auto my-8 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-lg bg-white dark:bg-slate-800/90 backdrop-blur-sm">
+             <table class="w-full border-collapse min-w-[480px]">
+               <thead>
+                 <tr>
+                   ${headers
+                     .map(
+                       (h: string) =>
+                         `<th class="bg-gradient-to-r from-indigo-600 to-indigo-500 dark:from-indigo-400 dark:to-indigo-300 text-white text-base font-semibold uppercase tracking-wider px-6 py-4 text-left sticky top-0 z-10">${h}</th>`
+                     )
+                     .join("")}
+                 </tr>
+               </thead>
+               <tbody>
+                 ${rows
+                   .map(
+                     (row: string[], ri: number) =>
+                       `<tr class="${ri % 2 ? "bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/50 dark:hover:bg-slate-700/30 transition-colors" : ""}">
+                         ${row
+                           .map(
+                             (cell: string, ci: number) => {
+                               // Highlight stressed syllables with accent marks
+                               const highlightedCell = cell
+                                 .replace(/ó/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ó</span>')
+                                 .replace(/á/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">á</span>')
+                                 .replace(/é/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">é</span>')
+                                 .replace(/í/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">í</span>')
+                                 .replace(/ú/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ú</span>')
+                                 .replace(/ò/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ò</span>')
+                                 .replace(/â/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">â</span>')
+                                 .replace(/ê/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ê</span>')
+                                 .replace(/î/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">î</span>')
+                                 .replace(/ô/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ô</span>')
+                                 .replace(/û/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">û</span>');
+                               return `<td class="px-6 py-4 border-t border-slate-200/50 dark:border-slate-700/30 text-base text-slate-800 dark:text-slate-200 ${ci === 0 ? "font-medium text-slate-900 dark:text-slate-100" : ""}">${highlightedCell}</td>`;
+                             }
+                           )
+.join("")}
+                        </tr>`
                     )
                     .join("")}
-                </tr>
-              </thead>
-              <tbody>
-                ${rows
-                  .map(
-                    (row: string[], ri: number) =>
-                      `<tr class="${ri % 2 ? "bg-slate-50/60 dark:bg-slate-800/30" : ""}">
-                        ${row
-                          .map(
-                            (cell: string, ci: number) =>
-                              `<td class="px-3 py-2.5 border-t border-slate-100 dark:border-slate-700/50 text-sm text-slate-700 dark:text-slate-300 ${
-                                ci === 0
-                                  ? "font-semibold text-slate-800 dark:text-slate-100"
-                                  : ""
-                              }">${cell}</td>`
-                          )
-                          .join("")}
-                      </tr>`
-                  )
-                  .join("")}
-              </tbody>
-            </table>
-          </div>`;
-      }
-    );
+                </tbody>
+              </table>
+            </div>`;
+        }
+      );
 
     html = html.replace(
       /^[ \t]+[^\s<].*$/gm,
@@ -593,7 +533,7 @@ function GrammarLessonDesign({
     return html;
   };
 
-  /* ── Markdown-like renderer for card plain-text helpers ── */
+/* ── Markdown-like renderer for card plain-text helpers ── */
   function RenderMarkdown({ text }: { text: string }) {
     const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g);
     return (
@@ -603,7 +543,7 @@ function GrammarLessonDesign({
             return (
               <strong
                 key={i}
-                className="font-bold text-slate-800 dark:text-slate-100"
+                className="font-bold text-emerald-700 dark:text-emerald-300"
               >
                 {part.slice(2, -2)}
               </strong>
@@ -627,7 +567,7 @@ function GrammarLessonDesign({
         })}
       </span>
     );
-   }
+  }
 
 
   /* ════════════════════════════════════════════════
@@ -635,7 +575,7 @@ function GrammarLessonDesign({
    * ════════════════════════════════════════════════ */
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
+     <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       {/* HEADER */}
       <header className="mb-10">
         <div className="flex items-center gap-2.5 mb-3 flex-wrap">
@@ -655,9 +595,9 @@ function GrammarLessonDesign({
             {lesson.topic}
           </span>
         </div>
-        <h1 className="text-[1.85rem] font-extrabold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
-          {lesson.title}
-        </h1>
+         <h1 className="text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-extrabold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
+           {lesson.title}
+         </h1>
         {lesson.overview && (
           <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
             <RenderMarkdown text={lesson.overview} />
@@ -787,42 +727,42 @@ function GrammarLessonDesign({
                         <span className={`shrink-0 w-7 h-7 rounded-lg ${themed.badge} flex items-center justify-center text-[13px] font-black ${themed.titleText}`}>
                           {i + 1}
                         </span>
-                        <h3 className={`font-extrabold text-sm leading-snug ${themed.titleText}`}>
-                          {r.rule}
-                        </h3>
+<h3 className={`font-extrabold text-base leading-snug ${themed.titleText}`}>
+  {r.rule}
+</h3>
                       </div>
 
-                      <div className="space-y-2">
-                        {/* Structuur */}
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
-                            {labels.structure}
-                          </p>
-                          <p className={`text-xs leading-snug rounded-lg px-3 py-2 ${themed.chipBg} ${themed.chipText}`}>
-                            {r.structure}
-                          </p>
-                        </div>
+<div className="space-y-2">
+                          {/* Structuur */}
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
+                              {labels.structure}
+                            </p>
+                            <p className={`text-sm leading-snug rounded-lg px-3 py-2 ${themed.chipBg} ${themed.chipText}`}>
+                              <RenderMarkdown text={r.structure} />
+                            </p>
+                          </div>
 
-                        {/* Voorbeeld */}
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: themed.accentDark }}>
-                            {labels.example}
-                          </p>
-                          <p className={`text-xs leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgLight} ${themed.chipTextDark}`}>
-                            {r.example}
-                          </p>
-                        </div>
+                          {/* Voorbeeld */}
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accentDark }}>
+                              {labels.example}
+                            </p>
+                            <p className={`text-sm leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgLight} ${themed.chipTextDark}`}>
+                              <RenderMarkdown text={r.example} />
+                            </p>
+                          </div>
 
-                        {/* Gebruik */}
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
-                            {labels.usage}
-                          </p>
-                          <p className={`text-xs leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgAlt} ${themed.chipTextMedium}`}>
-                            {r.usage}
-                          </p>
-                        </div>
-                      </div>
+                          {/* Gebruik */}
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
+                              {labels.usage}
+                            </p>
+                            <p className={`text-sm leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgAlt} ${themed.chipTextMedium}`}>
+                              <RenderMarkdown text={r.usage} />
+                            </p>
+                          </div>
+                       </div>
                     </div>
                   </div>
                 );
@@ -879,25 +819,25 @@ function GrammarLessonDesign({
                     </AccordionTrigger>
 
                     <AccordionContent>
-                      <div
-                        className={cn(
-                          "p-4 space-y-0.5 text-sm leading-relaxed text-slate-700 dark:text-slate-300",
-                          "bg-slate-50/50 dark:bg-slate-800/20",
-                          "prose prose-sm dark:prose-invert max-w-none",
-                          "[&_p]:my-2.5 [&_p]:text-slate-700 [&_p]:dark:text-slate-300",
-                          "[&_strong]:font-bold [&_strong]:text-slate-900 [&_strong]:dark:text-slate-100",
-                          "[&_em]:italic [&_em]:text-slate-600 [&_em]:dark:text-slate-400",
-                          "[&_code]:rounded [&_code]:bg-slate-200/60 [&_code]:dark:bg-slate-700/50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-xs [&_code]:font-mono [&_code]:font-bold [&_code]:text-indigo-700 [&_code]:dark:text-indigo-300",
-                          "[&_blockquote]:my-3 [&_blockquote]:pl-4 [&_blockquote]:border-l-4 [&_blockquote]:border-indigo-300 [&_blockquote]:dark:border-indigo-700 [&_blockquote]:py-1.5 [&_blockquote]:pr-3 [&_blockquote]:bg-indigo-50/40 [&_blockquote]:dark:bg-indigo-900/15 [&_blockquote]:rounded-r-lg [&_blockquote]:italic [&_blockquote]:text-slate-600 [&_blockquote]:dark:text-slate-400",
-                          "[&_ul]:my-3 [&_ul]:space-y-1.5 [&_ul]:pl-1 [&_ul]:list-none",
-                          "[&_li]:ml-1.5 [&_li]:relative [&_li]:pl-5 [&_li]:text-slate-700 [&_li]:dark:text-slate-300",
-                          "[&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-2 [&_li]:before:w-1.5 [&_li]:before:h-1.5 [&_li]:before:rounded-full [&_li]:before:bg-indigo-400 [&_li]:dark:before:bg-indigo-500",
-                          "[&_table]:my-4 [&_table]:overflow-x-auto [&_table]:rounded-xl [&_table]:border [&_table]:border-slate-200/70 [&_table]:dark:border-slate-700 [&_table]:shadow-sm",
-                          "[&_th]:bg-slate-600 [&_th]:text-white [&_th]:text-[11px] [&_th]:font-bold [&_th]:uppercase [&_th]:tracking-wider [&_th]:px-3 [&_th]:py-2 [&_th]:text-left",
-                          "[&_td]:px-3 [&_td]:py-2 [&_td]:text-sm [&_td]:text-slate-700 [&_td]:dark:text-slate-300 [&_td]:border-t [&_td]:border-slate-100 [&_td]:dark:border-slate-700/50",
-                          "[&_tr:nth-child(even)]:bg-slate-50/60 [&_tr:nth-child(even)]:dark:bg-slate-800/30"
-                        )}
-                      >
+                         <div
+                           className={cn(
+                             "p-4 space-y-0.5 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300",
+                            "bg-slate-50/50 dark:bg-slate-800/20",
+                            "prose prose-sm dark:prose-invert max-w-none",
+                            "[&_p]:my-2.5 [&_p]:text-slate-700 [&_p]:dark:text-slate-300",
+                            "[&_strong]:font-bold [&_strong]:text-slate-900 [&_strong]:dark:text-slate-100",
+                            "[&_em]:italic [&_em]:text-slate-600 [&_em]:dark:text-slate-400",
+                            "[&_code]:rounded [&_code]:bg-slate-200/60 [&_code]:dark:bg-slate-700/50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-xs [&_code]:font-mono [&_code]:font-bold [&_code]:text-indigo-700 [&_code]:dark:text-indigo-300",
+                            "[&_blockquote]:my-3 [&_blockquote]:pl-4 [&_blockquote]:border-l-4 [&_blockquote]:border-indigo-300 [&_blockquote]:dark:border-indigo-700 [&_blockquote]:py-1.5 [&_blockquote]:pr-3 [&_blockquote]:bg-indigo-50/40 [&_blockquote]:dark:bg-indigo-900/15 [&_blockquote]:rounded-r-lg [&_blockquote]:italic [&_blockquote]:text-slate-600 [&_blockquote]:dark:text-slate-400",
+                            "[&_ul]:my-3 [&_ul]:space-y-1.5 [&_ul]:pl-1 [&_ul]:list-none",
+                            "[&_li]:ml-1.5 [&_li]:relative [&_li]:pl-5 [&_li]:text-slate-700 [&_li]:dark:text-slate-300",
+                            "[&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-2 [&_li]:before:w-1.5 [&_li]:before:h-1.5 [&_li]:before:rounded-full [&_li]:before:bg-indigo-400 [&_li]:dark:before:bg-indigo-500",
+                            "[&_table]:my-4 [&_table]:overflow-x-auto [&_table]:rounded-xl [&_table]:border [&_table]:border-slate-200/70 [&_table]:dark:border-slate-700 [&_table]:shadow-sm",
+                            "[&_th]:bg-slate-600 [&_th]:text-white [&_th]:text-[11px] [&_th]:font-bold [&_th]:uppercase [&_th]:tracking-wider [&_th]:px-3 [&_th]:py-2 [&_th]:text-left",
+                            "[&_td]:px-3 [&_td]:py-2 [&_td]:text-sm [&_td]:text-slate-700 [&_td]:dark:text-slate-300 [&_td]:border-t [&_td]:border-slate-100 [&_td]:dark:border-slate-700/50",
+                            "[&_tr:nth-child(even)]:bg-slate-50/60 [&_tr:nth-child(even)]:dark:bg-slate-800/30"
+                          )}
+                        >
                         <div dangerouslySetInnerHTML={{ __html: enrich(sec.body, t.accent) }} />
                       </div>
                     </AccordionContent>
@@ -952,18 +892,18 @@ function GrammarLessonDesign({
 
         {/* COMMON MISTAKES */}
         {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
-          <SectionCard
-            id="mistakes"
-            icon={<Target className="w-5 h-5 text-rose-500" />}
-            title={labels.commonMistakes}
-          >
+          <section id="mistakes" className="gl-id-section">
+            <SectionTitle
+              icon={<Target className="w-5 h-5 text-rose-500" />}
+              label={labels.commonMistakes}
+            />
             <div className="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700/50 shadow-sm mt-3">
               <table className="w-full border-collapse min-w-[600px]">
                 <thead>
                   <tr className="bg-gradient-to-r from-rose-500 to-rose-400 dark:from-rose-600 dark:to-rose-500">
-                    <th className="px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.incorrect}</th>
-                    <th className="px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.correct}</th>
-                    <th className="px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.why}</th>
+                    <th className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.incorrect}</th>
+                    <th className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.correct}</th>
+                    <th className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.why}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -974,15 +914,15 @@ function GrammarLessonDesign({
                         i % 2 === 1 ? "bg-slate-50/60 dark:bg-slate-800/30" : "bg-white dark:bg-slate-800/40"
                       }
                     >
-                      <td className="px-3 py-2.5 text-sm text-rose-600 dark:text-rose-400 line-through font-medium border-t border-slate-100 dark:border-slate-700/50">{m.incorrect}</td>
-                      <td className="px-3 py-2.5 text-sm text-emerald-700 dark:text-emerald-400 font-semibold border-t border-slate-100 dark:border-slate-700/50">{m.correct}</td>
-                      <td className="px-3 py-2.5 text-sm text-slate-600 dark:text-slate-400 italic leading-relaxed border-t border-slate-100 dark:border-slate-700/50">{m.explanation}</td>
+                      <td className="px-4 py-3 text-sm text-rose-600 dark:text-rose-400 line-through font-medium border-t border-slate-100 dark:border-slate-700/50">{m.incorrect}</td>
+                      <td className="px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 font-semibold border-t border-slate-100 dark:border-slate-700/50">{m.correct}</td>
+                      <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300 italic leading-relaxed border-t border-slate-100 dark:border-slate-700/50"><RenderMarkdown text={m.explanation} /></td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </SectionCard>
+          </section>
         )}
 
         {/* QUICK REVIEW */}
@@ -992,18 +932,18 @@ function GrammarLessonDesign({
               icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />}
               label={labels.quickReview}
             />
-            <div className="grid gap-3 sm:grid-cols-2 mt-3">
+            <div className="space-y-2.5 mt-3">
               {lesson.review.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 rounded-xl bg-gradient-to-br from-emerald-50/80 to-white dark:from-emerald-900/20 dark:to-slate-800/50 border border-emerald-200/60 dark:border-emerald-700/40 p-4 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                  className="flex items-start gap-3 rounded-lg bg-gradient-to-r from-emerald-50/60 to-white dark:from-emerald-900/25 dark:to-slate-800/30 border-l-4 border-emerald-500 pl-4 pr-4 py-3.5 hover:shadow-md transition-all"
                 >
-                  <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white text-sm font-bold shadow-sm">
-                    {i + 1}
-                  </span>
-                  <p className="flex-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                    <RenderMarkdown text={item} />
-                  </p>
+                   <span className="flex-shrink-0 flex items-center justify-center w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-emerald-600 text-white text-base sm:text-lg font-bold shadow-sm">
+                     {i + 1}
+                   </span>
+                   <p className="flex-1 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-medium">
+                     <RenderMarkdown text={item} />
+                   </p>
                 </div>
               ))}
             </div>
@@ -1038,16 +978,16 @@ function GrammarLessonDesign({
                         </p>
                       </div>
                       <div className="p-4 bg-slate-50/40 dark:bg-slate-800/20">
-                        <button
-                          onClick={() => toggle(i)}
-                          className={`font-medium rounded-lg px-3 py-1.5 text-xs transition-all ${
-                            revealed[i]
-                              ? "text-emerald-700 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-900/30 shadow-inner"
-                              : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
-                          }`}
-                        >
-                          {revealed[i] ? item.answer : labels.tapToReveal}
-                        </button>
+                       <button
+                           onClick={() => toggle(i)}
+                           className={`font-medium rounded-lg px-4 py-2 text-base transition-all ${
+                             revealed[i]
+                               ? "text-emerald-700 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-900/30 shadow-inner"
+                               : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
+                           }`}
+                         >
+                           {revealed[i] ? item.answer : labels.tapToReveal}
+                         </button>
                       </div>
                     </div>
                   ))}
