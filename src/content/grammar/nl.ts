@@ -1,370 +1,351 @@
 import type { GrammarLesson } from "../types";
 
 export const nlGrammar: GrammarLesson[] = [
- { id: "nl-zich-voorstellen-1",
-  title: "Zich voorstellen & kennismaken",
+ {
+  id: "nl-uitspraak-progressief",
+  title: "Uitspreken&Klanken",
   level: 1,
-  topic: "Pragmatiek",
-  body: "Een complete les over jezelf voorstellen in het Nederlands. Naam, leeftijd, woonplaats, nationaliteit en talen. Alle werkwoorden – zijn, hebben, heten, wonen, komen, spreken – volledig uitgelegd met de regels van de tegenwoordige tijd, inversie en spelling.",
+  topic: "Uitspraak",
+  body: "Complete uitspraakcursus van het alfabet tot de lastigste klanken.",
   overview:
-    "Voor jezelf voorstellen gebruik je **ik ben** (naam, leeftijd, nationaliteit), **ik heet**, **ik woon**, **ik kom uit** en **ik spreek**. Alle werkwoorden volgen de tegenwoordige tijd: stam of onregelmatige ik-vorm; bij jij/u/hij komt er -t of een aparte vorm; in vragen met jij pas je inversie toe.",
+    "Stap voor stap alle klanken van het Nederlands: alfabet, klinkers, medeklinkers, tweeklanken, schraapklanken en klemtoon. Met duidelijke tabellen en waarschuwingen.",
+  anchorSectionId: "alphabet",
+  exercises: [],
 
-  conjugationTable: {
-    header: "Persoon|Zijn|Hebben|Heten|Wonen|Komen|Spreken",
+  /* ─── ALFABET ─── */
+  timeExpressions: {
+    header: "Letter | Uitspraak | Letter | Uitspraak",
     rows: [
-      ["ik", "ben", "heb", "heet", "woon", "kom", "spreek"],
-      ["jij / u", "bent", "hebt / heeft", "heet", "woont", "komt", "spreekt"],
-      ["hij / zij / het", "is", "heeft", "heet", "woont", "komt", "spreekt"],
-      ["wij / jullie / zij mv", "zijn", "hebben", "heten", "wonen", "komen", "spreken"],
+      ["A", "aa", "N", "en"],
+      ["B", "bee", "O", "oo"],
+      ["C", "see", "P", "pee"],
+      ["D", "dee", "Q", "kuu"],
+      ["E", "ee", "R", "er"],
+      ["F", "ef", "S", "es"],
+      ["G", "gee", "T", "tee"],
+      ["H", "haa", "U", "uu"],
+      ["I", "ie", "V", "vee"],
+      ["J", "jee", "W", "wee"],
+      ["K", "kaa", "X", "iks"],
+      ["L", "el", "Y", "ij (of ie-grec)"],
+      ["M", "em", "Z", "zet"],
     ],
   },
 
+  /* ─── 9 REGELKAARTEN ─── */
   rulesTable: [
     {
-      rule: "Leeftijd = zijn (niet hebben)",
-      structure: "ik ben … jaar\njij bent … jaar\nu bent … jaar\nhij/zij is … jaar",
-      example: "Ik ben 25 jaar. (nooit: ik heb 25 jaar)\nHoe oud ben jij? Ben jij 20?",
-      usage: "Het Nederlands gebruikt *zijn* voor leeftijd, niet *hebben*. *Hebben* is alleen voor bezit (ik heb een auto).",
+      rule: "Korte vs. Lange Klinkers",
+      structure:
+        "Eén klinkerteken + medeklinker → **kort**  \nDubbele klinker (aa, ee, oo, uu) of `ie` → **lang**",
+      example: "**man** (kort) vs. **maan** (lang)  ·  **bed** vs. **beet**  ·  **vis** vs. **vies**",
+      usage: "De lengte verandert de betekenis. Oefen op paren als zak – zaak, pot – poort.",
     },
     {
-      rule: "Inversie met jij – de -t valt weg",
-      structure: "jij + werkwoord (stam+t) → werkwoord(stam) + jij?\nBij *zijn*: jij bent → ben jij?\nBij *hebben*: jij hebt → heb jij?",
-      example: "woon jij? · kom jij? · spreek jij? · ben jij? · heb jij?\nUitzondering: heet jij? (stam eindigt al op t, blijft heet)",
-      usage: "Zodra het onderwerp *jij* achter de persoonsvorm staat, verdwijnt de -t. De vorm wordt gelijk aan de ik-vorm.",
+      rule: "Stemhebbend vs. Stemloos",
+      structure:
+        "**Stemhebbend** (b, d, v, z, g) → stembanden trillen  \n**Stemloos** (p, t, f, s, ch) → geen trilling",
+      example: "**vel** – **fel**  ·  **zeep** – **sleep**  ·  **bal** – **pal**",
+      usage: "Leg je hand op je keel. Aan het eind van een woord wordt **d** vaak als **t** uitgesproken (hond klinkt als hont).",
     },
     {
-      rule: "U behoudt altijd de t",
-      structure: "U + stam+t → blijft ook in vraag: stam+t + u?",
-      example: "u woont → woont u?\nu komt → komt u?\nu spreekt → spreekt u?\nbent u? (onregelmatig)",
-      usage: "In tegenstelling tot jij verliest *u* nooit de -t. Ook niet in een vraag.",
+      rule: "De Stomme e (sjwa)",
+      structure: "De e aan het eind van een woord is volledig ontspannen: **de**, **lopen**.",
+      example: "Zeg **loop’n**, niet loopen.",
+      usage: "Slik de e bijna in; het is de meest relaxte klank van het Nederlands.",
     },
     {
-      rule: "Heten – stam op t, geen extra t",
-      structure: "stam = heet → alle enkelvoud heet\njij-vorm = heet (geen extra t)\nvraag jij: heet jij?",
-      example: "ik heet, jij heet, hij heet\nHoe heet jij? → Heet jij?",
-      usage: "Omdat de stam al op een t eindigt, schrijf je nooit *heett*. De inversie verandert niets.",
+      rule: "De U en UU – Lippen tuiten",
+      structure:
+        "**u** = korte uu (lippen licht getuit)  \n**uu** = lange uu (lippen stijf getuit, tong hoog)",
+      example: "**bus** (korte uu)  ·  **muur** (lange uu)",
+      usage: "Verwar **uu** nooit met **oe**. Muur ≠ moer, vuur ≠ voer.",
     },
     {
-      rule: "Komen uit (herkomst) – korte o",
-      structure: "ik kom uit …\njij komt uit …\nhij komt uit …\nwij komen uit …",
-      example: "Ik kom uit België.\nWaar kom jij vandaan? → Kom jij uit Nederland?",
-      usage: "*Komen uit* geeft het land aan. *Zijn* + nationaliteit geeft de identiteit: ik ben Belg / Nederlandse.",
+      rule: "Tweeklanken: oe, eu, aai, ooi, oei",
+      structure:
+        "**oe** = oe (zoals in Engels food)  \n**eu** = eu (één klank, lippen getuit)  \n**aai/ooi/oei** = lange klinker + j",
+      example: "**boek**, **neus**, **saai**, **mooi**, **groei**",
+      usage: "De **eu** is een vaste klank, niet glijden. Leuk blijft op eu.",
     },
     {
-      rule: "Spreken – dubbele ee in de stam",
-      structure: "stam = spreek (lange ee)\nik spreek, jij spreekt, hij spreekt, wij spreken",
-      example: "Ik spreek Nederlands.\nSpreek jij Engels?\nSpreekt u Frans?",
-      usage: "In de stam schrijf je twee e’s om de lange klank te behouden. In het meervoud valt die extra e weg.",
+      rule: "Tweeklanken: ou/au en ij/ei",
+      structure:
+        "**ou/au** = a → oe (eindig met zachte w)  \n**ij/ei** = èh → ie (nooit ai!)",
+      example: "**hout**, **blauw**  ·  **mijn**, **klein**",
+      usage: "Bij blauw hoor je een lichte w aan het eind. Mijn is m-èh-ie-n, niet main.",
+    },
+    {
+      rule: "De Beruchte UI",
+      structure: "**ui** = getuite lippen (uu) → brede glimlach (ie). Een snelle glijder.",
+      example: "**huis**, **tuin**, **muis**, **bruin**, **uit**",
+      usage: "Doe alsof je iets vies proeft en meteen moet lachen. Oefen tot het vloeiend klinkt.",
+    },
+    {
+      rule: "Schraapklanken: G, CH, SCH",
+      structure:
+        "**g** = harde keelschraap (stemhebbend)  \n**ch** = dezelfde schraap, stemloos  \n**sch** = s + g (nooit s+k!)",
+      example: "**goed**, **lachen**, **school** (s-ggg-ool)",
+      usage: "Oefen sch door eerst ssss te zeggen, dan je keel te schrapen (ggg) en te plakken: s-ggg-aap.",
+    },
+    {
+      rule: "Klemtoon – Wáár leg je de nadruk?",
+      structure:
+        "Meestal op de **eerste** lettergreep, maar **niet** op voorvoegsels (be-, ge-, ver-, ont-). Bij scheidbare werkwoorden verandert de klemtoon de betekenis.",
+      example: "**schrij**ven, be**lang**rijk, ca**fé**  ·  **vóórkomen** (gebeuren) vs. voor**kómen** (vermijden)",
+      usage: "Luister goed naar het verschil; voorkomen met verkeerde klemtoon kan tot misverstanden leiden.",
     },
   ],
 
+  /* ─── 5 UITKLAPBARE DETAILS ─── */
   details: [
     {
-      title: "De vier basisonderdelen van jezelf voorstellen",
-      body: `<p>Met deze vier onderdelen stel je jezelf volledig voor.</p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-slate-100 dark:bg-slate-800">
-            <th class="px-3 py-2 text-left text-sm font-bold">Onderdeel</th>
-            <th class="px-3 py-2 text-left text-sm font-bold">Vraag</th>
-            <th class="px-3 py-2 text-left text-sm font-bold">Antwoord (ik-vorm)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">Naam</td><td class="px-3 py-1.5">Hoe heet jij? / Hoe heet u?</td><td class="px-3 py-1.5">Ik heet ...</td></tr>
-          <tr><td class="px-3 py-1.5">Leeftijd</td><td class="px-3 py-1.5">Hoe oud ben jij? / Hoe oud bent u?</td><td class="px-3 py-1.5">Ik ben ... jaar (oud).</td></tr>
-          <tr><td class="px-3 py-1.5">Woonplaats</td><td class="px-3 py-1.5">Waar woon jij? / Waar woont u?</td><td class="px-3 py-1.5">Ik woon in ...</td></tr>
-          <tr><td class="px-3 py-1.5">Nationaliteit / herkomst</td><td class="px-3 py-1.5">Waar kom jij vandaan? / Waar komt u vandaan?</td><td class="px-3 py-1.5">Ik kom uit ... / Ik ben ... (nationaliteit)</td></tr>
-          <tr><td class="px-3 py-1.5">Talen</td><td class="px-3 py-1.5">Welke talen spreek jij?</td><td class="px-3 py-1.5">Ik spreek ...</td></tr>
-        </tbody>
-      </table>`,
+      title: "Klinkers en simpele medeklinkers",
+      body: `<h3>Makkelijke klinkers – korte en lange versie</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klank</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>a</td><td>kort</td><td>k<strong>a</strong>t</td><td></td></tr>
+    <tr><td>aa</td><td>lang</td><td>k<strong>aa</strong>s</td><td></td></tr>
+    <tr><td>e</td><td>kort</td><td>b<strong>e</strong>d</td><td><strong>ben</strong> ≠ <strong>been</strong></td></tr>
+    <tr><td>ee</td><td>lang</td><td>b<strong>ee</strong>t</td><td></td></tr>
+    <tr><td>i</td><td>kort</td><td>v<strong>i</strong>s</td><td><strong>vis</strong> ≠ <strong>vies</strong></td></tr>
+    <tr><td>ie</td><td>lang</td><td>h<strong>ie</strong>r</td><td></td></tr>
+    <tr><td>o</td><td>kort</td><td>p<strong>o</strong>t</td><td><strong>pot</strong> ≠ <strong>poort</strong></td></tr>
+    <tr><td>oo</td><td>lang</td><td>p<strong>oo</strong>rt</td><td></td></tr>
+  </tbody>
+</table>
+<p><strong>Hoofdregel:</strong> één klinker + medeklinker → kort. Dubbele klinker → lang.</p>
+
+<h3>Simpele medeklinkers</h3>
+<table>
+  <thead><tr><th>Letter</th><th>Klinkt als</th><th>Voorbeeld</th></tr></thead>
+  <tbody>
+    <tr><td>m</td><td>m</td><td><strong>m</strong>an</td></tr>
+    <tr><td>n</td><td>n</td><td><strong>n</strong>ee</td></tr>
+    <tr><td>p</td><td>p</td><td><strong>p</strong>ot</td></tr>
+    <tr><td>b</td><td>b</td><td><strong>b</strong>al</td></tr>
+    <tr><td>t</td><td>t</td><td><strong>t</strong>ak</td></tr>
+    <tr><td>d</td><td>d</td><td><strong>d</strong>ak</td></tr>
+    <tr><td>k</td><td>k</td><td><strong>k</strong>at</td></tr>
+    <tr><td>l</td><td>l</td><td><strong>l</strong>and</td></tr>
+    <tr><td>f</td><td>f</td><td><strong>f</strong>iets</td></tr>
+    <tr><td>s</td><td>s</td><td><strong>s</strong>ok</td></tr>
+  </tbody>
+</table>
+<p><strong>⚠️ PAS OP bij d aan het einde:</strong> <em>hond</em> schrijf je met d, maar je zegt <em>hont</em>.</p>
+
+<h3>De stomme e (sjwa)</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klank</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>e</td><td>doffe e</td><td>d<strong>e</strong>, lop<strong>e</strong>n</td><td>Zeg loop’n, niet loopen</td></tr>
+  </tbody>
+</table>
+<p>Aan het einde van een woord slik je de e bijna in.</p>`,
     },
     {
-      title: "Zijn en hebben – de twee onregelmatige werkwoorden",
-      body: `<p><strong>Zijn</strong> en <strong>hebben</strong> zijn onregelmatig en moet je uit je hoofd leren.</p>
+      title: "Stemhebbende klanken en de u/uu",
+      body: `<h3>Stemhebbend vs. stemloos – zoemen of sissen?</h3>
+<p>Leg je hand op je keel. Voel je trilling? Dan is de klank stemhebbend.</p>
+<table>
+  <thead><tr><th>Stemhebbend (trillen)</th><th>Stemloos (niet trillen)</th><th>Voorbeeldpaar</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>v</td><td>f</td><td><strong>v</strong>el – <strong>f</strong>el</td><td>v moet zoemen, anders zeg je fel</td></tr>
+    <tr><td>z</td><td>s</td><td><strong>z</strong>eep – <strong>s</strong>laap</td><td>z is zoemend, s is sissend</td></tr>
+  </tbody>
+</table>
+<p>Oefen: <strong>vier</strong> (trillen) – <strong>fier</strong> (niet). <strong>Zeep</strong> (trillen) – <strong>slaap</strong> (niet).</p>
 
-      <p><strong>Zijn:</strong></p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-indigo-50 dark:bg-indigo-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold text-indigo-700 dark:text-indigo-300">Persoon</th>
-            <th class="px-3 py-2 text-left text-sm font-bold text-indigo-700 dark:text-indigo-300">Vorm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">ik</td><td class="px-3 py-1.5">ben</td></tr>
-          <tr><td class="px-3 py-1.5">jij / u</td><td class="px-3 py-1.5">bent</td></tr>
-          <tr><td class="px-3 py-1.5">hij / zij / het</td><td class="px-3 py-1.5">is</td></tr>
-          <tr><td class="px-3 py-1.5">wij / jullie / zij mv</td><td class="px-3 py-1.5">zijn</td></tr>
-        </tbody>
-      </table>
-      <p>Vraag met jij: <strong>Ben jij?</strong><br>Vraag met u: <strong>Bent u?</strong></p>
-
-      <p><strong>Hebben:</strong></p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-emerald-50 dark:bg-emerald-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold text-emerald-700 dark:text-emerald-300">Persoon</th>
-            <th class="px-3 py-2 text-left text-sm font-bold text-emerald-700 dark:text-emerald-300">Vorm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">ik</td><td class="px-3 py-1.5">heb</td></tr>
-          <tr><td class="px-3 py-1.5">jij</td><td class="px-3 py-1.5">hebt</td></tr>
-          <tr><td class="px-3 py-1.5">u</td><td class="px-3 py-1.5">hebt / heeft</td></tr>
-          <tr><td class="px-3 py-1.5">hij / zij / het</td><td class="px-3 py-1.5">heeft</td></tr>
-          <tr><td class="px-3 py-1.5">wij / jullie / zij mv</td><td class="px-3 py-1.5">hebben</td></tr>
-        </tbody>
-      </table>
-      <p>Vraag met jij: <strong>Heb jij?</strong><br>Vraag met u: <strong>Hebt u?</strong> of <strong>Heeft u?</strong></p>
-
-      <blockquote>Let op: <em>hebben</em> gebruik je <strong>nooit</strong> voor leeftijd. In het Nederlands zeg je <strong>ik ben 20 jaar</strong>, niet <em>ik heb 20 jaar</em>.</blockquote>`,
+<h3>De u en uu – een nieuwe klank</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klank</th><th>Voorbeeld</th><th>Wat je mond doet</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>u</td><td>korte uu</td><td>b<strong>u</strong>s</td><td>lippen licht getuit, ontspannen</td><td></td></tr>
+    <tr><td>uu</td><td>lange uu</td><td>m<strong>uu</strong>r</td><td>lippen stijf getuit, tong hoog</td><td>Nooit oe zeggen! muur ≠ moer</td></tr>
+  </tbody>
+</table>
+<p><strong>💡 Truc voor de uu:</strong> maak je mond alsof je ie wilt zeggen, maar tuit dan stevig.</p>`,
     },
     {
-      title: "Heten, wonen, komen, spreken – de regelmatige werkwoorden",
-      body: `<p>Deze werkwoorden volgen de standaardregels, maar let op de spelling van de stam.</p>
+      title: "Tweeklanken: oe, eu, aai, ooi, oei, ou/au, ij/ei",
+      body: `<h3>Makkelijkste tweeklanken: oe, eu, aai, ooi, oei</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klinkt als</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>oe</td><td>oe (zoals Engels food)</td><td>b<strong>oe</strong>k, z<strong>oe</strong>n</td><td>Verwar niet met uu</td></tr>
+    <tr><td>eu</td><td>eu (als in Frans peur)</td><td>n<strong>eu</strong>s, l<strong>eu</strong>k</td><td>Blijf op één klank, beweeg niet</td></tr>
+    <tr><td>aai</td><td>aa + j</td><td>s<strong>aai</strong></td><td>Laat de j goed horen</td></tr>
+    <tr><td>ooi</td><td>oo + j</td><td>m<strong>ooi</strong></td><td>Laat de j goed horen</td></tr>
+    <tr><td>oei</td><td>oe + j</td><td>gr<strong>oei</strong></td><td>Laat de j goed horen</td></tr>
+  </tbody>
+</table>
 
-      <p><strong>Heten</strong> (stam op -t, lange ee)</p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-amber-50 dark:bg-amber-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold text-amber-700 dark:text-amber-300">Persoon</th>
-            <th class="px-3 py-2 text-left text-sm font-bold text-amber-700 dark:text-amber-300">Vorm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">ik</td><td class="px-3 py-1.5">heet</td></tr>
-          <tr><td class="px-3 py-1.5">jij / u</td><td class="px-3 py-1.5">heet</td></tr>
-          <tr><td class="px-3 py-1.5">hij / zij / het</td><td class="px-3 py-1.5">heet</td></tr>
-          <tr><td class="px-3 py-1.5">wij / jullie / zij mv</td><td class="px-3 py-1.5">heten</td></tr>
-        </tbody>
-      </table>
+<h3>De ou/au – van a naar oe</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klinkt als</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>ou / au</td><td>a-oe</td><td>h<strong>ou</strong>t, bl<strong>au</strong>w</td><td>Eindig zacht met een w: blauw = bl-ou-w</td></tr>
+  </tbody>
+</table>
 
-      <p><strong>Wonen</strong> (lange oo in stam, stam op -n)</p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-indigo-50 dark:bg-indigo-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold text-indigo-700 dark:text-indigo-300">Persoon</th>
-            <th class="px-3 py-2 text-left text-sm font-bold text-indigo-700 dark:text-indigo-300">Vorm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">ik</td><td class="px-3 py-1.5">woon</td></tr>
-          <tr><td class="px-3 py-1.5">jij / u</td><td class="px-3 py-1.5">woont</td></tr>
-          <tr><td class="px-3 py-1.5">hij / zij / het</td><td class="px-3 py-1.5">woont</td></tr>
-          <tr><td class="px-3 py-1.5">wij / jullie / zij mv</td><td class="px-3 py-1.5">wonen</td></tr>
-        </tbody>
-      </table>
-
-      <p><strong>Komen</strong> (korte o, stam op -m)</p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-rose-50 dark:bg-rose-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold text-rose-700 dark:text-rose-300">Persoon</th>
-            <th class="px-3 py-2 text-left text-sm font-bold text-rose-700 dark:text-rose-300">Vorm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">ik</td><td class="px-3 py-1.5">kom</td></tr>
-          <tr><td class="px-3 py-1.5">jij / u</td><td class="px-3 py-1.5">komt</td></tr>
-          <tr><td class="px-3 py-1.5">hij / zij / het</td><td class="px-3 py-1.5">komt</td></tr>
-          <tr><td class="px-3 py-1.5">wij / jullie / zij mv</td><td class="px-3 py-1.5">komen</td></tr>
-        </tbody>
-      </table>
-
-      <p><strong>Spreken</strong> (lange ee in stam, stam op -k)</p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-emerald-50 dark:bg-emerald-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold text-emerald-700 dark:text-emerald-300">Persoon</th>
-            <th class="px-3 py-2 text-left text-sm font-bold text-emerald-700 dark:text-emerald-300">Vorm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">ik</td><td class="px-3 py-1.5">spreek</td></tr>
-          <tr><td class="px-3 py-1.5">jij / u</td><td class="px-3 py-1.5">spreekt</td></tr>
-          <tr><td class="px-3 py-1.5">hij / zij / het</td><td class="px-3 py-1.5">spreekt</td></tr>
-          <tr><td class="px-3 py-1.5">wij / jullie / zij mv</td><td class="px-3 py-1.5">spreken</td></tr>
-        </tbody>
-      </table>
-
-      <p>Vraag met jij: <strong>woon jij? · kom jij? · spreek jij?</strong><br>
-      Bij <em>heten</em>: <strong>heet jij?</strong> (stam op t, dus geen verandering).</p>`,
+<h3>De ij/ei – van e naar ie</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klinkt als</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>ij / ei</td><td>èh-ie</td><td>m<strong>ij</strong>n, kl<strong>ei</strong>n</td><td>Nooit ai zeggen zoals in main</td></tr>
+  </tbody>
+</table>
+<p>Oefen: <strong>mijn</strong> klinkt als m-èh-ie-n, vloeiend uitgesproken.</p>`,
     },
     {
-      title: "Nationaliteit en herkomst",
-      body: `<p>Je kunt je nationaliteit op twee manieren uitdrukken:</p>
-      <ul>
-        <li><strong>ik ben + nationaliteit</strong> → ik ben Belg, ik ben Nederlandse, ik ben Duitser.</li>
-        <li><strong>ik kom uit + land</strong> → ik kom uit België, ik kom uit Nederland, ik kom uit Duitsland.</li>
-      </ul>
+      title: "De lastige klanken: ui, sch, g, ch, r",
+      body: `<h3>De beruchte ui</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Klinkt als</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>ui</td><td>uu-ie</td><td>h<strong>ui</strong>s, t<strong>ui</strong>n</td><td>Begin nooit met a; huis ≠ haus</td></tr>
+  </tbody>
+</table>
+<p><strong>💡 Truc:</strong> doe alsof je iets vies proeft (getuite lippen = uu) en dan meteen moet lachen (brede mond = ie). Oefen: <strong>huis, muis, tuin, bruin, uit, thuis, vuist.</strong></p>
 
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-indigo-50 dark:bg-indigo-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold">Land</th>
-            <th class="px-3 py-2 text-left text-sm font-bold">Nationaliteit (mannelijk)</th>
-            <th class="px-3 py-2 text-left text-sm font-bold">Nationaliteit (vrouwelijk)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">België</td><td class="px-3 py-1.5">Belg</td><td class="px-3 py-1.5">Belgische</td></tr>
-          <tr><td class="px-3 py-1.5">Nederland</td><td class="px-3 py-1.5">Nederlander</td><td class="px-3 py-1.5">Nederlandse</td></tr>
-          <tr><td class="px-3 py-1.5">Duitsland</td><td class="px-3 py-1.5">Duitser</td><td class="px-3 py-1.5">Duitse</td></tr>
-          <tr><td class="px-3 py-1.5">Frankrijk</td><td class="px-3 py-1.5">Fransman</td><td class="px-3 py-1.5">Française / Franse</td></tr>
-          <tr><td class="px-3 py-1.5">Spanje</td><td class="px-3 py-1.5">Spanjaard</td><td class="px-3 py-1.5">Spaanse</td></tr>
-          <tr><td class="px-3 py-1.5">Engeland</td><td class="px-3 py-1.5">Engelsman</td><td class="px-3 py-1.5">Engelse</td></tr>
-        </tbody>
-      </table>
+<h3>De schraapklanken: g, ch en sch</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Wat is het?</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>g</td><td>harde keelschraap</td><td><strong>g</strong>oed, <strong>g</strong>root</td><td>Nooit als Engelse g in good</td></tr>
+    <tr><td>ch</td><td>zelfde schraap, stemloos</td><td>la<strong>ch</strong>en, a<strong>ch</strong>t</td><td>Klinkt meestal hetzelfde als g</td></tr>
+    <tr><td>sch</td><td>s + g (schraap)</td><td><strong>sch</strong>ool, <strong>sch</strong>aap</td><td><strong>Nooit sk!</strong> school ≠ skool</td></tr>
+  </tbody>
+</table>
+<p>Oefen sch: zeg ssss, schraap je keel (ggg), plak ze aan elkaar: s-ggg-aap.</p>
 
-      <blockquote>Let op: <strong>nooit</strong> <em>ik ben België</em> of <em>ik kom van Nederland</em>. Gebruik altijd <strong>uit</strong> voor herkomst en het bijvoeglijk naamwoord voor nationaliteit.</blockquote>`,
+<h3>De letter r – rollen of schrapen</h3>
+<table>
+  <thead><tr><th>Variant</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>Rollende r</td><td><strong>r</strong>aam</td><td></td></tr>
+    <tr><td>Huig-r (Frans-achtig)</td><td><strong>r</strong>ood</td><td></td></tr>
+    <tr><td>Gooise r (Engels-achtig)</td><td>doo<strong>r</strong></td><td>Aan het eind vaak nauwelijks hoorbaar</td></tr>
+  </tbody>
+</table>`,
     },
     {
-      title: "Eindtoets – Stel jezelf voor in volledige zinnen",
-      body: `<p>Beantwoord de volgende vragen in een volledige zin.</p>
-      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
-        <thead>
-          <tr class="bg-amber-50 dark:bg-amber-900/30">
-            <th class="px-3 py-2 text-left text-sm font-bold">Vraag</th>
-            <th class="px-3 py-2 text-left text-sm font-bold">Modelantwoord (aanpassen aan jezelf)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="px-3 py-1.5">Hoe heet je?</td><td class="px-3 py-1.5">Ik heet [naam].</td></tr>
-          <tr><td class="px-3 py-1.5">Hoe oud ben je?</td><td class="px-3 py-1.5">Ik ben [leeftijd] jaar.</td></tr>
-          <tr><td class="px-3 py-1.5">Waar woon je?</td><td class="px-3 py-1.5">Ik woon in [plaats].</td></tr>
-          <tr><td class="px-3 py-1.5">Waar kom je vandaan?</td><td class="px-3 py-1.5">Ik kom uit [land].</td></tr>
-          <tr><td class="px-3 py-1.5">Welke nationaliteit heb je?</td><td class="px-3 py-1.5">Ik ben [nationaliteit].</td></tr>
-          <tr><td class="px-3 py-1.5">Welke talen spreek je?</td><td class="px-3 py-1.5">Ik spreek [talen].</td></tr>
-          <tr><td class="px-3 py-1.5">Heet jij [naam]?</td><td class="px-3 py-1.5">Ja, ik heet [naam]. / Nee, ik heet niet [naam].</td></tr>
-          <tr><td class="px-3 py-1.5">Woon jij in [plaats]?</td><td class="px-3 py-1.5">Ja, ik woon in [plaats]. / Nee, ik woon niet in [plaats].</td></tr>
-          <tr><td class="px-3 py-1.5">Ben jij [leeftijd] jaar?</td><td class="px-3 py-1.5">Ja, ik ben [leeftijd] jaar. / Nee, ik ben niet [leeftijd] jaar.</td></tr>
-          <tr><td class="px-3 py-1.5">Kom jij uit [land]?</td><td class="px-3 py-1.5">Ja, ik kom uit [land]. / Nee, ik kom niet uit [land].</td></tr>
-        </tbody>
-      </table>`,
+      title: "Neusklanken en klemtoon",
+      body: `<h3>Neusklanken – ng en nk</h3>
+<table>
+  <thead><tr><th>Spelling</th><th>Wat is het?</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>ng</td><td>één neusklank</td><td>zi<strong>ng</strong>en, ba<strong>ng</strong></td><td>Nooit zing-g zeggen</td></tr>
+    <tr><td>nk</td><td>ng + k</td><td>ba<strong>nk</strong>, de<strong>nk</strong>en</td><td>Zeg bang-k, niet ban-k</td></tr>
+  </tbody>
+</table>
+
+<h3>Klemtoon – welk stukje zeg je luider?</h3>
+<table>
+  <thead><tr><th>Regel</th><th>Voorbeeld</th><th>⚠️ PAS OP</th></tr></thead>
+  <tbody>
+    <tr><td>Meestal op eerste lettergreep</td><td><strong>schrij</strong>ven, <strong>lo</strong>pen</td><td></td></tr>
+    <tr><td>Voorvoegsels (be-, ge-, ver-, ont-) niet beklemtonen</td><td>be<strong>lang</strong>rijk, ge<strong>woon</strong></td><td></td></tr>
+    <tr><td>Scheidbare werkwoorden</td><td><strong>vóór</strong>komen (verschijnen) vs. voor<strong>kó</strong>men (vermijden)</td><td>Klemtoon verandert de betekenis!</td></tr>
+  </tbody>
+</table>`,
     },
   ],
 
-  // ── Callouts, commonMistakes, review, qa, exercises (blijven exact hetzelfde) ──
+  /* ─── WAARSCHUWINGEN ─── */
   callouts: [
     {
       type: "key",
-      label: "Leeftijd = zijn",
-      text: "**Nooit** *ik heb 20 jaar*. Altijd **ik ben 20 jaar**. Het Nederlands gebruikt *zijn* voor leeftijd, *hebben* alleen voor bezit.",
-    },
-    {
-      type: "remember",
-      label: "Inversie met jij",
-      text: "**jij werkt → werk jij?** De -t valt weg. **jij bent → ben jij?** (onregelmatig). Alleen *heet jij?* blijft gelijk omdat de stam al op een t eindigt.",
+      label: "UI-klank",
+      text: "Begin met getuite lippen (uu) en glij meteen naar een brede glimlach (ie). Oefen: uu-ie → ui. **Huis** mag nooit als **haus** klinken.",
     },
     {
       type: "tip",
-      label: "U behoudt de t",
-      text: "**u woont → woont u?** *U* krijgt altijd de volledige persoonsvorm en verliest nooit de -t, ook niet in een vraag.",
+      label: "SCH-klank",
+      text: "Nooit 'sk' zeggen! Het is s + harde g. Zeg 'ssss', schraap je keel en plak het aan elkaar: s-ggg-ool.",
+    },
+    {
+      type: "remember",
+      label: "Stemhebbend of stemloos?",
+      text: "Leg je hand op je keel: **b, d, v, z, g** moeten trillen. Aan het eind van een woord klinkt **d** als **t** (hond → hont).",
     },
     {
       type: "note",
-      label: "Nationaliteit of land?",
-      text: "**ik ben Belg** (nationaliteit) maar **ik kom uit België** (land). Gebruik nooit *ik ben België* of *ik kom van Nederland*.",
-    },
-    {
-      type: "key",
-      label: "Heten zonder extra t",
-      text: "De stam is **heet**. Jij-vorm = **heet** (geen extra t). Vraag: **heet jij?** — er valt niets weg.",
+      label: "Klemtoon",
+      text: "Meestal op de eerste lettergreep, maar niet bij voorvoegsels (be-, ge-, ver-, ont-). Bij scheidbare werkwoorden verandert de klemtoon de betekenis volkomen.",
     },
   ],
 
+  /* ─── DE 5 GROOTSTE VALKUILEN ─── */
   commonMistakes: [
-    { incorrect: "Ik heten Anna", correct: "Ik heet Anna", explanation: "Ik-vorm = stam heet, niet het hele werkwoord." },
-    { incorrect: "Hoe heet jij? (correct)", correct: "Hoe heet jij?", explanation: "Stam op t, blijft heet; inversie verandert niets." },
-    { incorrect: "Ik heb 20 jaar", correct: "Ik ben 20 jaar", explanation: "Leeftijd met *zijn*, niet *hebben*." },
-    { incorrect: "Jij bent 20 jaar (correct)", correct: "Jij bent 20 jaar", explanation: "*Zijn* juist gebruikt." },
-    { incorrect: "U is mevrouw De Vries", correct: "U bent mevrouw De Vries", explanation: "U krijgt altijd *bent*, nooit *is*." },
-    { incorrect: "Hij ben 30", correct: "Hij is 30", explanation: "Hij/zij/het krijgt *is*." },
-    { incorrect: "Jij kom uit België", correct: "Jij komt uit België", explanation: "Jij-vorm = stam + t." },
-    { incorrect: "Kom jij uit België? (correct)", correct: "Kom jij uit België?", explanation: "Inversie: t valt weg." },
-    { incorrect: "Woont jij in Amsterdam?", correct: "Woon jij in Amsterdam?", explanation: "Inversie jij: t valt weg." },
-    { incorrect: "Ik spreek Nederlands (correct)", correct: "Ik spreek Nederlands", explanation: "Stam spreek (dubbele ee)." },
-    { incorrect: "Jij spreek Nederlands", correct: "Jij spreekt Nederlands", explanation: "Jij-vorm + t." },
-    { incorrect: "Spreek jij Nederlands? (correct)", correct: "Spreek jij Nederlands?", explanation: "Inversie: t valt weg." },
-    { incorrect: "Ik ben Belgie", correct: "Ik ben Belg", explanation: "Nationaliteit is Belg, niet het land." },
-    { incorrect: "Ik kom van Nederland", correct: "Ik kom uit Nederland", explanation: "Herkomst: *uit*, niet *van*." },
-    { incorrect: "Ik spreek goed Nederlands (correct)", correct: "Ik spreek goed Nederlands", explanation: "Werkwoord *spreken* correct." },
+    {
+      incorrect: "au voor ui",
+      correct: "ui (uu-ie)",
+      explanation: "De ui is een snelle glijder van getuite lippen naar een lach. Huis ≠ haus.",
+    },
+    {
+      incorrect: "sk in plaats van sch",
+      correct: "sch (s + harde g)",
+      explanation: "Sch bestaat uit een s-klank plus de schraapklank g. School rijmt op gool, niet op skool.",
+    },
+    {
+      incorrect: "oe en uu verwarren",
+      correct: "uu (lippen extreem tuiten, tong voorin) vs. oe (lippen ronder, tong achterin)",
+      explanation: "Boek (met oe) en buik (met uu) zijn verschillende woorden. Let op je tongpositie.",
+    },
+    {
+      incorrect: "Engelse g (dzj) voor g/ch",
+      correct: "Harde keelschraap",
+      explanation: "De Nederlandse g en ch worden achter in de keel gevormd. Denk aan het geluid van een zaag, niet aan good.",
+    },
+    {
+      incorrect: "Korte en lange klinkers door elkaar halen",
+      correct: "Enkele klinker → kort, dubbele klinker → lang",
+      explanation: "Het verschil is betekenisonderscheidend: man (echtgenoot) vs. maan (hemellichaam), tak vs. taak.",
+    },
   ],
 
+  /* ─── SNELLE HERHALING ─── */
   review: [
-    "**Zijn**: ik ben, jij bent, u bent, hij is, wij zijn. Leeftijd met *zijn* (ik ben 30 jaar).",
-    "**Hebben**: alleen voor bezit (ik heb een fiets), nooit voor leeftijd.",
-    "**Heten**: stam heet, geen extra t. Ik heet, jij heet, hij heet. Vraag: heet jij?",
-    "**Wonen**: stam woon + t. Jij woont, inversie: woon jij?",
-    "**Komen uit**: ik kom uit, jij komt uit, inversie: kom jij uit?",
-    "**Spreken**: ik spreek, jij spreekt, inversie: spreek jij?",
-    "**Inversie jij**: -t valt weg (behalve bij heten). Bij *zijn*: ben jij. Bij *hebben*: heb jij.",
-    "**U**: altijd *bent*, *hebt/heeft*, *woont*, *komt*, *spreekt*. Geen -t-verlies.",
-    "**Nationaliteit**: ik ben + bijvoeglijk naamwoord (Nederlands, Belg, Duits, Frans).",
+    "Alle 26 letternamen correct opzeggen (E = ee, I = ie, G = gee, Q = kuu, Y = ij).",
+    "Korte en lange klinkers feilloos uit elkaar houden: man – maan, bed – beet, vis – vies, pot – poort.",
+    "Tweeklanken ui, ij/ei, ou/au, eu, oe vloeiend uitspreken; de ui is de lastigste.",
+    "Schraapklanken g, ch en sch perfect maken; sch nooit als sk.",
+    "Stemhebbende v, z, g laten trillen; hand op de keel houden.",
+    "Klemtoon op de juiste lettergreep leggen, vooral bij scheidbare werkwoorden.",
+    "Na deze cursus elke Nederlandse zin met minimale fouten kunnen uitspreken.",
   ],
 
+  /* ─── 5 OEFENVRAGEN ─── */
   qa: [
-    { question: "Hoe ... (heten) jij?", answer: "heet" },
-    { question: "Ik ... (heten) Anna.", answer: "heet" },
-    { question: "Mijn broer ... (heten) Thomas.", answer: "heet" },
-    { question: "... (heten) u mevrouw De Vries?", answer: "Heet" },
-    { question: "Hoe oud ... (zijn) jij?", answer: "ben" },
-    { question: "Ik ... (zijn) 25 jaar.", answer: "ben" },
-    { question: "... (zijn) u 30 jaar?", answer: "Bent" },
-    { question: "Mijn zus ... (zijn) 18 jaar.", answer: "is" },
-    { question: "Waar ... (wonen) jij?", answer: "woon" },
-    { question: "Ik ... (wonen) in Den Haag.", answer: "woon" },
-    { question: "... (wonen) u hier al lang?", answer: "Woont" },
-    { question: "Mijn ouders ... (wonen) in Rotterdam.", answer: "wonen" },
-    { question: "Waar ... (komen) jij vandaan?", answer: "kom" },
-    { question: "Ik ... (komen) uit Suriname.", answer: "kom" },
-    { question: "... (komen) u uit Nederland?", answer: "Komt" },
-    { question: "Mijn vriendin ... (komen) uit Duitsland.", answer: "komt" },
-    { question: "Welke talen ... (spreken) jij?", answer: "spreek" },
-    { question: "Ik ... (spreken) Nederlands en Engels.", answer: "spreek" },
-    { question: "... (spreken) u Frans?", answer: "Spreekt" },
-    { question: "Mijn leraar ... (spreken) vier talen.", answer: "spreekt" },
-    { question: "... (zijn) jij Belg?", answer: "Ben" },
-    { question: "Nee, ik ... (zijn) Nederlander.", answer: "ben" },
-    { question: "... (hebben) jij een auto?", answer: "Heb" },
-    { question: "Ik ... (hebben) geen auto, ik ... (hebben) een fiets.", answer: "heb, heb" },
-    { question: "Wat ... (doen) jij vanavond?", answer: "doe" },
+    {
+      question: "Hoe spreek je de ui-klank correct uit?",
+      answer: "Begin met getuite lippen (uu) en glij onmiddellijk naar een brede glimlach (ie). Oefen: uu-ie → ui, zoals in **huis**.",
+    },
+    {
+      question: "Wat is het verschil tussen de 'v' en de 'f'?",
+      answer: "De **v** is stemhebbend (stembanden trillen), de **f** is stemloos. Leg je hand op je keel: bij **vel** voel je trilling, bij **fel** niet.",
+    },
+    {
+      question: "Waarom mag 'school' niet als 'skool' klinken?",
+      answer: "Omdat **sch** bestaat uit een s-klank plus een harde keelschraap (g). Zeg s-ggg-ool en je hoort dat er geen k-klank in zit.",
+    },
+    {
+      question: "Wat gebeurt er met de betekenis als je 'man' met een lange aa uitspreekt?",
+      answer: "Dan verandert het woord in **maan**, het hemellichaam. De klinkerlengte is betekenisonderscheidend.",
+    },
+    {
+      question: "Leg het verschil uit tussen 'vóórkomen' en 'voorkómen'.",
+      answer: "**Vóórkomen** (klemtoon op eerste lettergreep) betekent 'gebeuren'. **Voorkómen** (klemtoon op tweede lettergreep) betekent 'vermijden'. De klemtoon bepaalt de betekenis.",
+    },
   ],
+},
+  
+  
 
-  exercises: [
-    {
-      question: "Wat is de juiste ik-vorm van 'heten'?",
-      options: ["heet", "heten", "heett", "het"],
-      answer: "heet",
-    },
-    {
-      question: "Hoe oud ... jij?",
-      options: ["bent", "ben", "is", "zijn"],
-      answer: "ben",
-    },
-    {
-      question: "Waar ... u?",
-      options: ["woont", "woon", "wonen", "woont u"],
-      answer: "woont",
-    },
-    {
-      question: "Welke vraag is correct?",
-      options: ["Hoe heet jij?", "Hoe heten jij?", "Hoe heet je?", "Hoe heet jij"],
-      answer: "Hoe heet jij?",
-    },
-    {
-      question: "Ik ... uit Spanje.",
-      options: ["kom", "komt", "komen", "ben"],
-      answer: "kom",
-    },
-    {
-      question: "... jij Nederlands?",
-      options: ["Spreek", "Spreekt", "Spreken", "Spreekt jij"],
-      answer: "Spreek",
-    },
-  ],
-}, {
+  
+ {
   id: "nl-groeten-afscheid-1",
   title: "Groeten en afscheid nemen (formeel & informeel)",
   level: 1,
@@ -2069,7 +2050,7 @@ De stam eindigt al op t, dus je schrijft nooit *-tt*. De hij-vorm is gelijk aan 
     },
     {
       question: "Welk rangtelwoord hoort bij 20?",
-      options: ["twintigde", "twintigste", "twintigde", "twintigste"],
+      options: ["twintigste", "twintigde", "twinigste", "twintigdste"],
       answer: "twintigste",
     },
     {
@@ -2091,7 +2072,304 @@ De stam eindigt al op t, dus je schrijft nooit *-tt*. De hij-vorm is gelijk aan 
       question: "Hoe schrijf je 18e voluit?",
       options: ["achttiende", "achtste", "achttienste", "achttiende"],
       answer: "achttiende",
- },
-  ]
-}
-];
+    },
+  ],
+    },
+    {
+    id: "nl-kleuren-beschrijvingen-1",
+  title: "Kleuren en eenvoudige beschrijvingen",
+  level: 1,
+  topic: "Adjectieven & Beschrijvingen",
+  body: "Een complete les over kleuren, het bijvoeglijk naamwoord en het maken van beschrijvingen in het Nederlands. Alles over de -e-regel, predicatief/attributief, stoffelijke adjectieven, trappen van vergelijking en werkwoorden als zijn, hebben en eruitzien.",
+  overview:
+    "Kleuren gebruik je als bijvoeglijk naamwoord: **de rode auto**, **een groot huis**, **het huis is wit**. De regels voor de -e hangen af van *de* of *het*, en of het lidwoord bepaald of onbepaald is. Met *zijn* beschrijf je een eigenschap (Het is rond), met *hebben* een kenmerk (Ik heb blauwe ogen), en met *eruitzien* het uiterlijk.",
+
+  // ── Regels ─────────────────────────────────────────────────────────
+  rulesTable: [
+    {
+      rule: "De -e-regel (attributief)",
+      structure: "de-woord: altijd +e\nhet-woord bepaald: +e\nhet-woord onbepaald (een/geen): geen -e",
+      example: "de rode auto, het grote huis, een groot huis, geen groot huis",
+      usage: "Kijk eerst naar het lidwoord en het woordgeslacht. Bij twijfel: de-woorden zijn veilig met -e, bij een het-woord zonder lidwoord (onbepaald) valt de -e weg.",
+    },
+    {
+      rule: "Predicatief = basisvorm",
+      structure: "Na een koppelwerkwoord (zijn, worden, blijven, lijken) blijft het adjectief onverbogen.",
+      example: "De auto is rood. Het huis is groot. De soep wordt koud. Dat lijkt leuk.",
+      usage: "Geen -e toevoegen, ook niet bij de-woorden. Alleen de kale vorm gebruiken.",
+    },
+    {
+      rule: "Uitzonderingen: oranje, roze, stoffen",
+      structure: "oranje, roze, beige, lila, plastic → nooit -e\nStoffelijke adjectieven op -en: gouden, houten, zilveren → altijd -en",
+      example: "een oranje trui, de roze jurk, een gouden ring, de houten tafel",
+      usage: "Deze woorden zijn onveranderlijk (behalve stoffen die al -en hebben).",
+    },
+    {
+      rule: "Trappen van vergelijking",
+      structure: "stellend → vergrotend (+er) → overtreffend (+st)\nOnregelmatig: goed-beter-best, veel-meer-meest, weinig-minder-minst",
+      example: "groot-groter-grootst, duur-duurder-duurst, mooi-mooier-mooist",
+      usage: "Vergrotend vaak met 'dan' (groter dan). Overtreffend voor het zelfst. nw: de mooiste bloem.",
+    },
+    {
+      rule: "Meervoud altijd +e",
+      structure: "In het meervoud vervalt het verschil de/het; het adjectief krijgt altijd -e.",
+      example: "de grote huizen, rode auto's, mooie schilderijen",
+      usage: "Ook zonder lidwoord: 'Er staan grote huizen.'",
+    },
+    {
+      rule: "Wit → witte, grijs → grijze",
+      structure: "Bij wit en grijs gelden spellingsregels: medeklinkerverdubbeling en z/s-wisseling.",
+      example: "een witte muur, het grijze paard",
+      usage: "Door de -e ontstaat een open lettergreep; wit → wit-te (dubbel t), grijs → grij-ze (z wordt s, maar dan z).",
+    },
+  ],
+
+  // ── Details ───────────────────────────────────────────────────────
+  details: [
+    {
+      title: "Alle basiskleuren en tinten",
+      body: `<p>De belangrijkste kleuren in het Nederlands, nu met herkenbare emoji's.</p>
+      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
+        <thead>
+          <tr class="bg-indigo-50 dark:bg-indigo-900/30">
+            <th class="px-3 py-2 text-left text-sm font-bold">Emoji</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Kleur</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Bijvoeglijk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="px-3 py-1.5 text-xl">🔴</td><td class="px-3 py-1.5">rood</td><td class="px-3 py-1.5">rode</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🔵</td><td class="px-3 py-1.5">blauw</td><td class="px-3 py-1.5">blauwe</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🟢</td><td class="px-3 py-1.5">groen</td><td class="px-3 py-1.5">groene</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🟡</td><td class="px-3 py-1.5">geel</td><td class="px-3 py-1.5">gele</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">⚫️</td><td class="px-3 py-1.5">zwart</td><td class="px-3 py-1.5">zwarte</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">⚪️</td><td class="px-3 py-1.5">wit</td><td class="px-3 py-1.5">witte</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🟠</td><td class="px-3 py-1.5">oranje</td><td class="px-3 py-1.5">oranje (onveranderd)</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🟣</td><td class="px-3 py-1.5">paars</td><td class="px-3 py-1.5">paarse</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🩷</td><td class="px-3 py-1.5">roze</td><td class="px-3 py-1.5">roze (onveranderd)</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🩶</td><td class="px-3 py-1.5">grijs</td><td class="px-3 py-1.5">grijze</td></tr>
+          <tr><td class="px-3 py-1.5 text-xl">🟤</td><td class="px-3 py-1.5">bruin</td><td class="px-3 py-1.5">bruine</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Let op:</strong> <em>oranje</em> en <em>roze</em> krijgen nooit een -e. <em>Wit</em> wordt <em>witte</em>, <em>grijs</em> wordt <em>grijze</em>.</p>
+      <p><strong>Tinten en mengkleuren:</strong></p>
+      <ul>
+        <li>lichtblauw, donkergroen, felrood, pastelgeel</li>
+        <li>zilverkleurig, goudkleurig</li>
+        <li>beige, turkoois, lila, kastanjebruin, hemelsblauw</li>
+      </ul>
+      <p>Deze verbuig je normaal: een lichtblauwe trui, het donkergroene boek.</p>`,
+    },
+    {
+      title: "De -e-regel in detail",
+      body: `<p>Het bijvoeglijk naamwoord verandert van vorm afhankelijk van het zelfstandig naamwoord waar het bij hoort.</p>
+      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
+        <thead>
+          <tr class="bg-emerald-50 dark:bg-emerald-900/30">
+            <th class="px-3 py-2 text-left text-sm font-bold">Situatie</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">de-woord (auto)</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">het-woord (huis)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="px-3 py-1.5 font-medium">bepaald (de/het)</td><td class="px-3 py-1.5">de <strong>rode</strong> auto</td><td class="px-3 py-1.5">het <strong>grote</strong> huis</td></tr>
+          <tr><td class="px-3 py-1.5 font-medium">onbepaald (een)</td><td class="px-3 py-1.5">een <strong>rode</strong> auto</td><td class="px-3 py-1.5">een <strong>groot</strong> huis</td></tr>
+          <tr><td class="px-3 py-1.5 font-medium">geen</td><td class="px-3 py-1.5">geen <strong>rode</strong> auto</td><td class="px-3 py-1.5">geen <strong>groot</strong> huis</td></tr>
+          <tr><td class="px-3 py-1.5 font-medium">meervoud</td><td class="px-3 py-1.5">de <strong>rode</strong> auto's</td><td class="px-3 py-1.5">de <strong>grote</strong> huizen</td></tr>
+          <tr><td class="px-3 py-1.5 font-medium">predicatief</td><td class="px-3 py-1.5">de auto is <strong>rood</strong></td><td class="px-3 py-1.5">het huis is <strong>groot</strong></td></tr>
+        </tbody>
+      </table>
+      <p><strong>Uitzonderingen:</strong> <em>oranje</em>, <em>roze</em>, <em>beige</em>, <em>lila</em>, <em>plastic</em> blijven altijd onverbogen. Stoffelijke adjectieven op <em>-en</em> zoals <em>gouden</em>, <em>houten</em> hebben al een uitgang en veranderen niet.</p>`,
+    },
+    {
+      title: "Predicatief vs. attributief",
+      body: `<p>Het verschil in gebruik zie je duidelijk in deze voorbeelden:</p>
+      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
+        <thead>
+          <tr class="bg-amber-50 dark:bg-amber-900/30">
+            <th class="px-3 py-2 text-left text-sm font-bold">Attributief (vóór het znw)</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Predicatief (na het werkwoord)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="px-3 py-1.5">de snelle auto</td><td class="px-3 py-1.5">de auto is snel</td></tr>
+          <tr><td class="px-3 py-1.5">een interessant boek</td><td class="px-3 py-1.5">het boek is interessant</td></tr>
+          <tr><td class="px-3 py-1.5">de blauwe lucht</td><td class="px-3 py-1.5">de lucht is blauw</td></tr>
+          <tr><td class="px-3 py-1.5">het dikke schrift</td><td class="px-3 py-1.5">het schrift is dik</td></tr>
+        </tbody>
+      </table>
+      <p>In het meervoud is er geen verschil: <em>de grote huizen</em>, <em>mooie schilderijen</em>.</p>`,
+    },
+    {
+      title: "Trappen van vergelijking",
+      body: `<p>Veelgebruikte vormen:</p>
+      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
+        <thead>
+          <tr class="bg-rose-50 dark:bg-rose-900/30">
+            <th class="px-3 py-2 text-left text-sm font-bold">Stellend</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Vergrotend</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Overtreffend</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="px-3 py-1.5">groot</td><td class="px-3 py-1.5">groter</td><td class="px-3 py-1.5">grootst(e)</td></tr>
+          <tr><td class="px-3 py-1.5">klein</td><td class="px-3 py-1.5">kleiner</td><td class="px-3 py-1.5">kleinst(e)</td></tr>
+          <tr><td class="px-3 py-1.5">mooi</td><td class="px-3 py-1.5">mooier</td><td class="px-3 py-1.5">mooist(e)</td></tr>
+          <tr><td class="px-3 py-1.5">duur</td><td class="px-3 py-1.5">duurder</td><td class="px-3 py-1.5">duurst(e)</td></tr>
+          <tr><td class="px-3 py-1.5">goed</td><td class="px-3 py-1.5">beter</td><td class="px-3 py-1.5">best(e)</td></tr>
+          <tr><td class="px-3 py-1.5">veel</td><td class="px-3 py-1.5">meer</td><td class="px-3 py-1.5">meest(e)</td></tr>
+          <tr><td class="px-3 py-1.5">weinig</td><td class="px-3 py-1.5">minder</td><td class="px-3 py-1.5">minst(e)</td></tr>
+        </tbody>
+      </table>
+      <p>Gebruik: <em>Mijn huis is groter dan jouw huis.</em> <em>Dit is het mooiste schilderij.</em></p>`,
+    },
+    {
+      title: "Werkwoorden voor beschrijvingen",
+      body: `<p>Bij beschrijvingen gebruik je vaak deze werkwoorden:</p>
+      <table class="my-4 rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm w-full">
+        <thead>
+          <tr class="bg-indigo-50 dark:bg-indigo-900/30">
+            <th class="px-3 py-2 text-left text-sm font-bold">Werkwoord</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Gebruik</th>
+            <th class="px-3 py-2 text-left text-sm font-bold">Voorbeeld</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="px-3 py-1.5">zijn</td><td class="px-3 py-1.5">eigenschap</td><td class="px-3 py-1.5">De auto is rood.</td></tr>
+          <tr><td class="px-3 py-1.5">hebben</td><td class="px-3 py-1.5">bezit/kenmerk</td><td class="px-3 py-1.5">Zij heeft blauwe ogen.</td></tr>
+          <tr><td class="px-3 py-1.5">eruitzien</td><td class="px-3 py-1.5">uiterlijk</td><td class="px-3 py-1.5">Je ziet er moe uit.</td></tr>
+          <tr><td class="px-3 py-1.5">lijken</td><td class="px-3 py-1.5">schijn</td><td class="px-3 py-1.5">Dat lijkt me leuk.</td></tr>
+          <tr><td class="px-3 py-1.5">worden</td><td class="px-3 py-1.5">verandering</td><td class="px-3 py-1.5">De lucht wordt grijs.</td></tr>
+        </tbody>
+      </table>`,
+    },
+  ],
+
+  // ── Callouts ───────────────────────────────────────────────────────
+  callouts: [
+    {
+      type: "key",
+      label: "Geen -e bij het onbepaalde lidwoord",
+      text: "Bij een **het**-woord met **een** of **geen** blijft het adjectief onverbogen: *een groot huis*, *geen groot huis*.",
+    },
+    {
+      type: "remember",
+      label: "Oranje en roze blijven altijd kaal",
+      text: "**Oranje**, **roze**, **beige**, **lila** en **plastic** krijgen **nooit** een -e. Ook niet bij de-woorden: *de oranje trui*.",
+    },
+    {
+      type: "tip",
+      label: "Predicatief na koppelwerkwoorden",
+      text: "Na **zijn**, **worden**, **blijven**, **lijken**, **schijnen** gebruik je de basisvorm: *De auto is rood* (niet *rode*).",
+    },
+    {
+      type: "note",
+      label: "Stoffelijke adjectieven op -en",
+      text: "**Goud** wordt **gouden**, **hout** wordt **houten**. Deze vorm gebruik je altijd, ook na *een*: *een gouden ring*.",
+    },
+    {
+      type: "key",
+      label: "Meervoud altijd +e",
+      text: "In het meervoud maakt het niet uit of het een de- of het-woord is: **altijd** de vorm met -e: *de grote huizen*, *mooie boeken*.",
+    },
+  ],
+
+  // ── Veelgemaakte fouten ────────────────────────────────────────────
+  commonMistakes: [
+    { incorrect: "De auto is rode.", correct: "De auto is rood.", explanation: "Predicatief na 'is' → geen -e." },
+    { incorrect: "Het huis is grootte.", correct: "Het huis is groot.", explanation: "Basisvorm, geen -e." },
+    { incorrect: "Een grote huis.", correct: "Een groot huis.", explanation: "Het-woord onbepaald → geen -e." },
+    { incorrect: "Het groot huis.", correct: "Het grote huis.", explanation: "Het-woord bepaald → wél -e." },
+    { incorrect: "Een rood auto.", correct: "Een rode auto.", explanation: "De-woord onbepaald → wél -e." },
+    { incorrect: "De oranje trui. (correct)", correct: "De oranje trui.", explanation: "Oranje blijft onverbogen." },
+    { incorrect: "De witte jas (correct)", correct: "De witte jas.", explanation: "Wit → witte (medeklinker dubbel)." },
+    { incorrect: "Het grijze paard (correct)", correct: "Het grijze paard.", explanation: "Grijs → grijze (z/s)." },
+    { incorrect: "Ik heb een goude ring.", correct: "Ik heb een gouden ring.", explanation: "Stof: goud → gouden." },
+    { incorrect: "De langzaam auto.", correct: "De langzame auto.", explanation: "Vergeet -e niet." },
+    { incorrect: "Een blauwe ogen.", correct: "Blauwe ogen (zonder 'een').", explanation: "'Een' kan niet bij meervoud." },
+    { incorrect: "Hij is groter dan mij.", correct: "Hij is groter dan ik.", explanation: "Na 'dan' volgt de onderwerpsvorm." },
+    { incorrect: "Deze is de grootste van de twee.", correct: "Deze is het grootst van de twee.", explanation: "Zelfstandig gebruikt: het grootst (zonder -e als het niet direct voor een znw staat)." },
+  ],
+
+  // ── Snelle herhaling ───────────────────────────────────────────────
+  review: [
+    "**de-woord** + adjectief: altijd -e (de rode auto).",
+    "**het-woord** bepaald (met het): +e (het grote huis); onbepaald (met een): geen -e (een groot huis).",
+    "**Meervoud**: altijd -e (de grote huizen).",
+    "**Predicatief** (na zijn, worden, etc.): basisvorm, geen -e (De auto is rood).",
+    "**Uitzonderingen**: oranje, roze, beige, lila, plastic → nooit -e; stoffelijke adjectieven → -en (gouden, houten).",
+    "**Trappen van vergelijking**: stellend → +er → +st (mooi - mooier - mooist). Onregelmatig: goed - beter - best.",
+    "**Wit** en **grijs** veranderen in **witte** en **grijze** door spellingregels.",
+    "**Werkwoorden**: zijn (eigenschap), hebben (bezit/kenmerk), eruitzien (uiterlijk).",
+  ],
+
+  // ── Oefenvragen (tik om te onthullen) ──────────────────────────────
+  qa: [
+    { question: "De (rood / rode) auto staat voor het huis.", answer: "rode" },
+    { question: "Mijn jas is (blauw / blauwe).", answer: "blauw" },
+    { question: "Het (klein / kleine) kind lacht.", answer: "kleine" },
+    { question: "Een (klein / kleine) kind slaapt.", answer: "klein" },
+    { question: "Hij heeft een (groot / grote) tuin.", answer: "grote" },
+    { question: "We hebben een (mooi / mooie) schilderij gekocht.", answer: "mooi" },
+    { question: "De (oranje / oranjes) trui is mooi.", answer: "oranje" },
+    { question: "Dit is een (zilver / zilveren) horloge.", answer: "zilveren" },
+    { question: "De lucht is (grijs / grijze).", answer: "grijs" },
+    { question: "Mijn oma heeft (wit / witte) haren.", answer: "witte" },
+    { question: "Het boek is (interessant / interessante).", answer: "interessant" },
+    { question: "Een (interessant / interessante) boek.", answer: "interessant" },
+    { question: "De toren is (hoog / hoge).", answer: "hoog" },
+    { question: "Zijn auto is (sneller / snellere) dan de mijne.", answer: "sneller" },
+    { question: "Dat is de (mooist / mooiste) bloem uit de tuin.", answer: "mooiste" },
+    { question: "Een (gouden / goude) ketting.", answer: "gouden" },
+    { question: "De (paars / paarse) bloemen ruiken lekker.", answer: "paarse" },
+    { question: "Het (roze / rozee) varkentje.", answer: "roze" },
+    { question: "Mijn broek is (vies / vieze).", answer: "vies" },
+    { question: "Dit is een (gemakkelijk / gemakkelijke) opdracht.", answer: "gemakkelijke" },
+    { question: "De kat is klein en zwart. Hij heeft (wit / witte) pootjes.", answer: "witte" },
+    { question: "Jouw auto is sneller dan mijn auto. (Vertaal de hele zin)", answer: "Jouw auto is sneller dan mijn auto." },
+    { question: "De kinderen zien er (blij / blije) uit.", answer: "blij" },
+    { question: "Het plafond is wit, maar de muren zijn geel. (Correct?)", answer: "Ja, correct." },
+    { question: "Mijn zus heeft lang, blond haar. (Correct?)", answer: "Ja, correct." },
+    { question: "De tafel is rond en bruin. (Correct?)", answer: "Ja, correct." },
+  ],
+
+  // ── Meerkeuzeoefeningen ────────────────────────────────────────────
+  exercises: [
+    {
+      question: "Kies de juiste vorm: 'Het ... raam staat open.'",
+      options: ["groot", "grote"],
+      answer: "grote",
+    },
+    {
+      question: "Wat is fout?",
+      options: ["een mooi meisje", "een mooie vrouw", "de mooie vrouw", "een mooie meisje"],
+      answer: "een mooie meisje",
+    },
+    {
+      question: "Welk bijvoeglijk naamwoord is onveranderlijk?",
+      options: ["rood", "groot", "oranje", "blauw"],
+      answer: "oranje",
+    },
+    {
+      question: "Voltooi de zin: 'De muur is ...'",
+      options: ["witte", "wit", "witten", "wites"],
+      answer: "wit",
+    },
+    {
+      question: "Wat is de correcte vergrotende trap van 'duur'?",
+      options: ["duurder", "durer", "duurste", "duurer"],
+      answer: "duurder",
+    },
+    {
+      question: "Vertaal: 'Ik heb een rode jurk en witte schoenen.'",
+      options: [
+        "Ik heb een rood jurk en wit schoenen.",
+        "Ik heb een rode jurk en witte schoenen.",
+        "Ik heb een roder jurk en witter schoenen.",
+        "Ik heb een rode jurk en wit schoenen.",
+      ],
+      answer: "Ik heb een rode jurk en witte schoenen.",
+      },
+    ],
+    }
+  ];
