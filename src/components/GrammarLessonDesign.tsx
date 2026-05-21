@@ -24,7 +24,7 @@ import {
 
 type TableTheme = "indigo" | "emerald" | "amber" | "slate";
 
-// ─── Multilingual UI labels ──────────────────────────────────────────────
+/* ── Multilingual UI labels ────────────────────────────────────────────── */
 const UI_LABELS: Record<string, Record<string, string>> = {
   en: {
     alphabet: "Alphabet – 26 Letters",
@@ -83,7 +83,7 @@ const UI_LABELS: Record<string, Record<string, string>> = {
     importantPoints: "Points importants",
     commonMistakes: "Erreurs fréquentes",
     quickReview: "Révision rapide",
-    practiceQuestions: "Questions d’entraînement",
+    practiceQuestions: "Questions d'entraînement",
     structure: "Structure",
     example: "Exemple",
     usage: "Utilisation",
@@ -148,10 +148,42 @@ const UI_LABELS: Record<string, Record<string, string>> = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════
- * SHARED TABLES
- * ═══════════════════════════════════════════════════════ */
+/* ── Unified table style ── */
+const unifiedTable: Record<
+  TableTheme,
+  { th: string; td: string; odd: string; col0: string; colN: string }
+> = {
+  indigo: {
+    th: "bg-indigo-50 dark:bg-indigo-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-indigo-700 dark:text-indigo-300",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+  emerald: {
+    th: "bg-emerald-50 dark:bg-emerald-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-emerald-700 dark:text-emerald-300",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+  amber: {
+    th: "bg-amber-50 dark:bg-amber-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-amber-700 dark:text-amber-300",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+  slate: {
+    th: "bg-slate-100 dark:bg-slate-900/30 text-slate-900 dark:text-slate-100",
+    td: "text-slate-700 dark:text-slate-300",
+    odd: "bg-slate-50/60 dark:bg-slate-900/15",
+    col0: "font-semibold text-slate-900 dark:text-slate-100",
+    colN: "text-slate-600 dark:text-slate-400",
+  },
+};
 
+/* ── Shared RichTable component (not used in this version but kept) ── */
 function RichTable<T extends readonly string[]>({
   headers,
   rows,
@@ -173,7 +205,7 @@ function RichTable<T extends readonly string[]>({
               <th
                 key={i}
                 colSpan={rowSpan && i === 0 ? 2 : undefined}
-                className={`${s.th} font-semibold text-[11px] uppercase tracking-wider px-3 py-2.5 text-left`}
+                className={`${s.th} font-semibold text-xs uppercase tracking-wider px-3 py-2.5 text-left`}
               >
                 {h}
               </th>
@@ -209,44 +241,7 @@ const calloutTheme: Record<CalloutColor, { bg: string; border: string; label: st
   },
 };
 
-const unifiedTable: Record<
-  TableTheme,
-  { th: string; td: string; odd: string; col0: string; colN: string }
-> = {
-  indigo: {
-    th: "bg-indigo-50 dark:bg-indigo-900/30 text-slate-900 dark:text-slate-100",
-    td: "text-slate-700 dark:text-slate-300",
-    odd: "bg-slate-50/60 dark:bg-slate-900/15",
-    col0: "font-semibold text-indigo-700 dark:text-indigo-300",
-    colN: "text-slate-600 dark:text-slate-400",
-  },
-  emerald: {
-    th: "bg-emerald-50 dark:bg-emerald-900/30 text-slate-900 dark:text-slate-100",
-    td: "text-slate-700 dark:text-slate-300",
-    odd: "bg-slate-50/60 dark:bg-slate-900/15",
-    col0: "font-semibold text-emerald-700 dark:text-emerald-300",
-    colN: "text-slate-600 dark:text-slate-400",
-  },
-  amber: {
-    th: "bg-amber-50 dark:bg-amber-900/30 text-slate-900 dark:text-slate-100",
-    td: "text-slate-700 dark:text-slate-300",
-    odd: "bg-slate-50/60 dark:bg-slate-900/15",
-    col0: "font-semibold text-amber-700 dark:text-amber-300",
-    colN: "text-slate-600 dark:text-slate-400",
-  },
-  slate: {
-    th: "bg-slate-100 dark:bg-slate-900/30 text-slate-900 dark:text-slate-100",
-    td: "text-slate-700 dark:text-slate-300",
-    odd: "bg-slate-50/60 dark:bg-slate-900/15",
-    col0: "font-semibold text-slate-900 dark:text-slate-100",
-    colN: "text-slate-600 dark:text-slate-400",
-  },
-};
-
-/* ═══════════════════════════════════════════════════════
- * SECTION TITLE — narrow accent bar, optional icon
- * ═══════════════════════════════════════════════════════ */
-
+/* ── Section title with accent bar ── */
 function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <h2 className="font-display flex items-center gap-2.5 text-base sm:text-lg lg:text-xl font-extrabold text-slate-900 dark:text-white -mb-0.5">
@@ -257,11 +252,7 @@ function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string })
   );
 }
 
-
-/* ═══════════════════════════════════════════════════════
-  * SECTION CARD
- * ═══════════════════════════════════════════════════════ */
-
+/* ── Section card wrapper ── */
 function SectionCard({
   id,
   icon,
@@ -284,10 +275,34 @@ function SectionCard({
   );
 }
 
-/* ═══════════════════════════════════════════════════════
- * MAIN COMPONENT
- * ═══════════════════════════════════════════════════════ */
+/* ── Markdown-like renderer voor plain text helpers (italic verwijderd) ── */
+function RenderMarkdown({ text }: { text: string }) {
+  // ← Wijziging: |\*.*?\*| verwijderd uit regex
+  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  
+  return (
+    <span>
+      {parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**"))
+          return (
+            <strong key={i} className="font-bold text-amber-700 dark:text-amber-400">
+              {part.slice(2, -2)}
+            </strong>
+          );
+        // ← Italic blok verwijderd
+        if (part.startsWith("`") && part.endsWith("`"))
+          return (
+            <code key={i} className="rounded bg-slate-200/60 dark:bg-slate-700/50 px-1.5 py-0.5 text-xs font-mono text-amber-700 dark:text-amber-400 font-semibold">
+              {part.slice(1, -1)}
+            </code>
+          );
+        return <span key={i}>{part}</span>;
+      })}
+    </span>
+  );
+}
 
+/* ── Main component ── */
 function GrammarLessonDesign({
   lesson,
   completed,
@@ -304,29 +319,23 @@ function GrammarLessonDesign({
   onBack?: () => void;
 }) {
   useEffect(() => {
-    // Ensure fonts are loaded only on this page.
     const id = "langoai-grammar-fonts";
     if (document.getElementById(id)) return;
-
     const style = document.createElement("style");
     style.id = id;
     style.textContent = FONT_IMPORT_CSS;
     document.head.appendChild(style);
-
     return () => {
       style.remove();
     };
   }, []);
 
-  // ── Detect language from lesson ID (e.g. "en-gram-1" → "en") ──
   const langCode = lesson.id.split("-")[0]?.toLowerCase() ?? "nl";
   const labels = UI_LABELS[langCode] ?? UI_LABELS["nl"];
 
-  /* ── Level badge colors ── */
   const LEVELS = ["A1", "A2", "B1", "B2", "C1"] as const;
   const lvlToCEFR = (n: number) => LEVELS[Math.min(Math.max(n - 1, 0), 4)];
 
-   /* ── Rule-card full-accent themes ── */
   const barThemes = [
     {
       top: "bg-gradient-to-r from-indigo-400 to-indigo-300 dark:from-indigo-600 dark:to-indigo-500",
@@ -395,16 +404,14 @@ function GrammarLessonDesign({
     },
   ];
 
-  /* ── Accordion detail colours ── */
   const detailColors = [
-    { ring: "ring-indigo-200/60 dark:ring-indigo-500/40",   iconBg: "bg-indigo-100 dark:bg-indigo-900/40",   iconText: "text-indigo-600 dark:text-indigo-400" },
+    { ring: "ring-indigo-200/60 dark:ring-indigo-500/40", iconBg: "bg-indigo-100 dark:bg-indigo-900/40", iconText: "text-indigo-600 dark:text-indigo-400" },
     { ring: "ring-emerald-200/60 dark:ring-emerald-500/40", iconBg: "bg-emerald-100 dark:bg-emerald-900/40", iconText: "text-emerald-600 dark:text-emerald-400" },
-    { ring: "ring-violet-200/60 dark:ring-violet-500/40",   iconBg: "bg-violet-100 dark:bg-violet-900/40",   iconText: "text-violet-600 dark:text-violet-400" },
-    { ring: "ring-rose-200/60 dark:ring-rose-500/40",       iconBg: "bg-rose-100 dark:bg-rose-900/40",       iconText: "text-rose-600 dark:text-rose-400" },
-    { ring: "ring-amber-200/60 dark:ring-amber-500/40",     iconBg: "bg-amber-100 dark:bg-amber-900/40",     iconText: "text-amber-600 dark:text-amber-400" },
+    { ring: "ring-violet-200/60 dark:ring-violet-500/40", iconBg: "bg-violet-100 dark:bg-violet-900/40", iconText: "text-violet-600 dark:text-violet-400" },
+    { ring: "ring-rose-200/60 dark:ring-rose-500/40", iconBg: "bg-rose-100 dark:bg-rose-900/40", iconText: "text-rose-600 dark:text-rose-400" },
+    { ring: "ring-amber-200/60 dark:ring-amber-500/40", iconBg: "bg-amber-100 dark:bg-amber-900/40", iconText: "text-amber-600 dark:text-amber-400" },
   ];
 
-  /* ── Rotating border-left accent for accordion items ── */
   const sectionAccordionBorder = [
     "border-l-2 border-l-indigo-400 data-[state=open]:border-l-indigo-500",
     "border-l-2 border-l-emerald-400 data-[state=open]:border-l-emerald-500",
@@ -413,7 +420,7 @@ function GrammarLessonDesign({
     "border-l-2 border-l-amber-400 data-[state=open]:border-l-amber-500",
   ];
 
-  /* ── Markdown / content enrichment ── */
+  /* ── Markdown / content enrichment (for HTML details) ── */
   const buildDetailHtml = (raw: string) =>
     typeof raw === "string"
       ? raw
@@ -452,68 +459,67 @@ function GrammarLessonDesign({
       (match) => `<ul class="my-3 space-y-1.5 pl-1">\n${match}\n</ul>`
     );
 
-     html = html.replace(
-       /\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,
-       (_full, headerRow, bodyRows) => {
-         const headers = headerRow
-           .split("|")
-           .map((h: string) => h.trim())
-           .filter(Boolean);
-         const rows = bodyRows
-           .trim()
-           .split("\n")
-           .map((r: string) =>
-             r
-               .split("|")
-               .map((c: string) => c.trim())
-               .filter(Boolean)
-           );
-         return `
-           <div class="overflow-x-auto my-8 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-lg bg-white dark:bg-slate-800/90 backdrop-blur-sm">
-             <table class="w-full border-collapse min-w-[480px]">
-               <thead>
-                 <tr>
-                   ${headers
-                     .map(
-                       (h: string) =>
-                         `<th class="bg-gradient-to-r from-indigo-600 to-indigo-500 dark:from-indigo-400 dark:to-indigo-300 text-white text-base font-semibold uppercase tracking-wider px-6 py-4 text-left sticky top-0 z-10">${h}</th>`
-                     )
-                     .join("")}
-                 </tr>
-               </thead>
-               <tbody>
-                 ${rows
-                   .map(
-                     (row: string[], ri: number) =>
-                       `<tr class="${ri % 2 ? "bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/50 dark:hover:bg-slate-700/30 transition-colors" : ""}">
-                         ${row
-                           .map(
-                             (cell: string, ci: number) => {
-                               // Highlight stressed syllables with accent marks
-                               const highlightedCell = cell
-                                 .replace(/ó/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ó</span>')
-                                 .replace(/á/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">á</span>')
-                                 .replace(/é/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">é</span>')
-                                 .replace(/í/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">í</span>')
-                                 .replace(/ú/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ú</span>')
-                                 .replace(/ò/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ò</span>')
-                                 .replace(/â/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">â</span>')
-                                 .replace(/ê/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ê</span>')
-                                 .replace(/î/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">î</span>')
-                                 .replace(/ô/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ô</span>')
-                                 .replace(/û/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">û</span>');
-                               return `<td class="px-6 py-4 border-t border-slate-200/50 dark:border-slate-700/30 text-base text-slate-800 dark:text-slate-200 ${ci === 0 ? "font-medium text-slate-900 dark:text-slate-100" : ""}">${highlightedCell}</td>`;
-                             }
-                           )
-.join("")}
-                        </tr>`
+    html = html.replace(
+      /\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,
+      (_full, headerRow, bodyRows) => {
+        const headers = headerRow
+          .split("|")
+          .map((h: string) => h.trim())
+          .filter(Boolean);
+        const rows = bodyRows
+          .trim()
+          .split("\n")
+          .map((r: string) =>
+            r
+              .split("|")
+              .map((c: string) => c.trim())
+              .filter(Boolean)
+          );
+        return `
+          <div class="overflow-x-auto my-8 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-lg bg-white dark:bg-slate-800/90 backdrop-blur-sm">
+            <table class="w-full border-collapse min-w-[480px]">
+              <thead>
+                <tr>
+                  ${headers
+                    .map(
+                      (h: string) =>
+                        `<th class="bg-gradient-to-r from-indigo-600 to-indigo-500 dark:from-indigo-400 dark:to-indigo-300 text-white text-xs font-semibold uppercase tracking-wider px-6 py-4 text-left sticky top-0 z-10">${h}</th>`
                     )
                     .join("")}
-                </tbody>
-              </table>
-            </div>`;
-        }
-      );
+                </tr>
+              </thead>
+              <tbody>
+                ${rows
+                  .map(
+                    (row: string[], ri: number) =>
+                      `<tr class="${ri % 2 ? "bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100/50 dark:hover:bg-slate-700/30 transition-colors" : ""}">
+                        ${row
+                          .map(
+                            (cell: string, ci: number) => {
+                              const highlightedCell = cell
+                                .replace(/ó/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ó</span>')
+                                .replace(/á/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">á</span>')
+                                .replace(/é/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">é</span>')
+                                .replace(/í/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">í</span>')
+                                .replace(/ú/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ú</span>')
+                                .replace(/ò/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ò</span>')
+                                .replace(/â/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">â</span>')
+                                .replace(/ê/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ê</span>')
+                                .replace(/î/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">î</span>')
+                                .replace(/ô/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ô</span>')
+                                .replace(/û/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">û</span>');
+                              return `<td class="px-6 py-4 border-t border-slate-200/50 dark:border-slate-700/30 text-base text-slate-800 dark:text-slate-200 ${ci === 0 ? "font-medium text-slate-900 dark:text-slate-100" : ""}">${highlightedCell}</td>`;
+                            }
+                          )
+                          .join("")}
+                      </tr>`
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>`;
+      }
+    );
 
     html = html.replace(
       /^[ \t]+[^\s<].*$/gm,
@@ -525,47 +531,6 @@ function GrammarLessonDesign({
 
     return html;
   };
-
-/* ── Markdown-like renderer for card plain-text helpers ── */
-  function RenderMarkdown({ text }: { text: string }) {
-    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g);
-    return (
-      <span>
-        {parts.map((part, i) => {
-          if (part.startsWith("**") && part.endsWith("**"))
-            return (
-              <strong
-                key={i}
-                className="font-bold text-amber-700 dark:text-amber-400"
-              >
-                {part.slice(2, -2)}
-              </strong>
-            );
-          if (part.startsWith("*") && part.endsWith("*"))
-            return (
-              <em key={i} className="italic text-slate-600 dark:text-slate-400">
-                {part.slice(1, -1)}
-              </em>
-            );
-          if (part.startsWith("`") && part.endsWith("`"))
-            return (
-              <code
-                key={i}
-                className="rounded bg-slate-200/60 dark:bg-slate-700/50 px-1.5 py-0.5 text-xs font-mono text-amber-700 dark:text-amber-400 font-semibold"
-              >
-                {part.slice(1, -1)}
-              </code>
-            );
-          return <span key={i}>{part}</span>;
-        })}
-      </span>
-    );
-  }
-
-
-  /* ════════════════════════════════════════════════
-   * RENDER
-   * ════════════════════════════════════════════════ */
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 lg:px-8 font-sans">
@@ -581,16 +546,16 @@ function GrammarLessonDesign({
               {labels.back}
             </button>
           )}
-          <span className="rounded-full px-3 py-1 text-[11px] font-black leading-none tracking-wide uppercase bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-sm">
+          <span className="rounded-full px-3 py-1 text-xs sm:text-sm font-black leading-none tracking-wide uppercase bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-sm">
             {lvlToCEFR(lesson.level)}
           </span>
-          <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+          <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
             {lesson.topic}
           </span>
         </div>
-         <h1 className="font-display text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-extrabold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
-           {lesson.title}
-         </h1>
+        <h1 className="font-display text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-extrabold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
+          {lesson.title}
+        </h1>
         {lesson.overview && (
           <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
             <RenderMarkdown text={lesson.overview} />
@@ -610,26 +575,20 @@ function GrammarLessonDesign({
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-gradient-to-r from-indigo-500 via-indigo-400 to-purple-500">
-                    <th className="w-[56px] px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">Ltr</th>
-                    <th className="w-[88px] px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">Spelling</th>
-                    <th className="px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">Klank</th>
-                    <th className="px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white">Voorbeelden</th>
+                    <th className="px-2 py-2 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">Ltr</th>
+                    <th className="px-2 py-2 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">Spelling</th>
+                    <th className="px-2 py-2 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">Klank</th>
+                    <th className="px-2 py-2 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">Voorbeelden</th>
                   </tr>
                 </thead>
                 <tbody>
                   {lesson.timeExpressions.rows.map(([letter, spelling, sound, examples], ri) => (
                     <tr key={ri} className={ri % 2 === 1 ? "bg-indigo-50/40 dark:bg-indigo-900/10" : "bg-white dark:bg-slate-800/40"}>
-                      {/* Letter — indigo */}
-                      <td className="px-3 py-2.5 text-sm font-black text-indigo-600 dark:text-indigo-400 border-t border-indigo-100/60 dark:border-indigo-800/30">{letter}</td>
-                      {/* Spelling — amber */}
-                      <td className="px-3 py-2.5 text-xs font-semibold text-amber-600 dark:text-amber-400 border-t border-indigo-100/60 dark:border-indigo-800/30">{spelling}</td>
-                      {/* Sound — slate body; bold/italic children rendered from HTML */}
-                      <td className="px-3 py-2.5 text-xs text-slate-700 dark:text-slate-200 leading-relaxed border-t border-indigo-100/60 dark:border-indigo-800/30" dangerouslySetInnerHTML={{ __html: sound }} />
-                      {/* Examples — emerald; child spans inherit via forced reset on wrapper */}
-                      <td className="px-3 py-2.5 text-[11px] text-emerald-700 dark:text-emerald-400 leading-relaxed border-t border-indigo-100/60 dark:border-indigo-800/30">
-                        <span className="[&_em]:text-emerald-600 dark:[&_em]:text-emerald-500 [&_strong]:text-emerald-800 dark:[&_strong]:text-emerald-300 [&_code]:text-emerald-700 dark:[&_code]:text-emerald-400">
-                          <RenderMarkdown text={examples} />
-                        </span>
+                      <td className="px-2 py-2 text-xs sm:text-sm font-black text-indigo-600 dark:text-indigo-400 border-t border-indigo-100/60 dark:border-indigo-800/30">{letter}</td>
+                      <td className="px-2 py-2 text-xs sm:text-sm font-semibold text-amber-600 dark:text-amber-400 border-t border-indigo-100/60 dark:border-indigo-800/30">{spelling}</td>
+                      <td className="px-2 py-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed border-t border-indigo-100/60 dark:border-indigo-800/30" dangerouslySetInnerHTML={{ __html: sound }} />
+                      <td className="px-2 py-2 text-xs sm:text-sm text-emerald-700 dark:text-emerald-400 leading-relaxed border-t border-indigo-100/60 dark:border-indigo-800/30">
+                        <RenderMarkdown text={examples} />
                       </td>
                     </tr>
                   ))}
@@ -639,7 +598,7 @@ function GrammarLessonDesign({
           </section>
         )}
 
-        {/* CONJUGATION TABLE */}
+        {/* CONJUGATION TABLE (indien aanwezig) */}
         {lesson.conjugationTable && (
           <section id="conjugation" className="gl-id-section">
             <SectionTitle
@@ -647,16 +606,13 @@ function GrammarLessonDesign({
               label={labels.conjugation}
             />
             <div className="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700/50 shadow-sm mt-3">
-              <table className="w-full border-collapse min-w-[500px]">
+              <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-gradient-to-r from-indigo-600 to-indigo-500 dark:from-indigo-700 dark:to-indigo-600">
                     {lesson.conjugationTable.header
                       .split("|")
                       .map((h, i) => (
-                        <th
-                          key={i}
-                          className="px-3 py-2.5 text-left text-[10px] font-black uppercase tracking-wider text-white"
-                        >
+                        <th key={i} className="px-2 py-2 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
                           {h.trim()}
                         </th>
                       ))}
@@ -666,21 +622,10 @@ function GrammarLessonDesign({
                   {lesson.conjugationTable.rows.map((row, ri) => (
                     <tr
                       key={ri}
-                      className={
-                        ri % 2 === 0
-                          ? "bg-white dark:bg-slate-800/50"
-                          : "bg-slate-50/60 dark:bg-slate-800/30"
-                      }
+                      className={ri % 2 === 0 ? "bg-white dark:bg-slate-800/50" : "bg-slate-50/60 dark:bg-slate-800/30"}
                     >
                       {row.map((cell, ci) => (
-                        <td
-                          key={ci}
-                          className={`px-3 py-2.5 border-t border-slate-100 dark:border-slate-700/50 text-sm ${
-                            ci === 0
-                              ? "font-bold text-slate-900 dark:text-slate-100"
-                              : "text-slate-700 dark:text-slate-300"
-                          }`}
-                        >
+                        <td key={ci} className={`px-2 py-2 border-t border-slate-100 dark:border-slate-700/50 text-xs ${ci === 0 ? "font-bold text-slate-900 dark:text-slate-100" : "text-slate-700 dark:text-slate-300"}`}>
                           {cell}
                         </td>
                       ))}
@@ -692,12 +637,9 @@ function GrammarLessonDesign({
           </section>
         )}
 
-         {/* RULES CARDS */}
+        {/* GRAMMATICAREGELS (uitgebreide kaartjes) */}
         {lesson.rulesTable && lesson.rulesTable.length > 0 && (
-          <section
-            id="rules"
-            className="gl-id-section rounded-2xl bg-slate-50/60 dark:bg-slate-800/30 -mx-2 sm:-mx-4 px-2 sm:px-4 py-5"
-          >
+          <section id="rules" className="gl-id-section rounded-2xl bg-slate-50/60 dark:bg-slate-800/30 -mx-2 sm:-mx-4 px-2 sm:px-4 py-5">
             <SectionTitle
               icon={<BookOpen className="w-5 h-5 text-indigo-500" />}
               label={labels.rules}
@@ -708,54 +650,44 @@ function GrammarLessonDesign({
                 return (
                   <div
                     key={i}
-                    className="group flex flex-col rounded-2xl bg-white dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/50 shadow-sm
-                                 hover:shadow-lg hover:scale-[1.015] transition-all duration-200 overflow-hidden"
+                    className="group flex flex-col rounded-2xl bg-white dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/50 shadow-sm hover:shadow-lg hover:scale-[1.015] transition-all duration-200 overflow-hidden"
                   >
-                    {/* Full-width top accent */}
                     <div className={`h-1.5 shrink-0 ${themed.top}`} />
-
                     <div className="flex-1 p-4">
-                      {/* Rule title — picks accent color */}
                       <div className="flex items-center gap-2 mb-2.5">
-                        <span className={`shrink-0 w-7 h-7 rounded-lg ${themed.badge} flex items-center justify-center text-[13px] font-black ${themed.titleText}`}>
+                        <span className={`shrink-0 w-7 h-7 rounded-lg ${themed.badge} flex items-center justify-center text-sm sm:text-base font-black ${themed.titleText}`}>
                           {i + 1}
                         </span>
                         <h3 className={`font-display font-extrabold text-base leading-snug ${themed.titleText}`}>
                           {r.rule}
                         </h3>
                       </div>
-
-<div className="space-y-2">
-                          {/* Structuur */}
-                          <div>
-                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
-                              {labels.structure}
-                            </p>
-                            <p className={`text-sm leading-snug rounded-lg px-3 py-2 ${themed.chipBg} ${themed.chipText}`}>
-                              <RenderMarkdown text={r.structure} />
-                            </p>
-                          </div>
-
-                          {/* Voorbeeld */}
-                          <div>
-                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accentDark }}>
-                              {labels.example}
-                            </p>
-                            <p className={`text-sm leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgLight} ${themed.chipTextDark}`}>
-                              <RenderMarkdown text={r.example} />
-                            </p>
-                          </div>
-
-                          {/* Gebruik */}
-                          <div>
-                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
-                              {labels.usage}
-                            </p>
-                            <p className={`text-sm leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgAlt} ${themed.chipTextMedium}`}>
-                              <RenderMarkdown text={r.usage} />
-                            </p>
-                          </div>
-                       </div>
+                      <div className="space-y-2">
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
+                            {labels.structure}
+                          </p>
+                          <p className={`text-xs sm:text-sm leading-snug rounded-lg px-3 py-2 ${themed.chipBg} ${themed.chipText}`}>
+                            <RenderMarkdown text={r.structure} />
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accentDark }}>
+                            {labels.example}
+                          </p>
+                          <p className={`text-sm leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgLight} ${themed.chipTextDark}`}>
+                            <RenderMarkdown text={r.example} />
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: themed.accent }}>
+                            {labels.usage}
+                          </p>
+                          <p className={`text-sm leading-relaxed rounded-lg px-3 py-2 ${themed.chipBgAlt} ${themed.chipTextMedium}`}>
+                            <RenderMarkdown text={r.usage} />
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -764,9 +696,7 @@ function GrammarLessonDesign({
           </section>
         )}
 
-
-
-        {/* DETAILED EXPLANATION — ACCORDION */}
+        {/* GEDETAILLEERDE UITLEG (accordions) */}
         {lesson.details && lesson.details.length > 0 && (
           <section id="explanation" className="gl-id-section">
             <SectionTitle
@@ -785,9 +715,7 @@ function GrammarLessonDesign({
                       sectionAccordionBorder[i % sectionAccordionBorder.length]
                     )}
                   >
-                    {/* Full-width colour accent bar */}
                     <div className={`h-1.5 w-full shrink-0 ${t.top}`} />
-
                     <AccordionTrigger
                       className={cn(
                         "flex items-center gap-3 px-4 py-3",
@@ -796,41 +724,34 @@ function GrammarLessonDesign({
                         "text-left w-full"
                       )}
                     >
-                      {/* Colour badge */}
-                      <span
-                        className={cn(
-                          "shrink-0 h-8 min-w-[32px] px-2 rounded-lg inline-flex items-center justify-center text-[13px] font-black",
-                          t.badge, t.titleText
-                        )}
-                      >
+                      <span className={cn("shrink-0 h-8 min-w-[32px] px-2 rounded-lg inline-flex items-center justify-center text-sm font-black", t.badge, t.titleText)}>
                         {i + 1}
                       </span>
-                      {/* Accent-coloured title */}
-                      <span className={cn("flex-1 min-w-0 font-extrabold text-[13px]", t.titleText, "truncate")}>
+                      <span className={cn("flex-1 min-w-0 font-extrabold text-sm", t.titleText, "truncate")}>
                         {sec.title}
                       </span>
                     </AccordionTrigger>
-
                     <AccordionContent>
-                         <div
-                           className={cn(
-                             "p-4 space-y-0.5 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300",
-                            "bg-slate-50/50 dark:bg-slate-800/20",
-                            "prose prose-sm dark:prose-invert max-w-none",
-                            "[&_p]:my-2.5 [&_p]:text-slate-700 [&_p]:dark:text-slate-300",
-                            "[&_strong]:font-bold [&_strong]:text-slate-900 [&_strong]:dark:text-slate-100",
-                            "[&_em]:italic [&_em]:text-slate-600 [&_em]:dark:text-slate-400",
-                            "[&_code]:rounded [&_code]:bg-slate-200/60 [&_code]:dark:bg-slate-700/50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-xs [&_code]:font-mono [&_code]:font-bold [&_code]:text-indigo-700 [&_code]:dark:text-indigo-300",
-                            "[&_blockquote]:my-3 [&_blockquote]:pl-4 [&_blockquote]:border-l-4 [&_blockquote]:border-indigo-300 [&_blockquote]:dark:border-indigo-700 [&_blockquote]:py-1.5 [&_blockquote]:pr-3 [&_blockquote]:bg-indigo-50/40 [&_blockquote]:dark:bg-indigo-900/15 [&_blockquote]:rounded-r-lg [&_blockquote]:italic [&_blockquote]:text-slate-600 [&_blockquote]:dark:text-slate-400",
-                            "[&_ul]:my-3 [&_ul]:space-y-1.5 [&_ul]:pl-1 [&_ul]:list-none",
-                            "[&_li]:ml-1.5 [&_li]:relative [&_li]:pl-5 [&_li]:text-slate-700 [&_li]:dark:text-slate-300",
-                            "[&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-2 [&_li]:before:w-1.5 [&_li]:before:h-1.5 [&_li]:before:rounded-full [&_li]:before:bg-indigo-400 [&_li]:dark:before:bg-indigo-500",
-                            "[&_table]:my-4 [&_table]:overflow-x-auto [&_table]:rounded-xl [&_table]:border [&_table]:border-slate-200/70 [&_table]:dark:border-slate-700 [&_table]:shadow-sm",
-                            "[&_th]:bg-slate-600 [&_th]:text-white [&_th]:text-[11px] [&_th]:font-bold [&_th]:uppercase [&_th]:tracking-wider [&_th]:px-3 [&_th]:py-2 [&_th]:text-left",
-                            "[&_td]:px-3 [&_td]:py-2 [&_td]:text-sm [&_td]:text-slate-700 [&_td]:dark:text-slate-300 [&_td]:border-t [&_td]:border-slate-100 [&_td]:dark:border-slate-700/50",
-                            "[&_tr:nth-child(even)]:bg-slate-50/60 [&_tr:nth-child(even)]:dark:bg-slate-800/30"
-                          )}
-                        >
+                      <div
+                        className={cn(
+                          "p-4 space-y-0.5 text-slate-700 dark:text-slate-300",
+                          "bg-slate-50/50 dark:bg-slate-800/20",
+                          "prose prose-slate dark:prose-invert max-w-none",
+                          "prose-p:my-2.5 prose-p:text-slate-700 prose-p:dark:text-slate-300",
+                          "prose-strong:font-bold prose-strong:text-slate-900 prose-strong:dark:text-slate-100",
+                          "prose-em:italic prose-em:text-slate-600 prose-em:dark:text-slate-400",
+                          "prose-code:rounded prose-code:bg-slate-200/60 prose-code:dark:bg-slate-700/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-xs prose-code:font-mono prose-code:font-bold prose-code:text-indigo-700 prose-code:dark:text-indigo-300",
+                          "prose-blockquote:my-3 prose-blockquote:border-l-4 prose-blockquote:border-indigo-300 prose-blockquote:dark:border-indigo-700 prose-blockquote:bg-indigo-50/40 prose-blockquote:dark:bg-indigo-900/15 prose-blockquote:italic prose-blockquote:text-slate-600 prose-blockquote:dark:text-slate-400",
+                          "prose-ul:my-3 prose-ul:space-y-1.5 prose-ul:list-none",
+                          "prose-li:ml-1.5 prose-li:relative prose-li:pl-5 prose-li:text-slate-700 prose-li:dark:text-slate-300",
+                          "prose-li:before:content-[''] prose-li:before:absolute prose-li:before:left-0 prose-li:before:top-2 prose-li:before:w-1.5 prose-li:before:h-1.5 prose-li:before:rounded-full prose-li:before:bg-indigo-400 prose-li:before:dark:bg-indigo-500",
+                          "prose-table:my-4 prose-table:overflow-x-auto prose-table:rounded-xl prose-table:border prose-table:border-slate-200/70 prose-table:dark:border-slate-700 prose-table:shadow-sm",
+                          "prose-th:bg-slate-600 prose-th:text-white prose-th:text-xs prose-th:font-bold prose-th:uppercase prose-th:tracking-wider prose-th:px-3 prose-th:py-2 prose-th:text-left",
+                          "prose-td:px-3 prose-td:py-2 prose-td:text-sm prose-td:text-slate-700 prose-td:dark:text-slate-300 prose-td:border-t prose-td:border-slate-100 prose-td:dark:border-slate-700/50",
+                          "prose-tr:nth-child(even):bg-slate-50/60 prose-tr:nth-child(even):dark:bg-slate-800/30",
+                          "max-sm:prose-sm"
+                        )}
+                      >
                         <div dangerouslySetInnerHTML={{ __html: enrich(sec.body, t.accent) }} />
                       </div>
                     </AccordionContent>
@@ -841,7 +762,7 @@ function GrammarLessonDesign({
           </section>
         )}
 
-        {/* CALLOUTS */}
+        {/* BELANGRIJKE PUNTEN (callouts) */}
         {lesson.callouts && lesson.callouts.length > 0 && (
           <section id="callouts" className="gl-id-section">
             <SectionTitle
@@ -864,7 +785,7 @@ function GrammarLessonDesign({
           </section>
         )}
 
-        {/* COMMON MISTAKES */}
+        {/* VEELGEMAAKTE FOUTEN */}
         {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
           <section id="mistakes" className="gl-id-section">
             <SectionTitle
@@ -872,22 +793,17 @@ function GrammarLessonDesign({
               label={labels.commonMistakes}
             />
             <div className="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700/50 shadow-sm mt-3">
-              <table className="w-full border-collapse min-w-[600px]">
+              <table className="w-full border-collapse min-w-[480px] sm:min-w-[600px]">
                 <thead>
                   <tr className="bg-gradient-to-r from-rose-500 to-rose-400 dark:from-rose-600 dark:to-rose-500">
-                    <th className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.incorrect}</th>
-                    <th className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.correct}</th>
-                    <th className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-wider text-white">{labels.why}</th>
+                    <th className="px-4 py-3 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">{labels.incorrect}</th>
+                    <th className="px-4 py-3 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">{labels.correct}</th>
+                    <th className="px-4 py-3 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">{labels.why}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {lesson.commonMistakes.map((m, i) => (
-                    <tr
-                      key={i}
-                      className={
-                        i % 2 === 1 ? "bg-slate-50/60 dark:bg-slate-800/30" : "bg-white dark:bg-slate-800/40"
-                      }
-                    >
+                    <tr key={i} className={i % 2 === 1 ? "bg-slate-50/60 dark:bg-slate-800/30" : "bg-white dark:bg-slate-800/40"}>
                       <td className="px-4 py-3 text-sm text-rose-600 dark:text-rose-400 line-through font-medium border-t border-slate-100 dark:border-slate-700/50">{m.incorrect}</td>
                       <td className="px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 font-semibold border-t border-slate-100 dark:border-slate-700/50">{m.correct}</td>
                       <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300 italic leading-relaxed border-t border-slate-100 dark:border-slate-700/50"><RenderMarkdown text={m.explanation} /></td>
@@ -899,7 +815,7 @@ function GrammarLessonDesign({
           </section>
         )}
 
-        {/* QUICK REVIEW */}
+        {/* SNELLE HERHALING */}
         {lesson.review && lesson.review.length > 0 && (
           <section id="review" className="gl-id-section">
             <SectionTitle
@@ -912,19 +828,19 @@ function GrammarLessonDesign({
                   key={i}
                   className="flex items-start gap-3 rounded-lg bg-gradient-to-r from-emerald-50/60 to-white dark:from-emerald-900/25 dark:to-slate-800/30 border-l-4 border-emerald-500 pl-4 pr-4 py-3.5 hover:shadow-md transition-all"
                 >
-                   <span className="flex-shrink-0 flex items-center justify-center w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-emerald-600 text-white text-base sm:text-lg font-bold shadow-sm">
-                     {i + 1}
-                   </span>
-                   <p className="flex-1 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-medium">
-                     <RenderMarkdown text={item} />
-                   </p>
+                  <span className="flex-shrink-0 flex items-center justify-center w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-emerald-600 text-white text-base sm:text-lg font-bold shadow-sm">
+                    {i + 1}
+                  </span>
+                  <p className="flex-1 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-medium">
+                    <RenderMarkdown text={item} />
+                  </p>
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        {/* PRACTICE QUESTIONS */}
+        {/* OEFENVRAGEN */}
         {lesson.qa && lesson.qa.length > 0 && (
           <section id="qa" className="gl-id-section">
             <SectionTitle
@@ -933,9 +849,7 @@ function GrammarLessonDesign({
             />
             {(() => {
               const [revealed, setRevealed] = useState<Record<number, boolean>>({});
-              const toggle = (i: number) =>
-                setRevealed((prev) => ({ ...prev, [i]: !prev[i] }));
-              
+              const toggle = (i: number) => setRevealed((prev) => ({ ...prev, [i]: !prev[i] }));
               return (
                 <div className="space-y-3 mt-3">
                   {lesson.qa.map((item, i) => (
@@ -952,16 +866,16 @@ function GrammarLessonDesign({
                         </p>
                       </div>
                       <div className="p-4 bg-slate-50/40 dark:bg-slate-800/20">
-                       <button
-                           onClick={() => toggle(i)}
-                           className={`font-medium rounded-lg px-4 py-2 text-base transition-all ${
-                             revealed[i]
-                               ? "text-emerald-700 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-900/30 shadow-inner"
-                               : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
-                           }`}
-                         >
-                           {revealed[i] ? item.answer : labels.tapToReveal}
-                         </button>
+                        <button
+                          onClick={() => toggle(i)}
+                          className={`font-medium rounded-lg px-4 py-2 text-base transition-all ${
+                            revealed[i]
+                              ? "text-emerald-700 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-900/30 shadow-inner"
+                              : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
+                          }`}
+                        >
+                          {revealed[i] ? item.answer : labels.tapToReveal}
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -986,7 +900,6 @@ function GrammarLessonDesign({
               {labels.markComplete} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
             </button>
           )}
-
           {hasTest && (
             <button
               onClick={onTest}
@@ -996,7 +909,6 @@ function GrammarLessonDesign({
             </button>
           )}
         </div>
-
         <AdSlot className="mt-2" />
       </div>
     </div>
