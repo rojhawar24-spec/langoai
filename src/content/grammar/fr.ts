@@ -1,207 +1,393 @@
 import type { GrammarLesson } from "../types";
 
 export const frGrammar: GrammarLesson[] = [
-  /* ═══════════════════════════════════════════════════════════
-   * fr-uitspraak-1 — Alphabet / Prononciation
-   * ═══════════════════════════════════════════════════════════ */
+  // ── Les 1: Le Présent — verbes réguliers ────────────────
   {
-    id: "fr-uitspraak-1",
-    title: "Alphabet – 26 Lettres: Guide complet de prononciation",
+    id: "fr-gram-1",
+    title: "Le Présent — Verbes Réguliers",
     level: 1,
-    topic: "Prononciation",
-    body: "Apprends la prononciation française avec cet aperçu complet de l'alphabet.",
+    topic: "Grammaire",
+    anchorSectionId: "rules",
+
     overview:
-      "Voici un **aperçu complet** de l'alphabet français avec les 26 lettres, leur nom, leur son et des exemples de mots.",
-    anchorSectionId: "alphabet",
-    exercises: [],
-    timeExpressions: {
-      header: "Ltr | Spelling | Klank | Voorbeelden",
+      "Le **présent de l'indicatif** exprime une action qui se déroule maintenant, habituellement ou en général. Les verbes réguliers français obéissent à une règle prévisible selon qu'ils se terminent par **-er**, **-ir** ou **-re**.",
+
+    body: `## Le Présent de l'Indicatif
+
+Le présent sert à exprimer :
+- **Maintenant** : Je **mange** une pomme.
+- **Habituellement** : Nous **habitons** à Lyon.
+- **Généralité** : Le chat **dort** beaucoup.
+
+**Trois groupes de verbes réguliers**
+
+| Infinitif | Exemple | Terminaison | Je | Tu | Il/Elle |
+|-----------|---------|-------------|----|----|---------|
+| -er | *parler* | mów e ø | parle | parles | parle |
+| -ir | *finir* | mów is is it / issons / issez / issent | finis | finis | finit |
+| -re | *vendre* | mów s s ø / ons / ez / ent | vends | vends | vend |`,
+
+    rulesTable: [
+      {
+        rule:     "Verbes en -er (groupe 1)",
+        structure:"raiz + e / es / e / ons / ez / ent",
+        example:  "parler → je parle, tu parles, il parle, nous parlons, vous parlez, ils parlent",
+        usage:    "Groupe le plus important (>90 % des verbes courants).",
+      },
+      {
+        rule:     "Verbes en -ir (groupe 2)",
+        structure:"raiz + is / is / it / issons / issez / issent",
+        example:  "finir → je finis, tu finis, il finit, nous finissons, vous finissez, ils finissent",
+        usage:    "Le radical reste identique ; terminaison caractéristique -iss- en nous/vous/ils.",
+      },
+      {
+        rule:     "Verbes en -re (groupe 3)",
+        structure:"raiz (sans -e) + s / s / Ø / ons / ez / ent",
+        example:  "vendre → je vends, tu vends, il vend, nous vendons, vous vendez, ils vendent",
+        usage:    "Moins nombreux, terminaison irrégulière : pas de -e au radical de je/tu/il.",
+      },
+    ],
+
+    conjugationTable: {
+      header: "Verbe | je | tu | il/elle | nous | vous | ils/elles",
       rows: [
-        ["A", "‘ah’", "<strong>a</strong> (kort) / <strong>â</strong> (lang)", "arbre, chat, pâte"],
-        ["B", "‘beh’", "<strong>b</strong>", "bateau, abbé, bon"],
-        ["C", "‘seh’", "<strong>k</strong> vóór a/o/u; <strong>s</strong> vóór e/i/y", "café, cédille, cygne"],
-        ["D", "‘deh’", "<strong>d</strong>", "dent, addition, dos"],
-        ["E", "‘uh’", "<strong>e</strong> (kort) / <strong>é</strong> / <strong>è</strong> / doffe e", "chemin, été, mère, le"],
-        ["F", "‘ef’", "<strong>f</strong>", "feu, effort, femme"],
-        ["G", "‘jeh’", "<strong>g</strong> (hard) vóór a/o/u; <strong>zj</strong> vóór e/i/y", "gare, gymnase, genou"],
-        ["H", "‘ash’", "muet of aspiré (geen klank)", "hôtel, haricot, habiter"],
-        ["I", "‘ee’", "<strong>i</strong> (kort) / <strong>î</strong> (lang)", "île, finir, ici"],
-        ["J", "‘jhee’", "<strong>zj</strong> (als *g* in *genou*)", "jour, bonjour, jamais"],
-        ["K", "‘kah’", "<strong>k</strong>", "kilo, képi, karaté"],
-        ["L", "‘el’", "<strong>l</strong>", "lac, ville, aller"],
-        ["M", "‘em’", "<strong>m</strong>", "mer, femme, aimer"],
-        ["N", "‘en’", "<strong>n</strong>", "nez, année, donner"],
-        ["O", "‘oh’", "<strong>o</strong> (kort) / <strong>ô</strong> (lang)", "mot, porte, tôt"],
-        ["P", "‘peh’", "<strong>p</strong>", "père, nappe, pas"],
-        ["Q", "‘kuh’", "<strong>k</strong>", "quatre, question, qui"],
-        ["R", "‘er’", "keel‑r (gorgelend)", "rue, terre, parler"],
-        ["S", "‘es’", "<strong>s</strong> (stemloos) / <strong>z</strong> (tussen klinkers)", "soleil, rose, maison"],
-        ["T", "‘teh’", "<strong>t</strong>", "train, cette, thé"],
-        ["U", "‘uh’", "<strong>u</strong> (lippen gerond, tong voor)", "lune, tu, sur"],
-        ["V", "‘veh’", "<strong>v</strong>", "vol, vivre, avion"],
-        ["W", "‘double véh’", "<strong>w</strong> (Engels) / <strong>v</strong>", "wagon, week‑end, wi‑fi"],
-        ["X", "‘iks’", "<strong>ks</strong> / <strong>gz</strong>", "taxi, exemple, xénon"],
-        ["Y", "‘ie grec’", "<strong>j</strong> / <strong>i</strong>", "yaourt, système, yoyo"],
-        ["Z", "‘zèd’", "<strong>z</strong>", "zèbre, zéro, gaz"],
+        ["parler (-er)", "parle", "parles", "parle", "parlons", "parlez", "parlent"],
+        ["finir  (-ir)", "finis", "finis",  "finit","finissons","finissez","finissent"],
+        ["vendre (-re)", "vends", "vends",  "vend", "vendons", "vendez", "vendent"],
       ],
     },
+
     details: [
       {
-        title: "Particularités de la prononciation française",
-        body: `
-          <h3 class="text-lg font-bold mt-4 mb-2">Accents</h3>
-          <div class="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm my-4">
-            <table class="w-full border-collapse">
-              <thead>
-                <tr class="!bg-indigo-600">
-                  <th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Accent</th>
-                  <th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Effect</th>
-                  <th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Voorbeeld</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm"><strong>é</strong> (aigu)</td><td class="px-3 py-2 text-sm">gesloten e-klank</td><td class="px-3 py-2 text-sm">été, café</td></tr>
-                <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm"><strong>è / ê</strong> (grave / circonflexe)</td><td class="px-3 py-2 text-sm">open e-klank</td><td class="px-3 py-2 text-sm">mère, fête, tête</td></tr>
-                <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm"><strong>ç</strong> (cédille)</td><td class="px-3 py-2 text-sm">maakt c zacht vóór a/o/u</td><td class="px-3 py-2 text-sm">garçon, ça va</td></tr>
-                <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm"><strong>â / î / û</strong> (circonflexe)</td><td class="px-3 py-2 text-sm">verlengt de klinker</td><td class="px-3 py-2 text-sm">pâte, île, sûr</td></tr>
-                <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm"><strong>ë / ï / ü</strong> (tréma)</td><td class="px-3 py-2 text-sm">spreek de klinker apart uit</td><td class="px-3 py-2 text-sm">Noël, naïf, aigüe</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <h3 class="text-lg font-bold mt-6 mb-2">Let op!</h3>
-          <ul class="list-disc pl-5 space-y-1 text-slate-700 dark:text-slate-300">
-            <li>De <strong>h</strong> is altijd stil (muet). Bij *h aspiré* is er geen liaisons.</li>
-            <li><strong>u</strong> is een unieke klank: lippen gerond als *oe*, tong vooraan als *ie*.</li>
-            <li><strong>r</strong> wordt in de keel uitgesproken (gorgelend), niet met de tongpunt.</li>
-          </ul>
-        `,
+        title: "Découvrez l'accord du participe passé",
+        body: `**Règle d'or du participe passé avec AVOIR :**
+Le participe passé **s'accorde** seulement si le COD (complément d'objet direct) **est placé AVANT** le verbe.
+
+✅ *J'ai acheté des pommes.* → **des pommes** vient après → pas d'accord
+✅ *Les pommes que j'ai achetées sont fraîches.* → **les pommes** est avant → accord : *achetées*
+
+**Avec ÊTRE** : le participe passé **s'accorde TOUJOURS** avec le sujet.
+
+✅ *Elle est allée à Paris.* → accord féminin singulier
+✅ *Ils sont partis.* → accord masculin pluriel`,
       },
     ],
+
     callouts: [
       {
-        type: "remember",
-        label: "Onthoud",
-        text: "De **r** is een keelklank (gorgelend), niet rollend. Oefen met *parler, terre, rue*.",
+        type:  "key",
+        label: "Point clé",
+        text:  "Les verbes en -ir du groupe 2 prennent **-iss-** à la 3e personne du pluriel : *nous finissons, vous finissez, ils finissent*. C'est le seul groupe à avoir ce -iss-.",
+      },
+      {
+        type:  "remember",
+        label: "Attention",
+        text:  "Ne confonds pas *il vend* (il vend = il is selling) et *il vendent* — c'est incorrect : *il* est toujours suivi de la forme **sans -ent**.",
       },
     ],
+
     commonMistakes: [
-      { incorrect: "u als *oe* uitspreken", correct: "**u** = lippen rond + tong voor", explanation: "Lune ≠ loen, tu ≠ toe" },
-      { incorrect: "h meespreken", correct: "**h** is altijd stil", explanation: "Hôtel klinkt als *ôtel*" },
-      { incorrect: "r rollen met tongpunt", correct: "**r** = keelklank", explanation: "Parijse r is gorgelend" },
+      {
+        incorrect: "Je parle**s** français.",
+        correct:   "Je **parle** français.",
+        explanation: "Je suis toujours suivi de la forme **sans finale** pour les verbes en -er : *parle*, pas *parles*.",
+      },
+      {
+        incorrect: "Nous finis**sons** les devoirs. ✗ (raison : est correcte mais étudiants oublient l'**-iss-**)",
+        correct: "Nous finissons les devoirs.",
+        explanation: "Les verbes en -ir du groupe 2 prennent **-iss-** à la 1re/2e/3e personnes du pluriel.",
+      },
+      {
+        incorrect: "Il vends du pain.",
+        correct:   "Il **vend** du pain.",
+        explanation: "Pour les verbes en -re, *je*, *tu* et *il/elle* prennent **-s/-s/-Ø** (pas de finale pour *il*).",
+      },
     ],
+
     review: [
-      "26 lettres + accents (é, è, ê, ç, etc.)",
-      "h is altijd stil (muet)",
-      "u = unieke klank (lippen rond, tong voor)",
-      "r = keelklank, niet rollend",
-      "c → s vóór e/i/y, anders k",
-      "g → zj vóór e/i/y, anders harde g",
+      "**-er** : parle / parles / parle / parlons / parlez / parlent",
+      "**-ir** : finis / finis / finit / finissons / finissez / finissent",
+      "**-re** : vends / vends / vend / vendons / vendez / vendent",
+      "Seul -ir a **-iss-** en nous/vous/ils : finiss-",
+      "Les verbes en -er représentent plus de 90 % des verbes courants.",
     ],
+
     qa: [
-      { question: "Hoe spreek je *hôtel* uit?", answer: "**ôtel** (h is stil)." },
-      { question: "Wat is het verschil tussen *café* en *cédille* voor de c?", answer: "**café** = k-klank, **cédille** = s-klank (vóór e)." },
-      { question: "Hoe klinkt de Franse *u*?", answer: "Lippen rond (oe), tong vooraan (ie)." },
-      { question: "Hoe spreek je de Franse *r* uit?", answer: "Gorgelend in de keel." },
+      { question: "Conjugue *parler* à la 1re personne du singulier.", answer: "Je **parle**." },
+      { question: "Conjugue *finir* à la 3e personne du pluriel.", answer: "Ils/Elles **finissent**." },
+      { question: "Conjugue *vendre* pour *tu*.", answer: "Tu **vends**." },
+    ],
+
+    exercises: [
+      {
+        question: "Choisis : Nous ___ (parler) anglais.",
+        options: ["parlons", "parlez", "parles"],
+        answer: "parlons",
+      },
+      {
+        question: "Choisis : Vous ___ (finir) le travail.",
+        options: ["finissez", "finissons", "finis"],
+        answer: "finissez",
+      },
+      {
+        question: "Choisis : Ils ___ (vendre) des fleurs.",
+        options: ["vendent", "vendons", "vendez"],
+        answer: "vendent",
+      },
     ],
   },
 
-  /* ═══════════════════════════════════════════════════════════
-   * fr-gram-1 — Le Présent (Present Tense)
-   * ═══════════════════════════════════════════════════════════ */
-// ── Les 1b — Le Présent : werkwoorden op -ER (simpel) ────
-{
-  id: "fr-gram-ott-simple",
-  title: "Le Présent : werkwoorden op -ER",
-  level: 1,
-  topic: "Verbes",
-  anchorSectionId: "rules",
+  // ── Les 2: Verbes Irréguliers Essentiels ─────────────────
+  {
+    id: "fr-gram-irreg",
+    title: "Les Verbes Irréguliers Essentiels",
+    level: 1,
+    topic: "Grammaire",
+    anchorSectionId: "rules",
 
-  overview:
-    "Le **présent** utilis pour parler de ce que tu fais maintenant, de tes habitudes ou de vérités générales. La plupart des verbes français en **-ER** se conjuguent en retirant **-er** et en ajoutant les six terminaisons.",
+    overview:
+      "Les verbes **être**, **avoir**, **aller**, **faire** et **pouvoir** sont irréguliers : ils ne suivent aucun modèle régulier et doivent être appris par cœur. Ce sont les verbes les plus utilisés en français.",
 
-  conceptCards: [
-    {
-      title: "Stam bepalen",
-      structure: "infinitif -er → stam",
-      example: "parler → parl-, aimer → aim-, regarder → regard-",
-    },
-    {
-      title: "Terminaisons -ER",
-      structure: "-e / -es / -e / -ons / -ez / -ent",
-      example: "je parle · tu parles · il parle · nous parlons · vous parlez · ils parlent",
-    },
-    {
-      title: "3e persoon enkelvoud",
-      structure: "il/elle/on + (stam + e)",
-      example: "il parle, elle aime, on regarde",
-    },
-    {
-      title: "Elision: j'",
-      structure: "klinker / stomme h → j' + uitgang",
-      example: "j'aime, j'habite (geen *je aime*)",
-    },
-  ],
+    body: `## Verbes Irréguliers Essentiels
 
-  rulesTable: [
-    {
-      rule:     "Stam afleiden",
-      structure:"infinitif zonder -er",
-      example:  "parler → parl-, aimer → aim-, regarder → regard-",
-      usage:    "Altijd eerst de stam bepalen."
-    },
-    {
-      rule:     "Uitgangen -ER",
-      structure:"-e / -es / -e / -ons / -ez / -ent",
-      example:  "je parle, tu parles, il/elle parle, nous parlons, vous parlez, ils/elles parlent",
-      usage:    "De standaarduitgangen voor bijna alle -ER werkwoorden."
-    },
-  ],
+Ces cinq verbes sont omniprésents : vous les rencontrerez dans toutes les conversations.
 
-  conjugationTable: {
-    header: "Persoon | PARLER | AIMER | REGARDER",
-    rows: [
-      ["je (ik)",        "parle",    "aime",    "regarde"],
-      ["tu (jij)",       "parles",   "aimes",   "regardes"],
-      ["il/elle/on",     "parle",    "aime",    "regarde"],
-      ["nous (wij)",     "parlons",  "aimons",  "regardons"],
-      ["vous (u/jullie)","parlez",   "aimez",   "regardez"],
-      ["ils/elles (zij)","parlent",  "aiment",  "regardent"],
-    ]
+| Verbe | je | tu | il/elle | nous | vous | ils/elles |
+|-------|----|----|---------|------|------|-----------|
+| **être** | suis | es | est | sommes | êtes | sont |
+| **avoir** | ai | as | a | avons | avez | ont |
+| **aller**| vais | vas | va | allons | allez | vont |
+| **faire** | fais | fais | fait | faisons | faites | font |
+| **pouvoir**| peux | peux | peut | pouvons| pouvez| peuvent |
+
+**Être et Avoir** sont aussi des verbes **auxiliaires** pour former les temps composés.`,
+    rulesTable: [
+      {
+        rule:     "Être vs Avoir",
+        structure:"Être = estado / identidad; Avoir = posesión / cantidad",
+        example:  "Je **suis** content / J'**ai** un chat.",
+        usage:    "Deux auxiliaires fondamentaux — ne jamais les confondre.",
+      },
+      {
+        rule:     "Aller — futur proche",
+        structure:"aller + à + infinitif = futur proche",
+        example:  "Je **vais** manger = je vais manger bientôt.",
+        usage:    "Construye el futuro próximo más cercano con aller + a + infinitivo.",
+      },
+      {
+        rule:     "Faire — causa y acción",
+        structure:"faire + [alguien] + [infinitif] = hacer que alguien haga algo",
+        example:  "Je **fais** mes devoirs / Je **fais** nettoyer la chambre.",
+        usage:    "Se usa tanto para acciones propias como para hacer que otro realice la acción.",
+      },
+    ],
+
+    conjugationTable: {
+      header: "Verbe | je | tu | il/elle | nous | vous | ils/elles",
+      rows: [
+        ["être",    "suis",    "es",     "est",     "sommes",   "êtes",     "sont"],
+        ["avoir",   "ai",      "as",     "a",       "avons",    "avez",     "ont"],
+        ["aller",   "vais",    "vas",     "va",      "allons",   "allez",    "vont"],
+        ["faire",   "fais",    "fais",   "fait",    "faisons",  "faites",   "font"],
+        ["pouvoir", "peux",    "peux",   "peut",    "pouvons",  "pouvez",   "peuvent"],
+      ],
+    },
+
+    details: [
+      {
+        title: "Être et Avoir : deux auxiliaires",
+        body: `En français, les temps composés (passé composé, plus-que-parfait, etc.) utilisent **ÊTRE** ou **AVOIR** comme auxiliaire.
+
+**Avoir** est l'auxiliaire de la majorité des verbes transitifs :
+- *J'ai mangé* = I have eaten
+- *Elle a fini* = She has finished
+
+**Être** est l'auxiliaire des verbes de **mouvement** et d'**état** (16 verbes mnémotechniques : **DR MRS V ANDERT P** — *Devenir, Rester, Mourir, Rentrer, Sortir, Venir, Aller, Naître, Descendre, Entrer, Rentrer, Tomber, Partir, Passer*)`,
+      },
+    ],
+
+    callouts: [
+      {
+        type:  "remember",
+        label: "Astuce",
+        text:  "Pour le **futur proche**, utilise **aller + à + infinitif** : *Je vais étudier* = I'm going to study. C'est la forme du futur la plus naturelle dans la conversation.",
+      },
+    ],
+
+    commonMistakes: [
+      {
+        incorrect: "Je suis une pomme. (= I am an apple — préservation)",
+        correct:   "J'**ai** une pomme. (= I have an apple — possession)",
+        explanation: "Pour tous les objets que l'on peut posséder, utilise **avoir**, pas être.",
+      },
+      {
+        incorrect: "Je faire mes devoirs.",
+        correct:   "Je **fais** mes devoirs.",
+        explanation: "'Faire' est irrégulier à la 1re personne : je **fais**, pas *je faire*.",
+      },
+    ],
+
+    review: [
+      "**ÊTRE** : suis / es / est / sommes / êtes / sont — état, identité",
+      "**AVOIR** : ai / as / a / avons / avez / ont — possession",
+      "**ALLER** : vais / vas / va / allons / allez / vont — futur proche",
+      "**FAIRE** : fais / fais / fait / faisons / faites / font — action",
+      "**POUVOIR** : peux / peux / peut / pouvons / pouvez / peuvent — capacité",
+    ],
+
+    qa: [
+      { question: "Conjugue *être* je-forme.", answer: "Je **suis**." },
+      { question: "'Je ___ de Marseille' → correcte?", answer: "Je **viens** de Marseille." },
+      { question: "Futur proche : 'Je ___ étudier ce soir.'", answer: "Je **vais** étudier ce soir." },
+    ],
+
+    exercises: [
+      {
+        question: "Choisis : Je ___ étudiant.",
+        options: ["suis", "ai", "fais"],
+        answer: "suis",
+      },
+      {
+        question: "Choisis : Nous ___ une voiture.",
+        options: ["avons", "sommes", "faisons"],
+        answer: "avons",
+      },
+      {
+        question: "Choisis : Tu ___ manger une glace.",
+        options: ["vas", "es", "fais"],
+        answer: "vas",
+      },
+    ],
   },
 
-  details: [
-    {
-      title: "Uitspraak",
-      body: "Bij **je, tu, il/elle, ils/elles** zijn de uitgangen **stil** (je parle, tu parles, il parle, ils parlent klinken hetzelfde). Alleen de **stam** wordt gehoord.\n\n**Nous** (parlons) en **vous** (parlez) zijn duidelijk anders."
+  // ── Les 3: Questions et Négation ─────────────────────────
+  {
+    id: "fr-gram-questions",
+    title: "Questions et Négation",
+    level: 1,
+    topic: "Grammaire",
+    anchorSectionId: "rules",
+
+    overview:
+      "En français, on forme des questions par **inversion** du sujet et du verbe, par l'ajout de **est-ce que**, ou simplement par l'**intonation**. La négation s'exprime en plaçant **ne … pas** de chaque côté du verbe.",
+
+    body: `## Questions et Négation
+
+### Trois manières de poser une question
+
+**1. Montée d'intonation** (plus courant à l'oral)
+- *Tu viens ?* → Oui, je viens. / Non, je ne viens pas.
+
+**2. Est-ce que** (neutre, très utilisé à l'oral et écrit)
+- *Est-ce que* tu viens ?
+- *Est-ce que* tu as faim ?
+
+**3. Inversion** (plus formel)
+- *Viens-tu ?* / *Parlez-vous espagnol ?*
+
+### Négation
+Place **ne … pas** autour du verbe conjugué :
+- *Je viens* → *Je **ne** viens **pas**.*
+- *Elle a mangé* → *Elle **n'**a pas mangé.* (ne → n' devant a/é)`,
+
+    rulesTable: [
+      {
+        rule:     "Intonation",
+        structure:"Aucun mot ajouté — intonation montante",
+        example:  "Tu viens ?",
+        usage:    "Oral familier et courant.",
+      },
+      {
+        rule:     "Est-ce que",
+        structure:"Est-ce que + sujet + verbe",
+        example:  "Est-ce que tu viens ?",
+        usage:    "Le plus sûr pour débutants ; fonctionne avec tous les verbes.",
+      },
+      {
+        rule:     "Inversion",
+        structure:"verbe + sujet (tiret)",
+        example:  "Parlez-vous français ?",
+        usage:    "Plus formel ; utilisé dans les situations polies ou journalistiques.",
+      },
+      {
+        rule:     "Négation ne…pas",
+        structure:"ne + verbe + pas",
+        example:  "Je ne viens pas. / Tu n'es pas là.",
+        usage:    "N'importe quel verbe conjugué peut être nié avec ne…pas.",
+      },
+    ],
+
+    conjugationTable: {
+      header: "Forme | Phrase affirmative | Question (eston-ce que) | Négative",
+      rows: [
+        ["Tu viens",           "Tu viens.",                               "Est-ce que tu viens?",    "Tu ne viens pas."],
+        ["Elle a mangé",        "Elle a mangé.",                           "Est-ce qu'elle a mangé?", "Elle n'a pas mangé."],
+        ["Vous avez faim",      "Vous avez faim.",                         "Est-ce que vous avez faim ?","Vous n'avez pas faim."],
+      ],
     },
-  ],
 
-  callouts: [
-    {
-      type:  "remember",
-      label: "Onthoud",
-      text:  "Je/jij/hij/zij-enkelvoud → -e / -es / -e. Meervoud → -ons / -ez / -ent."
-    },
-    {
-      type:  "key",
-      label: "Let op",
-      text:  "Bij een klinker of stomme h gebruik je **j'** in plaats van **je** (j'aime, j'habite)."
-    },
-  ],
+    details: [
+      {
+        title: "Quand utiliser chaque forme de question ?",
+        body: `| Forme | Oral / Écrit | Registre |
+|-------|-------------|----------|
+| Intonation | oral | informel / familier |
+| Est-ce que | oral + écrit | neutre, sûr pour débutants |
+| Inversion | écrit / discours formel | formel / poli |`,
+      },
+    ],
 
-  review: [
-    "Stam = infinitif zonder -er",
-    "je → -e, tu → -es, il/elle → -e",
-    "nous → -ons, vous → -ez, ils/elles → -ent",
-    "Uitspraak: je/tu/il/ils eindigt hetzelfde (stam hoorbaar)",
-  ],
+    callouts: [
+      {
+        type:  "key",
+        label: "Point clé",
+        text:  "Devant un **voyelle** ou un **h muet**, **ne** devient **n'** : *je n'ai pas, il n'est pas, elle n'habite pas*. Devant un **h aspiré** : on garde **ne** : *il ne hait pas*.",
+      },
+    ],
 
-  qa: [
-    { question: "Wat is de stam van 'parler'?", answer: "parl-" },
-    { question: "Welke uitgang krijgt 'nous'?", answer: "-ons (nous parlons)" },
-    { question: "Hoe zeg je 'zij houden van' (aimer)?", answer: "ils/elles aiment" },
-  ],
+    commonMistakes: [
+      {
+        incorrect: "Tu viens pas.",
+        correct:   "Tu **ne** viens **pas**.",
+        explanation: "La négation complète est toujours **ne … pas**. *Tu viens pas* est de l'oral familier très relâché mais incorrect à l'écrit.",
+      },
+      {
+        incorrect: "Il ne fait froid.",
+        correct:   "**Il fait froid** — vraie phrase, mais négation serait : *Il ne fait pas froid.*",
+        explanation: "*Il fait froid* n'a pas besoin de négation — c'est une affirmation. Si tu veux nier, ajoute *ne … pas*.",
+      },
+    ],
 
-  body: "—",
-  exercises: [],
-},];
+    review: [
+      "**Question — intonation** : *Tu viens ?* (oral informel)",
+      "**Question — est-ce que** : *Est-ce que tu viens ?* (neutre, sûr)",
+      "**Question — inversion** : *Viens-tu ?* (formel)",
+      "**Négation** : **ne + verbe + pas** → *je ne viens pas*",
+      "**N'** (elision) devant voyelle / h muet : *n'ai, n'est, n'habite*",
+    ],
+
+    qa: [
+      { question: "Transforme en question : 'Tu as faim.'", answer: "**Est-ce que** tu as faim ? / Tu as faim ? (intonation)" },
+      { question: "Négation : 'Elle est française.' → ?", answer: "Elle **n'est pas** française." },
+      { question: "Pourquoi dit-on 'n'ai' et pas 'ne ai' ?", answer: "Devant **a**, on fait l'**élision** : **ne** → **n'** (*je n'ai*, pas *je ne ai*)." },
+    ],
+
+    exercises: [
+      {
+        question: "Transforme : 'Tu es content.' → question (est-ce que).",
+        options: ["Est-ce que tu content?", "Est-ce que tu es content?", "Tu es content?"],
+        answer: "Est-ce que tu es content?",
+      },
+      {
+        question: "Négation : 'Je parle français.'",
+        options: ["Je ne parle pas français.", "Je parle pas français.", "Je ne parlons pas français."],
+        answer: "Je ne parle pas français.",
+      },
+      {
+        question: "Choisis la forme correcte : 'Elle ___ trop.'",
+        options: ["ne mange pas", "mange pas", "ne mangent pas"],
+        answer: "ne mange pas",
+      },
+    ],
+  },
+];

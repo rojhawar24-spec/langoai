@@ -21,6 +21,9 @@ export interface GrammarLesson {
   /** Main rules / formula table */
   rulesTable?: GrammarRuleRow[];
 
+  /** Optional label for the time expressions section */
+  timeExpressionsLabel?: string;
+
   /** Verb conjugation / word‑form table */
   conjugationTable?: { header: string; rows: string[][] };
 

@@ -156,13 +156,20 @@ export const enGrammar: GrammarLesson[] = [
     ],
 
     review: [
-      "Present Simple: habits, facts, routines",
-      "I/you/we/they + base verb",
-      "he/she/it + verb + s (-es, -ies rules apply)",
-      "to be: am / are / is",
-      "to have: have / has",
-      "Negatives: don’t / doesn’t · Questions: Do / Does",
+      "Present Simple: **habits**, **facts**, **routines**.",
+      "**I / you / we / they** + base verb (no *-s*).",
+      "**He / she / it** + verb + *-s*.",
+      "Verbs in **-s / -ss / -sh / -ch / -x / -o** → add *-es*.",
+      "**Consonant + y** → *y → ies*; **vowel + y** → just *-s*.",
+      "**To be** is fully irregular: *am / are / is*.",
+      "**To have**: *have / has* — only he/she/it gets *has*.",
+      "Negatives: **don't** (I/you/we/they) · **doesn't** (he/she/it).",
+      "Questions: **Do** + subject + verb? · **Does** + subject + verb?",
+      "**Third person s** never after *to* (infinitive form stays clean).",
+      "Learned as pairs: *watch → watches*, *study → studies*, *go → goes*.",
+      "Review pronunciation: *she [sh-i-p-s] plays* — all four *-s* sounds are silent or morphed.",
     ],
+
 
     qa: [
       {
@@ -293,10 +300,18 @@ export const enGrammar: GrammarLesson[] = [
     ],
 
     review: [
-      "Only he/she/it takes -s",
-      "-s endings often need -es",
-      "consonant + y → ies",
-      "vowel + y → -s",
+      "Only **he/she/it** takes *-s* in Present Simple.",
+      "Verbs ending in **-s / -ss / -sh / -ch / -x / -o** → add *-es*.",
+      "**Consonant + y** → *y → ies* (study → studies).",
+      "**Vowel + y** → just add *-s* (play → plays, buy → buys).",
+      "**To be** — fully irregular: *am / are / is*.",
+      "**To have** — *have* most persons, *has* only he/she/it.",
+      "Negation: **I/you/we/they** + don't · **he/she/it** + doesn't.",
+      "Question form: **Do** + subject + verb? / **Does** + subject + verb?",
+      "No *-s* form is ever added after *to* (infinitive stays clean).",
+      "**Spelling spelling spelling** — last letter determines the show.",
+      "Practice pairings: *watch → watches · study → studies · go → goes · carry → carries*.",
+      "Remember: when in doubt about -*y*, ask: 'vowel before?' → *plays*, not *playes* or *studyes*.",
     ],
 
     qa: [

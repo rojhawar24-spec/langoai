@@ -1,102 +1,7 @@
 import type { GrammarLesson } from "../types";
 
 export const deGrammar: GrammarLesson[] = [
-  // ── Les 1: Alphabet / Aussprache ──────────────────────────
-  {
-    id: "de-uitspraak-1",
-    title: "Alphabet – 26 Buchstaben: Vollständige Aussprache",
-    level: 1,
-    topic: "Aussprache",
-    body: "Lerne die deutsche Aussprache mit diesem vollständigen Alphabet-Überblick.",
-    overview:
-      "Hier findest du das **deutsche Alphabet** mit allen 26 Buchstaben, ihrer Schreibweise, Aussprache und Beispielwörtern.",
-    anchorSectionId: "alphabet",
-    exercises: [],
-    timeExpressions: {
-      header: "Ltr | Spelling | Klank | Voorbeelden",
-      rows: [
-        ["A", "‘aa’", "<strong>a</strong> (kort) / <strong>aa</strong> (lang)", "Apfel, Abend, Fahrrad"],
-        ["B", "‘bee’", "<strong>b</strong> (eind → <strong class='text-rose-600'>p</strong>)", "Baby, aber, Lob (klinkt als *lop*)"],
-        ["C", "‘tsee’", "<strong>k</strong> / <strong>ts</strong> / <strong>s</strong>", "Computer, Cent, Cello"],
-        ["D", "‘dee’", "<strong>d</strong> (eind → <strong class='text-rose-600'>t</strong>)", "Dach, Ende, Hund (klinkt als *hunt*)"],
-        ["E", "‘ee’", "<strong>e</strong> (kort) / <strong>ee</strong> (lang) / doffe e", "Esel, Ende, bekommen"],
-        ["F", "‘ef’", "<strong>f</strong>", "Fisch, Affe, fünf"],
-        ["G", "‘gee’", "<strong>g</strong> (eind → <strong class='text-rose-600'>k</strong>)", "Gans, Lager, Tag (klinkt als *tak*)"],
-        ["H", "‘haa’", "<strong>h</strong> (aan begin; stumm na klinker)", "Haus, gehen, sehen"],
-        ["I", "‘ee’", "<strong>i</strong> (kort) / <strong>ie</strong> (lang)", "Insel, Igel, Liebe"],
-        ["J", "‘jott’", "<strong>j</strong> (als Engelse *y*)", "Ja, Jacke, Journalist"],
-        ["K", "‘kaa’", "<strong>k</strong>", "Kater, Backe, Kuchen"],
-        ["L", "‘el’", "<strong>l</strong>", "Lampe, alle, spielen"],
-        ["M", "‘em’", "<strong>m</strong>", "Maus, Kammer, Mutter"],
-        ["N", "‘en’", "<strong>n</strong>", "Nase, Kanne, nehmen"],
-        ["O", "‘oo’", "<strong>o</strong> (kort) / <strong>oo</strong> (lang)", "offen, Ohr, Boden"],
-        ["P", "‘pee’", "<strong>p</strong>", "Papier, Mappe, Pferd"],
-        ["Q", "‘kuu’", "<strong>kv</strong>", "Qualle, Quelle, bequem"],
-        ["R", "‘er’", "Zäpfchen‑r / gerolltes r", "rot, Mutter, Lehrer"],
-        ["S", "‘es’", "<strong>z</strong> (begin) / <strong>s</strong> / <strong>sj</strong>", "Sonne, Glas, Stein"],
-        ["T", "‘tee’", "<strong>t</strong>", "Tisch, Mutter, Stadt"],
-        ["U", "‘uu’", "<strong>u</strong> (kort) / <strong>uu</strong> (lang)", "unten, Uhr, Mutter"],
-        ["V", "‘fau’", "<strong>f</strong> (Duits) / <strong>v</strong> (leenwoorden)", "Vogel, Vater, Vase"],
-        ["W", "‘wee’", "<strong>v</strong> (als Engelse *v*)", "Wasser, Antwort, wo"],
-        ["X", "‘iks’", "<strong>ks</strong>", "Xylophon, Axt, Taxi"],
-        ["Y", "‘üpsilon’", "<strong>ü</strong> / <strong>j</strong>", "Typ, Yacht, Yoga"],
-        ["Z", "‘zett’", "<strong>ts</strong>", "Zeit, Katze, Salz"],
-      ],
-    },
-    details: [
-      {
-        title: "Besonderheiten der deutschen Aussprache",
-        body: `
-          <h3 class="text-lg font-bold mt-4 mb-2">Umlaute</h3>
-          <p>Das Deutsche hat drei Umlaute, die nicht im englischen Alphabet vorkommen:</p>
-          <div class="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm my-4">
-            <table class="w-full border-collapse">
-              <thead>
-                <tr class="!bg-indigo-600">
-                  <th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Buchstabe</th>
-                  <th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Aussprache</th>
-                  <th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Beispiel</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm"><strong>Ä / ä</strong></td><td class="px-3 py-2 text-sm">wie *e* in *Bett*</td><td class="px-3 py-2 text-sm">Äpfel, Bäcker</td></tr>
-                <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm"><strong>Ö / ö</strong></td><td class="px-3 py-2 text-sm">Lippen rund wie *o*, Zunge wie *e*</td><td class="px-3 py-2 text-sm">Öl, schön, Löffel</td></tr>
-                <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm"><strong>Ü / ü</strong></td><td class="px-3 py-2 text-sm">Lippen rund wie *u*, Zunge wie *ie*</td><td class="px-3 py-2 text-sm">Übung, für, grün</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <h3 class="text-lg font-bold mt-6 mb-2">ß (Eszett / scharfes S)</h3>
-          <p>Der Buchstabe <strong>ß</strong> wird immer als stimmloses *s* ausgesprochen (wie *ss*). Er steht nur nach langen Vokalen und Diphthongen: <em>Straße, heißen, Fuß</em>.</p>
-        `,
-      },
-    ],
-    callouts: [
-      {
-        type: "remember",
-        label: "Merkregel",
-        text: "**V** wird im Deutschen meist als *f* ausgesprochen (Vogel, Vater), **W** als *v* (Wasser, wo). Das ist eine häufige Fehlerquelle für Anfänger!",
-      },
-    ],
-    commonMistakes: [
-      { incorrect: "Wasser mit englischem *w*", correct: "**Wasser** (v‑Klang)", explanation: "Deutsches W ist wie englisches V" },
-      { incorrect: "Vogel mit englischem *v*", correct: "**Vogel** (f‑Klang)", explanation: "Deutsches V ist meist ein F" },
-    ],
-    review: [
-      "26 Buchstaben + 3 Umlaute (Ä, Ö, Ü) + ß",
-      "W wird wie V ausgesprochen, V wie F",
-      "Z = ts (nicht stimmhaftes s)",
-      "End‑b,‑d,‑g werden zu p, t, k",
-    ],
-    qa: [
-      { question: "Wie spricht man *Wasser* aus?", answer: "**Vasser** (w = v-Klang)." },
-      { question: "Wie spricht man *Tag* aus?", answer: "**Tak** (g am Ende wird k)." },
-      { question: "Welche Umlaute gibt es im Deutschen?", answer: "**Ä, Ö, Ü**." },
-      { question: "Wie wird *ß* ausgesprochen?", answer: "Wie **ss** (stimmloses s)." },
-      { question: "Wie spricht man *Zeit* aus?", answer: "**Tseit** (z = ts)." },
-    ],
-  },
-
-  // ── Les 2: Präsens (Gegenwart) ─────────────────────────────
+  // ── Les 1: Präsens (Gegenwart) ─────────────────────────────
   {
     id: "de-gram-1",
     title: "Präsens — Grundlagen",
@@ -213,10 +118,17 @@ Mit der **Präsens** sagst du, was jetzt geschieht, was immer geschieht oder was
     ],
 
     review: [
-      "Präsens = jetzt, immer, regelmäßig",
-      "Stamm = Infinitiv ohne -en",
-      "Endungen: -e / -st / -t / -en / -t / -en",
-      "Umgangssprache: Endungen oft reduziert",
+      "Das **Präsens** verwendest du für **jetzt**, **immer** und **regelmäßig** geschehende Dinge.",
+      "Der **Stamm** = Infinitiv ohne **-en** (machen → mach-, lernen → lern-, spielen → spiel-).",
+      "Endungen für regelmäßige Verben: **-e / -st / -t / -en / -t / -en** (6. Person).",
+      "**Ich** bekommt immer **-e** (dominante Erstperson-Aussprache im gesprochenen Deutsch).",
+      "**Du** bekommt **-st**; **er/sie/es** bekommt nur **-t**.",
+      "**Wir / ihr / sie** erhalten immer die volle **-en / -t / -en** Endung.",
+      "In der **Umgangssprache** fällt die Endung bei *ich* oder *du* teilweise weg (*Ich mach(e)*).",
+      "Achte auf die Aussprache von **pf, ts, tsch, z** und anderen deutschen Konsonanten!",
+      "Negation: **nicht** hinter dem Verb oder am Satzende: *Ich lerne **nicht***.",
+      "**Regelmäßige Verben**: *sein, haben, werden* — diese lernst du später getrennt.",
+      "Häufige Anlautkombinationen wie **pf, ts, tsch** üben.",
     ],
 
     qa: [
@@ -240,102 +152,105 @@ Mit der **Präsens** sagst du, was jetzt geschieht, was immer geschieht oder was
 
     exercises: [
       {
-        question: "Kies: Er ___ een boek op tafel.",
-        options: ["is", "zijn"],
-        answer: "is",
+        question: "Wähle: Ich ___ Deutsch.",
+        options: ["lerne", "lernst"],
+        answer: "lerne",
       },
       {
-        question: "Kies: Er ___ twee boeken op tafel.",
-        options: ["is", "zijn"],
-        answer: "zijn",
+        question: "Wähle: Er ___ Fußball.",
+        options: ["spielt", "spielen"],
+        answer: "spielt",
       },
       {
-        question: "Kies: Er ___ geen stoelen in de kamer.",
-        options: ["is", "zijn"],
-        answer: "zijn",
+        question: "Wähle: Wir ___ Pizza.",
+        options: ["machen", "machst"],
+        answer: "machen",
       },
     ],
   },
 
-  // ── Les 2: OTT Regelmatige werkwoorden ──────────────────
+  // ── Les 2: Präsens: Regelmäßige Verben ────────────────────────────────
   {
-    id: "de-gram-ott-simple",
-    title: "OTT: Regelmatige werkwoorden",
+    id: "de-gram-pres-regular",
+    title: "Präsens: Regelmäßige Verben",
     level: 1,
-    topic: "Werkwoorden",
+    topic: "Verben",
     anchorSectionId: "rules",
 
     overview:
-      "De **onvoltooid tegenwoordige tijd** (OTT) gebruik je voor wat nu, altijd of regelmatig gebeurt. De meeste Duitse werkwoorden eindigen op **-en**. De stam maak je door **-en** weg te halen.",
+      "Das **Präsens** verwendest du für Dinge, die **jetzt** geschehen, immer geschehen oder regelmäßig geschehen. Die meisten deutschen Verben enden auf **-en**. Um die Endungen bilden zu können, bestimmt man zuerst den **Stamm** (Infinitiv ohne -en) und hängt die Endung an.",
 
     rulesTable: [
       {
         rule:     "Stamm bestimmen",
         structure:"Infinitiv ohne -en",
         example:  "machen → mach-, lernen → lern-, spielen → spiel-",
-        usage:    "Zuerst immer den Stamm bestimmen.",
+        usage:    "Zuerst immer den Stamm bestimmen, bevor du die Endung hinzufügst.",
       },
       {
-        rule:     "Endungen Präsens",
-        structure:"-e / -st / -t / -en / -t / -en",
+        rule:     "Endungen — 6 Personen",
+        structure:"ich: -e / du: -st / er: -t / wir: -en / ihr: -t / sie/Sie: -en",
         example:  "ich mache, du machst, er macht, wir machen, ihr macht, sie machen",
-        usage:    "Die Endungen für regelmäßige Verben.",
+        usage:    "Die Standardendungen für alle regelmäßigen Verben auf -en.",
+      },
+      {
+        rule:     "Umgangssprachliche Kurzung",
+        structure:"Stamm + e (verallgemeinert im gesprochenen Deutsch)",
+        example:  "Ich mach(e) das. Wir geh(en) nach Haus.",
+        usage:    "Im Alltag werden Endungen oft zusammengezogen oder sogar weggelassen.",
       },
     ],
 
     conjugationTable: {
       header: "Verb | ich | du | er/sie/es | wir | ihr | sie/Sie",
       rows: [
-        ["machen", "mache", "machst", "macht", "machen", "macht", "machen"],
-        ["lernen", "lerne", "lernst", "lernt", "lernen", "lernt", "lernen"],
-        ["spielen","spiele","spielst","spielt","spielen","spielt","spielen"],
+        ["machen",  "mache",  "machst", "macht",  "machen", "macht", "machen"],
+        ["lernen",  "lerne",  "lernst", "lernt",  "lernen", "lernt", "lernen"],
+        ["spielen", "spiele", "spielst","spielt", "spielen","spielt","spielen"],
       ]
     },
 
     details: [
       {
-        title: "Umgangssprachliche Verkürzungen",
-        body: `## Präsens-Tabelle
+        title: "Übung: Stamm und Endung trennen",
+        body: `## Wie bilde ich das Präsens selbst?
+
+| Schritt | Was du tust |
+|---------|-------------|
+| 1 | Nimm das **Infinitiv** (z. B. *machen*) |
+| 2 | Entferne **-en** → Stamm (*mach-*) |
+| 3 | Hänge die passende **Endung** an |
 
 | Person | Endung | Beispiel |
 |--------|--------|----------|
-| ich    | -e | ich **mache** |
-| du     | -st | du **machst** |
-| er/sie/es | -t | er **macht** |
-| wir    | -en | wir **machen** |
-| ihr    | -t | ihr **macht** |
-| sie/Sie | -en | sie **machen** |
-
-## Umgangssprache
-
-In der **gesprochenen Umgangssprache** fallen Endungen oft weg oder werden auf **-e** beschränkt:
-
-- Ich mach**e** dich fertig. *(vollständig)*
-- Wir geh**en** nach Haus. *(vollständig)*  
-- Du lern**st** super! *(vollständig)*
-
-> **Tip:** Die vollständigen Endungen lernst du zuerst wie in der Schule. Die umgangssprachlichen Auslassungen sind etwas, das du später durch Wiederholung übst.`,
+| ich | -e | **mache** |
+| du | -st | **machst** |
+| er/sie/es | -t | **macht** |
+| wir | -en | **machen** |
+| ihr | -t | **macht** |
+| sie / Sie | -en | **machen** |`,
       },
     ],
 
     callouts: [
       {
-        type:  "remember",
-        label: "Let op",
+        type:  "remember" as const,
+        label: "Achtung",
         text:  "Nicht alle Verben folgen dieser Regel: *sein*, *haben* und *werden* sind unregelmäßig. Die lernst du separat.",
       },
     ],
 
     review: [
-      "Stamm = Infinitiv ohne -en",
-      "OTT: ich stam, du stam+st, er/sie stam+t",
-      "Mehrzahl: wir/ihr/sie + ganzes Verb (stam+en)",
+      "**Stamm** = Infinitiv ohne -en",
+      "Präsens — ich: -e, du: -st, er: -t, wir/ihr/sie: -en",
+      "Umgangssprache: Endungen fallen oft weg (*Ich mach(e)*, *Wir geh(en)*)",
+      "Unregelmäßig am Anfang: *sein, haben, werden*",
     ],
 
     qa: [
-      { question: "Was ist der Stamm von 'machen'?", answer: "mach-" },
-      { question: "Welche Endung bekommt 'du' bei 'machen'?", answer: "du machst" },
-      { question: "Wie sagst du 'wir spielen'?", answer: "wir spielen" },
+      { question: "Was ist der Stamm von 'machen'?", answer: "**mach-**" },
+      { question: "Welche Endung bekommt 'du' bei 'machen'?", answer: "**du machst** (-st)" },
+      { question: "Wie sagst du 'wir spielen'?", answer: "**wir spielen** (Stamm + -en)" },
     ],
 
     conceptCards: [
