@@ -1380,7 +1380,7 @@ export const nlGrammar: GrammarLesson[] = [
       { question: "Hoe zeg je 2025 in het Nederlands?", answer: "**Tweeduizend vijfentwintig**." },
     ],
   },
-    
+   
   {
     id: "nl-kleuren-1",
     title: "Kleuren en Eenvoudige Beschrijvingen",
