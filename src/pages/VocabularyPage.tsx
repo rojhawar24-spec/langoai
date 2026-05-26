@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { getVocabularyWords, LANGUAGE_FLAGS } from "@/content/index";
@@ -24,7 +24,10 @@ export default function VocabularyPage() {
   const { t } = useTranslate();
   const navigate = useNavigate();
   const languageCode = user?.currentLanguage ?? "en";
-  const words = getVocabularyWords(languageCode);
+  
+  const [words, setWords] = useState<VocabWord[]>([]);
+  const [loading, setLoading] = useState(true);
+  
   const awardXP = createXPAwarder(updateProfile);
   const awardRef = useRef(awardXP);
   awardRef.current = awardXP;
@@ -36,8 +39,21 @@ export default function VocabularyPage() {
   const [newLevel, setNewLevel] = useState(0);
   const [restored, setRestored] = useState(false);
 
+  // Load content lazily when language changes
   useEffect(() => {
-    if (restored) return;
+    let cancelled = false;
+    setLoading(true);
+    getVocabularyWords(languageCode).then(w => {
+      if (!cancelled) {
+        setWords(w);
+        setLoading(false);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [languageCode]);
+
+  useEffect(() => {
+    if (restored || words.length === 0) return;
     const pos = getSavedPosition();
     if (pos && pos.page === "vocabulary") {
       if (pos.vocabularyTopic) setSelectedTopic(pos.vocabularyTopic);
@@ -78,6 +94,17 @@ export default function VocabularyPage() {
       setShowCelebration(true);
     }
   }, [learned]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-purple-600 border-r-transparent"></div>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">Loading words...</p>
+        </div>
+      </div>
+    );
+  }
 
   // ---- Word detail ----
   if (selectedWord) {

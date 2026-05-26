@@ -89,7 +89,7 @@ Mit der **Präsens** sagst du, was jetzt geschieht, was immer geschieht oder was
 
 > **Merke:** In der **gesprochenen Sprache** wird die Endung oft weggelassen oder auf **-e** reduziert:
 > - ich mach**e** · wir geh**en** · du lern**st**
-> - **Sie** und **wir** haben immer die vollständige Endung **-en** in der formellen und schriftlichen Sprache.
+> - **Sie** und **wir** haben immer die volle**-en** in der formellen und schriftlichen Sprache.
 > - **Umgangssprachlich** ist auch die **-t**-Endung bei du zwischendurch wegfallen: *du lern*, *du geh*
 
 > **Tip:** Die vollständigen Endungen (-e, -st, -t, -en, -t, -en) lernst du zuerst, dann übst du die umgangssprachlichen Einschränkungen.`,

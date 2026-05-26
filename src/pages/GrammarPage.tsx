@@ -1,19 +1,20 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { getGrammarLessons, getTests, LANGUAGE_FLAGS } from "@/content/index";
 import type { GrammarLesson } from "@/content/types";
 import { createXPAwarder, XP_REWARDS } from "@/utils/xp";
 
-import GrammarLessonDesign from "@/components/GrammarLessonDesign";
+import { lazy, Suspense } from "react";
+const GrammarLessonDesign = lazy(() => import("@/components/GrammarLessonDesign"));
 
 import { getSavedPosition } from "@/utils/savePosition";
 import Celebration from "@/components/Celebration";
 import AdSlot from "@/components/AdSlot";
 
 /* ═══════════════════════════════════════════════════════════════
-  * CONSTANTS
-  * ═══════════════════════════════════════════════════════════════ */
+ * CONSTANTS
+ * ═══════════════════════════════════════════════════════════════ */
 const COMPLETED_KEY = "langlearn_completed_grammar";
 function getCompleted(): Set<string> {
   try { return new Set(JSON.parse(localStorage.getItem(COMPLETED_KEY) ?? "[]")); } catch { return new Set(); }
@@ -33,15 +34,16 @@ const lvlColors: Record<Level, { bg: string; light: string; dot: string }> = {
 };
 
 /* ═══════════════════════════════════════════════════════════════
-  * MAIN PAGE
-  * ═══════════════════════════════════════════════════════════════ */
+ * MAIN PAGE
+ * ═══════════════════════════════════════════════════════════════ */
 export default function GrammarPage() {
   const { user, updateProfile } = useAuth();
   const nav = useNavigate();
-  const lang = user?.interfaceLanguage ?? "en"; // Use the synchronized language for everything
-  const allLessons = useMemo(() => getGrammarLessons(lang), [lang]);
-  const allTests   = useMemo(() => getTests(lang), [lang]);
-
+  const lang = user?.interfaceLanguage ?? "en";
+  
+  const [allLessons, setAllLessons] = useState<GrammarLesson[]>([]);
+  const [allTests, setAllTests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [completed, setCompleted] = useState<Set<string>>(getCompleted);
   const [activeLevel, setActiveLevel] = useState<Level>("A1");
   const [selectedLesson, setSelectedLesson] = useState<GrammarLesson | null>(null);
@@ -53,17 +55,25 @@ export default function GrammarPage() {
   awardRef.current = createXPAwarder(updateProfile);
   const touchStartX = useRef(0);
 
-  const lessons = useMemo(() => {
-    const list = allLessons;
-    if (!search) return list;
-    const s = search.toLowerCase();
-    return list.filter(l => l.title.toLowerCase().includes(s) || l.topic.toLowerCase().includes(s));
-  }, [allLessons, search]);
+  // Load content lazily when language changes
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    Promise.all([getGrammarLessons(lang), getTests(lang)]).then(([lessons, tests]) => {
+      if (!cancelled) {
+        setAllLessons(lessons);
+        setAllTests(tests);
+        setLoading(false);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [lang]);
 
-  const activeLessons = useMemo(() => {
-    if (search) return lessons;
-    return lessons.filter(l => lvlToCEFR(l.level) === activeLevel);
-  }, [lessons, activeLevel, search]);
+  const lessons = search 
+    ? allLessons.filter(l => l.title.toLowerCase().includes(search.toLowerCase()) || l.topic.toLowerCase().includes(search.toLowerCase()))
+    : allLessons;
+    
+  const activeLessons = search ? lessons : lessons.filter(l => lvlToCEFR(l.level) === activeLevel);
 
   const completedCount = allLessons.filter(l => completed.has(l.id)).length;
   const pct = allLessons.length ? Math.round((completedCount / allLessons.length) * 100) : 0;
@@ -79,6 +89,7 @@ export default function GrammarPage() {
   }, []);
 
   useEffect(() => {
+    if (allLessons.length === 0) return;
     const pos = getSavedPosition();
     if (pos?.page === "grammar" && pos.grammarLessonId) {
       const l = allLessons.find(x => x.id === pos.grammarLessonId);
@@ -89,7 +100,6 @@ export default function GrammarPage() {
     }
   }, [allLessons, scrollToAnchor]);
 
-  // Also scroll when selected lessons changes programmatically
   useEffect(() => {
     if (selectedLesson) scrollToAnchor(selectedLesson.anchorSectionId ?? "rules");
   }, [selectedLesson, scrollToAnchor]);
@@ -119,25 +129,34 @@ export default function GrammarPage() {
     }
   };
 
-  // ── DENSE LESSON VIEW ──
-  if (selectedLesson) {
+  if (loading) {
     return (
-      <>
-        {celebrate && <Celebration newLevel={newLvl} onDone={() => setCelebrate(false)} />}
-<GrammarLessonDesign
-  lesson={selectedLesson}
-  onBack={() => setSelectedLesson(null)}
-  completed={completed.has(selectedLesson.id)}
-  onComplete={() => complete(selectedLesson)}
-  hasTest={hasTest(selectedLesson.topic)}
-  onTest={() => nav(`/tests?topic=${encodeURIComponent(selectedLesson.topic)}`)}
-/>
-
-      </>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">Loading lessons...</p>
+        </div>
+      </div>
     );
   }
 
-  // ── LEVEL LIST VIEW ──
+if (selectedLesson) {
+  return (
+    <>
+      {celebrate && <Celebration newLevel={newLvl} onDone={() => setCelebrate(false)} />}
+      <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div></div>}>
+        <GrammarLessonDesign
+          lesson={selectedLesson}
+          onBack={() => setSelectedLesson(null)}
+          completed={completed.has(selectedLesson.id)}
+          onComplete={() => complete(selectedLesson)}
+          hasTest={hasTest(selectedLesson.topic)}
+          onTest={() => nav(`/tests?topic=${encodeURIComponent(selectedLesson.topic)}`)}
+        />
+      </Suspense>
+    </>
+  );
+}
   const cls = lvlColors[activeLevel];
 
   return (

@@ -13,6 +13,10 @@ import AIChat from "@/components/AIChat";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 
+// Preload critical pages immediately
+const preloadDashboard = () => import("@/pages/DashboardPage");
+preloadDashboard();
+
 // Eager imports for auth pages (always needed)
 // Lazy imports for feature pages (loaded on demand)
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
@@ -30,11 +34,8 @@ const ArenaPage = lazy(() => import("@/pages/ArenaPage"));
 
 function LoadingSpinner() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
-        <p className="mt-2 text-slate-600 dark:text-slate-400">Loading...</p>
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-slate-900">
+      <div className="h-10 w-10 animate-spin rounded-full border-3 border-solid border-indigo-600 border-r-transparent"></div>
     </div>
   );
 }
@@ -76,62 +77,18 @@ export default function App() {
             <Routes>
               <Route path="/login" element={<><LoginPage /><Footer minimal /></>} />
               <Route path="/register" element={<><RegisterPage /><Footer minimal /></>} />
-              <Route path="/privacy" element={
-                <LazyPage><PrivacyPolicyPage /></LazyPage>
-              } />
-              <Route path="/terms" element={
-                <LazyPage><TermsPage /></LazyPage>
-              } />
-              <Route path="/dashboard" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><DashboardPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/grammar" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><GrammarPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/vocabulary" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><VocabularyPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/tests" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><TestPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/settings" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><SettingsPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/premium" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><PremiumPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/mistakes" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><MistakesPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/wotd" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><WordOfTheDayPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
-              <Route path="/arena" element={
-                <ProtectedRouteWrapper>
-                  <LazyPage><AuthenticatedLayout><ArenaPage /></AuthenticatedLayout></LazyPage>
-                </ProtectedRouteWrapper>
-              } />
+              <Route path="/privacy" element={<LazyPage><PrivacyPolicyPage /></LazyPage>} />
+              <Route path="/terms" element={<LazyPage><TermsPage /></LazyPage>} />
+              <Route path="/dashboard" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><DashboardPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/grammar" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><GrammarPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/vocabulary" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><VocabularyPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/tests" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><TestPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/profile" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/settings" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><SettingsPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/premium" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><PremiumPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/mistakes" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><MistakesPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/wotd" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><WordOfTheDayPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
+              <Route path="/arena" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><ArenaPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>

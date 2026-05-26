@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { getTests, LANGUAGE_FLAGS } from "@/content/index";
@@ -133,22 +133,32 @@ export default function TestPage() {
   const { user } = useAuth();
   const nav = useNavigate();
   const lang = user?.currentLanguage ?? "en";
-  const allTests = useMemo(() => getTests(lang), [lang]);
-
+  
+  const [allTests, setAllTests] = useState<TestItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  
   const [activeLevel, setActiveLevel] = useState<Level>("A1");
   const [selectedTest, setSelectedTest] = useState<TestItem | null>(null);
   const [search, setSearch] = useState("");
 
-  const tests = useMemo(() => {
-    let list = allTests;
-    if (search) { const s = search.toLowerCase(); list = list.filter(t => t.title.toLowerCase().includes(s) || t.topic.toLowerCase().includes(s)); }
-    return list;
-  }, [allTests, search]);
+  // Load content lazily when language changes
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    getTests(lang).then(t => {
+      if (!cancelled) {
+        setAllTests(t);
+        setLoading(false);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [lang]);
 
-  const activeTests = useMemo(() => {
-    if (search) return tests;
-    return tests.filter(() => true);
-  }, [tests, activeLevel, search]);
+  const tests = search 
+    ? allTests.filter(t => t.title.toLowerCase().includes(search.toLowerCase()) || t.topic.toLowerCase().includes(search.toLowerCase()))
+    : allTests;
+
+  const activeTests = search ? tests : tests;
 
   const snapTo = (i: number) => {
     setSearch("");
@@ -159,6 +169,17 @@ export default function TestPage() {
   // ── Test taker view ──
   if (selectedTest) {
     return <TestTaker test={selectedTest} onBack={() => setSelectedTest(null)} onDone={() => nav("/dashboard")} languageCode={lang} />;
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-amber-600 border-r-transparent"></div>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">Loading tests...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
