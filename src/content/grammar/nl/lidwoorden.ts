@@ -4,7 +4,7 @@ export const lidwoorden: GrammarLesson = {
   id: "nl-lidwoorden-1",
   title: "Lidwoorden: De, Het, Een, Geen & Het Nul‑lidwoord",
   level: 1,
-  topic: "Grammer",
+  topic: "Grammatica",
   body: "Leer wanneer je de, het, een, geen en géén lidwoord gebruikt. Met duidelijke regels en handige ezelsbruggetjes.",
   overview:
     "Lidwoorden zijn kleine woordjes, maar superbelangrijk. In deze **ultieme masterclass** leer je alles over **de, het, een, geen** en het **nul‑lidwoord**. Je krijgt alle ijzeren wetten, slimme ezelsbruggetjes en waarschuwingen voor álle valkuilen. Na deze les spreek en schrijf je foutloos Nederlands!",
