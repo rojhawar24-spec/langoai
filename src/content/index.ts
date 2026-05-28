@@ -95,7 +95,7 @@ export async function getByTopic<T extends { topic?: string }>(
     : kind === "words" 
     ? await getVocabularyWords(lang) 
     : await getTests(lang);
-  return (pool ?? []).filter((i: any) => i.topic === topic) as T[];
+  return (pool ?? []).filter((i: any) => i.topic === topic) as unknown as T[];
 }
 
 export const LANGUAGE_NAMES: Record<string, string> = {

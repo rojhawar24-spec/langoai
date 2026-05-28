@@ -5,14 +5,14 @@ export const cafe: GrammarLesson = {
   title: "In een Café of Restaurant",
   level: 1,
   topic: "Presentatie",
-  body: "Leer hoe je in het Nederlands iets bestelt in een café of restaurant. Je leert hoe je een tafel kiest, eten en drinken bestelt, om de rekening vraagt en afrekent. Na deze les voel je je op je gemak in elk Nederlands café of restaurant!",
+  body: "Leer hoe je in het Nederlands iets bestelt in een café of restaurant.",
   overview:
     "Hier vind je een **volledig uitgewerkte** les over uit eten gaan. Je leert alle belangrijke woorden en zinnen voor in een café en restaurant, hoe je een gesprek voert met de ober, hoe je beleefd iets bestelt, en hoe je afrekent. Alles met duidelijke voorbeelden, ezelsbruggetjes en praktische oefenvragen. Na deze les bestel jij met vertrouwen je eten en drinken!",
   anchorSectionId: "binnenkomen",
   exercises: [],
   timeExpressionsLabel: "Dranken ☕🥤",
   timeExpressions: {
-    header: "Nederlands",
+    header: "Drank",                     // was: "Nederlands"
     rows: [
       ["☕ <strong>een kop koffie</strong>"],
       ["🍵 <strong>een kop thee</strong>"],
@@ -50,7 +50,7 @@ export const cafe: GrammarLesson = {
             <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">De ober zegt</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Jij antwoordt</th></tr></thead>
             <tbody>
               <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">Heeft u gereserveerd?</td><td class="px-3 py-2 text-sm">Ja, op naam van Jansen. / Nee, we hebben niet gereserveerd.</td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">Hoeveel personen?</td><td class="px-3 py-2 text-sm">Twee personen. / Met z'n drieen.</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">Hoeveel personen?</td><td class="px-3 py-2 text-sm">Twee personen. / Met z'n drieën.</td></tr>
               <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">Wilt u binnen of buiten zitten?</td><td class="px-3 py-2 text-sm">Binnen, alstublieft. / Buiten, graag. ☀️</td></tr>
               <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">Ik breng de menukaart.</td><td class="px-3 py-2 text-sm">Dank u wel! 📋</td></tr>
             </tbody>
@@ -64,7 +64,7 @@ export const cafe: GrammarLesson = {
         <h3 class="text-lg font-bold mt-4 mb-2">Soepen, broodjes en hoofdgerechten</h3>
         <div class="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm my-4">
           <table class="w-full border-collapse">
-            <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Nederlands</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Nederlands</th></tr></thead>
+            <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Soepen & Salades</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Hoofdgerechten & Broodjes</th></tr></thead>
             <tbody>
               <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">🍅🍜 <strong>de tomatensoep</strong></td><td class="px-3 py-2 text-sm">🍝 <strong>de pasta</strong></td></tr>
               <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">🥗 <strong>de salade</strong></td><td class="px-3 py-2 text-sm">🍳 <strong>de omelet</strong></td></tr>
@@ -77,10 +77,12 @@ export const cafe: GrammarLesson = {
         <h3 class="text-lg font-bold mt-6 mb-2">Nagerechten</h3>
         <div class="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm my-4">
           <table class="w-full border-collapse">
-            <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Nederlands</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Nederlands</th></tr></thead>
+            <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Nagerechten</th></tr></thead>
             <tbody>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">🍰 <strong>de appeltaart</strong></td><td class="px-3 py-2 text-sm">🍫🍰 <strong>de chocoladetaart</strong></td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">🍦 <strong>het ijsje</strong></td><td class="px-3 py-2 text-sm">🍓🍰 <strong>de aardbeientaart</strong></td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">🍰 <strong>de appeltaart</strong></td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">🍫🍰 <strong>de chocoladetaart</strong></td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">🍦 <strong>het ijsje</strong></td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">🍓🍰 <strong>de aardbeientaart</strong></td></tr>
             </tbody>
           </table>
         </div>

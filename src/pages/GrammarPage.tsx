@@ -30,7 +30,7 @@ const lvlColors: Record<Level, { bg: string; light: string; dot: string }> = {
 };
 
 export default function GrammarPage() {
-  const { user, updateProfile } = useAuth();
+  const { updateProfile } = useAuth();
   const nav = useNavigate();
 
   // ✅ Data is meteen beschikbaar
@@ -48,7 +48,9 @@ export default function GrammarPage() {
 
   useEffect(() => { setVisibleCount(10); }, [activeLevel, search]);
 
-  // ✅ Debug: je moet in de console "Lessen geladen: 1" zien
+  // ✅ Stijl voor ⚠️ PAS OP highlight wordt geladen via index.css
+
+  // ✅ Debug: je moet in de console "Lessen geladen: X" zien
   console.log("📚 Lessen geladen:", allLessons.length);
 
   const lessons = search

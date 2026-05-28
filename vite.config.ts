@@ -16,14 +16,12 @@ export default defineConfig({
     tailwindcss(),
     viteSingleFile(),
     compression({
-      algorithm: "gzip",
+      algorithms: ["gzip"],
       threshold: 1024,
-      gzipOptions: { level: 9 },
     }),
     compression({
-      algorithm: "brotliCompress",
+      algorithms: ["brotliCompress"],
       threshold: 1024,
-      deleteOriginal: false,
     }),
   ],
   resolve: {

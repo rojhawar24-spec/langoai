@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { /* useEffect kept for future use */ useState, useMemo, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -150,16 +150,20 @@ function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string })
   );
 }
 
-/* ── Markdown Renderer (vet, cursief, code) ─────────────────────────── */
+/* ── Markdown Renderer (vet, cursief, code, PAS OP) ──────────────────────── */
 function RenderMarkdown({ text }: { text: string }) {
-  const processedText = text.replace(
-    /⚠️\s*PAS OP/gi,
-    '<span class="pas-op-highlight">⚠️ PAS OP</span>'
-  );
-  const parts = processedText.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g);
+  const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`|⚠️\s*PAS OP\b)/gi);
+  
   return (
     <span className="font-sans text-[13px] sm:text-sm leading-relaxed">
       {parts.map((part, i) => {
+        if (/^⚠️\s*PAS OP\b/gi.test(part)) {
+          return (
+            <span key={i} className="pas-op-highlight">
+              ⚠️ PAS OP
+            </span>
+          );
+        }
         if (part.startsWith("**") && part.endsWith("**"))
           return (
             <strong key={i} className="font-extrabold text-amber-600 dark:text-amber-400">
@@ -218,33 +222,8 @@ function GrammarLessonDesign({
   onTest: () => void;
   onBack?: () => void;
 }) {
-  useEffect(() => {
-    const pasOpStyleId = 'grammar-pas-op-styles';
-    if (!document.getElementById(pasOpStyleId)) {
-      const pasOpStyle = document.createElement('style');
-      pasOpStyle.id = pasOpStyleId;
-      pasOpStyle.textContent = `
-        .pas-op-highlight {
-          color: #dc2626 !important;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          background: linear-gradient(to right, #fee2e2, #fecaca);
-          padding: 4px 10px;
-          border-radius: 6px;
-          display: inline-block;
-          margin: 4px 0;
-          border-left: 4px solid #dc2626;
-        }
-      `;
-      document.head.appendChild(pasOpStyle);
-    }
-    
-    return () => {
-      const pasOpStyle = document.getElementById(pasOpStyleId);
-      if (pasOpStyle) pasOpStyle.remove();
-    };
-  }, []);
+
+  // ✅ PAS OP stijl wordt geladen via index.css
 
   const langCode = useMemo(() => lesson.id.split("-")[0]?.toLowerCase() ?? "nl", [lesson.id]);
   const labels = useMemo(() => UI_LABELS[langCode] ?? UI_LABELS["nl"], [langCode]);
@@ -373,23 +352,24 @@ function GrammarLessonDesign({
   ];
 
   /* ── Helper: render Markdown to HTML string ────────────────────────── */
-  const renderMarkdownToHtml = useCallback((text: string): string => {
-    if (!text) return "";
-    return text
-      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-amber-600 dark:text-amber-400">$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em class="italic font-medium text-rose-500 dark:text-rose-400">$1</em>')
-      .replace(/`(.*?)`/g, '<code class="rounded-md bg-indigo-100 dark:bg-indigo-900/50 px-2 py-0.5 text-[11px] sm:text-xs font-mono font-semibold tracking-wide text-indigo-700 dark:text-indigo-300">$1</code>')
-      .replace(/⚠️\s*PAS OP/gi, '<span class="pas-op-highlight">⚠️ PAS OP</span>');
-  }, []);
+const renderMarkdownToHtml = useCallback((text: string): string => {
+  if (!text) return "";
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-amber-600 dark:text-amber-400">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic font-medium text-rose-500 dark:text-rose-400">$1</em>')
+    .replace(/`(.*?)`/g, '<code class="rounded-md bg-indigo-100 dark:bg-indigo-900/50 px-2 py-0.5 text-[11px] sm:text-xs font-mono font-semibold tracking-wide text-indigo-700 dark:text-indigo-300">$1</code>')
+    .replace(/⚠️\s*PAS OP\b/gi, '<span class="pas-op-highlight">⚠️ PAS OP</span>');
+}, []);
 
   /* ── Enrichment voor HTML details ───────────────────────────────────── */
-  const buildDetailHtml = (raw: string) =>
-    typeof raw === "string"
-      ? raw
-          .replace(/\*\*(.*?)\*\*/g, `<strong>$1</strong>`)
-          .replace(/\*(.*?)\*/g, `<em>$1</em>`)
-          .replace(/`(.*?)`/g, `<code>$1</code>`)
-      : "";
+const buildDetailHtml = (raw: string) =>
+  typeof raw === "string"
+    ? raw
+        .replace(/\*\*(.*?)\*\*/g, `<strong>$1</strong>`)
+        .replace(/\*(.*?)\*/g, `<em>$1</em>`)
+        .replace(/`(.*?)`/g, `<code>$1</code>`)
+        .replace(/⚠️\s*PAS OP\b/gi, '<span class="pas-op-highlight">⚠️ PAS OP</span>')
+    : "";
 
   const getProcessedContent = useCallback((content: string): string => {
     if (!content) return "";
