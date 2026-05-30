@@ -14,6 +14,8 @@ import { formulieren } from "./formulieren";
 import { lidwoorden } from "./lidwoorden";
 import { zelfstandigNaamwoord } from "./zelfstandigNaamwoord";
 import { verwijswoorden } from "./verwijswoorden";
+import { meervoud } from "./meervoud";
+
 export const nlGrammar: GrammarLesson[] = [
   testLes,
   uitspraak,
@@ -30,5 +32,6 @@ export const nlGrammar: GrammarLesson[] = [
     lidwoorden,
     zelfstandigNaamwoord,
     verwijswoorden,
+    meervoud,
 
 ];
