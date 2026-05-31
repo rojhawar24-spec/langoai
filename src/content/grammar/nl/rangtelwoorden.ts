@@ -118,26 +118,26 @@ export const rangtelwoorden: GrammarLesson = {
   rulesTable: [
     {
       rule: "Uitgang -de of -ste",
-      structure: "Hoofdtelwoord + <strong>-de</strong> (meestal) of + <strong>-ste</strong> (na acht, tientallen, honderd, duizend).",
-      example: "twee → <strong>tweede</strong>, tien → <strong>tiende</strong>, acht → <strong>achtste</strong>, twintig → <strong>twintigste</strong>.",
+      structure: "Hoofdtelwoord + **-de** (meestal) of + **-ste** (na acht, tientallen, honderd, duizend).",
+      example: "twee → **tweede**, tien → **tiende**, acht → **achtste**, twintig → **twintigste**.",
       usage: "Leer de uitzonderingen: eerste (1), derde (3), achtste (8) met -ste.",
     },
     {
       rule: "Samengestelde rangtelwoorden: alleen laatste deel verandert",
       structure: "Bij getallen boven de 20 krijgt alleen het laatste deel de rangtelwoordvorm. Het eerste deel blijft hoofdtelwoord.",
-      example: "21 → <strong>eenentwintigste</strong>, 123 → <strong>honderddrieëntwintigste</strong>.",
+      example: "21 → **eenentwintigste**, 123 → **honderddrieëntwintigste**.",
       usage: "Let op de trema's in woorden als tweeëntwintigste, drieëntwintigste.",
     },
     {
       rule: "Schrijfwijze met cijfers: -e of -ste achter het cijfer",
-      structure: "Gebruik <strong>-e</strong> voor 1 t/m 7, 9, 10... (behalve 8). Gebruik <strong>-ste</strong> voor 8, tientallen, honderdtallen, duizendtallen.",
+      structure: "Gebruik **-e** voor 1 t/m 7, 9, 10... (behalve 8). Gebruik **-ste** voor 8, tientallen, honderdtallen, duizendtallen.",
       example: "1e, 2e, 3e, 8ste, 20ste, 100ste.",
       usage: "De uitspraak van '1e' is 'eerste', van '3e' is 'derde'.",
     },
     {
       rule: "Lidwoord blijft hetzelfde als bij het zelfstandig naamwoord",
       structure: "Het rangtelwoord verandert het lidwoord niet. Bij een het-woord blijft 'het', bij een de-woord blijft 'de'.",
-      example: "<strong>Het</strong> eerste boek, <strong>de</strong> tweede auto.",
+      example: "**Het** eerste boek, **de** tweede auto.",
       usage: "Fout is 'de eerste boek' of 'het eerste auto'.",
     },
   ],
@@ -157,7 +157,7 @@ export const rangtelwoorden: GrammarLesson = {
     { incorrect: "8e (officieel is 8ste)", correct: "8ste", explanation: "Gebruik -ste bij 8." },
   ],
   review: [
-    "Regel: hoofdtelwoord + <strong>-de</strong> (bijna altijd) of + <strong>-ste</strong> (bij 8, 20, 30, 40..., 100, 1000, en 'laatste').",
+    "Regel: hoofdtelwoord + **-de** (bijna altijd) of + **-ste** (bij 8, 20, 30, 40..., 100, 1000, en 'laatste').",
     "Onregelmatig: eerste (1), derde (3).",
     "Samengesteld: alleen het laatste deel wordt rangtelwoord.",
     "Cijfers: 1e, 2e, 3e, 8ste, 20ste, 21ste.",
@@ -167,31 +167,31 @@ export const rangtelwoorden: GrammarLesson = {
   qa: [
     {
       question: "Waarom is 'driede' fout en wat moet het zijn?",
-      answer: "Het rangtelwoord van 3 is <strong>derde</strong>, niet 'driede'. Dit is een onregelmatige vorm die je uit je hoofd moet leren.",
+      answer: "Het rangtelwoord van 3 is **derde**, niet 'driede'. Dit is een onregelmatige vorm die je uit je hoofd moet leren.",
     },
     {
       question: "Wat is de regel voor de uitgang -ste bij rangtelwoorden? Geef drie voorbeelden.",
-      answer: "De uitgang <strong>-ste</strong> gebruik je bij <strong>8</strong> (achtste), bij de <strong>tientallen</strong> (20ste, 30ste, enz.), en bij <strong>100</strong>, <strong>1000</strong>, en het woord <strong>laatste</strong>. Voorbeelden: <em>achtste, twintigste, honderdste</em>.",
+      answer: "De uitgang **-ste** gebruik je bij **8** (achtste), bij de **tientallen** (20ste, 30ste, enz.), en bij **100**, **1000**, en het woord **laatste**. Voorbeelden: *achtste, twintigste, honderdste*.",
     },
     {
       question: "Schrijf het getal 21 als rangtelwoord voluit in letters.",
-      answer: "<strong>Eenentwintigste</strong>. Alleen het laatste deel 'twintig' verandert in de rangtelwoordvorm met -ste.",
+      answer: "**Eenentwintigste**. Alleen het laatste deel 'twintig' verandert in de rangtelwoordvorm met -ste.",
     },
     {
       question: "Hoe schrijf je 'eerste' met een cijfer?",
-      answer: "<strong>1e</strong>. De e geeft de uitgang aan; de uitspraak is 'eerste'. Je schrijft niet '1ste' want dat is voor 1 niet juist.",
+      answer: "**1e**. De e geeft de uitgang aan; de uitspraak is 'eerste'. Je schrijft niet '1ste' want dat is voor 1 niet juist.",
     },
     {
       question: "Waarom is 'De eerste huis' fout?",
-      answer: "'Huis' is een het-woord, dus het lidwoord blijft <strong>het</strong>. Correct is: <strong>Het eerste huis</strong>. Het rangtelwoord verandert het lidwoord niet.",
+      answer: "'Huis' is een het-woord, dus het lidwoord blijft **het**. Correct is: **Het eerste huis**. Het rangtelwoord verandert het lidwoord niet.",
     },
     {
       question: "Je zegt 'de vijfde december'. Hoe schrijf je dat meestal op een uitnodiging?",
-      answer: "<strong>5 december</strong>. Je schrijft het hoofdtelwoord, maar je spreekt het rangtelwoord uit: 'de vijfde december'.",
+      answer: "**5 december**. Je schrijft het hoofdtelwoord, maar je spreekt het rangtelwoord uit: 'de vijfde december'.",
     },
     {
       question: "Wat is het rangtelwoord van 8? Leg uit waarom het geen 'achtde' is.",
-      answer: "Het is <strong>achtste</strong>. Het getal 8 gebruikt de uitgang <strong>-ste</strong> in plaats van -de. Dit is een uitzondering op de regel dat de meeste getallen -de krijgen.",
+      answer: "Het is **achtste**. Het getal 8 gebruikt de uitgang **-ste** in plaats van -de. Dit is een uitzondering op de regel dat de meeste getallen -de krijgen.",
     },
   ],
 };
