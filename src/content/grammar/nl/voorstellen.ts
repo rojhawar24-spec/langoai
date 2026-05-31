@@ -4,7 +4,7 @@ export const voorstellen: GrammarLesson = {
   id: "nl-voorstellen-1",
   title: "Zich voorstellen: naam, leeftijd, woonplaats, nationaliteit",
   level: 1,
-  topic: "Spreken & Presenteren",
+  topic: "Pragmatiek",
   body: "Leer hoe je jezelf voorstelt in het Nederlands. Je oefent met je naam, leeftijd, woonplaats en nationaliteit.",
   overview:
     "Hier vind je een **volledig uitgewerkte** les over jezelf voorstellen. Je leert de vier basiszinnen, de bijbehorende werkwoorden, de meest gemaakte fouten en een snelle herhaling. Alles is helder, overzichtelijk en direct in de praktijk te gebruiken.",

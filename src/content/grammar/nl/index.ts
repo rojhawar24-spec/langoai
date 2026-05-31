@@ -15,8 +15,19 @@ import { lidwoorden } from "./lidwoorden";
 import { zelfstandigNaamwoord } from "./zelfstandigNaamwoord";
 import { verwijswoorden } from "./verwijswoorden";
 import { meervoud } from "./meervoud";
+import { persoonlijkeVoornaamwoordenOnderwerp } from "./persoonlijkeVoornaamwoordenOnderwerp"; // ✅ routines staat nu maar 1 keer
+import { persoonlijkeVoornaamwoordenObject } from "./persoonlijkeVoornaamwoordenObject"; // ✅ routines staat nu maar 1 keer
+import { gereduceerdevormen } from "./gereduceerdevormen";
+import { bezittelijkeVoornaamwoorden } from "./bezittelijkeVoornaamwoorden";
+import { aanwijzendeVoornaamwoorden } from "./aanwijzendeVoornaamwoorden";
+import { onbepaaldeVoornaamwoorden } from "./onbepaaldeVoornaamwoorden";
+import { hoofdtelwoorden} from "./hoofdtelwoorden";
+import { rangtelwoorden } from "./rangtelwoorden";
+import { voorzetsels } from "./voorzetsels";
 
 export const nlGrammar: GrammarLesson[] = [
+
+
   testLes,
   uitspraak,
   voorstellen,
@@ -33,5 +44,14 @@ export const nlGrammar: GrammarLesson[] = [
     zelfstandigNaamwoord,
     verwijswoorden,
     meervoud,
+    persoonlijkeVoornaamwoordenOnderwerp,
+  persoonlijkeVoornaamwoordenObject,
+   gereduceerdevormen,
+bezittelijkeVoornaamwoorden,
+aanwijzendeVoornaamwoorden,
+onbepaaldeVoornaamwoorden,
+hoofdtelwoorden,
+rangtelwoorden,
+voorzetsels,
 
 ];

@@ -406,18 +406,17 @@ const buildDetailHtml = (raw: string) =>
           r.split("|").map((c: string) => c.trim()).filter(Boolean)
         );
         
-        let tableHtml = '<div class="overflow-x-auto my-8 rounded-2xl border border-' + tableTheme.accent + '/100 dark:border-' + tableTheme.accentDark + '/100 shadow-lg bg-white dark:bg-slate-800/90 backdrop-blur-sm">';
+        let tableHtml = '<div class="overflow-x-auto my-8 rounded-2xl border border-[' + tableTheme.accent + ']/100 dark:border-[' + tableTheme.accentDark + ']/100 shadow-lg bg-white dark:bg-slate-800/90 backdrop-blur-sm">';
         tableHtml += '<table class="w-full border-collapse min-w-[480px]"><thead><tr>';
         
         headers.forEach(function(h) {
-          tableHtml += '<th class="' + tableTheme.top + ' dark:bg-' + tableTheme.accentDark + '/80 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.1em] px-6 py-4">' + h + '</th>';
+          tableHtml += '<th class="' + tableTheme.top + ' dark:bg-[' + tableTheme.accentDark + ']/80 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.1em] px-6 py-4 text-white text-left">' + h + '</th>';
         });
         
         tableHtml += '</tr></thead><tbody>';
-        
+
         rows.forEach(function(row, ri) {
-          var rowClass = ri % 2 ? 'bg-' + tableTheme.chipBgLight + ' dark:bg-' + tableTheme.chipBgAlt : 'bg-white dark:bg-slate-800/20';
-          tableHtml += '<tr class="' + rowClass + ' hover:bg-' + tableTheme.accent + '/25 dark:hover:bg-' + tableTheme.accentDark + '/10 transition-colors">';
+          tableHtml += '<tr class="' + (ri % 2 ? tableTheme.chipBgLight : 'bg-white dark:bg-slate-800/20') + ' hover:bg-[' + tableTheme.accent + ']/25 dark:hover:bg-[' + tableTheme.accentDark + ']/10 transition-colors">';
           
           row.forEach(function(cell, ci) {
             var enhancedCell = cell
@@ -428,8 +427,8 @@ const buildDetailHtml = (raw: string) =>
               .replace(/í/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">í</span>')
               .replace(/ú/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ú</span>');
             
-            var cellClass = ci === 0 ? "font-semibold text-slate-900 dark:text-slate-100" : "text-slate-800 dark:text-slate-200";
-            tableHtml += '<td class="px-6 py-4 border-t border-' + tableTheme.accent + '/100 dark:border-' + tableTheme.accentDark + '/100 text-sm sm:text-[15px] ' + cellClass + '">' + enhancedCell + '</td>';
+             var cellClass = ci === 0 ? 'font-semibold text-slate-900 dark:text-slate-100' : 'text-slate-800 dark:text-slate-200';
+             tableHtml += '<td class="px-6 py-4 border-t border-[' + tableTheme.accent + ']/100 dark:border-[' + tableTheme.accentDark + ']/100 text-sm sm:text-[15px] ' + cellClass + '">' + enhancedCell + '</td>';
           });
           
           tableHtml += '</tr>';
@@ -491,7 +490,7 @@ const buildDetailHtml = (raw: string) =>
             <div className="overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-slate-700/50 shadow-lg mt-4 bg-white dark:bg-slate-900/60 backdrop-blur-sm">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className={`${tableTheme.top} dark:bg-${tableTheme.accentDark}/80 text-white`}>
+                  <tr className={`${tableTheme.top} dark:bg-[${tableTheme.accentDark}]/80 text-white`}>
                     {lesson.timeExpressions.header.split("|").map((h, i) => (
                       <th key={i} className="px-4 py-3.5 text-left text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.15em]">
                         {h.trim()}
@@ -512,11 +511,11 @@ const buildDetailHtml = (raw: string) =>
                       {row.map((cell, ci) => (
                         <td
                           key={ci}
-                          className={`px-4 py-3 text-[13px] sm:text-sm border-t border-${tableTheme.accent}/100 dark:border-${tableTheme.accentDark}/100 leading-relaxed ${
+                          className={`px-4 py-3 text-[13px] sm:text-sm border-t border-[${tableTheme.accent}]/100 dark:border-[${tableTheme.accentDark}]/100 leading-relaxed ${
                             ci === 0
                               ? "font-bold text-slate-900 dark:text-slate-100"
                               : ci === 2
-                              ? `text-${tableTheme.accent} dark:text-${tableTheme.accentDark} font-semibold`
+                              ? `text-[${tableTheme.accent}] dark:text-[${tableTheme.accentDark}] font-semibold`
                               : ci === 3
                               ? "text-slate-500 dark:text-slate-400"
                               : "text-slate-700 dark:text-slate-200"

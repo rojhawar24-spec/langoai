@@ -2,9 +2,9 @@ import type { GrammarLesson } from "../../types";
 
 export const wegVragen: GrammarLesson = {
   id: "nl-wegvragen-1",
-  title: "🗺️ De weg vragen en wijzen",
+  title: "De weg vragen en wijzen",
   level: 1,
-  topic: "Weg vragen",
+  topic: "Pragmatiek",
   body: "Leer hoe je in het Nederlands de weg vraagt en wijst. Je leert de belangrijkste zinnen, plaatswoorden en hoe je een gesprek voert op straat.",
   overview:
     "Na deze les weet je hoe je op straat beleefd de weg vraagt, hoe je zelf de weg wijst, en welke woorden en zinnetjes je daarvoor nodig hebt. Je krijgt heel veel voorbeelden en duidelijke uitleg.",

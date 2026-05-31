@@ -4,7 +4,7 @@ export const meervoud: GrammarLesson = {
   id: "nl-meervoud-1",
   title: "Meervoud van Zelfstandige Naamwoorden: -en, -s, -eren en Onregelmatig",
   level: 1,
-  topic: "Meervoud",  // [G] Grammatica
+  topic: "Gammatica",
   body: "Leer hoe je van zelfstandige naamwoorden het meervoud maakt. Met duidelijke spellingregels, ezelsbruggetjes en alle uitzonderingen.",
   overview:
     "In het Nederlands verandert een zelfstandig naamwoord als je over meer dan één ding, mens of dier praat. De meest gebruikte uitgangen zijn **-en** en **-s**, maar er zijn ook kleine groepen met **-eren** en onregelmatige vormen. In deze **ultieme masterclass** leer je alle regels, spellingtips en valkuilen. Na deze les maak jij elk meervoud foutloos!",
@@ -33,9 +33,9 @@ export const meervoud: GrammarLesson = {
         <h3 class="text-lg font-bold mt-4 mb-2">Gewoon -en zonder aanpassing</h3>
         <p>Eindigt het woord op een medeklinkercombinatie die geen spellingprobleem geeft, dan schrijf je gewoon <strong>-en</strong>.</p>
         <ul class="my-2 space-y-1.5 pl-1">
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de hond → de hond<strong>en</strong></li>
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de straat → de strat<strong>en</strong></li>
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de fiets → de fiets<strong>en</strong></li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de hond → de honden</li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de straat → de straten</li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de fiets → de fietsen</li>
         </ul>
         <h3 class="text-lg font-bold mt-6 mb-2">Korte klinker → medeklinker verdubbelen</h3>
         <p>Heeft het enkelvoud een korte klinker (a, e, i, o, u) in de beklemtoonde lettergreep en daarna één medeklinker, dan verdubbel je die medeklinker om de korte klank te behouden.</p>
@@ -43,9 +43,9 @@ export const meervoud: GrammarLesson = {
           <table class="w-full border-collapse">
             <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Enkelvoud</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Meervoud</th></tr></thead>
             <tbody>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de k<strong>a</strong>t</td><td class="px-3 py-2 text-sm">de katt<strong>en</strong></td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de b<strong>o</strong>m</td><td class="px-3 py-2 text-sm">de bomm<strong>en</strong></td></tr>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de b<strong>u</strong>s</td><td class="px-3 py-2 text-sm">de buss<strong>en</strong></td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de kat (korte a)</td><td class="px-3 py-2 text-sm">de katten</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de bom (korte o)</td><td class="px-3 py-2 text-sm">de bommen</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de bus (korte u)</td><td class="px-3 py-2 text-sm">de bussen</td></tr>
             </tbody>
           </table>
         </div>
@@ -55,9 +55,9 @@ export const meervoud: GrammarLesson = {
           <table class="w-full border-collapse">
             <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Enkelvoud</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Meervoud</th></tr></thead>
             <tbody>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de b<strong>aa</strong>n</td><td class="px-3 py-2 text-sm">de ban<strong>en</strong></td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de b<strong>oo</strong>m</td><td class="px-3 py-2 text-sm">de bom<strong>en</strong></td></tr>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het sch<strong>aa</strong>p</td><td class="px-3 py-2 text-sm">de schap<strong>en</strong></td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de baan (aa)</td><td class="px-3 py-2 text-sm">de banen</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de boom (oo)</td><td class="px-3 py-2 text-sm">de bomen</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het schaap (aa)</td><td class="px-3 py-2 text-sm">de schapen</td></tr>
             </tbody>
           </table>
         </div>
@@ -67,17 +67,31 @@ export const meervoud: GrammarLesson = {
           <table class="w-full border-collapse">
             <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Enkelvoud</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Meervoud</th></tr></thead>
             <tbody>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de raa<strong>f</strong></td><td class="px-3 py-2 text-sm">de ra<strong>v</strong>en</td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de hui<strong>s</strong></td><td class="px-3 py-2 text-sm">de hui<strong>z</strong>en</td></tr>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de prij<strong>s</strong></td><td class="px-3 py-2 text-sm">de prij<strong>z</strong>en</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de raaf</td><td class="px-3 py-2 text-sm">de raven</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de neef</td><td class="px-3 py-2 text-sm">de neven</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de huis</td><td class="px-3 py-2 text-sm">de huizen</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de prijs</td><td class="px-3 py-2 text-sm">de prijzen</td></tr>
             </tbody>
           </table>
         </div>
         <p><span class="pas-op-highlight">⚠️ PAS OP</span> Niet altijd! <em>de mens → de mensen</em> (blijft s) en <em>de dans → de dansen</em>.</p>
+        <h3 class="text-lg font-bold mt-6 mb-2">Klinkerverlenging in plaats van verdubbeling</h3>
+        <p>Sommige woorden met een korte klinker gevolgd door één medeklinker verdubbelen niet, maar krijgen een lange klinker in het meervoud. De klinker komt dan in een open lettergreep.</p>
+        <div class="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm my-4">
+          <table class="w-full border-collapse">
+            <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Enkelvoud</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Meervoud</th></tr></thead>
+            <tbody>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">de dag</td><td class="px-3 py-2 text-sm">de dagen (a wordt lang)</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de weg</td><td class="px-3 py-2 text-sm">de wegen (e wordt lang)</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het pad</td><td class="px-3 py-2 text-sm">de paden (a wordt lang)</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">het glas</td><td class="px-3 py-2 text-sm">de glazen (a wordt lang + s→z)</td></tr>
+            </tbody>
+          </table>
+        </div>
         <h3 class="text-lg font-bold mt-6 mb-2">Bijzondere -en: -heid → -heden, -nis → -nissen</h3>
         <ul class="my-2 space-y-1.5 pl-1">
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de waar<strong>heid</strong> → de waar<strong>heden</strong></li>
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de geschiede<strong>nis</strong> → de geschied<strong>nissen</strong></li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de waarheid → de waarheden</li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de geschiedenis → de geschiedenissen</li>
         </ul>
       `,
     },
@@ -89,21 +103,22 @@ export const meervoud: GrammarLesson = {
           <table class="w-full border-collapse">
             <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Woord eindigt op</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Enkelvoud</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Meervoud</th></tr></thead>
             <tbody>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">-e (onbeklemtoond)</td><td class="px-3 py-2 text-sm">de bo<strong>de</strong></td><td class="px-3 py-2 text-sm">de bod<strong>es</strong></td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">-el</td><td class="px-3 py-2 text-sm">de taf<strong>el</strong></td><td class="px-3 py-2 text-sm">de taf<strong>els</strong></td></tr>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">-en</td><td class="px-3 py-2 text-sm">de dek<strong>en</strong></td><td class="px-3 py-2 text-sm">de dek<strong>ens</strong></td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">-er</td><td class="px-3 py-2 text-sm">de lekk<strong>er</strong></td><td class="px-3 py-2 text-sm">de lekk<strong>ers</strong></td></tr>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">-je (verkleinwoord)</td><td class="px-3 py-2 text-sm">het boek<strong>je</strong></td><td class="px-3 py-2 text-sm">de boek<strong>jes</strong></td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">leenwoorden</td><td class="px-3 py-2 text-sm">de café, de computer</td><td class="px-3 py-2 text-sm">de café<strong>s</strong>, de computer<strong>s</strong></td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">-e (onbeklemtoond)</td><td class="px-3 py-2 text-sm">de bode</td><td class="px-3 py-2 text-sm">de bodes</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">-el</td><td class="px-3 py-2 text-sm">de tafel</td><td class="px-3 py-2 text-sm">de tafels</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">-en</td><td class="px-3 py-2 text-sm">de deken</td><td class="px-3 py-2 text-sm">de dekens</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">-er</td><td class="px-3 py-2 text-sm">de bakker</td><td class="px-3 py-2 text-sm">de bakkers</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">-em</td><td class="px-3 py-2 text-sm">de bezem</td><td class="px-3 py-2 text-sm">de bezems</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">-je (verkleinwoord)</td><td class="px-3 py-2 text-sm">het boekje</td><td class="px-3 py-2 text-sm">de boekjes</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">leenwoorden</td><td class="px-3 py-2 text-sm">de café, de computer</td><td class="px-3 py-2 text-sm">de cafés, de computers</td></tr>
             </tbody>
           </table>
         </div>
         <h3 class="text-lg font-bold mt-6 mb-2">Apostrof‑s bij klinkerbotsing</h3>
         <p>Als het enkelvoud eindigt op een lange klinker (a, o, u, i, y) of een klinker die de uitspraak zou verstoren, schrijf je een apostrof vóór de -s.</p>
         <ul class="my-2 space-y-1.5 pl-1">
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de op<strong>a</strong> → de opa<strong>'s</strong></li>
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de bab<strong>y</strong> → de baby<strong>'s</strong></li>
-          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de tax<strong>i</strong> → de taxi<strong>'s</strong></li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de opa → de opa's</li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de baby → de baby's</li>
+          <li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">de taxi → de taxi's</li>
         </ul>
         <p>Woorden op -e met een stomme e krijgen gewoon -s zonder apostrof: <em>de kamer → de kamers</em>.</p>
       `,
@@ -131,15 +146,15 @@ export const meervoud: GrammarLesson = {
     {
       title: "Onregelmatige meervouden – de uitzonderingen ⚡",
       body: `
-        <h3 class="text-lg font-bold mt-4 mb-2">Klinkerwisseling in de stam</h3>
+        <p>Enkele woorden volgen geen van de standaardpatronen. Ze veranderen van klinker of komen uit een vreemde taal.</p>
+        <h3 class="text-lg font-bold mt-4 mb-2">Klinkerwisseling</h3>
         <div class="overflow-x-auto rounded-xl border border-slate-200/70 dark:border-slate-700 shadow-sm my-4">
           <table class="w-full border-collapse">
             <thead><tr class="!bg-indigo-600"><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Enkelvoud</th><th class="text-white text-xs font-bold uppercase tracking-wider px-3 py-2 text-left">Meervoud</th></tr></thead>
             <tbody>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het schip</td><td class="px-3 py-2 text-sm">de schepen</td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de stad</td><td class="px-3 py-2 text-sm">de steden</td></tr>
-              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het lid</td><td class="px-3 py-2 text-sm">de leden</td></tr>
-              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de dag</td><td class="px-3 py-2 text-sm">de dagen</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het schip</td><td class="px-3 py-2 text-sm">de schepen (i → e)</td></tr>
+              <tr class="bg-slate-50/60 dark:bg-slate-800/30"><td class="px-3 py-2 text-sm">de stad</td><td class="px-3 py-2 text-sm">de steden (a → e)</td></tr>
+              <tr class="bg-white dark:bg-slate-800/50"><td class="px-3 py-2 text-sm">het lid</td><td class="px-3 py-2 text-sm">de leden (i → e)</td></tr>
             </tbody>
           </table>
         </div>
@@ -176,6 +191,12 @@ export const meervoud: GrammarLesson = {
       usage: "Let op: been (bot) → beenderen (uitzondering).",
     },
     {
+      rule: "Klinkerverlenging (geen verdubbeling)",
+      structure: "Sommige woorden met korte klinker + één medeklinker krijgen een lange klinker in het meervoud zonder de medeklinker te verdubbelen.",
+      example: "dag → **dagen**, weg → **wegen**, pad → **paden**, glas → **glazen**.",
+      usage: "De klinker komt in een open lettergreep en wordt lang; spelling verandert niet (a→a, e→e).",
+    },
+    {
       rule: "f → v en s → z tussen klinkers",
       structure: "Eindigt het enkelvoud op f of s, dan in het meervoud vaak v of z.",
       example: "raaf → **raven**, huis → **huizen**, prijs → **prijzen**.",
@@ -189,7 +210,7 @@ export const meervoud: GrammarLesson = {
     },
     {
       rule: "Meervoud op -eren",
-      structure: "Kleine vaste groep: kind, ei, blad, kalf, lam, goed, been.",
+      structure: "Kleine vaste groep: kind, ei, blad, kalf, lam, goed, been (bot).",
       example: "kind → **kinderen**, ei → **eieren**, blad → **bladeren**.",
       usage: "Geen regel, gewoon uit het hoofd leren.",
     },
@@ -203,29 +224,32 @@ export const meervoud: GrammarLesson = {
   callouts: [
     { type: "remember", label: "Onthoud 1", text: "Korte klinker? Verdubbel de medeklinker: **bus → bussen**." },
     { type: "remember", label: "Onthoud 2", text: "Lange klinker? Haal één klinkerteken weg: **boom → bomen**." },
-    { type: "remember", label: "Onthoud 3", text: "**f → v** en **s → z** als ze tussen klinkers komen: raaf → raven, huis → huizen." },
-    { type: "remember", label: "Onthoud 4", text: "Woorden op -el, -er, -en, -je: meervoud op -s. **tafel → tafels**." },
-    { type: "remember", label: "Onthoud 5", text: "Klinkerbotsing? Apostrof‑s: **oma's, baby's, café's**." },
-    { type: "remember", label: "Onthoud 6", text: "De -eren-groep: **kind → kinderen, ei → eieren, blad → bladeren**." },
-    { type: "remember", label: "Onthoud 7", text: "Onregelmatig: **schip → schepen, stad → steden, museum → musea, koe → koeien**." },
-    { type: "remember", label: "Onthoud 8", text: "Alle meervouden krijgen het lidwoord **de**." },
+    { type: "remember", label: "Onthoud 3", text: "Soms wordt een korte klinker juist lang: **dag → dagen, weg → wegen**." },
+    { type: "remember", label: "Onthoud 4", text: "**f → v** en **s → z** als ze tussen klinkers komen: raaf → raven, huis → huizen." },
+    { type: "remember", label: "Onthoud 5", text: "Woorden op -el, -er, -en, -em, -je: meervoud op -s. **tafel → tafels**." },
+    { type: "remember", label: "Onthoud 6", text: "Klinkerbotsing? Apostrof‑s: **oma's, baby's, café's**." },
+    { type: "remember", label: "Onthoud 7", text: "De -eren-groep: **kind → kinderen, ei → eieren, blad → bladeren**." },
+    { type: "remember", label: "Onthoud 8", text: "Onregelmatig: **schip → schepen, stad → steden, museum → musea, koe → koeien**." },
+    { type: "remember", label: "Onthoud 9", text: "Alle meervouden krijgen het lidwoord **de**." },
   ],
   commonMistakes: [
-    { incorrect: "de boek**s**", correct: "de **boeken**", explanation: "Boek krijgt -en." },
-    { incorrect: "de tafel**en**", correct: "de **tafels**", explanation: "Tafel eindigt op -el → -s." },
-    { incorrect: "de raaf**en**", correct: "de **raven**", explanation: "f → v tussen klinkers." },
-    { incorrect: "de hui**s**en", correct: "de **huizen**", explanation: "s → z tussen klinkers." },
-    { incorrect: "de bus**en**", correct: "de **bussen**", explanation: "Korte klinker: medeklinker verdubbelen." },
-    { incorrect: "de boom**men**", correct: "de **bomen**", explanation: "Lange klinker: één klinkerteken weglaten." },
-    { incorrect: "de kind**s**", correct: "de **kinderen**", explanation: "Kind heeft -eren." },
-    { incorrect: "de ei**s**", correct: "de **eieren**", explanation: "Ei heeft -eren." },
-    { incorrect: "de stad**s**", correct: "de **steden**", explanation: "Onregelmatig: stad → steden." },
-    { incorrect: "de oma**s** (zonder apostrof)", correct: "de **oma's**", explanation: "Apostrof bij a aan het eind." },
+    { incorrect: "de boeks", correct: "de boeken", explanation: "Boek krijgt -en." },
+    { incorrect: "de tafelen", correct: "de tafels", explanation: "Tafel eindigt op -el → -s." },
+    { incorrect: "de raafen", correct: "de raven", explanation: "f → v tussen klinkers." },
+    { incorrect: "de huisen", correct: "de huizen", explanation: "s → z tussen klinkers." },
+    { incorrect: "de busen", correct: "de bussen", explanation: "Korte klinker: medeklinker verdubbelen." },
+    { incorrect: "de boommen", correct: "de bomen", explanation: "Lange klinker: één klinkerteken weglaten." },
+    { incorrect: "de daggen", correct: "de dagen", explanation: "Klinkerverlenging: korte a wordt lang, geen verdubbeling." },
+    { incorrect: "de kinds", correct: "de kinderen", explanation: "Kind heeft -eren." },
+    { incorrect: "de eis", correct: "de eieren", explanation: "Ei heeft -eren." },
+    { incorrect: "de stads", correct: "de steden", explanation: "Onregelmatig: stad → steden." },
+    { incorrect: "de omas (zonder apostrof)", correct: "de oma's", explanation: "Apostrof bij a aan het eind." },
   ],
   review: [
     "Grootste groep: meervoud op **-en**.",
     "Korte klinker? Verdubbel de medeklinker (bus → bussen).",
     "Lange klinker? Eén klinkerteken weglaten (boom → bomen).",
+    "Klinkerverlenging: dag → dagen, weg → wegen (geen verdubbeling).",
     "f → v, s → z als ze tussen klinkers komen (raaf → raven, huis → huizen).",
     "Woorden op -heid: meervoud op **-heden** (waarheid → waarheden).",
     "Woorden op -el, -er, -en, -em, -je en leenwoorden: meervoud op **-s**.",
@@ -250,6 +274,10 @@ export const meervoud: GrammarLesson = {
     {
       question: "Leg aan de hand van het woord *raaf* uit wat de f/v-regel inhoudt. Geef nog twee andere voorbeelden van deze regel.",
       answer: "In *raaf* staat de **f** aan het eind. In het meervoud *raven* komt de f tussen klinkers te staan en wordt dan zachter: **v**. Andere voorbeelden: *neef → neven*, *schrijf → schrijven*. De s/z‑regel werkt hetzelfde: *huis → huizen*, *prijs → prijzen*.",
+    },
+    {
+      question: "Verklaar waarom het meervoud van *dag* **dagen** is en niet *daggen*. Hoe heet deze spellingregel?",
+      answer: "In *dag* is de a kort, maar de medeklinker wordt niet verdubbeld zoals bij *bus*. In plaats daarvan komt de a in een open lettergreep (da-gen) en wordt daardoor lang uitgesproken. De spelling verandert niet, maar de klank wordt langer. Dit heet **klinkerverlenging** en komt voor bij woorden als dag, weg, pad, glas.",
     },
     {
       question: "Noem vier zelfstandige naamwoorden die een meervoud op -eren hebben, en leg uit waarom deze woorden vaak lastig zijn voor anderstaligen.",
