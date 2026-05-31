@@ -24,6 +24,24 @@ import { onbepaaldeVoornaamwoorden } from "./onbepaaldeVoornaamwoorden";
 import { hoofdtelwoorden} from "./hoofdtelwoorden";
 import { rangtelwoorden } from "./rangtelwoorden";
 import { voorzetsels } from "./voorzetsels";
+import { bijwoorden } from "./bijwoorden";
+import { infinitiefStamIkvorm } from "./infinitiefStamIkvorm";
+import { tegenwoordigeTijd } from "./tegenwoordigeTijd";
+import { ovt } from "./ovt";
+import { gebiedendeWijs } from "./gebiedendeWijs";
+import { hoofdzinMededelend } from "./hoofdzinMededelend";
+import { vraagzinnenjanee } from "./vraagzinnenjanee";
+import { vraagzinnenVraagwoord } from "./vraagzinnenVraagwoord";
+import { ontkenningNiet } from "./ontkenningNiet";
+import { ontkenningGeen } from "./ontkenningGeen";
+import { persoonsvorm } from "./persoonsvorm";
+import { onderwerp } from "./onderwerp";
+import { luisterenStation } from "./luisterenStation";
+import { leesvaardigheidAdvertenties } from "./leesvaardigheidAdvertenties";
+import { schrijfvaardigheidBericht } from "./schrijfvaardigheidBericht";
+import { spreekvaardigheidVoorstellen } from "./spreekvaardigheidVoorstellen";
+
+
 
 export const nlGrammar: GrammarLesson[] = [
 
@@ -53,5 +71,22 @@ onbepaaldeVoornaamwoorden,
 hoofdtelwoorden,
 rangtelwoorden,
 voorzetsels,
+bijwoorden,
+infinitiefStamIkvorm,
+tegenwoordigeTijd,
+ovt,
+gebiedendeWijs,
+hoofdzinMededelend,
+vraagzinnenjanee,
+vraagzinnenVraagwoord,
+ontkenningNiet,
+ontkenningGeen,
+persoonsvorm,
+onderwerp,
+luisterenStation,
+leesvaardigheidAdvertenties,
+schrijfvaardigheidBericht,
+spreekvaardigheidVoorstellen,
+
 
 ];
