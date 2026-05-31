@@ -49,6 +49,12 @@ import { accenttekens } from "./accenttekens";
 import { tremaApostrof } from "./tremaApostrof";
 import { koppelteken } from "./koppelteken";
 import { leestekens } from "./leestekens";
+import { tussenklanken } from "./tussenklanken";
+import { aaneenschrijvenOfLos } from "./aaneenschrijvenOfLos";
+import { telbaarNietTelbaarNominalisatie } from "./telbaarNietTelbaarNominalisatie";
+import { bijvoeglijkNaamwoord } from "./bijvoeglijkNaamwoord";
+import { trappenVanVergelijking } from "./trappenVanVergelijking";
+import { zelfstandigBezittelijkVoornaamwoord } from "./zelfstandigBezittelijkVoornaamwoord";
 
 export const nlGrammar: GrammarLesson[] = [
 
@@ -103,5 +109,10 @@ accenttekens,
 tremaApostrof,
 koppelteken,
 leestekens,
-
+tussenklanken,
+aaneenschrijvenOfLos,
+telbaarNietTelbaarNominalisatie,
+bijvoeglijkNaamwoord,
+trappenVanVergelijking,
+zelfstandigBezittelijkVoornaamwoord,
 ];
