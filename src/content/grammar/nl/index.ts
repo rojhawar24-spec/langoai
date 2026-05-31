@@ -40,7 +40,11 @@ import { luisterenStation } from "./luisterenStation";
 import { leesvaardigheidAdvertenties } from "./leesvaardigheidAdvertenties";
 import { schrijfvaardigheidBericht } from "./schrijfvaardigheidBericht";
 import { spreekvaardigheidVoorstellen } from "./spreekvaardigheidVoorstellen";
-
+import { feestdagen } from "./feestdagen";
+import { zelfevaluatieA1 } from "./zelfevaluatieA1";
+import { belangrijkeWerkwoorden } from "./belangrijkeWerkwoorden";
+import { hoofdletters } from "./hoofdletters";
+import { kleineletters } from "./kleineletters";
 
 
 export const nlGrammar: GrammarLesson[] = [
@@ -87,6 +91,10 @@ luisterenStation,
 leesvaardigheidAdvertenties,
 schrijfvaardigheidBericht,
 spreekvaardigheidVoorstellen,
-
+feestdagen,
+zelfevaluatieA1,
+belangrijkeWerkwoorden,
+hoofdletters,
+kleineletters,
 
 ];

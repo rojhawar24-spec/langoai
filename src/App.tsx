@@ -1,5 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { I18nProvider } from "@/i18n/I18nContext";
@@ -73,8 +74,9 @@ export default function App() {
       <AuthProvider>
         <ThemeProvider>
           <I18nProvider>
-            <ScrollToTop />
-            <Routes>
+      <ScrollToTop />
+      <SpeedInsights />
+      <Routes>
               <Route path="/login" element={<><LoginPage /><Footer minimal /></>} />
               <Route path="/register" element={<><RegisterPage /><Footer minimal /></>} />
               <Route path="/privacy" element={<LazyPage><PrivacyPolicyPage /></LazyPage>} />

@@ -143,8 +143,8 @@ const UI_LABELS: Record<string, Record<string, string>> = {
 function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <h2 className="font-sans flex items-center gap-3 text-lg sm:text-xl lg:text-2xl font-extrabold text-slate-900 dark:text-white">
-      <span className="h-1 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex-shrink-0" />
-      {icon && <span className="flex-shrink-0">{icon}</span>}
+      <span className="gl-section-line h-[3px] w-9 rounded-full flex-shrink-0 shadow-sm" style={{ boxShadow: "0 0 8px rgba(99,102,241,0.45)" }} />
+      {icon && <span className="flex-shrink-0 opacity-80">{icon}</span>}
       {label}
     </h2>
   );
@@ -447,407 +447,473 @@ const buildDetailHtml = (raw: string) =>
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8 font-sans">
-      {/* ═══════════ HEADER ═══════════ */}
-      <header className="mb-12">
-        <div className="flex items-center gap-2.5 mb-4 flex-wrap">
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-400 transition-all"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              {labels.back}
-            </button>
-          )}
-          <span className="rounded-full px-3 py-1.5 text-xs font-black tracking-wide uppercase bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md">
-            {lvlToCEFR(lesson.level)}
-          </span>
-          <span className="rounded-full bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 px-3 py-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 shadow-sm">
-            {lesson.topic}
-          </span>
-        </div>
-        <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">
-          <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            {lesson.title}
-          </span>
-        </h1>
-        {lesson.overview && (
-          <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed max-w-2xl border-l-4 border-amber-400 pl-4 py-1">
-            <RenderMarkdown text={lesson.overview} />
-          </p>
-        )}
-      </header>
+    <div className="relative min-h-screen">
+      <style>{`
+        /* ── Light mode page background ── */
+        .gl-page {
+          background-color: #f6f7fb;
+          background-image:
+            radial-gradient(ellipse 70% 55% at 75% -8%, rgba(99,102,241,0.13) 0%, transparent 68%),
+            radial-gradient(ellipse 50% 40% at -5% 60%, rgba(168,85,247,0.07) 0%, transparent 60%),
+            radial-gradient(circle at 1px 1px, rgba(99,102,241,0.055) 1px, transparent 0);
+          background-size: 100% 100%, 100% 100%, 22px 22px;
+        }
+        /* ── Dark mode page background ── */
+        .dark .gl-page {
+          background-color: #0c1120;
+          background-image:
+            radial-gradient(ellipse 75% 55% at 65% -6%, rgba(99,102,241,0.22) 0%, transparent 62%),
+            radial-gradient(ellipse 55% 45% at 100% 85%, rgba(168,85,247,0.11) 0%, transparent 58%),
+            radial-gradient(ellipse 30% 25% at 0% 40%, rgba(56,189,248,0.06) 0%, transparent 50%),
+            radial-gradient(circle at 1px 1px, rgba(148,163,184,0.038) 1px, transparent 0);
+          background-size: 100% 100%, 100% 100%, 100% 100%, 22px 22px;
+        }
+        /* ── Section title accent line ── */
+        .gl-section-line {
+          background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+        }
+        /* ── Card glass light ── */
+        .gl-card {
+          background: rgba(255,255,255,0.92);
+          border: 1px solid rgba(226,232,240,0.7);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(99,102,241,0.06);
+        }
+        .dark .gl-card {
+          background: rgba(30,41,59,0.72);
+          border: 1px solid rgba(51,65,85,0.5);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 24px rgba(0,0,0,0.25);
+          backdrop-filter: blur(12px);
+        }
+        .gl-card:hover {
+          box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 32px rgba(99,102,241,0.10);
+        }
+        .dark .gl-card:hover {
+          box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 12px 40px rgba(99,102,241,0.15);
+        }
+        /* ── Table card ── */
+        .gl-table-wrap {
+          background: rgba(255,255,255,0.96);
+          border: 1px solid rgba(226,232,240,0.8);
+          box-shadow: 0 2px 12px rgba(99,102,241,0.07);
+        }
+        .dark .gl-table-wrap {
+          background: rgba(30,41,59,0.75);
+          border: 1px solid rgba(51,65,85,0.55);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+          backdrop-filter: blur(10px);
+        }
+      `}</style>
 
-      <div className="space-y-10">
-        {/* ═══════════ DATA TABLE ═══════════ */}
-        {lesson.timeExpressions && (
-          <section id={lesson.anchorSectionId ?? "table"} className="scroll-mt-20">
-            <SectionTitle
-              icon={<BookOpen className="w-6 h-6" />}
-              label={lesson.timeExpressionsLabel || ""}
-            />
-            <div className="overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-slate-700/50 shadow-lg mt-4 bg-white dark:bg-slate-900/60 backdrop-blur-sm">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className={`${tableTheme.top} dark:bg-[${tableTheme.accentDark}]/80 text-white`}>
-                    {lesson.timeExpressions.header.split("|").map((h, i) => (
-                      <th key={i} className="px-4 py-3.5 text-left text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.15em]">
-                        {h.trim()}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {lesson.timeExpressions.rows.map((row, ri) => (
-                    <tr
-                      key={ri}
-                      className={
-                        ri % 2 === 1
-                          ? `bg-${tableTheme.chipBgLight} dark:bg-${tableTheme.chipBgAlt}`
-                          : `bg-white dark:bg-slate-800/20`
-                      }
-                    >
-                      {row.map((cell, ci) => (
-                        <td
-                          key={ci}
-                          className={`px-4 py-3 text-[13px] sm:text-sm border-t border-[${tableTheme.accent}]/100 dark:border-[${tableTheme.accentDark}]/100 leading-relaxed ${
-                            ci === 0
-                              ? "font-bold text-slate-900 dark:text-slate-100"
-                              : ci === 2
-                              ? `text-[${tableTheme.accent}] dark:text-[${tableTheme.accentDark}] font-semibold`
-                              : ci === 3
-                              ? "text-slate-500 dark:text-slate-400"
-                              : "text-slate-700 dark:text-slate-200"
-                          }`}
-                          dangerouslySetInnerHTML={{
-                            __html: renderMarkdownToHtml(cell)
-                              .replace(
-                                /'(.*?)'/g,
-                                '<span class="font-mono font-semibold text-amber-600 dark:text-amber-400 tracking-wide">\'$1\'</span>'
-                              ),
-                          }}
-                        />
+      <div className="gl-page absolute inset-0 pointer-events-none" aria-hidden />
+
+      {/* ── Content ── */}
+      <div className="relative max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8 font-sans">
+
+        {/* ═══════════ HEADER ═══════════ */}
+        <header className="mb-12">
+          <div className="flex items-center gap-2.5 mb-4 flex-wrap">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-400 transition-all"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                {labels.back}
+              </button>
+            )}
+            <span className="rounded-full px-3 py-1.5 text-xs font-black tracking-wide uppercase bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md">
+              {lvlToCEFR(lesson.level)}
+            </span>
+            <span className="rounded-full bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 px-3 py-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 shadow-sm">
+              {lesson.topic}
+            </span>
+          </div>
+          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">
+            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              {lesson.title}
+            </span>
+          </h1>
+          {lesson.overview && (
+            <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl border-l-[3px] border-amber-400 pl-4 py-2 pr-3 rounded-r-xl bg-amber-50/70 dark:bg-amber-900/10 shadow-[inset_0_0_0_1px_rgba(251,191,36,0.12)]">
+              <RenderMarkdown text={lesson.overview} />
+            </p>
+          )}
+        </header>
+
+        <div className="space-y-10">
+          {/* ═══════════ DATA TABLE ═══════════ */}
+          {lesson.timeExpressions && (
+            <section id={lesson.anchorSectionId ?? "table"} className="scroll-mt-20">
+              <SectionTitle
+                icon={<BookOpen className="w-6 h-6" />}
+                label={lesson.timeExpressionsLabel || ""}
+              />
+              <div className="gl-table-wrap overflow-x-auto rounded-2xl mt-4">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className={`${tableTheme.top} dark:bg-[${tableTheme.accentDark}]/80 text-white`}>
+                      {lesson.timeExpressions.header.split("|").map((h, i) => (
+                        <th key={i} className="px-4 py-3.5 text-left text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.15em]">
+                          {h.trim()}
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
+                  </thead>
+                  <tbody>
+                    {lesson.timeExpressions.rows.map((row, ri) => (
+                      <tr
+                        key={ri}
+                        className={
+                          ri % 2 === 1
+                            ? `bg-${tableTheme.chipBgLight} dark:bg-${tableTheme.chipBgAlt}`
+                            : `bg-white dark:bg-slate-800/20`
+                        }
+                      >
+                        {row.map((cell, ci) => (
+                          <td
+                            key={ci}
+                            className={`px-4 py-3 text-[13px] sm:text-sm border-t border-[${tableTheme.accent}]/100 dark:border-[${tableTheme.accentDark}]/100 leading-relaxed ${
+                              ci === 0
+                                ? "font-bold text-slate-900 dark:text-slate-100"
+                                : ci === 2
+                                ? `text-[${tableTheme.accent}] dark:text-[${tableTheme.accentDark}] font-semibold`
+                                : ci === 3
+                                ? "text-slate-500 dark:text-slate-400"
+                                : "text-slate-700 dark:text-slate-200"
+                            }`}
+                            dangerouslySetInnerHTML={{
+                              __html: renderMarkdownToHtml(cell)
+                                .replace(
+                                  /'(.*?)'/g,
+                                  '<span class="font-mono font-semibold text-amber-600 dark:text-amber-400 tracking-wide">\'$1\'</span>'
+                                ),
+                            }}
+                          />
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
 
-        {/* ═══════════ GEDETAILLEERDE UITLEG (accordions) ═══════════ */}
-        {lesson.details && lesson.details.length > 0 && (
-          <section id="explanation" className="scroll-mt-20">
-            <SectionTitle
-              icon={<FileText className="w-6 h-6 text-slate-400" />}
-              label={labels.detailedExplanation}
-            />
-            <Accordion type="single" className="space-y-3 mt-4">
-              {lesson.details.map((sec, i) => {
-                const t = barThemes[i % barThemes.length];
-                return (
-                  <AccordionItem
-                    key={i}
-                    value={`item-${i}`}
-                    className={cn(
-                      "group overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-700/40 bg-white dark:bg-slate-800/60 shadow-md hover:shadow-lg transition-shadow",
-                      "border-l-4 data-[state=open]:border-l-indigo-500"
-                    )}
-                  >
-                    <div className={`h-2 w-full shrink-0 ${t.top}`} />
-                    <AccordionTrigger
+          {/* ═══════════ GEDETAILLEERDE UITLEG (accordions) ═══════════ */}
+          {lesson.details && lesson.details.length > 0 && (
+            <section id="explanation" className="scroll-mt-20">
+              <SectionTitle
+                icon={<FileText className="w-6 h-6 text-slate-400" />}
+                label={labels.detailedExplanation}
+              />
+              <Accordion type="single" className="space-y-3 mt-4">
+                {lesson.details.map((sec, i) => {
+                  const t = barThemes[i % barThemes.length];
+                  return (
+                    <AccordionItem
+                      key={i}
+                      value={`item-${i}`}
                       className={cn(
-                        "flex items-center gap-3 px-5 py-4",
-                        "hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors duration-200",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/40",
-                        "text-left w-full"
+                        "gl-card group overflow-hidden rounded-2xl transition-shadow",
+                        "border-l-4 data-[state=open]:border-l-indigo-500",
                       )}
                     >
-                      <span
+                      <div className={`h-2 w-full shrink-0 ${t.top}`} />
+                      <AccordionTrigger
                         className={cn(
-                          "shrink-0 h-9 min-w-[36px] px-2 rounded-xl inline-flex items-center justify-center text-sm font-black",
-                          t.badge
+                          "flex items-center gap-3 px-5 py-4",
+                          "hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition-colors duration-200",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/40",
+                          "text-left w-full"
                         )}
                       >
-                        {i + 1}
-                      </span>
-                      <span className={cn("flex-1 min-w-0 font-extrabold text-sm", t.titleText)}>
-                        {sec.title}
-                      </span>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div
-                        className={cn(
-                          "px-5 pb-5 space-y-0.5 text-slate-700 dark:text-slate-300",
-                          "prose prose-slate dark:prose-invert max-w-none",
-                          "prose-p:my-2.5 prose-p:text-[13px] sm:prose-p:text-sm prose-p:leading-relaxed",
-                          "prose-strong:font-extrabold prose-strong:text-slate-900 prose-strong:dark:text-slate-100",
-                          "prose-em:italic prose-em:font-medium prose-em:text-rose-600 prose-em:dark:text-rose-400",
-                          "prose-code:rounded-lg prose-code:bg-indigo-100 prose-code:dark:bg-indigo-900/40 prose-code:px-2 prose-code:py-0.5 prose-code:text-[11px] sm:prose-code:text-xs prose-code:font-mono prose-code:font-semibold prose-code:tracking-wide prose-code:text-indigo-700 prose-code:dark:text-indigo-300",
-                          "prose-blockquote:my-3 prose-blockquote:border-l-4 prose-blockquote:border-amber-400 prose-blockquote:bg-amber-50/50 prose-blockquote:dark:bg-amber-900/10 prose-blockquote:rounded-r-xl prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:text-slate-600 prose-blockquote:dark:text-slate-400",
-                          "prose-ul:my-3 prose-ul:space-y-1.5 prose-ul:list-none",
-                          "prose-li:ml-1.5 prose-li:relative prose-li:pl-5 prose-li:text-slate-700 prose-li:dark:text-slate-300 prose-li:text-sm sm:prose-li:text-base",
-                          "prose-li:before:content-[''] prose-li:before:absolute prose-li:before:left-0 prose-li:before:top-2 prose-li:before:w-1.5 prose-li:before:h-1.5 prose-li:before:rounded-full prose-li:before:bg-indigo-400 prose-li:before:dark:bg-indigo-500",
-                          "max-sm:prose-sm"
-                        )}
-                      >
-                        <SafeHtml html={getProcessedContent(sec.body)} />
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
-          </section>
-        )}
-
-        {/* ═══════════ GRAMMATICAREGELS (kaartjes) ═══════════ */}
-        {lesson.rulesTable && lesson.rulesTable.length > 0 && (
-          <section id="rules" className="scroll-mt-20">
-            <SectionTitle
-              icon={<Sparkles className="w-6 h-6 text-amber-500" />}
-              label={labels.rules}
-            />
-            <div className="grid sm:grid-cols-2 gap-6 mt-6">
-              {lesson.rulesTable.map((r, i) => {
-                const t = barThemes[i % barThemes.length];
-                return (
-                  <div
-                    key={i}
-                    className="group relative flex flex-col rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/50 dark:border-slate-700/50 shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 overflow-hidden"
-                  >
-                    <div className={`h-2.5 shrink-0 ${t.top} relative`}>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-out" />
-                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-1 rounded-full blur-sm opacity-60" style={{ backgroundColor: t.accent }} />
-                    </div>
-
-                    <div className="flex-1 p-5 sm:p-6">
-                      <div className="flex items-center gap-3 mb-4">
-                        <span className={`shrink-0 w-10 h-10 rounded-2xl ${t.badge} flex items-center justify-center text-lg font-black shadow-md ring-2 ring-white/80 dark:ring-slate-700/80`}>
+                        <span
+                          className={cn(
+                            "shrink-0 h-9 min-w-[36px] px-2 rounded-xl inline-flex items-center justify-center text-sm font-black",
+                            t.badge
+                          )}
+                        >
                           {i + 1}
                         </span>
-                        <h3 className={`font-sans font-extrabold text-base sm:text-lg leading-snug ${t.titleText}`}>
-                          {r.rule}
-                        </h3>
-                      </div>
-
-                      <div className="space-y-4">
-                        <div className="rounded-xl bg-slate-50/80 dark:bg-slate-900/60 p-3.5 ring-1 ring-slate-200/60 dark:ring-slate-700/40">
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
-                            <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accent }} />
-                            {labels.structure}
-                          </p>
-                          <div className={`text-sm leading-relaxed ${t.chipText}`}>
-                            <RenderMarkdown text={r.structure} />
-                          </div>
+                        <span className={cn("flex-1 min-w-0 font-extrabold text-sm", t.titleText)}>
+                          {sec.title}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div
+                          className={cn(
+                            "px-5 pb-5 space-y-0.5 text-slate-700 dark:text-slate-300",
+                            "prose prose-slate dark:prose-invert max-w-none",
+                            "prose-p:my-2.5 prose-p:text-[13px] sm:prose-p:text-sm prose-p:leading-relaxed",
+                            "prose-strong:font-extrabold prose-strong:text-slate-900 prose-strong:dark:text-slate-100",
+                            "prose-em:italic prose-em:font-medium prose-em:text-rose-600 prose-em:dark:text-rose-400",
+                            "prose-code:rounded-lg prose-code:bg-indigo-100 prose-code:dark:bg-indigo-900/40 prose-code:px-2 prose-code:py-0.5 prose-code:text-[11px] sm:prose-code:text-xs prose-code:font-mono prose-code:font-semibold prose-code:tracking-wide prose-code:text-indigo-700 prose-code:dark:text-indigo-300",
+                            "prose-blockquote:my-3 prose-blockquote:border-l-4 prose-blockquote:border-amber-400 prose-blockquote:bg-amber-50/50 prose-blockquote:dark:bg-amber-900/10 prose-blockquote:rounded-r-xl prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:text-slate-600 prose-blockquote:dark:text-slate-400",
+                            "prose-ul:my-3 prose-ul:space-y-1.5 prose-ul:list-none",
+                            "prose-li:ml-1.5 prose-li:relative prose-li:pl-5 prose-li:text-slate-700 prose-li:dark:text-slate-300 prose-li:text-sm sm:prose-li:text-base",
+                            "prose-li:before:content-[''] prose-li:before:absolute prose-li:before:left-0 prose-li:before:top-2 prose-li:before:w-1.5 prose-li:before:h-1.5 prose-li:before:rounded-full prose-li:before:bg-indigo-400 prose-li:before:dark:bg-indigo-500",
+                            "max-sm:prose-sm"
+                          )}
+                        >
+                          <SafeHtml html={getProcessedContent(sec.body)} />
                         </div>
-                        <div className="rounded-xl bg-amber-50/70 dark:bg-amber-900/20 p-3.5 ring-1 ring-amber-200/60 dark:ring-amber-700/30">
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accentDark }}>
-                            <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accentDark }} />
-                            {labels.example}
-                          </p>
-                          <div className={`text-sm leading-relaxed ${t.chipTextDark}`}>
-                            <RenderMarkdown text={r.example} />
-                          </div>
-                        </div>
-                        <div className="rounded-xl bg-blue-50/70 dark:bg-blue-900/20 p-3.5 ring-1 ring-blue-200/60 dark:ring-blue-700/30">
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
-                            <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accent }} />
-                            {labels.usage}
-                          </p>
-                          <div className={`text-sm leading-relaxed ${t.chipTextMedium}`}>
-                            <RenderMarkdown text={r.usage} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
+            </section>
+          )}
 
-                    <div className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-white/60 dark:group-hover:ring-slate-500/30 pointer-events-none transition-all duration-500" />
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════ BELANGRIJKE PUNTEN (callouts) ═══════════ */}
-        {lesson.callouts && lesson.callouts.length > 0 && (
-          <section id="callouts" className="scroll-mt-20">
-            <SectionTitle
-              icon={<AlertCircle className="w-6 h-6 text-amber-500" />}
-              label={(lesson as any).calloutsLabel || labels.importantPoints}
-            />
-            <div className="grid gap-5 mt-6 sm:grid-cols-2">
-              {lesson.callouts.map((c, i) => {
-                const Icon = calloutIcons[i % calloutIcons.length];
-                const col = calloutColors[i % calloutColors.length];
-                return (
-                  <div
-                    key={i}
-                    className="group relative rounded-2xl bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/50 dark:border-slate-700/40 shadow-lg hover:shadow-2xl hover:scale-[1.01] transition-all duration-500 overflow-hidden"
-                  >
-                    <div className="absolute left-0 top-0 bottom-0 w-1.5 flex flex-col">
-                      <div className={`w-full flex-1 ${col.border} relative`} style={{ backgroundColor: col.icon }}>
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-8 rounded-full blur-md opacity-40" style={{ backgroundColor: col.icon }} />
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4 pl-7 p-5">
-                      <div className="relative shrink-0">
-                        <div className="absolute inset-0 rounded-2xl blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500" style={{ backgroundColor: col.icon }} />
-                        <div className="relative w-11 h-11 rounded-2xl flex items-center justify-center bg-white/90 dark:bg-slate-900/80 shadow-md ring-1 ring-white/50 dark:ring-slate-700/50">
-                          <Icon className="w-5 h-5" style={{ color: col.icon }} />
-                        </div>
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500 mb-1.5">
-                          {c.label}
-                        </p>
-                        <div className="text-sm leading-relaxed text-slate-700 dark:text-slate-200 font-medium">
-                          <RenderMarkdown text={c.text} />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="absolute -top-6 -right-6 w-12 h-12 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" style={{ backgroundColor: col.icon }} />
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════ VEELGEMAAKTE FOUTEN ═══════════ */}
-        {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
-          <section id="mistakes" className="scroll-mt-20">
-            <SectionTitle
-              icon={<Target className="w-6 h-6 text-rose-500" />}
-              label={labels.commonMistakes}
-            />
-            <div className="overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-slate-700/50 shadow-lg mt-4 bg-white dark:bg-slate-900/60">
-              <table className="w-full border-collapse min-w-[480px] sm:min-w-[600px]">
-                <thead>
-                  <tr className="bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600">
-                    <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
-                      {labels.incorrect}
-                    </th>
-                    <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
-                      {labels.correct}
-                    </th>
-                    <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
-                      {labels.why}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lesson.commonMistakes.map((m, i) => (
-                    <tr
+          {/* ═══════════ GRAMMATICAREGELS (kaartjes) ═══════════ */}
+          {lesson.rulesTable && lesson.rulesTable.length > 0 && (
+            <section id="rules" className="scroll-mt-20">
+              <SectionTitle
+                icon={<Sparkles className="w-6 h-6 text-amber-500" />}
+                label={labels.rules}
+              />
+              <div className="grid sm:grid-cols-2 gap-6 mt-6">
+                {lesson.rulesTable.map((r, i) => {
+                  const t = barThemes[i % barThemes.length];
+                  return (
+                    <div
                       key={i}
-                      className={
-                        i % 2 === 1
-                          ? "bg-slate-50/60 dark:bg-slate-800/30"
-                          : "bg-white dark:bg-slate-800/10"
-                      }
+                      className="gl-card group relative flex flex-col rounded-2xl overflow-hidden hover:-translate-y-1.5 transition-all duration-500"
                     >
-                      <td className="px-5 py-3.5 text-sm text-rose-600 dark:text-rose-400 line-through font-medium border-t border-slate-100 dark:border-slate-700/30">
-                        {m.incorrect}
-                      </td>
-                      <td className="px-5 py-3.5 text-sm text-emerald-700 dark:text-emerald-400 font-bold border-t border-slate-100 dark:border-slate-700/30">
-                        {m.correct}
-                      </td>
-                      <td className="px-5 py-3.5 text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed border-t border-slate-100 dark:border-slate-700/30">
-                        <RenderMarkdown text={m.explanation} />
-                      </td>
+                      <div className={`h-2.5 shrink-0 ${t.top} relative`}>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-out" />
+                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-1 rounded-full blur-sm opacity-60" style={{ backgroundColor: t.accent }} />
+                      </div>
+
+                      <div className="flex-1 p-5 sm:p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <span className={`shrink-0 w-10 h-10 rounded-2xl ${t.badge} flex items-center justify-center text-lg font-black shadow-md ring-2 ring-white/80 dark:ring-slate-700/80`}>
+                            {i + 1}
+                          </span>
+                          <h3 className={`font-sans font-extrabold text-base sm:text-lg leading-snug ${t.titleText}`}>
+                            {r.rule}
+                          </h3>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="rounded-xl bg-slate-50/80 dark:bg-slate-900/50 p-3.5 ring-1 ring-slate-200/60 dark:ring-slate-700/40">
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
+                              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accent }} />
+                              {labels.structure}
+                            </p>
+                            <div className={`text-sm leading-relaxed ${t.chipText}`}>
+                              <RenderMarkdown text={r.structure} />
+                            </div>
+                          </div>
+                          <div className="rounded-xl bg-amber-50/70 dark:bg-amber-900/20 p-3.5 ring-1 ring-amber-200/60 dark:ring-amber-700/30">
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accentDark }}>
+                              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accentDark }} />
+                              {labels.example}
+                            </p>
+                            <div className={`text-sm leading-relaxed ${t.chipTextDark}`}>
+                              <RenderMarkdown text={r.example} />
+                            </div>
+                          </div>
+                          <div className="rounded-xl bg-blue-50/70 dark:bg-blue-900/20 p-3.5 ring-1 ring-blue-200/60 dark:ring-blue-700/30">
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
+                              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accent }} />
+                              {labels.usage}
+                            </p>
+                            <div className={`text-sm leading-relaxed ${t.chipTextMedium}`}>
+                              <RenderMarkdown text={r.usage} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-white/60 dark:group-hover:ring-slate-500/30 pointer-events-none transition-all duration-500" />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ═══════════ BELANGRIJKE PUNTEN (callouts) ═══════════ */}
+          {lesson.callouts && lesson.callouts.length > 0 && (
+            <section id="callouts" className="scroll-mt-20">
+              <SectionTitle
+                icon={<AlertCircle className="w-6 h-6 text-amber-500" />}
+                label={(lesson as any).calloutsLabel || labels.importantPoints}
+              />
+              <div className="grid gap-5 mt-6 sm:grid-cols-2">
+                {lesson.callouts.map((c, i) => {
+                  const Icon = calloutIcons[i % calloutIcons.length];
+                  const col = calloutColors[i % calloutColors.length];
+                  return (
+                    <div
+                      key={i}
+                      className="gl-card group relative rounded-2xl overflow-hidden hover:scale-[1.01] transition-all duration-500"
+                    >
+                      <div className="absolute left-0 top-0 bottom-0 w-1.5 flex flex-col">
+                        <div className={`w-full flex-1 ${col.border} relative`} style={{ backgroundColor: col.icon }}>
+                          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-8 rounded-full blur-md opacity-40" style={{ backgroundColor: col.icon }} />
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4 pl-7 p-5">
+                        <div className="relative shrink-0">
+                          <div className="absolute inset-0 rounded-2xl blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500" style={{ backgroundColor: col.icon }} />
+                          <div className={cn(
+                            "relative w-11 h-11 rounded-2xl flex items-center justify-center shadow-md ring-1",
+                            "bg-white/90 ring-white/50",
+                            "dark:bg-slate-900/80 dark:ring-slate-700/50",
+                          )}>
+                            <Icon className="w-5 h-5" style={{ color: col.icon }} />
+                          </div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500 mb-1.5">
+                            {c.label}
+                          </p>
+                          <div className="text-sm leading-relaxed text-slate-700 dark:text-slate-200 font-medium">
+                            <RenderMarkdown text={c.text} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="absolute -top-6 -right-6 w-12 h-12 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" style={{ backgroundColor: col.icon }} />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ═══════════ VEELGEMAAKTE FOUTEN ═══════════ */}
+          {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
+            <section id="mistakes" className="scroll-mt-20">
+              <SectionTitle
+                icon={<Target className="w-6 h-6 text-rose-500" />}
+                label={labels.commonMistakes}
+              />
+              <div className="gl-table-wrap overflow-x-auto rounded-2xl mt-4">
+                <table className="w-full border-collapse min-w-[480px] sm:min-w-[600px]">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600">
+                      <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
+                        {labels.incorrect}
+                      </th>
+                      <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
+                        {labels.correct}
+                      </th>
+                      <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
+                        {labels.why}
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════ SNELLE HERHALING ═══════════ */}
-        {lesson.review && lesson.review.length > 0 && (
-          <section id="review" className="scroll-mt-20">
-            <SectionTitle
-              icon={<CheckCircle2 className="w-6 h-6 text-emerald-500" />}
-              label={(lesson as any).reviewLabel || labels.quickReview}
-            />
-            <div className="space-y-4 mt-6">
-              {lesson.review.map((item, i) => {
-                const rawColorClasses = reviewColors[i % reviewColors.length];
-                const accentBorderClass = rawColorClasses
-                  .split(' ')
-                  .find((c) => c.startsWith('border-l-'));
-                const accentColor = accentBorderClass
-                  ? accentBorderClass.replace('border-l-', '')
-                  : 'emerald-500';
-                const badgeClasses = reviewBadgeColors[i % reviewBadgeColors.length];
-                return (
-                  <div
-                    key={i}
-                    className="group relative flex items-center gap-5 rounded-2xl bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/50 dark:border-slate-700/40 shadow-lg hover:shadow-2xl hover:translate-x-1 transition-all duration-500 overflow-hidden pl-7 pr-5 py-5"
-                  >
-                    <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-${accentColor} overflow-hidden`}>
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40 -translate-y-full group-hover:translate-y-full transition-transform duration-700 ease-out" />
-                      <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-10 rounded-full blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500 bg-${accentColor}`} />
-                    </div>
-                    <div className="relative shrink-0">
-                      <div className={`absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 bg-${accentColor}`} />
-                      <span className={`relative flex items-center justify-center w-10 h-10 rounded-full shadow-md ring-1 ring-white/60 dark:ring-slate-700/60 text-sm font-black ${badgeClasses}`}>
-                        {i + 1}
-                      </span>
-                    </div>
-                    <p className="flex-1 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-semibold">
-                      <RenderMarkdown text={item} />
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════ OEFENVRAGEN ═══════════ */}
-        {lesson.qa && lesson.qa.length > 0 && (
-          <section id="qa" className="scroll-mt-20">
-            <SectionTitle
-              icon={<HelpCircle className="w-6 h-6 text-indigo-500" />}
-              label={(lesson as any).qaLabel || labels.practiceQuestions}
-            />
-            <QASection qa={lesson.qa} labels={labels} />
-          </section>
-        )}
-
-        {/* ═══════════ ACTIEKNOPPEN ═══════════ */}
-        <div className="flex flex-col gap-3 sm:flex-row pt-4">
-          {completed ? (
-            <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-400 dark:border-emerald-500 shadow-md">
-              <CheckCircle2 className="w-5 h-5" />
-              {labels.completed} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
-            </span>
-          ) : (
-            <button
-              onClick={onComplete}
-              className="rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-xl hover:shadow-indigo-500/40 hover:brightness-110 active:scale-[0.97]"
-            >
-              {labels.markComplete} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
-            </button>
+                  </thead>
+                  <tbody>
+                    {lesson.commonMistakes.map((m, i) => (
+                      <tr
+                        key={i}
+                        className={
+                          i % 2 === 1
+                            ? "bg-slate-50/60 dark:bg-slate-700/20"
+                            : "bg-white dark:bg-slate-800/10"
+                        }
+                      >
+                        <td className="px-5 py-3.5 text-sm text-rose-600 dark:text-rose-400 line-through font-medium border-t border-slate-100 dark:border-slate-700/30">
+                          {m.incorrect}
+                        </td>
+                        <td className="px-5 py-3.5 text-sm text-emerald-700 dark:text-emerald-400 font-bold border-t border-slate-100 dark:border-slate-700/30">
+                          {m.correct}
+                        </td>
+                        <td className="px-5 py-3.5 text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed border-t border-slate-100 dark:border-slate-700/30">
+                          <RenderMarkdown text={m.explanation} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
           )}
-          {hasTest && (
-            <button
-              onClick={onTest}
-              className="rounded-2xl border-2 border-amber-400/60 bg-gradient-to-br from-amber-50 to-white dark:from-amber-900/10 dark:to-slate-800/40 px-7 py-3 text-sm font-bold text-amber-700 dark:text-amber-300 transition-all hover:bg-amber-50/80 dark:hover:bg-amber-900/20 hover:border-amber-400 active:scale-[0.97] shadow-md"
-            >
-              {labels.takeTest}
-            </button>
+
+          {/* ═══════════ SNELLE HERHALING ═══════════ */}
+          {lesson.review && lesson.review.length > 0 && (
+            <section id="review" className="scroll-mt-20">
+              <SectionTitle
+                icon={<CheckCircle2 className="w-6 h-6 text-emerald-500" />}
+                label={(lesson as any).reviewLabel || labels.quickReview}
+              />
+              <div className="space-y-4 mt-6">
+                {lesson.review.map((item, i) => {
+                  const rawColorClasses = reviewColors[i % reviewColors.length];
+                  const accentBorderClass = rawColorClasses
+                    .split(' ')
+                    .find((c) => c.startsWith('border-l-'));
+                  const accentColor = accentBorderClass
+                    ? accentBorderClass.replace('border-l-', '')
+                    : 'emerald-500';
+                  const badgeClasses = reviewBadgeColors[i % reviewBadgeColors.length];
+                  return (
+                    <div
+                      key={i}
+                      className="gl-card group relative flex items-center gap-5 rounded-2xl overflow-hidden hover:translate-x-1 transition-all duration-500 pl-7 pr-5 py-5"
+                    >
+                      <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-${accentColor} overflow-hidden`}>
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40 -translate-y-full group-hover:translate-y-full transition-transform duration-700 ease-out" />
+                        <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-10 rounded-full blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500 bg-${accentColor}`} />
+                      </div>
+                      <div className="relative shrink-0">
+                        <div className={`absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 bg-${accentColor}`} />
+                        <span className={`relative flex items-center justify-center w-10 h-10 rounded-full shadow-md ring-1 ring-white/60 dark:ring-slate-700/60 text-sm font-black ${badgeClasses}`}>
+                          {i + 1}
+                        </span>
+                      </div>
+                      <p className="flex-1 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-semibold">
+                        <RenderMarkdown text={item} />
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
           )}
+
+          {/* ═══════════ OEFENVRAGEN ═══════════ */}
+          {lesson.qa && lesson.qa.length > 0 && (
+            <section id="qa" className="scroll-mt-20">
+              <SectionTitle
+                icon={<HelpCircle className="w-6 h-6 text-indigo-500" />}
+                label={(lesson as any).qaLabel || labels.practiceQuestions}
+              />
+              <QASection qa={lesson.qa} labels={labels} />
+            </section>
+          )}
+
+          {/* ═══════════ ACTIEKNOPPEN ═══════════ */}
+          <div className="flex flex-col gap-3 sm:flex-row pt-4">
+            {completed ? (
+              <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-400 dark:border-emerald-500 shadow-md">
+                <CheckCircle2 className="w-5 h-5" />
+                {labels.completed} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
+              </span>
+            ) : (
+              <button
+                onClick={onComplete}
+                className="rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-xl hover:shadow-indigo-500/40 hover:brightness-110 active:scale-[0.97]"
+              >
+                {labels.markComplete} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
+              </button>
+            )}
+            {hasTest && (
+              <button
+                onClick={onTest}
+                className="rounded-2xl border-2 border-amber-400/60 bg-gradient-to-br from-amber-50 to-white dark:from-amber-900/10 dark:to-slate-800/40 px-7 py-3 text-sm font-bold text-amber-700 dark:text-amber-300 transition-all hover:bg-amber-50/80 dark:hover:bg-amber-900/20 hover:border-amber-400 active:scale-[0.97] shadow-md"
+              >
+                {labels.takeTest}
+              </button>
+            )}
+          </div>
+          <AdSlot className="mt-4" />
         </div>
-        <AdSlot className="mt-4" />
       </div>
     </div>
   );
@@ -864,7 +930,7 @@ function QASection({ qa, labels }: { qa: { question: string; answer: string }[];
       {qa.map((item, i) => (
         <div
           key={i}
-          className="rounded-2xl bg-white dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/40 overflow-hidden shadow-md hover:shadow-lg transition-all"
+          className="gl-card rounded-2xl overflow-hidden transition-all"
         >
           <div className="p-5 border-b border-slate-100 dark:border-slate-700/30">
             <p className="text-xs font-black text-slate-400 dark:text-slate-500 mb-1.5 uppercase tracking-wider">
@@ -874,7 +940,7 @@ function QASection({ qa, labels }: { qa: { question: string; answer: string }[];
               <RenderMarkdown text={item.question} />
             </p>
           </div>
-          <div className="p-5 bg-slate-50/40 dark:bg-slate-800/20">
+          <div className="p-5 bg-slate-50/50 dark:bg-slate-800/30">
             <button
               onClick={() => toggle(i)}
               className={`font-bold rounded-xl px-5 py-2.5 text-sm transition-all duration-300 ${
