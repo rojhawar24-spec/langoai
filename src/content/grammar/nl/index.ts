@@ -45,7 +45,10 @@ import { zelfevaluatieA1 } from "./zelfevaluatieA1";
 import { belangrijkeWerkwoorden } from "./belangrijkeWerkwoorden";
 import { hoofdletters } from "./hoofdletters";
 import { kleineletters } from "./kleineletters";
-
+import { accenttekens } from "./accenttekens";
+import { tremaApostrof } from "./tremaApostrof";
+import { koppelteken } from "./koppelteken";
+import { leestekens } from "./leestekens";
 
 export const nlGrammar: GrammarLesson[] = [
 
@@ -96,5 +99,9 @@ zelfevaluatieA1,
 belangrijkeWerkwoorden,
 hoofdletters,
 kleineletters,
+accenttekens,
+tremaApostrof,
+koppelteken,
+leestekens,
 
 ];
