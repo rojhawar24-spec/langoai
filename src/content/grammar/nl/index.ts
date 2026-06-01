@@ -70,6 +70,12 @@ import { kaleInfinitief } from "./kaleInfinitief";
 import { scheidbareWerkwoorden } from "./scheidbareWerkwoorden";
 import { verwarrendeWerkwoordparen } from "./verwarrendeWerkwoordparen";
 import { hulpwerkwoordKeuze } from "./hulpwerkwoordKeuze";
+import { lijdendeVorm } from "./lijdendeVorm";
+import { inversieHoofdzin } from "./inversieHoofdzin";
+import { vraagzinnenMetPartikels } from "./vraagzinnenMetPartikels";
+import { gebiedendeZinnen } from "./gebiedendeZinnen";
+import { bijzinSov } from "./bijzinSov";
+import { soortenBijzinnen } from "./soortenBijzinnen";
 
 export const nlGrammar: GrammarLesson[] = [
 
@@ -145,8 +151,11 @@ kaleInfinitief,
 scheidbareWerkwoorden,
 verwarrendeWerkwoordparen,
 hulpwerkwoordKeuze,
-
-
-
+lijdendeVorm,
+inversieHoofdzin,
+vraagzinnenMetPartikels,
+gebiedendeZinnen,
+bijzinSov,
+soortenBijzinnen,
 
 ];
