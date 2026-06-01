@@ -111,10 +111,16 @@ export default function AIChat({ open, onClose }: AIChatProps) {
     setApiError("");
   }
 
+  // ✅ FIX: directly set isUnlocked + load messages + focus input
   function handlePaymentSuccess() {
     setIsUnlocked(true);
     setShowPayPal(false);
     setPaypalError("");
+    // Load any existing messages for this mode
+    const filtered = filterByMode(mode);
+    setMessages(filtered);
+    setApiError("");
+    setTimeout(() => inputRef.current?.focus(), 200);
   }
 
   if (!open) return null;

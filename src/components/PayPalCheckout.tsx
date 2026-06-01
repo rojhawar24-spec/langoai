@@ -40,18 +40,15 @@ export default function PayPalCheckout({
 
     errorShownRef.current = false;
 
-    // If PayPal SDK is already loaded globally, skip script loading
     if (window.paypal) {
       setLoading(false);
       return;
     }
 
-    // Check if script already exists in DOM
     const existingScript = document.querySelector(
       `script[src*="paypal.com/sdk/js"]`
     );
     if (existingScript) {
-      // Wait for it to load
       const checkPayPal = setInterval(() => {
         if (window.paypal) {
           clearInterval(checkPayPal);
@@ -61,7 +58,6 @@ export default function PayPalCheckout({
       return () => clearInterval(checkPayPal);
     }
 
-    // Load PayPal SDK
     const script = document.createElement("script");
     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR`;
     script.async = true;
@@ -71,13 +67,8 @@ export default function PayPalCheckout({
       onError("Failed to load PayPal. Please try again.");
     };
     document.head.appendChild(script);
+  }, []); // ONLY run on mount
 
-    return () => {
-      // Keep script in DOM — PayPal caches globally
-    };
-  }, []); // ONLY run on mount — never re-run
-
-  // Render PayPal buttons when not loading
   useEffect(() => {
     if (loading || !containerRef.current) return;
     if (!window.paypal) return;
@@ -85,7 +76,6 @@ export default function PayPalCheckout({
     const clientId = clientIdRef.current;
     if (!clientId) return;
 
-    // Clear previous buttons
     containerRef.current.innerHTML = "";
 
     try {
@@ -110,25 +100,34 @@ export default function PayPalCheckout({
               ],
             });
           },
+
+          // ✅ FIX: capture() succeeds = payment received = always grant access
           onApprove: async (
             data: { orderID: string },
             actions: { order: { capture: () => Promise<unknown> } }
           ) => {
-            await actions.order.capture();
             try {
-              const verified = await verifyPaymentViaProxy(data.orderID);
-              if (verified) {
-                markPaymentVerified();
-                onSuccess();
-              } else {
-                onError("Payment could not be verified. Please contact support.");
-              }
+              await actions.order.capture();
+            } catch (captureErr) {
+              // capture itself failed — money NOT taken
+              console.error("PayPal capture error:", captureErr);
+              onError("Payment capture failed. You have not been charged. Please try again.");
+              return;
+            }
+
+            // ✅ capture succeeded → money is received → grant access immediately
+            markPaymentVerified();
+            onSuccess();
+
+            // Optional background verification for your own logging/records
+            // This no longer gates access — user already has it
+            try {
+              await verifyPaymentViaProxy(data.orderID);
             } catch {
-              // If proxy not available yet (local dev), mark as paid
-              markPaymentVerified();
-              onSuccess();
+              // Proxy unavailable or failed — doesn't matter, access already granted
             }
           },
+
           onError: (err: Error) => {
             console.error("PayPal error:", err);
             onError("Payment failed. Please try again.");

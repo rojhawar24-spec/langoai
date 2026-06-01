@@ -1,5 +1,4 @@
 import type { GrammarLesson } from "../../types";
-import { testLes } from "./test";
 import { uitspraak } from "./uitspraak";
 import { voorstellen } from "./voorstellen";
 import { groeten } from "./groeten";
@@ -55,11 +54,26 @@ import { telbaarNietTelbaarNominalisatie } from "./telbaarNietTelbaarNominalisat
 import { bijvoeglijkNaamwoord } from "./bijvoeglijkNaamwoord";
 import { trappenVanVergelijking } from "./trappenVanVergelijking";
 import { zelfstandigBezittelijkVoornaamwoord } from "./zelfstandigBezittelijkVoornaamwoord";
+import { wederkerendVoornaamwoord } from "./wederkerendVoornaamwoord";
+import { wederkerigVoornaamwoord } from "./wederkerigVoornaamwoord";
+import { breukenGetallen } from "./breukenGetallen";
+import { voorzetselsTijdPlaatsUitgebreid } from "./voorzetselsTijdPlaatsUitgebreid";
+import { nevenschikkendeVoegwoorden } from "./nevenschikkendeVoegwoorden";
+import { onderschikkendeVoegwoorden } from "./onderschikkendeVoegwoorden";
+import { tKofschip } from "./tKofschip";
+import { vtt } from "./vtt";
+import { otttZullen } from "./otttZullen";
+import { onvoltooidDeelwoord } from "./onvoltooidDeelwoord";
+import { voltooidDeelwoord } from "./voltooidDeelwoord";
+import { infinitiefMetTe } from "./infinitiefMetTe";
+import { kaleInfinitief } from "./kaleInfinitief";
+import { scheidbareWerkwoorden } from "./scheidbareWerkwoorden";
+import { verwarrendeWerkwoordparen } from "./verwarrendeWerkwoordparen";
+import { hulpwerkwoordKeuze } from "./hulpwerkwoordKeuze";
 
 export const nlGrammar: GrammarLesson[] = [
 
 
-  testLes,
   uitspraak,
   voorstellen,
   groeten,
@@ -115,4 +129,24 @@ telbaarNietTelbaarNominalisatie,
 bijvoeglijkNaamwoord,
 trappenVanVergelijking,
 zelfstandigBezittelijkVoornaamwoord,
+wederkerendVoornaamwoord,
+wederkerigVoornaamwoord,
+breukenGetallen,
+voorzetselsTijdPlaatsUitgebreid,
+nevenschikkendeVoegwoorden,
+onderschikkendeVoegwoorden,
+tKofschip,
+vtt,
+otttZullen,
+onvoltooidDeelwoord,
+voltooidDeelwoord,
+infinitiefMetTe,
+kaleInfinitief,
+scheidbareWerkwoorden,
+verwarrendeWerkwoordparen,
+hulpwerkwoordKeuze,
+
+
+
+
 ];
