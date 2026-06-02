@@ -2,7 +2,7 @@ import type { GrammarLesson } from "../../types";
 import { uitspraak } from "./uitspraak";
 import { voorstellen } from "./voorstellen";
 import { groeten } from "./groeten";
-import { cijfersGetallen } from "./cijfersGetallen";   // ✅ streepje toegevoegd
+import { cijfersGetallen } from "./cijfersGetallen";
 import { kleuren } from "./kleuren";
 import { familie } from "./familie";
 import { boodschappen } from "./boodschappen";
@@ -14,13 +14,13 @@ import { lidwoorden } from "./lidwoorden";
 import { zelfstandigNaamwoord } from "./zelfstandigNaamwoord";
 import { verwijswoorden } from "./verwijswoorden";
 import { meervoud } from "./meervoud";
-import { persoonlijkeVoornaamwoordenOnderwerp } from "./persoonlijkeVoornaamwoordenOnderwerp"; // ✅ routines staat nu maar 1 keer
-import { persoonlijkeVoornaamwoordenObject } from "./persoonlijkeVoornaamwoordenObject"; // ✅ routines staat nu maar 1 keer
+import { persoonlijkeVoornaamwoordenOnderwerp } from "./persoonlijkeVoornaamwoordenOnderwerp";
+import { persoonlijkeVoornaamwoordenObject } from "./persoonlijkeVoornaamwoordenObject";
 import { gereduceerdevormen } from "./gereduceerdevormen";
 import { bezittelijkeVoornaamwoorden } from "./bezittelijkeVoornaamwoorden";
 import { aanwijzendeVoornaamwoorden } from "./aanwijzendeVoornaamwoorden";
 import { onbepaaldeVoornaamwoorden } from "./onbepaaldeVoornaamwoorden";
-import { hoofdtelwoorden} from "./hoofdtelwoorden";
+import { hoofdtelwoorden } from "./hoofdtelwoorden";
 import { rangtelwoorden } from "./rangtelwoorden";
 import { voorzetsels } from "./voorzetsels";
 import { bijwoorden } from "./bijwoorden";
@@ -78,84 +78,81 @@ import { bijzinSov } from "./bijzinSov";
 import { soortenBijzinnen } from "./soortenBijzinnen";
 
 export const nlGrammar: GrammarLesson[] = [
-
-
   uitspraak,
   voorstellen,
   groeten,
   cijfersGetallen,
   kleuren,
   familie,
-  routines,         // ✅ routines staat nu nog maar 1 keer
+  routines,
   boodschappen,
   cafe,
-    wegVragen,
-    formulieren,
-    lidwoorden,
-    zelfstandigNaamwoord,
-    verwijswoorden,
-    meervoud,
-    persoonlijkeVoornaamwoordenOnderwerp,
+  wegVragen,
+  formulieren,
+  lidwoorden,
+  zelfstandigNaamwoord,
+  verwijswoorden,
+  meervoud,
+  persoonlijkeVoornaamwoordenOnderwerp,
   persoonlijkeVoornaamwoordenObject,
-   gereduceerdevormen,
-bezittelijkeVoornaamwoorden,
-aanwijzendeVoornaamwoorden,
-onbepaaldeVoornaamwoorden,
-hoofdtelwoorden,
-rangtelwoorden,
-voorzetsels,
-bijwoorden,
-infinitiefStamIkvorm,
-tegenwoordigeTijd,
-ovt,
-gebiedendeWijs,
-hoofdzinMededelend,
-vraagzinnenjanee,
-vraagzinnenVraagwoord,
-ontkenningNiet,
-ontkenningGeen,
-persoonsvorm,
-onderwerp,
-luisterenStation,
-leesvaardigheidAdvertenties,
-schrijfvaardigheidBericht,
-spreekvaardigheidVoorstellen,
-feestdagen,
-zelfevaluatieA1,
-belangrijkeWerkwoorden,
-hoofdletters,
-kleineletters,
-accenttekens,
-tremaApostrof,
-koppelteken,
-leestekens,
-tussenklanken,
-aaneenschrijvenOfLos,
-telbaarNietTelbaarNominalisatie,
-bijvoeglijkNaamwoord,
-trappenVanVergelijking,
-zelfstandigBezittelijkVoornaamwoord,
-wederkerendVoornaamwoord,
-wederkerigVoornaamwoord,
-breukenGetallen,
-voorzetselsTijdPlaatsUitgebreid,
-nevenschikkendeVoegwoorden,
-onderschikkendeVoegwoorden,
-tKofschip,
-vtt,
-otttZullen,
-onvoltooidDeelwoord,
-voltooidDeelwoord,
-infinitiefMetTe,
-kaleInfinitief,
-scheidbareWerkwoorden,
-verwarrendeWerkwoordparen,
-hulpwerkwoordKeuze,
-lijdendeVorm,
-inversieHoofdzin,
-vraagzinnenMetPartikels,
-gebiedendeZinnen,
-bijzinSov,
-soortenBijzinnen,
-
+  gereduceerdevormen,
+  bezittelijkeVoornaamwoorden,
+  aanwijzendeVoornaamwoorden,
+  onbepaaldeVoornaamwoorden,
+  hoofdtelwoorden,
+  rangtelwoorden,
+  voorzetsels,
+  bijwoorden,
+  infinitiefStamIkvorm,
+  tegenwoordigeTijd,
+  ovt,
+  gebiedendeWijs,
+  hoofdzinMededelend,
+  vraagzinnenjanee,
+  vraagzinnenVraagwoord,
+  ontkenningNiet,
+  ontkenningGeen,
+  persoonsvorm,
+  onderwerp,
+  luisterenStation,
+  leesvaardigheidAdvertenties,
+  schrijfvaardigheidBericht,
+  spreekvaardigheidVoorstellen,
+  feestdagen,
+  zelfevaluatieA1,
+  belangrijkeWerkwoorden,
+  hoofdletters,
+  kleineletters,
+  accenttekens,
+  tremaApostrof,
+  koppelteken,
+  leestekens,
+  tussenklanken,
+  aaneenschrijvenOfLos,
+  telbaarNietTelbaarNominalisatie,
+  bijvoeglijkNaamwoord,
+  trappenVanVergelijking,
+  zelfstandigBezittelijkVoornaamwoord,
+  wederkerendVoornaamwoord,
+  wederkerigVoornaamwoord,
+  breukenGetallen,
+  voorzetselsTijdPlaatsUitgebreid,
+  nevenschikkendeVoegwoorden,
+  onderschikkendeVoegwoorden,
+  tKofschip,
+  vtt,
+  otttZullen,
+  onvoltooidDeelwoord,
+  voltooidDeelwoord,
+  infinitiefMetTe,
+  kaleInfinitief,
+  scheidbareWerkwoorden,
+  verwarrendeWerkwoordparen,
+  hulpwerkwoordKeuze,
+  lijdendeVorm,
+  inversieHoofdzin,
+  vraagzinnenMetPartikels,
+  gebiedendeZinnen,
+  bijzinSov,
+  soortenBijzinnen,
 ];

@@ -1,2 +1,7 @@
 import type { GrammarLesson } from "../../types";
-export const esGrammar: GrammarLesson[] = [];
+
+
+
+export const esGrammar: GrammarLesson[] = [
+
+];

@@ -1,5 +1,7 @@
-// Keeping GrammarLesson type import for future use - exported as type-only
-export type { GrammarLesson } from "../../types";
-import { deGrammar } from "../de-oud";
+import type { GrammarLesson } from "../../types";
 
-export { deGrammar };
+
+
+export const deGrammar: GrammarLesson[] = [
+
+];
