@@ -76,6 +76,11 @@ import { vraagzinnenMetPartikels } from "./vraagzinnenMetPartikels";
 import { gebiedendeZinnen } from "./gebiedendeZinnen";
 import { bijzinSov } from "./bijzinSov";
 import { soortenBijzinnen } from "./soortenBijzinnen";
+import { lijdendVoorwerp } from "./lijdendVoorwerp";
+import { meewerkendVoorwerp } from "./meewerkendVoorwerp";
+import { partitieveS } from "./partitieveS";
+import { gebiedendeWijsPartikels } from "./gebiedendeWijsPartikels";
+
 
 export const nlGrammar: GrammarLesson[] = [
   uitspraak,
@@ -155,4 +160,8 @@ export const nlGrammar: GrammarLesson[] = [
   gebiedendeZinnen,
   bijzinSov,
   soortenBijzinnen,
+  lijdendVoorwerp,
+  meewerkendVoorwerp,
+  partitieveS,
+  gebiedendeWijsPartikels,
 ];
