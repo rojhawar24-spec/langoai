@@ -80,8 +80,25 @@ import { lijdendVoorwerp } from "./lijdendVoorwerp";
 import { meewerkendVoorwerp } from "./meewerkendVoorwerp";
 import { partitieveS } from "./partitieveS";
 import { gebiedendeWijsPartikels } from "./gebiedendeWijsPartikels";
-
-
+import { beleefdheidsverzoekenZou } from "./beleefdheidsverzoekenZou";
+import { gevoelensEnMeningen } from "./gevoelensEnMeningen";
+import { formeelEnInformeel } from "./formeelEnInformeel";
+import { a2SpeedrunCheatSheet } from "./a2SpeedrunCheatSheet";
+import { leesvaardigheid } from "./leesvaardigheid";
+import { afsprakenMaken } from "./afsprakenMaken";
+import { schrijfvaardigheidBriefVerslag } from "./schrijfvaardigheidBriefVerslag";
+import { spreekvaardigheid } from "./spreekvaardigheid";
+import { afkortingen } from "./afkortingen";
+import { zinssymbolen } from "./zinssymbolen";
+import { betrekkelijkVoornaamwoord } from "./betrekkelijkVoornaamwoord";
+import { vragendVoornaamwoord } from "./vragendVoornaamwoord";
+import { uitroependVoornaamwoord2 } from "./uitroependVoornaamwoord2";
+import { hetWoordEr } from "./hetWoordEr";
+import { voornaamwoordelijkBijwoord } from "./voornaamwoordelijkBijwoord";
+import { vasteVoorzetselcombinaties } from "./vasteVoorzetselcombinaties";
+import { modalePartikels } from "./modalePartikels";
+import { partikelCombinaties } from "./partikelCombinaties";
+import { focuspartikels } from "./focuspartikels";
 export const nlGrammar: GrammarLesson[] = [
   uitspraak,
   voorstellen,
@@ -164,4 +181,23 @@ export const nlGrammar: GrammarLesson[] = [
   meewerkendVoorwerp,
   partitieveS,
   gebiedendeWijsPartikels,
+  beleefdheidsverzoekenZou,
+gevoelensEnMeningen,
+formeelEnInformeel,
+leesvaardigheid,
+a2SpeedrunCheatSheet,
+afsprakenMaken,
+schrijfvaardigheidBriefVerslag,
+spreekvaardigheid,
+afkortingen,
+zinssymbolen,
+betrekkelijkVoornaamwoord,
+vragendVoornaamwoord,
+uitroependVoornaamwoord2,
+hetWoordEr,
+voornaamwoordelijkBijwoord,
+vasteVoorzetselcombinaties,
+modalePartikels,
+partikelCombinaties,
+focuspartikels,
 ];
