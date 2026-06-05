@@ -1,0 +1,129 @@
+{
+  "languages": {
+    "nl": {
+      "name": "Dutch",
+      "seasons": [
+        {
+          "id": 1, "title": "Greetings & Introductions",
+          "levels": [
+            { "level": 1, "questions": [
+              { "type": "translation", "question": "Good morning", "answer": "Goedemorgen", "options": [] },
+              { "type": "translation", "question": "Good evening", "answer": "Goedenavond", "options": [] },
+              { "type": "multiple-choice", "question": "What does 'Hallo' mean?", "answer": "Hello", "options": ["Hello","Goodbye","Please","Sorry"] },
+              { "type": "translation", "question": "Thank you", "answer": "Dank je wel", "options": [] },
+              { "type": "multiple-choice", "question": "'Tot ziens' means:", "answer": "See you later", "options": ["See you later","Good morning","Thank you","Please"] }
+            ]},
+            { "level": 2, "questions": [
+              { "type": "translation", "question": "My name is...", "answer": "Ik heet...", "options": [] },
+              { "type": "translation", "question": "How are you?", "answer": "Hoe gaat het?", "options": [] },
+              { "type": "fill-blank", "question": "Ik ___ Roj. (I am Roj)", "answer": "ben", "options": [] },
+              { "type": "multiple-choice", "question": "'Nice to meet you':", "answer": "Aangenaam", "options": ["Aangenaam","Tot ziens","Alsjeblieft","Dank je"] },
+              { "type": "translation", "question": "I am from...", "answer": "Ik kom uit...", "options": [] }
+            ]}
+          ]
+        },
+        {
+          "id": 2, "title": "Numbers & Counting",
+          "levels": [
+            { "level": 1, "questions": [
+              { "type": "translation", "question": "one", "answer": "één", "options": [] },
+              { "type": "translation", "question": "two", "answer": "twee", "options": [] },
+              { "type": "multiple-choice", "question": "'Drie' means:", "answer": "three", "options": ["three","two","four","one"] },
+              { "type": "translation", "question": "five", "answer": "vijf", "options": [] },
+              { "type": "fill-blank", "question": "___ (four) appels", "answer": "vier", "options": [] }
+            ]},
+            { "level": 2, "questions": [
+              { "type": "translation", "question": "ten", "answer": "tien", "options": [] },
+              { "type": "translation", "question": "twenty", "answer": "twintig", "options": [] },
+              { "type": "multiple-choice", "question": "'Vijftig' is:", "answer": "50", "options": ["50","15","5","500"] },
+              { "type": "translation", "question": "hundred", "answer": "honderd", "options": [] },
+              { "type": "fill-blank", "question": "Ik heb ___ (ten) boeken.", "answer": "tien", "options": [] }
+            ]}
+          ]
+        },
+        {
+          "id": 3, "title": "Food & Drink 🍽️",
+          "levels": [
+            { "level": 1, "questions": [
+              { "type": "multiple-choice", "question": "'Brood' means:", "answer": "Bread", "options": ["Bread","Butter","Cheese","Milk"] },
+              { "type": "translation", "question": "water", "answer": "water", "options": [] },
+              { "type": "fill-blank", "question": "Ik drink ___ (coffee).", "answer": "koffie", "options": [] },
+              { "type": "translation", "question": "apple", "answer": "appel", "options": [] },
+              { "type": "multiple-choice", "question": "'Kaas' is:", "answer": "Cheese", "options": ["Cheese","Bread","Milk","Egg"] }
+            ]},
+            { "level": 2, "questions": [
+              { "type": "translation", "question": "breakfast", "answer": "ontbijt", "options": [] },
+              { "type": "fill-blank", "question": "Ik ___ (eat) een appel.", "answer": "eet", "options": [] },
+              { "type": "multiple-choice", "question": "'Lekker' means:", "answer": "Tasty", "options": ["Tasty","Bad","Hot","Cold"] },
+              { "type": "translation", "question": "dinner", "answer": "avondeten", "options": [] },
+              { "type": "translation", "question": "I am hungry", "answer": "Ik heb honger", "options": [] }
+            ]}
+          ]
+        },
+        {
+          "id": 4, "title": "Travel & Directions ✈️",
+          "levels": [
+            { "level": 1, "questions": [
+              { "type": "multiple-choice", "question": "'Links' means:", "answer": "Left", "options": ["Left","Right","Straight","Back"] },
+              { "type": "translation", "question": "Where is the station?", "answer": "Waar is het station?", "options": [] },
+              { "type": "fill-blank", "question": "Ik ga naar ___ (home).", "answer": "huis", "options": [] },
+              { "type": "translation", "question": "street", "answer": "straat", "options": [] },
+              { "type": "multiple-choice", "question": "'Rechtdoor' means:", "answer": "Straight ahead", "options": ["Straight ahead","Turn left","Turn right","Stop"] }
+            ]},
+            { "level": 2, "questions": [
+              { "type": "translation", "question": "airport", "answer": "vliegveld", "options": [] },
+              { "type": "fill-blank", "question": "Hoe ___ ik bij het station? (How do I get to the station?)", "answer": "kom", "options": [] },
+              { "type": "multiple-choice", "question": "'Dichtbij' means:", "answer": "Nearby", "options": ["Nearby","Far","Above","Below"] },
+              { "type": "translation", "question": "I am lost", "answer": "Ik ben verdwaald", "options": [] },
+              { "type": "translation", "question": "train ticket", "answer": "treinkaartje", "options": [] }
+            ]}
+          ]
+        }
+      ]
+    },
+    "en": { "name": "English", "seasons": [
+      { "id": 1, "title": "Greetings & Introductions", "levels": [
+        { "level": 1, "questions": [
+          { "type": "multiple-choice", "question": "'Hello' means:", "answer": "A greeting", "options": ["A greeting","Goodbye","Thank you","Sorry"] },
+          { "type": "translation", "question": "Say 'Good morning' in Dutch:", "answer": "Goedemorgen", "options": [] },
+          { "type": "fill-blank", "question": "Nice to ___ you.", "answer": "meet", "options": [] },
+          { "type": "multiple-choice", "question": "'See you later':", "answer": "Tot ziens", "options": ["Tot ziens","Hallo","Dank je","Alsjeblieft"] },
+          { "type": "translation", "question": "How are you? (in Dutch)", "answer": "Hoe gaat het?", "options": [] }
+        ]}
+      ]}
+    ]},
+    "fr": { "name": "French", "seasons": [
+      { "id": 1, "title": "Salutations", "levels": [
+        { "level": 1, "questions": [
+          { "type": "translation", "question": "Good morning", "answer": "Bonjour", "options": [] },
+          { "type": "translation", "question": "Good evening", "answer": "Bonsoir", "options": [] },
+          { "type": "multiple-choice", "question": "'Salut' means:", "answer": "Hi", "options": ["Hi","Goodbye","Please","Sorry"] },
+          { "type": "translation", "question": "Thank you", "answer": "Merci", "options": [] },
+          { "type": "fill-blank", "question": "Merci ___ (very much)", "answer": "beaucoup", "options": [] }
+        ]}
+      ]}
+    ]},
+    "de": { "name": "German", "seasons": [
+      { "id": 1, "title": "Begrüßungen", "levels": [
+        { "level": 1, "questions": [
+          { "type": "translation", "question": "Good morning", "answer": "Guten Morgen", "options": [] },
+          { "type": "translation", "question": "Good evening", "answer": "Guten Abend", "options": [] },
+          { "type": "multiple-choice", "question": "'Hallo' means:", "answer": "Hello", "options": ["Hello","Goodbye","Please","Thanks"] },
+          { "type": "translation", "question": "Thank you", "answer": "Danke", "options": [] },
+          { "type": "fill-blank", "question": "Danke ___ (very much)", "answer": "schön", "options": [] }
+        ]}
+      ]}
+    ]},
+    "es": { "name": "Spanish", "seasons": [
+      { "id": 1, "title": "Saludos", "levels": [
+        { "level": 1, "questions": [
+          { "type": "translation", "question": "Good morning", "answer": "Buenos días", "options": [] },
+          { "type": "translation", "question": "Good evening", "answer": "Buenas noches", "options": [] },
+          { "type": "multiple-choice", "question": "'Hola' means:", "answer": "Hello", "options": ["Hello","Goodbye","Please","Sorry"] },
+          { "type": "translation", "question": "Thank you", "answer": "Gracias", "options": [] },
+          { "type": "fill-blank", "question": "Muchas ___ (very much)", "answer": "gracias", "options": [] }
+        ]}
+      ]}
+    ]}
+  }
+}
