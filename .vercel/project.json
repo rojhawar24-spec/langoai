@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_GHeshd7VIlObyR2wP4x7CJAdNC4r",
+  "orgId": "team_NFPtPlA5L3WMdAL4msS1g5ut",
+  "projectName": "langoai-main",
+  "settings": {
+    "createdAt": 1780599597620,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}
