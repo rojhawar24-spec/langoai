@@ -1,9 +1,7 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "langoai/dist",
+  "outputDirectory": "dist",
   "framework": "vite",
-  "installCommand": "cd langoai && npm install",
-  "rootDirectory": "langoai",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],
