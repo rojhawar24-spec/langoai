@@ -1,3 +1,4 @@
+// src/contexts/AuthContext.tsx
 import {
   createContext,
   useContext,
@@ -8,10 +9,9 @@ import {
 } from "react";
 import type { UserData } from "@/utils/storage";
 import {
-  getCurrentUser,
-  setCurrentUser,
-  logout as clearSession,
-  updateUser,
+  apiGetMe,
+  apiLogout,
+  apiUpdateUser,
 } from "@/utils/storage";
 
 interface AuthContextType {
@@ -30,33 +30,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // On startup: check if there is a valid session token on the server
   useEffect(() => {
-    const stored = getCurrentUser();
-    setUser(stored);
-    setIsLoading(false);
+    apiGetMe()
+      .then((u) => setUser(u))
+      .finally(() => setIsLoading(false));
   }, []);
 
+  // Called right after login/register — the user object comes from the server response
   const login = useCallback((userData: UserData) => {
-    setCurrentUser(userData);
     setUser(userData);
   }, []);
 
-  const logout = useCallback(() => {
-    clearSession();
+  const logout = useCallback(async () => {
+    await apiLogout();
     setUser(null);
   }, []);
 
   const refreshUser = useCallback(() => {
-    const stored = getCurrentUser();
-    setUser(stored);
+    apiGetMe().then((u) => setUser(u));
   }, []);
 
   const updateProfile = useCallback(
-    (updates: Partial<UserData>) => {
+    async (updates: Partial<UserData>) => {
       if (!user) return;
-      updateUser(user.id, updates);
-      const refreshed = getCurrentUser();
-      setUser(refreshed);
+      try {
+        const updated = await apiUpdateUser(updates);
+        setUser(updated);
+      } catch (err) {
+        console.error("updateProfile failed:", err);
+      }
     },
     [user]
   );

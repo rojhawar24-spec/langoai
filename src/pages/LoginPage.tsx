@@ -1,9 +1,9 @@
+// src/pages/LoginPage.tsx
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslate } from "@/i18n/I18nContext";
-import { verifyPassword } from "@/utils/auth";
-import { findUserByEmailOrUsername, setRememberMe } from "@/utils/storage";
+import { apiLogin } from "@/utils/storage";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ export default function LoginPage() {
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMeState] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForgotMsg, setShowForgotMsg] = useState(false);
@@ -30,25 +29,16 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      const user = findUserByEmailOrUsername(identifier.trim());
-      if (!user) {
-        setError(t("login.errorInvalid"));
-        setIsSubmitting(false);
-        return;
-      }
-
-      const valid = await verifyPassword(password, user.hashedPassword);
-      if (!valid) {
-        setError(t("login.errorInvalid"));
-        setIsSubmitting(false);
-        return;
-      }
-
-      setRememberMe(rememberMe);
+      const user = await apiLogin(identifier.trim(), password);
       login(user);
       navigate("/dashboard", { replace: true });
-    } catch {
-      setError(t("login.errorGeneral"));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "";
+      if (msg === "invalid_credentials") {
+        setError(t("login.errorInvalid"));
+      } else {
+        setError(t("login.errorGeneral"));
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -152,23 +142,6 @@ export default function LoginPage() {
                 className="mt-1 block w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
                 placeholder={t("placeholder.passwordLogin")}
               />
-            </div>
-
-            {/* Remember me */}
-            <div className="flex items-center gap-2">
-              <input
-                id="remember"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMeState(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-600"
-              />
-              <label
-                htmlFor="remember"
-                className="text-sm text-slate-600 dark:text-slate-400"
-              >
-                {t("login.rememberMe")}
-              </label>
             </div>
 
             {/* Submit */}

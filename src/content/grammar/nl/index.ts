@@ -99,6 +99,46 @@ import { vasteVoorzetselcombinaties } from "./vasteVoorzetselcombinaties";
 import { modalePartikels } from "./modalePartikels";
 import { partikelCombinaties } from "./partikelCombinaties";
 import { focuspartikels } from "./focuspartikels";
+import { voltooidVerledenTijd } from "./voltooidVerledenTijd";
+import { voltooidToekomendeTijd } from "./voltooidToekomendeTijd";
+import { onvoltooidVerledenToekomendeTijd } from "./onvoltooidVerledenToekomendeTijd";
+import { aanvoegendeWijs } from "./aanvoegendeWijs";
+import { progressiefconstructies } from "./progressiefconstructies";
+import { onscheidbareWerkwoorden } from "./onscheidbareWerkwoorden";
+import { wederkerendeWerkwoorden } from "./wederkerendeWerkwoorden";
+import { onpersoonlijkeWerkwoorden } from "./onpersoonlijkeWerkwoorden";
+import { modaleWerkwoorden } from "./modaleWerkwoorden";
+import { koppelwerkwoorden } from "./koppelwerkwoorden";
+import { werkwoordelijkeUitdrukkingen } from "./werkwoordelijkeUitdrukkingen";
+import { hebbenZijnZullen } from "./hebbenZijnZullen";
+import { sterkeWerkwoorden } from "./sterkeWerkwoorden";
+import { passiefAlleTijden } from "./passiefAlleTijden";
+import { vooropplaatsing } from "./vooropplaatsing";
+import { bijvoeglijkeBijzinnen } from "./bijvoeglijkeBijzinnen";
+import { beknopteBijzinnen } from "./beknopteBijzinnen";
+import { indirecteRede } from "./indirecteRede";
+import { ingebeddeVragen } from "./ingebeddeVragen";
+import { tangconstructie } from "./tangconstructie";
+import { stapelwerkwoorden } from "./stapelwerkwoorden";
+import { voorzetselvoorwerp } from "./voorzetselvoorwerp";
+import { naamwoordelijkGezegde } from "./naamwoordelijkGezegde";
+import { werkwoordelijkGezegde } from "./werkwoordelijkGezegde";
+import { bijwoordelijkeBepaling } from "./bijwoordelijkeBepaling";
+import { congruentie } from "./congruentie";
+import { verbaleStijl } from "./verbaleStijl";
+import { stijlfoutenTautologiePleonasme } from "./stijlfoutenTautologiePleonasme";
+import { voltooidDeelwoordAlsBijvoeglijkNaamwoord } from "./voltooidDeelwoordAlsBijvoeglijkNaamwoord";
+import { aanHetInVoltooideTijden } from "./aanHetInVoltooideTijden";
+import { volgordeBijwoordelijkeBepalingen } from "./volgordeBijwoordelijkeBepalingen";
+import { zinsverzachtendMaar } from "./zinsverzachtendMaar";
+import { discussiesVoeren } from "./discussiesVoeren";
+import { gevoelensEnNuance } from "./gevoelensEnNuance";
+import { telefonerenOfficieleInstanties } from "./telefonerenOfficieleInstanties";
+import { solliciteren } from "./solliciteren";
+import { luistervaardigheidC1 } from "./luistervaardigheidC1";
+import { leesvaardigheidC1 } from "./leesvaardigheidC1";
+import { schrijfvaardigheidC1 } from "./schrijfvaardigheidC1";
+
 export const nlGrammar: GrammarLesson[] = [
   uitspraak,
   voorstellen,
@@ -200,4 +240,43 @@ vasteVoorzetselcombinaties,
 modalePartikels,
 partikelCombinaties,
 focuspartikels,
+voltooidVerledenTijd,
+voltooidToekomendeTijd,
+onvoltooidVerledenToekomendeTijd,
+aanvoegendeWijs,
+progressiefconstructies,
+onscheidbareWerkwoorden,
+wederkerendeWerkwoorden,
+onpersoonlijkeWerkwoorden,
+modaleWerkwoorden,
+koppelwerkwoorden,
+werkwoordelijkeUitdrukkingen,
+hebbenZijnZullen,
+sterkeWerkwoorden,
+passiefAlleTijden,
+vooropplaatsing,
+bijvoeglijkeBijzinnen,
+beknopteBijzinnen,
+indirecteRede,
+ingebeddeVragen,
+tangconstructie,
+stapelwerkwoorden,
+voorzetselvoorwerp,
+naamwoordelijkGezegde,
+werkwoordelijkGezegde,
+bijwoordelijkeBepaling,
+congruentie,
+verbaleStijl,
+stijlfoutenTautologiePleonasme,
+voltooidDeelwoordAlsBijvoeglijkNaamwoord,
+aanHetInVoltooideTijden,
+volgordeBijwoordelijkeBepalingen,
+zinsverzachtendMaar,
+discussiesVoeren,
+gevoelensEnNuance,
+telefonerenOfficieleInstanties,
+  solliciteren,
+  luistervaardigheidC1,
+  leesvaardigheidC1,
+  schrijfvaardigheidC1,
 ];

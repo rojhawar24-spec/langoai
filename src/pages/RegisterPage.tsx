@@ -1,13 +1,9 @@
+// src/pages/RegisterPage.tsx
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslate } from "@/i18n/I18nContext";
-import { hashPassword } from "@/utils/auth";
-import {
-  findUserByEmail,
-  findUserByUsername,
-  createUser,
-} from "@/utils/storage";
+import { apiRegister } from "@/utils/storage";
 
 type FieldErrors = {
   email?: string;
@@ -68,40 +64,27 @@ export default function RegisterPage() {
     setIsSubmitting(true);
     setErrors({});
 
-    const existingEmail = findUserByEmail(email.trim());
-    if (existingEmail) {
-      setErrors({ email: t("register.errorEmailExists") });
-      setIsSubmitting(false);
-      return;
-    }
-
-    const existingUsername = findUserByUsername(username.trim());
-    if (existingUsername) {
-      setErrors({ username: t("register.errorUsernameTaken") });
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      const hashedPw = await hashPassword(password);
-      const newUser = createUser({
+      const newUser = await apiRegister({
         email: email.trim().toLowerCase(),
         username: username.trim(),
-        hashedPassword: hashedPw,
+        password,
         currentLanguage: null,
-        totalXP: 0,
-        level: 1,
-        streak: 0,
-        lastActivityDate: null,
         theme: "light",
         interfaceLanguage: "en",
-        premium: false,
       });
 
       login(newUser);
       navigate("/dashboard", { replace: true });
-    } catch {
-      setErrors({ general: t("register.errorGeneral") });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "";
+      if (msg === "email_taken") {
+        setErrors({ email: t("register.errorEmailExists") });
+      } else if (msg === "username_taken") {
+        setErrors({ username: t("register.errorUsernameTaken") });
+      } else {
+        setErrors({ general: t("register.errorGeneral") });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -150,10 +133,7 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {t("register.email")}
               </label>
               <input
@@ -161,29 +141,16 @@ export default function RegisterPage() {
                 type="email"
                 autoComplete="email"
                 value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (errors.email)
-                    setErrors((prev) => ({ ...prev, email: undefined }));
-                }}
-                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${
-                  errors.email
-                    ? "border-red-300 focus:ring-red-500 dark:border-red-500"
-                    : "border-slate-300 dark:border-slate-600"
-                }`}
+                onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors((p) => ({ ...p, email: undefined })); }}
+                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${errors.email ? "border-red-300 focus:ring-red-500 dark:border-red-500" : "border-slate-300 dark:border-slate-600"}`}
                 placeholder={t("placeholder.email")}
               />
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-500">{errors.email}</p>
-              )}
+              {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
             </div>
 
             {/* Username */}
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
-              >
+              <label htmlFor="username" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {t("register.username")}
               </label>
               <input
@@ -191,29 +158,16 @@ export default function RegisterPage() {
                 type="text"
                 autoComplete="username"
                 value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                  if (errors.username)
-                    setErrors((prev) => ({ ...prev, username: undefined }));
-                }}
-                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${
-                  errors.username
-                    ? "border-red-300 focus:ring-red-500 dark:border-red-500"
-                    : "border-slate-300 dark:border-slate-600"
-                }`}
+                onChange={(e) => { setUsername(e.target.value); if (errors.username) setErrors((p) => ({ ...p, username: undefined })); }}
+                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${errors.username ? "border-red-300 focus:ring-red-500 dark:border-red-500" : "border-slate-300 dark:border-slate-600"}`}
                 placeholder={t("placeholder.username")}
               />
-              {errors.username && (
-                <p className="mt-1 text-xs text-red-500">{errors.username}</p>
-              )}
+              {errors.username && <p className="mt-1 text-xs text-red-500">{errors.username}</p>}
             </div>
 
             {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {t("register.password")}
               </label>
               <input
@@ -221,29 +175,16 @@ export default function RegisterPage() {
                 type="password"
                 autoComplete="new-password"
                 value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  if (errors.password)
-                    setErrors((prev) => ({ ...prev, password: undefined }));
-                }}
-                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${
-                  errors.password
-                    ? "border-red-300 focus:ring-red-500 dark:border-red-500"
-                    : "border-slate-300 dark:border-slate-600"
-                }`}
+                onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors((p) => ({ ...p, password: undefined })); }}
+                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${errors.password ? "border-red-300 focus:ring-red-500 dark:border-red-500" : "border-slate-300 dark:border-slate-600"}`}
                 placeholder={t("placeholder.password")}
               />
-              {errors.password && (
-                <p className="mt-1 text-xs text-red-500">{errors.password}</p>
-              )}
+              {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
-              >
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {t("register.confirmPassword")}
               </label>
               <input
@@ -251,26 +192,11 @@ export default function RegisterPage() {
                 type="password"
                 autoComplete="new-password"
                 value={confirmPassword}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  if (errors.confirmPassword)
-                    setErrors((prev) => ({
-                      ...prev,
-                      confirmPassword: undefined,
-                    }));
-                }}
-                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${
-                  errors.confirmPassword
-                    ? "border-red-300 focus:ring-red-500 dark:border-red-500"
-                    : "border-slate-300 dark:border-slate-600"
-                }`}
+                onChange={(e) => { setConfirmPassword(e.target.value); if (errors.confirmPassword) setErrors((p) => ({ ...p, confirmPassword: undefined })); }}
+                className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-white ${errors.confirmPassword ? "border-red-300 focus:ring-red-500 dark:border-red-500" : "border-slate-300 dark:border-slate-600"}`}
                 placeholder={t("placeholder.confirmPassword")}
               />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-xs text-red-500">
-                  {errors.confirmPassword}
-                </p>
-              )}
+              {errors.confirmPassword && <p className="mt-1 text-xs text-red-500">{errors.confirmPassword}</p>}
             </div>
 
             {/* Submit */}
@@ -290,10 +216,7 @@ export default function RegisterPage() {
         {/* Footer link */}
         <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
           {t("register.hasAccount")}{" "}
-          <Link
-            to="/login"
-            className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
-          >
+          <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
             {t("register.loginLink")}
           </Link>
         </p>

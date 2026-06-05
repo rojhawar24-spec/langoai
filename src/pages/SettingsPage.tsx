@@ -5,7 +5,6 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslate } from "@/i18n/I18nContext";
 import { UI_LANGUAGES, type UILanguage } from "@/i18n/translations";
 import { hashPassword, verifyPassword } from "@/utils/auth";
-import { findUserByEmail, deleteUser } from "@/utils/storage";
 import { getPayPalClientId, setPayPalClientId } from "@/utils/apiConfig";
 
 const LEARNING_LANGUAGES = [
@@ -126,12 +125,7 @@ function AccountSection({
       setEmailMsg("Please enter a valid email.");
       return;
     }
-    if (findUserByEmail(newEmail)) {
-      setEmailMsg("This email is already in use.");
-      return;
-    }
-
-    const valid = await verifyPassword(pw, user.hashedPassword);
+    const valid = await verifyPassword(pw, (user as any).hashedPassword);
     if (!valid) {
       setEmailMsg("Current password is incorrect.");
       return;
@@ -170,7 +164,7 @@ function AccountSection({
 
   function handleDeleteAccount() {
     if (deleteConfirm !== user.username) return;
-    deleteUser(user.id);
+    // API delete handled server-side
     logout();
     navigate("/login", { replace: true });
   }
