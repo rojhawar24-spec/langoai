@@ -11,7 +11,6 @@ import { getResumeRoute } from "@/utils/savePosition";
 import { useBadgeChecker } from "@/hooks/useBadgeChecker";
 import BadgeNotification from "@/components/BadgeNotification";
 import AdSlot from "@/components/AdSlot";
-import { RealismButton } from "@/components/ui/RealismButton";
 
 const LEARNING_LANGUAGES = [
   { code: "en", nameKey: "lang.en" as const, flag: "🇬🇧", color: "from-blue-400 to-indigo-500" },
@@ -175,9 +174,7 @@ export default function DashboardPage() {
               key={i}
               className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${card.lightBg} ${card.darkBg} ${card.hoverLight} ${card.hoverDark}`}
             >
-              {/* Light mode top shine */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
-              {/* Orb */}
               <div className={`pointer-events-none absolute -right-4 -top-4 h-20 w-20 rounded-full blur-xl opacity-60 ${card.lightOrb} ${card.darkOrb}`} />
               <div className="relative">
                 <div className="mb-3 text-2xl">{card.icon}</div>
@@ -261,7 +258,6 @@ export default function DashboardPage() {
               </p>
 
               <div className="flex items-center gap-6">
-                {/* Ring */}
                 <div className="relative flex-shrink-0">
                   <div className="absolute inset-0 rounded-full blur-xl opacity-30 bg-indigo-300 dark:opacity-40 dark:bg-indigo-600" />
                   <svg className="relative h-28 w-28 -rotate-90" viewBox="0 0 120 120">
@@ -339,7 +335,6 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* 7-Day streak calendar */}
               <div className="mt-5 border-t border-slate-100 pt-4 dark:border-white/5">
                 <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-600">
                   Last 7 days
@@ -378,7 +373,6 @@ export default function DashboardPage() {
             className="group relative w-full overflow-hidden rounded-2xl p-px shadow-lg shadow-indigo-200/60 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-300/60 hover:-translate-y-0.5 active:translate-y-0 dark:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30"
             style={{ background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
           >
-            {/* Shimmer sweep */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </div>
@@ -444,79 +438,111 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <AdSlot variant="banner" className="mb-6" />
+        <AdSlot variant="banner" className="mb-8" />
 
-        {/* ========== QUICK-ACTION BUTTONS ========== */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          <RealismButton
-            text={
-              <span className="flex items-center gap-3">
-                <BookOpen className="w-6 h-6" />
-                <span>
-                  <strong>Grammar Lessons</strong>
-                  <br />
-                  <span className="text-white/70 text-sm font-normal">Step-by-step grammar guides with exercises.</span>
-                </span>
-              </span>
-            }
-            onClick={() => navigate("/grammar")}
-          />
-          <RealismButton
-            text={
-              <span className="flex items-center gap-3">
-                <Wrench className="w-6 h-6" />
-                <span>
-                  <strong>Mistake Review</strong>
-                  <br />
-                  <span className="text-white/70 text-sm font-normal">Learn from your mistakes & improve.</span>
-                </span>
-              </span>
-            }
-            onClick={() => navigate("/mistakes")}
-          />
-          <RealismButton
-            text={
-              <span className="flex items-center gap-3">
-                <FileText className="w-6 h-6" />
-                <span>
-                  <strong>Tests & Quizzes</strong>
-                  <br />
-                  <span className="text-white/70 text-sm font-normal">Challenge yourself +{XP_REWARDS.TEST_PASSED} XP on pass.</span>
-                </span>
-              </span>
-            }
-            onClick={() => navigate("/tests")}
-          />
-          <RealismButton
-            text={
-              <span className="flex items-center gap-3">
-                <Trophy className="w-6 h-6" />
-                <span>
-                  <strong>Legend</strong>
-                  <br />
-                  <span className="text-white/70 text-sm font-normal">Seizoen levels. Ontgrendel, speel, verdien XP.</span>
-                </span>
-              </span>
-            }
+        {/* ========== PREMIUM LEGEND SECTION (MAIN IMPORTANT) ========== */}
+        <div className="mb-8">
+          <button
             onClick={() => navigate("/arena")}
-          />
+            className="group relative w-full overflow-hidden rounded-3xl p-px shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-1 active:translate-y-0 dark:shadow-indigo-900/20 dark:hover:shadow-indigo-500/20"
+          >
+            {/* Animated gradient border/background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 opacity-90 transition-opacity group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+            
+            <div className="relative flex items-center gap-5 rounded-3xl bg-gradient-to-r from-slate-900/95 to-slate-900/80 px-6 py-6 sm:px-8 sm:py-7 dark:from-slate-950/95 dark:to-slate-950/80">
+              {/* Icon Container */}
+              <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-3xl shadow-lg shadow-indigo-500/30 ring-1 ring-white/20">
+                <Trophy className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Text Content */}
+              <div className="flex-1 text-left">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-indigo-300 ring-1 ring-indigo-500/30">
+                    Main Event
+                  </span>
+                </div>
+                <p className="text-xl font-black tracking-tight text-white sm:text-2xl">
+                  Legend Arena
+                </p>
+                <p className="mt-1 text-sm font-medium text-slate-300 sm:text-base">
+                  Seizoen levels. Ontgrendel, speel, verdien XP.
+                </p>
+              </div>
+
+              {/* Arrow */}
+              <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 transition-transform duration-300 group-hover:translate-x-2 group-hover:bg-white/20">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
+            </div>
+          </button>
         </div>
 
-        {/* ========== WORD OF THE DAY ========== */}
-        <div className="mt-6">
-          <RealismButton
-            text={
-              <span className="flex items-center gap-3">
+        {/* ========== QUICK-ACTION GRID ========== */}
+        <div className="mb-6">
+          <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+            {t("dashboard.quickActions") || "Quick Actions"}
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Grammar */}
+            <button
+              onClick={() => navigate("/grammar")}
+              className="group relative flex flex-col items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-indigo-200 dark:border-white/5 dark:bg-white/[0.03] dark:hover:border-indigo-500/30 dark:hover:bg-white/[0.06]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 transition-colors group-hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:ring-indigo-500/20 dark:group-hover:bg-indigo-500/20">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">Grammar Lessons</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Step-by-step grammar guides with exercises.</p>
+              </div>
+            </button>
+
+            {/* Mistake Review */}
+            <button
+              onClick={() => navigate("/mistakes")}
+              className="group relative flex flex-col items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-rose-200 dark:border-white/5 dark:bg-white/[0.03] dark:hover:border-rose-500/30 dark:hover:bg-white/[0.06]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-600 ring-1 ring-rose-100 transition-colors group-hover:bg-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20 dark:group-hover:bg-rose-500/20">
+                <Wrench className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">Mistake Review</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Learn from your mistakes & improve.</p>
+              </div>
+            </button>
+
+            {/* Tests & Quizzes */}
+            <button
+              onClick={() => navigate("/tests")}
+              className="group relative flex flex-col items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-emerald-200 dark:border-white/5 dark:bg-white/[0.03] dark:hover:border-emerald-500/30 dark:hover:bg-white/[0.06]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors group-hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20 dark:group-hover:bg-emerald-500/20">
+                <FileText className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">Tests & Quizzes</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Challenge yourself +{XP_REWARDS.TEST_PASSED} XP on pass.</p>
+              </div>
+            </button>
+
+            {/* Word of the Day */}
+            <button
+              onClick={() => navigate("/wotd")}
+              className="group relative flex flex-col items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-amber-200 dark:border-white/5 dark:bg-white/[0.03] dark:hover:border-amber-500/30 dark:hover:bg-white/[0.06]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-amber-100 transition-colors group-hover:bg-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20 dark:group-hover:bg-amber-500/20">
                 <Star className="w-6 h-6" />
-                <span>
-                  <strong>Word of the Day</strong>
-                  <br />
-                  <span className="text-white/70 text-sm font-normal">Learn a new word daily. Expand your vocabulary!</span>
-                </span>
-              </span>
-            }
-            onClick={() => navigate("/wotd")}
-          />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">Word of the Day</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Learn a new word daily. Expand your vocabulary!</p>
+              </div>
+            </button>
+          </div>
         </div>
 
       </div>

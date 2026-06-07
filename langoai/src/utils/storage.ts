@@ -11,6 +11,7 @@ export interface UserData {
   theme: "light" | "dark";
   interfaceLanguage: string;
   premium: boolean;
+  premiumExpiresAt?: string | null;
   createdAt: string;
 }
 
@@ -46,25 +47,27 @@ export function findUserByUsername(username: string): UserData | undefined {
   );
 }
 
-export function findUserByEmailOrUsername(
-  identifier: string
-): UserData | undefined {
+export function findUserByEmailOrUsername(identifier: string): UserData | undefined {
   const lower = identifier.toLowerCase();
   const users = getUsers();
+
   return Object.values(users).find(
     (u) =>
-      u.email.toLowerCase() === lower || u.username.toLowerCase() === lower
+      u.email.toLowerCase() === lower ||
+      u.username.toLowerCase() === lower
   );
 }
 
 export function createUser(data: Omit<UserData, "id" | "createdAt">): UserData {
   const users = getUsers();
   const id = crypto.randomUUID();
+
   const newUser: UserData = {
     ...data,
     id,
     createdAt: new Date().toISOString(),
   };
+
   users[id] = newUser;
   saveUsers(users);
   return newUser;
@@ -72,10 +75,11 @@ export function createUser(data: Omit<UserData, "id" | "createdAt">): UserData {
 
 export function updateUser(id: string, updates: Partial<UserData>): void {
   const users = getUsers();
+
   if (users[id]) {
     users[id] = { ...users[id], ...updates };
     saveUsers(users);
-    // If updating the current user, refresh the session
+
     const current = getCurrentUser();
     if (current && current.id === id) {
       setCurrentUser(users[id]);
@@ -94,6 +98,7 @@ export function setCurrentUser(user: UserData | null): void {
 export function getCurrentUser(): UserData | null {
   const raw = localStorage.getItem(CURRENT_USER_KEY);
   if (!raw) return null;
+
   try {
     return JSON.parse(raw);
   } catch {
@@ -108,6 +113,7 @@ export function setRememberMe(value: boolean): void {
 export function getRememberMe(): boolean {
   const raw = localStorage.getItem(REMEMBER_ME_KEY);
   if (!raw) return false;
+
   try {
     return JSON.parse(raw);
   } catch {
@@ -122,13 +128,8 @@ export function deleteUser(id: string): void {
 }
 
 export function logout(): void {
-  if (!getRememberMe()) {
-    localStorage.removeItem(CURRENT_USER_KEY);
-  }
   localStorage.removeItem(CURRENT_USER_KEY);
 }
-
-// ─── API-style wrappers (localStorage-based, no real server) ───
 
 export async function apiRegister(data: {
   email: string;
@@ -156,6 +157,7 @@ export async function apiRegister(data: {
     theme: data.theme,
     interfaceLanguage: data.interfaceLanguage,
     premium: false,
+    premiumExpiresAt: null,
   });
 
   setCurrentUser(user);
@@ -187,7 +189,9 @@ export async function apiLogout(): Promise<void> {
 export async function apiUpdateUser(updates: Partial<UserData>): Promise<UserData> {
   const current = getCurrentUser();
   if (!current) throw new Error("not_authenticated");
+
   updateUser(current.id, updates);
+
   const updated = { ...current, ...updates };
   setCurrentUser(updated);
   return updated;

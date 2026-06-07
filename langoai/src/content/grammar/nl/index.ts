@@ -138,6 +138,15 @@ import { solliciteren } from "./solliciteren";
 import { luistervaardigheidC1 } from "./luistervaardigheidC1";
 import { leesvaardigheidC1 } from "./leesvaardigheidC1";
 import { schrijfvaardigheidC1 } from "./schrijfvaardigheidC1";
+import { bijwoordenFrequentieGraad } from "./bijwoordenFrequentieGraad";
+import { voltooidVerledenToekomendeTijd } from "./voltooidVerledenToekomendeTijd";
+
+
+
+
+
+
+
 
 export const nlGrammar: GrammarLesson[] = [
   uitspraak,
@@ -279,4 +288,14 @@ telefonerenOfficieleInstanties,
   luistervaardigheidC1,
   leesvaardigheidC1,
   schrijfvaardigheidC1,
+  bijwoordenFrequentieGraad,
+voltooidVerledenToekomendeTijd,
+
+
+
+
+
+
+
+
 ];
