@@ -262,6 +262,7 @@ export default function AIChat({ open, onClose }: AIChatProps) {
                         onSuccess={handlePaymentSuccess}
                         onError={(msg) => setPaypalError(msg)}
                         amount={PREMIUM_PRICE_EUR}
+                        
                       />
                       {paypalError && <p className="mt-3 text-xs text-red-500">{paypalError}</p>}
                       <button onClick={() => setShowPayPal(false)} className="mt-3 w-full text-xs font-medium text-slate-400 hover:text-slate-500">

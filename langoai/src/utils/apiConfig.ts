@@ -1,24 +1,41 @@
 //
-// API Configuration - FRONTEND (NO secret keys!)
-//
-// All secret keys live in Vercel Environment Variables.
-// Frontend calls /api/chat on the SAME domain.
-// Users never see API keys. GitHub has zero keys.
+// src/utils/apiConfig.ts
 //
 
-const PAYMENT_VERIFIED_KEY = "langlearn_payment_verified";
-const PAYMENT_EXPIRES_AT_KEY = "langlearn_payment_expires_at";
+const ACCESS_TOKEN_KEY = "langlearn_access_token";
+const EXPIRES_AT_KEY = "langlearn_payment_expires_at";
 
 export const PREMIUM_PRICE_EUR = "4.00";
 export const PREMIUM_DAYS = 30;
 
-export function getPaymentExpiresAt(): string | null {
-  return localStorage.getItem(PAYMENT_EXPIRES_AT_KEY);
+export function saveAccessToken(token: string, expiresAt: string): void {
+  localStorage.setItem(ACCESS_TOKEN_KEY, token);
+  localStorage.setItem(EXPIRES_AT_KEY, expiresAt);
 }
 
-export function clearPaymentVerified(): void {
-  localStorage.removeItem(PAYMENT_VERIFIED_KEY);
-  localStorage.removeItem(PAYMENT_EXPIRES_AT_KEY);
+export function getAccessToken(): string | null {
+  return localStorage.getItem(ACCESS_TOKEN_KEY);
+}
+
+export function getPaymentExpiresAt(): string | null {
+  return localStorage.getItem(EXPIRES_AT_KEY);
+}
+
+export function clearAccessToken(): void {
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem(EXPIRES_AT_KEY);
+}
+
+// Alias so PremiumPage and any other file still compiles
+export const clearPaymentVerified = clearAccessToken;
+
+export function isPaymentVerified(): boolean {
+  const token = getAccessToken();
+  const expiresAt = getPaymentExpiresAt();
+  if (!token || !expiresAt) return false;
+  const active = new Date(expiresAt).getTime() > Date.now();
+  if (!active) clearAccessToken();
+  return active;
 }
 
 export function isPremiumActive(
@@ -29,23 +46,9 @@ export function isPremiumActive(
   return new Date(expiresAt).getTime() > Date.now();
 }
 
-export function isPaymentVerified(): boolean {
-  const expiresAt = getPaymentExpiresAt();
-  if (!expiresAt) return false;
-
-  const active = new Date(expiresAt).getTime() > Date.now();
-  if (!active) clearPaymentVerified();
-  return active;
-}
-
+// Kept so nothing breaks if referenced elsewhere
 export function markPaymentVerified(): string {
-  const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + PREMIUM_DAYS);
-  const expiresAtIso = expiresAt.toISOString();
-
-  localStorage.setItem(PAYMENT_VERIFIED_KEY, "true");
-  localStorage.setItem(PAYMENT_EXPIRES_AT_KEY, expiresAtIso);
-  return expiresAtIso;
+  return getPaymentExpiresAt() ?? "";
 }
 
 export function formatPremiumExpiry(expiresAt?: string | null): string {
@@ -67,12 +70,19 @@ export async function callClaude(
   systemPrompt: string,
   maxTokens = 500
 ): Promise<string> {
+  const accessToken = getAccessToken();
+
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages, systemPrompt, maxTokens }),
+      body: JSON.stringify({ messages, systemPrompt, maxTokens, accessToken }),
     });
+
+    if (response.status === 401) {
+      clearAccessToken();
+      throw new Error("Payment required. Please pay to use the AI.");
+    }
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
@@ -83,7 +93,7 @@ export async function callClaude(
     return data.text ?? "";
   } catch (e) {
     if (e instanceof TypeError && e.message === "Failed to fetch") {
-      throw new Error("AI API not reachable. Deploy to Vercel and set ANTHROPIC_API_KEY in environment variables.");
+      throw new Error("AI API not reachable. Deploy to Vercel and set ANTHROPIC_API_KEY.");
     }
     throw e;
   }
