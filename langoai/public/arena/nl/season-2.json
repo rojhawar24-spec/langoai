@@ -1,0 +1,76 @@
+{
+  "id": 2,
+  "title": "Numbers & Counting",
+  "levels": [
+    {
+      "level": 1,
+      "questions": [
+        {
+          "type": "translation",
+          "question": "one",
+          "answer": "één",
+          "options": []
+        },
+        {
+          "type": "translation",
+          "question": "two",
+          "answer": "twee",
+          "options": []
+        },
+        {
+          "type": "multiple-choice",
+          "question": "'Drie' means:",
+          "answer": "three",
+          "options": ["three", "two", "four", "one"]
+        },
+        {
+          "type": "translation",
+          "question": "five",
+          "answer": "vijf",
+          "options": []
+        },
+        {
+          "type": "fill-blank",
+          "question": "___ (four) appels",
+          "answer": "vier",
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "questions": [
+        {
+          "type": "translation",
+          "question": "ten",
+          "answer": "tien",
+          "options": []
+        },
+        {
+          "type": "translation",
+          "question": "twenty",
+          "answer": "twintig",
+          "options": []
+        },
+        {
+          "type": "multiple-choice",
+          "question": "'Vijftig' is:",
+          "answer": "50",
+          "options": ["50", "15", "5", "500"]
+        },
+        {
+          "type": "translation",
+          "question": "hundred",
+          "answer": "honderd",
+          "options": []
+        },
+        {
+          "type": "fill-blank",
+          "question": "Ik heb ___ (ten) boeken.",
+          "answer": "tien",
+          "options": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Dutch",
+  "seasons": [
+    {
+      "id": 1,
+      "title": "Greetings & Introductions",
+      "levelCount": 2
+    },
+    {
+      "id": 2,
+      "title": "Numbers & Counting",
+      "levelCount": 2
+    },
+    {
+      "id": 3,
+      "title": "Food & Drink",
+      "levelCount": 2
+    },
+    {
+      "id": 4,
+      "title": "Travel & Directions",
+      "levelCount": 2
+    }
+  ]
+}

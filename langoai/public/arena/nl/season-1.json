@@ -1,0 +1,76 @@
+{
+  "id": 1,
+  "title": "Greetings & Introductions",
+  "levels": [
+    {
+      "level": 1,
+      "questions": [
+        {
+          "type": "translation",
+          "question": "Good morning",
+          "answer": "Goedemorgen",
+          "options": []
+        },
+        {
+          "type": "translation",
+          "question": "Good evening",
+          "answer": "Goedenavond",
+          "options": []
+        },
+        {
+          "type": "multiple-choice",
+          "question": "What does 'Hallo' mean?",
+          "answer": "Hello",
+          "options": ["Hello", "Goodbye", "Please", "Sorry"]
+        },
+        {
+          "type": "translation",
+          "question": "Thank you",
+          "answer": "Dank je wel",
+          "options": []
+        },
+        {
+          "type": "multiple-choice",
+          "question": "'Tot ziens' means:",
+          "answer": "See you later",
+          "options": ["See you later", "Good morning", "Thank you", "Please"]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "questions": [
+        {
+          "type": "translation",
+          "question": "My name is...",
+          "answer": "Ik heet...",
+          "options": []
+        },
+        {
+          "type": "translation",
+          "question": "How are you?",
+          "answer": "Hoe gaat het?",
+          "options": []
+        },
+        {
+          "type": "fill-blank",
+          "question": "Ik ___ Roj. (I am Roj)",
+          "answer": "ben",
+          "options": []
+        },
+        {
+          "type": "multiple-choice",
+          "question": "'Nice to meet you':",
+          "answer": "Aangenaam",
+          "options": ["Aangenaam", "Tot ziens", "Alsjeblieft", "Dank je"]
+        },
+        {
+          "type": "translation",
+          "question": "I am from...",
+          "answer": "Ik kom uit...",
+          "options": []
+        }
+      ]
+    }
+  ]
+}

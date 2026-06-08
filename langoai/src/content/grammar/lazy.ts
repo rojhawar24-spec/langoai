@@ -2,10 +2,26 @@ import type { GrammarLesson } from "../types";
 
 export type GrammarLessonMeta = Pick<GrammarLesson, "id" | "title" | "level" | "topic">;
 
+type LazyGrammarModule = {
+  grammarList?: GrammarLessonMeta[];
+  nlGrammarList?: GrammarLessonMeta[];
+  loadGrammarLesson?: (id: string) => Promise<GrammarLesson | null>;
+  loadNlGrammarLesson?: (id: string) => Promise<GrammarLesson | null>;
+};
+
+const lazyModules = import.meta.glob<LazyGrammarModule>("./*/lazyIndex.ts");
+
+async function loadLazyModule(lang: string): Promise<LazyGrammarModule | null> {
+  const loadModule = lazyModules[`./${lang}/lazyIndex.ts`];
+  if (!loadModule) return null;
+  return loadModule();
+}
+
 export async function getGrammarLessonList(lang: string): Promise<GrammarLessonMeta[]> {
-  if (lang === "nl") {
-    const mod = await import("./nl/lazyIndex.ts");
-    return mod.nlGrammarList;
+  const lazyModule = await loadLazyModule(lang);
+
+  if (lazyModule) {
+    return lazyModule.grammarList ?? lazyModule.nlGrammarList ?? [];
   }
 
   try {
@@ -24,8 +40,11 @@ export async function getGrammarLessonList(lang: string): Promise<GrammarLessonM
 }
 
 export async function getGrammarLessonById(lang: string, id: string): Promise<GrammarLesson | null> {
-  if (lang === "nl") {
-  const mod = await import("./nl/lazyIndex.ts");    return mod.loadNlGrammarLesson(id);
+  const lazyModule = await loadLazyModule(lang);
+
+  if (lazyModule) {
+    const loadLesson = lazyModule.loadGrammarLesson ?? lazyModule.loadNlGrammarLesson;
+    return loadLesson ? loadLesson(id) : null;
   }
 
   try {
