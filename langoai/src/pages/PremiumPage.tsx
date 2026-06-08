@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { PREMIUM_PERKS } from "@/utils/premium";
 import {
-  clearPaymentVerified,
   formatPremiumExpiry,
   isPaymentVerified,
   isPremiumActive,
@@ -32,12 +31,6 @@ export default function PremiumPage() {
 
   function handlePayPalError(msg: string) {
     setPaypalError(msg);
-  }
-
-  function handleDeactivate() {
-    clearPaymentVerified();
-    updateProfile({ premium: false, premiumExpiresAt: null });
-    setPaymentDone(false);
   }
 
   return (
@@ -145,14 +138,7 @@ export default function PremiumPage() {
             </div>
 
             <div className="mt-5">
-              {alreadyPremium ? (
-                <button
-                  onClick={handleDeactivate}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-                >
-                  Demo: deactivate premium
-                </button>
-              ) : !showPayPal ? (
+              {!alreadyPremium && !showPayPal ? (
                 <button
                   onClick={() => {
                     setShowPayPal(true);
