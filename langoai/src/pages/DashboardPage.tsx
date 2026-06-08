@@ -484,8 +484,8 @@ export default function DashboardPage() {
         {/* ========== QUICK-ACTION GRID ========== */}
         <div className="mb-6">
           <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-            {t("dashboard.quickActions") || "Quick Actions"}
-          </h2>
+           {t("dashboard.quickActions") === "dashboard.quickActions" ? "Quick Actions" : t("dashboard.quickActions")}        
+             </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {/* Grammar */}
             <button

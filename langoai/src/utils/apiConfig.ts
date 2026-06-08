@@ -26,15 +26,20 @@ export function clearAccessToken(): void {
   localStorage.removeItem(EXPIRES_AT_KEY);
 }
 
-// Alias so PremiumPage and any other file still compiles
 export const clearPaymentVerified = clearAccessToken;
 
 export function isPaymentVerified(): boolean {
   const token = getAccessToken();
   const expiresAt = getPaymentExpiresAt();
+
   if (!token || !expiresAt) return false;
+
   const active = new Date(expiresAt).getTime() > Date.now();
-  if (!active) clearAccessToken();
+
+  if (!active) {
+    clearAccessToken();
+  }
+
   return active;
 }
 
@@ -42,17 +47,25 @@ export function isPremiumActive(
   user?: { premium?: boolean; premiumExpiresAt?: string | null } | null
 ): boolean {
   const expiresAt = user?.premiumExpiresAt ?? getPaymentExpiresAt();
+
   if (!expiresAt) return false;
-  return new Date(expiresAt).getTime() > Date.now();
+
+  const active = new Date(expiresAt).getTime() > Date.now();
+
+  if (!active && !user?.premiumExpiresAt) {
+    clearAccessToken();
+  }
+
+  return active;
 }
 
-// Kept so nothing breaks if referenced elsewhere
 export function markPaymentVerified(): string {
   return getPaymentExpiresAt() ?? "";
 }
 
 export function formatPremiumExpiry(expiresAt?: string | null): string {
   if (!expiresAt) return "";
+
   return new Date(expiresAt).toLocaleDateString(undefined, {
     year: "numeric",
     month: "long",
@@ -95,6 +108,7 @@ export async function callClaude(
     if (e instanceof TypeError && e.message === "Failed to fetch") {
       throw new Error("AI API not reachable. Deploy to Vercel and set ANTHROPIC_API_KEY.");
     }
+
     throw e;
   }
 }
@@ -110,15 +124,19 @@ export function getSystemPrompt(
     de: "German",
     es: "Spanish",
   };
+
   const lang = langName[learningLanguage] || "English";
 
   switch (mode) {
     case "grammar":
       return `You are a friendly, patient ${lang} teacher. Explain grammar rules clearly with examples. Use simple language, break down concepts step by step, and always give example sentences. Keep answers concise under 500 tokens. Be encouraging.`;
+
     case "translation":
       return `You are a helpful ${lang} translator. Translate the user's message into ${lang}, and briefly explain key vocabulary or grammar points. Keep it friendly and concise.`;
+
     case "conversation":
       return `You are a friendly ${lang} conversation partner. Chat naturally in ${lang}, gently correct mistakes, and keep the conversation flowing. Use simple ${lang} suitable for a learner. Be encouraging.`;
+
     default:
       return "You are a helpful language tutor.";
   }

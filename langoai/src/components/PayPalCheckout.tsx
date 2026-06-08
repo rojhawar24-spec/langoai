@@ -1,11 +1,5 @@
-//
-// PayPalCheckout.tsx
-// Shows PayPal link. Polls server for real payment confirmation.
-// No "I have paid" button. No self-granting. Server issues the token.
-//
-
-import { useState, useEffect, useRef } from "react";
-import { PREMIUM_PRICE_EUR, PREMIUM_DAYS, saveAccessToken } from "@/utils/apiConfig";
+import { useEffect, useRef, useState } from "react";
+import { PREMIUM_DAYS, PREMIUM_PRICE_EUR, saveAccessToken } from "@/utils/apiConfig";
 
 interface PayPalCheckoutProps {
   onSuccess: (expiresAt: string) => void;
@@ -13,68 +7,136 @@ interface PayPalCheckoutProps {
   amount?: string;
 }
 
+type Step = "idle" | "ready" | "waiting" | "verified" | "failed";
+
+interface PaymentSession {
+  sessionId: string;
+  payerEmail: string;
+  amount: string;
+  currency: string;
+  paypalUrl: string;
+}
+
 export default function PayPalCheckout({
   onSuccess,
   onError,
   amount = PREMIUM_PRICE_EUR,
 }: PayPalCheckoutProps) {
-  const [step, setStep] = useState<"idle" | "waiting" | "verified" | "failed">("idle");
+  const [step, setStep] = useState<Step>("idle");
+  const [payerEmail, setPayerEmail] = useState("");
+  const [session, setSession] = useState<PaymentSession | null>(null);
   const [statusMsg, setStatusMsg] = useState("");
   const [dots, setDots] = useState(".");
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dotRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (step === "waiting") {
-      dotRef.current = setInterval(() => {
-        setDots((d) => (d.length >= 3 ? "." : d + "."));
-      }, 500);
-    } else {
+    if (step !== "waiting") {
       if (dotRef.current) clearInterval(dotRef.current);
+      return;
     }
-    return () => { if (dotRef.current) clearInterval(dotRef.current); };
+
+    dotRef.current = setInterval(() => {
+      setDots((d) => (d.length >= 3 ? "." : d + "."));
+    }, 500);
+
+    return () => {
+      if (dotRef.current) clearInterval(dotRef.current);
+    };
   }, [step]);
 
   useEffect(() => {
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
+      if (dotRef.current) clearInterval(dotRef.current);
     };
   }, []);
 
-  function startPolling() {
+  async function createSession() {
+    const email = payerEmail.trim().toLowerCase();
+
+    if (!email || !email.includes("@")) {
+      setStatusMsg("Enter the PayPal email you will pay with.");
+      return;
+    }
+
+    setStatusMsg("");
+    setStep("idle");
+
+    try {
+      const res = await fetch("/api/create-payment-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payerEmail: email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Could not start payment.");
+      }
+
+      setSession(data);
+      setStep("ready");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Payment setup failed.";
+      setStatusMsg(msg);
+      setStep("failed");
+      onError(msg);
+    }
+  }
+
+  function startPayment() {
+    if (!session) return;
+
+    window.open(session.paypalUrl, "_blank", "noopener,noreferrer");
+    startPolling(session.sessionId);
+  }
+
+  function startPolling(sessionId: string) {
     setStep("waiting");
     setStatusMsg("");
 
     let attempts = 0;
-    const MAX_ATTEMPTS = 75; // 75 × 8s = 10 minutes
+    const maxAttempts = 75;
+
+    if (pollRef.current) clearInterval(pollRef.current);
 
     pollRef.current = setInterval(async () => {
       attempts++;
+
       try {
         const res = await fetch("/api/check-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
+          body: JSON.stringify({ sessionId }),
         });
+
         const data = await res.json();
 
         if (data.verified && data.accessToken && data.expiresAt) {
           if (pollRef.current) clearInterval(pollRef.current);
-          // Save the real server-issued token
+
           saveAccessToken(data.accessToken, data.expiresAt);
           setStep("verified");
           onSuccess(data.expiresAt);
           return;
         }
+
+        if (!res.ok && data.error) {
+          setStatusMsg(data.error);
+        }
       } catch {
-        // network hiccup — keep polling
+        // Keep polling during temporary network issues.
       }
 
-      if (attempts >= MAX_ATTEMPTS) {
+      if (attempts >= maxAttempts) {
         if (pollRef.current) clearInterval(pollRef.current);
+
+        const msg = "Payment not detected after 10 minutes. Check your PayPal email or try again.";
         setStep("failed");
-        setStatusMsg("Payment not detected after 10 minutes. If you paid, contact support.");
-        onError("Payment timeout");
+        setStatusMsg(msg);
+        onError(msg);
       }
     }, 8000);
   }
@@ -83,10 +145,10 @@ export default function PayPalCheckout({
     return (
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-5 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
         <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300">
-          ✅ Payment confirmed — AI Tutor unlocked!
+          Payment confirmed
         </p>
         <p className="mt-1 text-sm text-emerald-600 dark:text-emerald-400">
-          Your {PREMIUM_DAYS}-day access starts now.
+          AI Tutor is unlocked for {PREMIUM_DAYS} days.
         </p>
       </div>
     );
@@ -96,15 +158,26 @@ export default function PayPalCheckout({
     return (
       <div className="rounded-2xl border border-blue-200 bg-blue-50 px-6 py-5 text-center dark:border-blue-800 dark:bg-blue-900/20">
         <p className="text-base font-bold text-blue-700 dark:text-blue-300">
-          Waiting for your payment{dots}
+          Waiting for PayPal payment{dots}
         </p>
         <p className="mt-2 text-sm text-blue-600 dark:text-blue-400">
-          This page updates automatically when EUR {amount} arrives.
+          We are checking for EUR {amount} from {session?.payerEmail}.
         </p>
         <p className="mt-3 text-xs text-blue-500">
-          Do not close this window. This can take 2–3 minutes.
+          Keep this page open after paying. It can take 1-3 minutes.
         </p>
+
         {statusMsg && <p className="mt-3 text-xs text-red-500">{statusMsg}</p>}
+
+        <button
+          onClick={() => {
+            setStep("ready");
+            if (pollRef.current) clearInterval(pollRef.current);
+          }}
+          className="mt-4 text-xs font-medium text-blue-600 underline dark:text-blue-300"
+        >
+          Cancel waiting
+        </button>
       </div>
     );
   }
@@ -122,29 +195,52 @@ export default function PayPalCheckout({
       </div>
 
       <div className="space-y-4 p-5">
-        {step === "failed" && (
-          <div className="rounded-xl bg-red-50 p-3 text-xs text-red-600 dark:bg-red-900/20 dark:text-red-400">
-            {statusMsg}
+        <div>
+          <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
+            PayPal email you will pay with
+          </label>
+          <input
+            type="email"
+            value={payerEmail}
+            onChange={(e) => setPayerEmail(e.target.value)}
+            placeholder="you@example.com"
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:focus:border-indigo-500 dark:focus:ring-indigo-800"
+          />
+        </div>
+
+        {!session ? (
+          <button
+            onClick={createSession}
+            className="w-full rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-md transition hover:bg-slate-800 active:scale-[0.98] dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          >
+            Continue to PayPal.me
+          </button>
+        ) : (
+          <button
+            onClick={startPayment}
+            className="inline-flex w-full items-center justify-center rounded-xl bg-[#0070ba] px-5 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#005ea6] active:scale-[0.98]"
+          >
+            Pay EUR {amount} with PayPal.me
+          </button>
+        )}
+
+        {session && (
+          <div className="rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
+            Pay with the same PayPal email:
+            <span className="block font-semibold text-slate-700 dark:text-slate-200">
+              {session.payerEmail}
+            </span>
+            After payment, this page unlocks AI automatically.
           </div>
         )}
 
-        <p className="text-center text-sm text-slate-600 dark:text-slate-300">
-          Pay EUR {amount} via PayPal. The AI unlocks automatically once your payment arrives — no button to click.
+        {statusMsg && (
+          <p className="text-center text-xs text-red-500">{statusMsg}</p>
+        )}
+
+        <p className="text-center text-xs leading-relaxed text-slate-400">
+          This uses your PayPal.me link. Automatic unlock works only when PayPal IPN is enabled.
         </p>
-
-        <a
-          href={`https://paypal.me/RojHawar/${amount}EUR`}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={startPolling}
-          className="inline-flex w-full items-center justify-center rounded-xl bg-[#0070ba] px-5 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#005ea6] active:scale-[0.98]"
-        >
-          Pay EUR {amount} with PayPal.me →
-        </a>
-
-        <div className="rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
-          After paying, stay on this page. Access unlocks automatically when the payment is confirmed.
-        </div>
       </div>
     </div>
   );
