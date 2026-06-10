@@ -1,4 +1,4 @@
-﻿import { kv } from "@vercel/kv";
+import { kv } from "@vercel/kv";
 
 function setCors(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -53,7 +53,8 @@ export default async function handler(req, res) {
   }
 
   const type = String(payload.type || "");
-  const isPayment = ["Donation", "Subscription", "Shop Order", "Commission"].includes(type);
+  const isPayment = ["Tip", "Donation", "Subscription", "Shop Order", "Commission"].includes(type);
+
   if (!isPayment) {
     return res.status(200).json({ ok: true, ignored: true });
   }

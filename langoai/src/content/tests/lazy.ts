@@ -9,7 +9,10 @@ type LazyTestsModule = {
   loadTest?: (id: string) => Promise<TestItem | null>;
 };
 
+type OldTestsModule = Record<string, TestItem[]>;
+
 const lazyModules = import.meta.glob<LazyTestsModule>("./*/lazyIndex.ts");
+const oldTestModules = import.meta.glob<OldTestsModule>("./*.ts");
 
 async function loadLazyModule(lang: string): Promise<LazyTestsModule | null> {
   const loadModule = lazyModules[`./${lang}/lazyIndex.ts`];
@@ -18,9 +21,12 @@ async function loadLazyModule(lang: string): Promise<LazyTestsModule | null> {
 }
 
 async function loadOldTests(lang: string): Promise<TestItem[]> {
+  const loadModule = oldTestModules[`./${lang}.ts`];
+  if (!loadModule) return [];
+
   try {
-    const mod = await import(`./${lang}.ts`);
-    return (mod as Record<string, TestItem[]>)[`${lang}Tests`] || [];
+    const mod = await loadModule();
+    return mod[`${lang}Tests`] || [];
   } catch {
     return [];
   }
