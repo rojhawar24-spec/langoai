@@ -31,8 +31,22 @@ function parseKofiPayload(body) {
   return null;
 }
 
+function firstValue(...values) {
+  return values.find((value) => value !== undefined && value !== null && String(value).trim() !== "");
+}
+
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
+}
+
+function parseAmount(value) {
+  const raw = String(value || "").replace(",", ".");
+  const match = raw.match(/\d+(\.\d+)?/);
+  return match ? Number(match[0]) : 0;
+}
+
+function buildSearchText(payload) {
+  return JSON.stringify(payload || {}).toLowerCase();
 }
 
 export default async function handler(req, res) {
@@ -48,26 +62,49 @@ export default async function handler(req, res) {
   }
 
   const expectedToken = process.env.KOFI_VERIFICATION_TOKEN;
-  if (expectedToken && payload.verification_token !== expectedToken) {
+  const receivedToken = firstValue(payload.verification_token, payload.verificationToken);
+
+  if (expectedToken && receivedToken !== expectedToken) {
+    await kv.set(
+      `kofi-webhook-error:${Date.now()}`,
+      {
+        error: "Invalid Ko-fi verification token",
+        receivedToken: receivedToken || "",
+        receivedAt: new Date().toISOString(),
+      },
+      { ex: 60 * 60 * 24 * 7 }
+    );
+
     return res.status(401).json({ error: "Invalid Ko-fi verification token" });
   }
 
-  const type = String(payload.type || "");
-  const isPayment = ["Tip", "Donation", "Subscription", "Shop Order", "Commission"].includes(type);
+  const type = String(payload.type || "").trim();
+  const typeLower = type.toLowerCase();
+  const isPayment = ["tip", "donation", "subscription", "shop order", "commission"].includes(typeLower);
 
   if (!isPayment) {
-    return res.status(200).json({ ok: true, ignored: true });
+    return res.status(200).json({ ok: true, ignored: true, type });
   }
 
   const transactionId = String(
-    payload.kofi_transaction_id || payload.message_id || `${Date.now()}-${Math.random()}`
+    firstValue(
+      payload.kofi_transaction_id,
+      payload.transaction_id,
+      payload.message_id,
+      payload.order_id,
+      payload.id,
+      `${Date.now()}-${Math.random()}`
+    )
   );
 
-  const amount = Number(payload.amount || 0);
-  const currency = String(payload.currency || "").toUpperCase();
-  const payerEmail = normalizeEmail(payload.email);
-  const message = String(payload.message || "");
+  const amount = parseAmount(firstValue(payload.amount, payload.amount_received, payload.total, payload.value));
+  const currency = String(firstValue(payload.currency, payload.currency_code, "EUR")).toUpperCase();
+  const payerEmail = normalizeEmail(
+    firstValue(payload.email, payload.from_email, payload.supporter_email, payload.payer_email)
+  );
+  const message = String(firstValue(payload.message, payload.message_text, payload.note, payload.support_message, ""));
   const expectedAmount = Number(process.env.PREMIUM_PRICE_EUR || "4.00");
+  const searchText = buildSearchText(payload);
 
   if (currency !== "EUR" || amount < expectedAmount) {
     await kv.set(
@@ -79,13 +116,15 @@ export default async function handler(req, res) {
         currency,
         payerEmail,
         message,
+        type,
+        searchText,
         payload,
         receivedAt: new Date().toISOString(),
       },
       { ex: 60 * 60 * 24 * 30 }
     );
 
-    return res.status(200).json({ ok: true, accepted: false });
+    return res.status(200).json({ ok: true, accepted: false, amount, currency });
   }
 
   await kv.set(
@@ -99,8 +138,9 @@ export default async function handler(req, res) {
       amount,
       currency,
       payerEmail,
-      fromName: payload.from_name || "",
+      fromName: payload.from_name || payload.fromName || "",
       message,
+      searchText,
       raw: payload,
       receivedAt: new Date().toISOString(),
     },
