@@ -1,4 +1,4 @@
-import { kv } from "@vercel/kv";
+﻿import { kv } from "@vercel/kv";
 import { randomBytes } from "crypto";
 
 function setCors(res) {
@@ -11,6 +11,15 @@ function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
 }
 
+function buildKofiUrl(amount, sessionId, payerEmail) {
+  const username = process.env.KOFI_USERNAME || "rojhawar";
+  const message = `LANGOAI ${sessionId} ${payerEmail}`;
+  const url = new URL(`https://ko-fi.com/${username}`);
+  url.searchParams.set("amount", amount);
+  url.searchParams.set("message", message);
+  return url.toString();
+}
+
 export default async function handler(req, res) {
   setCors(res);
 
@@ -20,15 +29,15 @@ export default async function handler(req, res) {
   const payerEmail = normalizeEmail(req.body?.payerEmail);
 
   if (!payerEmail || !payerEmail.includes("@")) {
-    return res.status(400).json({ error: "Enter the PayPal email you will pay with." });
+    return res.status(400).json({ error: "Enter the email you will pay with on Ko-fi." });
   }
 
   const amount = process.env.PREMIUM_PRICE_EUR || "4.00";
   const currency = "EUR";
-  const sessionId = `pay_${randomBytes(12).toString("hex")}`;
+  const sessionId = `kofi_${randomBytes(12).toString("hex")}`;
 
   await kv.set(
-    `payment-session:${sessionId}`,
+    `kofi-session:${sessionId}`,
     {
       status: "pending",
       payerEmail,
@@ -44,6 +53,6 @@ export default async function handler(req, res) {
     payerEmail,
     amount,
     currency,
-    paypalUrl: `https://paypal.me/RojHawar/${amount}EUR`,
+    kofiUrl: buildKofiUrl(amount, sessionId, payerEmail),
   });
 }

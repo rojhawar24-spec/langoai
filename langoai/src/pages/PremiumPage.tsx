@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { PREMIUM_PERKS } from "@/utils/premium";
@@ -9,13 +9,13 @@ import {
   PREMIUM_DAYS,
   PREMIUM_PRICE_EUR,
 } from "@/utils/apiConfig";
-import PayPalCheckout from "@/components/PayPalCheckout";
+import KofiCheckout from "@/components/KofiCheckout";
 
 export default function PremiumPage() {
   const { user, updateProfile } = useAuth();
   const navigate = useNavigate();
-  const [showPayPal, setShowPayPal] = useState(false);
-  const [paypalError, setPaypalError] = useState("");
+  const [showKofi, setShowKofi] = useState(false);
+  const [kofiError, setKofiError] = useState("");
   const [paymentDone, setPaymentDone] = useState(false);
 
   if (!user) return null;
@@ -26,11 +26,11 @@ export default function PremiumPage() {
   function handlePaymentSuccess(expiresAt: string) {
     updateProfile({ premium: true, premiumExpiresAt: expiresAt });
     setPaymentDone(true);
-    setShowPayPal(false);
+    setShowKofi(false);
   }
 
-  function handlePayPalError(msg: string) {
-    setPaypalError(msg);
+  function handleKofiError(msg: string) {
+    setKofiError(msg);
   }
 
   return (
@@ -49,7 +49,7 @@ export default function PremiumPage() {
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="border-b border-slate-200 bg-slate-950 px-6 py-7 text-white dark:border-slate-800">
-              <p className="text-xs font-semibold uppercase tracking-wide text-indigo-200">
+              <p className="text-xs font-semibold uppercase tracking-wide text-rose-200">
                 Lango AI monthly access
               </p>
 
@@ -58,7 +58,7 @@ export default function PremiumPage() {
               </h1>
 
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
-                Pay EUR {PREMIUM_PRICE_EUR} with your PayPal.me link. The AI opens for {PREMIUM_DAYS} days.
+                Pay EUR {PREMIUM_PRICE_EUR} with Ko-fi. The AI opens for {PREMIUM_DAYS} days.
                 When the month is finished, the AI locks again until the next payment.
               </p>
 
@@ -76,7 +76,7 @@ export default function PremiumPage() {
                 <p className="mt-2 text-2xl font-extrabold text-slate-950 dark:text-white">
                   EUR {PREMIUM_PRICE_EUR}
                 </p>
-                <p className="mt-1 text-xs text-slate-500">No automatic recurring charge.</p>
+                <p className="mt-1 text-xs text-slate-500">One month of AI access.</p>
               </div>
 
               <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
@@ -88,17 +88,17 @@ export default function PremiumPage() {
               </div>
 
               <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Wallet</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Payment</p>
                 <p className="mt-2 truncate text-lg font-extrabold text-slate-950 dark:text-white">
-                  RojHawar
+                  Ko-fi
                 </p>
-                <p className="mt-1 text-xs text-slate-500">paypal.me/RojHawar</p>
+                <p className="mt-1 text-xs text-slate-500">ko-fi.com/rojhawar</p>
               </div>
             </div>
 
             {paymentDone && (
               <div className="mx-6 mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 dark:border-emerald-800 dark:bg-emerald-900/20">
-                <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
+                                <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
                   Payment confirmed. AI Tutor is open now.
                 </p>
                 <p className="mt-1 text-sm text-emerald-600 dark:text-emerald-400">
@@ -115,8 +115,8 @@ export default function PremiumPage() {
           </section>
 
           <aside className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-900/60 dark:bg-indigo-950/40">
-              <p className="text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-300">
+            <div className="rounded-2xl border border-rose-100 bg-rose-50 p-4 dark:border-rose-900/60 dark:bg-rose-950/40">
+              <p className="text-xs font-semibold uppercase tracking-wide text-rose-600 dark:text-rose-300">
                 Monthly AI plan
               </p>
 
@@ -131,39 +131,39 @@ export default function PremiumPage() {
                 </div>
 
                 <div className="rounded-2xl bg-white px-3 py-2 text-center shadow-sm dark:bg-slate-900">
-                  <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300">{PREMIUM_DAYS}</p>
-                  <p className="text-[11px] font-medium text-indigo-500 dark:text-indigo-300">days</p>
+                  <p className="text-lg font-bold text-rose-700 dark:text-rose-300">{PREMIUM_DAYS}</p>
+                  <p className="text-[11px] font-medium text-rose-500 dark:text-rose-300">days</p>
                 </div>
               </div>
             </div>
 
             <div className="mt-5">
-              {!alreadyPremium && !showPayPal ? (
+              {!alreadyPremium && !showKofi ? (
                 <button
                   onClick={() => {
-                    setShowPayPal(true);
-                    setPaypalError("");
+                    setShowKofi(true);
+                    setKofiError("");
                   }}
-                  className="w-full rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-slate-800 active:scale-[0.98] dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                  className="w-full rounded-xl bg-[#ff5f5f] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#e84f4f] active:scale-[0.98]"
                 >
-                  Pay EUR {PREMIUM_PRICE_EUR} with PayPal.me
+                  Pay EUR {PREMIUM_PRICE_EUR} with Ko-fi
                 </button>
               ) : null}
 
-              {showPayPal && !alreadyPremium && (
+              {showKofi && !alreadyPremium && (
                 <div className="mt-4">
-                  <PayPalCheckout
+                  <KofiCheckout
                     onSuccess={handlePaymentSuccess}
-                    onError={handlePayPalError}
+                    onError={handleKofiError}
                     amount={PREMIUM_PRICE_EUR}
                   />
 
-                  {paypalError && (
-                    <p className="mt-2 text-center text-xs text-red-500">{paypalError}</p>
+                  {kofiError && (
+                    <p className="mt-2 text-center text-xs text-red-500">{kofiError}</p>
                   )}
 
                   <button
-                    onClick={() => setShowPayPal(false)}
+                    onClick={() => setShowKofi(false)}
                     className="mt-3 w-full text-center text-xs font-medium text-slate-400 hover:text-slate-500"
                   >
                     Cancel
@@ -173,8 +173,7 @@ export default function PremiumPage() {
             </div>
 
             <div className="mt-5 rounded-2xl bg-slate-50 p-4 text-xs leading-relaxed text-slate-500 dark:bg-slate-950/60 dark:text-slate-400">
-              PayPal.me is simple: the user pays your link, then confirms in the app.
-              For automatic server verification you need PayPal Checkout/webhooks.
+              Ko-fi sends a webhook to your website after payment. Keep this page open after paying so the AI can unlock automatically.
             </div>
           </aside>
         </div>
@@ -206,7 +205,7 @@ export default function PremiumPage() {
                 <tr className="border-b border-slate-200 dark:border-slate-800">
                   <th className="py-3 font-medium text-slate-500">Feature</th>
                   <th className="py-3 text-center font-medium text-slate-500">Free</th>
-                  <th className="py-3 text-center font-medium text-indigo-600 dark:text-indigo-300">
+                  <th className="py-3 text-center font-medium text-rose-600 dark:text-rose-300">
                     EUR {PREMIUM_PRICE_EUR} / month
                   </th>
                 </tr>
@@ -222,7 +221,7 @@ export default function PremiumPage() {
                     <td className="py-3 text-center text-slate-500">
                       {typeof perk.free === "string" ? perk.free : perk.free ? "Yes" : "-"}
                     </td>
-                    <td className="py-3 text-center text-indigo-600 dark:text-indigo-300">
+                    <td className="py-3 text-center text-rose-600 dark:text-rose-300">
                       {typeof perk.premium === "string" ? perk.premium : perk.premium ? "Yes" : "-"}
                     </td>
                   </tr>
@@ -239,7 +238,7 @@ export default function PremiumPage() {
             {[
               {
                 q: "Is this a subscription?",
-                a: "No automatic subscription. The user pays EUR 4 manually through PayPal.me. Access lasts one month.",
+                a: "No. One Ko-fi payment opens AI for 30 days. After that, the user pays again.",
               },
               {
                 q: "What happens after one month?",
@@ -247,11 +246,11 @@ export default function PremiumPage() {
               },
               {
                 q: "Does the money come to my wallet?",
-                a: "Yes. The PayPal.me link goes to paypal.me/RojHawar.",
+                a: "Yes. Ko-fi pays through your connected PayPal account.",
               },
               {
                 q: "Is the payment automatically verified?",
-                a: "No. PayPal.me is simple manual payment. For automatic verification, use PayPal Checkout API and webhooks.",
+                a: "Yes, after you connect the Ko-fi webhook URL in Ko-fi settings.",
               },
             ].map((faq) => (
               <div key={faq.q} className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">

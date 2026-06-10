@@ -53,68 +53,109 @@ export default function DashboardPage() {
     setLangChosen(true);
   }
 
-  // ══════════════════════════════════════════════════
-  // STAP 1 — Taal kiezen: kleine pagina die eerst opent
-  // ══════════════════════════════════════════════════
+
+  // STAP 1 — Taal kiezen
   if (!langChosen) {
+    const langStyles: Record<string, { glow: string; hoverBg: string; hoverBorder: string; badgeBg: string }> = {
+      en: { glow: "hover:shadow-blue-200/80   dark:hover:shadow-blue-500/20",   hoverBg: "hover:bg-blue-50   dark:hover:bg-blue-500/10",   hoverBorder: "hover:border-blue-300   dark:hover:border-blue-500/50",   badgeBg: "bg-blue-500"   },
+      nl: { glow: "hover:shadow-orange-200/80 dark:hover:shadow-orange-500/20", hoverBg: "hover:bg-orange-50 dark:hover:bg-orange-500/10", hoverBorder: "hover:border-orange-300 dark:hover:border-orange-500/50", badgeBg: "bg-orange-500" },
+      fr: { glow: "hover:shadow-blue-200/80   dark:hover:shadow-blue-500/20",   hoverBg: "hover:bg-blue-50   dark:hover:bg-blue-500/10",   hoverBorder: "hover:border-blue-300   dark:hover:border-blue-500/50",   badgeBg: "bg-blue-600"   },
+      de: { glow: "hover:shadow-red-200/80    dark:hover:shadow-red-500/20",    hoverBg: "hover:bg-red-50    dark:hover:bg-red-500/10",    hoverBorder: "hover:border-red-300    dark:hover:border-red-500/50",    badgeBg: "bg-red-600"    },
+      es: { glow: "hover:shadow-yellow-200/80 dark:hover:shadow-yellow-500/20", hoverBg: "hover:bg-yellow-50 dark:hover:bg-yellow-500/10", hoverBorder: "hover:border-yellow-300 dark:hover:border-yellow-500/50", badgeBg: "bg-yellow-500" },
+    };
+
     return (
-      <div className="relative min-h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0f1a] transition-colors duration-300">
-        {/* Light background */}
+      <div className="relative min-h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0f1a]">
+        {/* Light bg */}
         <div className="pointer-events-none fixed inset-0 z-0 dark:hidden">
           <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-indigo-100/60 blur-[100px]" />
           <div className="absolute top-1/2 -right-32 h-[400px] w-[400px] rounded-full bg-purple-100/50 blur-[80px]" />
+          <div className="absolute bottom-0 left-1/3 h-[300px] w-[300px] rounded-full bg-blue-100/40 blur-[60px]" />
         </div>
-        {/* Dark background */}
+        {/* Dark bg */}
         <div className="pointer-events-none fixed inset-0 z-0 hidden dark:block">
-          <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-indigo-600/20 blur-[120px] animate-pulse" />
+          <div className="absolute -top-40 -left-40 h-[700px] w-[700px] rounded-full bg-indigo-600/20 blur-[140px] animate-pulse" />
           <div className="absolute top-1/3 -right-32 h-[500px] w-[500px] rounded-full bg-purple-600/15 blur-[100px] animate-pulse [animation-delay:2s]" />
+          <div className="absolute bottom-0 left-1/4 h-[400px] w-[400px] rounded-full bg-blue-600/10 blur-[80px] animate-pulse [animation-delay:4s]" />
+          <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
         </div>
 
-        {/* Centered card */}
-        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10">
-          <div className="w-full max-w-sm">
-            {/* Card */}
-            <div className="overflow-hidden rounded-3xl bg-white shadow-2xl shadow-indigo-200/60 dark:bg-[#111528] dark:shadow-indigo-900/30 dark:ring-1 dark:ring-white/10">
-              {/* Top accent */}
-              <div className="h-1.5 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500" />
+        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
+          <div className="w-full max-w-md">
 
-              <div className="px-8 py-8">
-                <div className="mb-6 text-center">
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-3xl shadow-lg shadow-indigo-500/30">
-                    🌍
-                  </div>
-                  <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                    Welkom, {user.username}!
-                  </h1>
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                    Welke taal wil je leren? Alle lessen, toetsen en woorden worden automatisch in jouw taal gezet.
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-2.5">
-                  {LEARNING_LANGUAGES.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => selectLanguage(lang.code)}
-                      className="group flex items-center gap-4 rounded-2xl border-2 border-slate-200 bg-slate-50 px-5 py-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-white hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.03] dark:hover:border-indigo-500/50 dark:hover:bg-white/[0.07]"
-                    >
-                      <span className="text-3xl drop-shadow">{lang.flag}</span>
-                      <span className="flex-1 text-base font-black text-slate-800 dark:text-white">
-                        {t(lang.nameKey)}
-                      </span>
-                      <svg className="h-5 w-5 text-slate-300 transition-transform duration-150 group-hover:translate-x-1 group-hover:text-indigo-400 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  ))}
+            {/* Header */}
+            <div className="mb-8 text-center">
+              <div className="relative mx-auto mb-5 inline-flex">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-400 to-purple-600 opacity-40 blur-2xl" />
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-5xl shadow-2xl shadow-indigo-500/40 ring-2 ring-white/20">
+                  🌍
                 </div>
               </div>
+              <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+                Welkom,{" "}
+                <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text text-transparent">
+                  {user.username}
+                </span>
+                !
+              </h1>
+              <p className="mt-3 text-base font-medium text-slate-500 dark:text-slate-400">
+                Welke taal wil je leren?
+              </p>
+              <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">
+                Lessen, toetsen en woorden worden automatisch in jouw taal gezet.
+              </p>
             </div>
+
+            {/* Language cards */}
+            <div className="flex flex-col gap-3">
+              {LEARNING_LANGUAGES.map((lang) => {
+                const s = langStyles[lang.code];
+                return (
+                  <button
+                    key={lang.code}
+                    onClick={() => selectLanguage(lang.code)}
+                    className={`group relative overflow-hidden rounded-2xl border-2 border-slate-200 bg-white px-6 py-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl active:translate-y-0 active:scale-[0.99] dark:border-white/[0.07] dark:bg-white/[0.04] ${s.hoverBg} ${s.hoverBorder} ${s.glow}`}
+                  >
+                    {/* Shimmer sweep on hover */}
+                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent transition-transform duration-500 group-hover:translate-x-full dark:via-white/5" />
+
+                    <div className="relative flex items-center gap-4">
+                      {/* Flag — bounces + rotates on hover */}
+                      <span className="w-10 text-4xl drop-shadow-md transition-all duration-300 group-hover:scale-125 group-hover:-rotate-6 inline-block">
+                        {lang.flag}
+                      </span>
+
+                      {/* Text */}
+                      <div className="flex-1">
+                        <p className="text-base font-black text-slate-900 dark:text-white">
+                          {t(lang.nameKey)}
+                        </p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500 transition-opacity duration-200 group-hover:opacity-70">
+                          Klik om te starten →
+                        </p>
+                      </div>
+
+                      {/* Arrow — default grey, fills with lang color on hover */}
+                      <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 group-hover:scale-110 bg-slate-100 group-hover:${s.badgeBg} dark:bg-white/[0.08]`}>
+                        <svg className="h-4 w-4 text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="mt-5 text-center text-xs text-slate-400 dark:text-slate-600">
+              Je kan dit later altijd nog wijzigen op het dashboard.
+            </p>
           </div>
         </div>
       </div>
     );
   }
+
 
   // ══════════════════════════════════════════════════
   // STAP 2 — Volledig dashboard (taal is gekozen)

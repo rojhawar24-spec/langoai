@@ -1,4 +1,4 @@
-import { kv } from "@vercel/kv";
+﻿import { kv } from "@vercel/kv";
 import { randomBytes } from "crypto";
 
 function setCors(res) {
@@ -16,10 +16,10 @@ export default async function handler(req, res) {
   const { sessionId } = req.body || {};
 
   if (!sessionId) {
-    return res.status(400).json({ error: "Missing payment session." });
+    return res.status(400).json({ error: "Missing Ko-fi payment session." });
   }
 
-  const session = await kv.get(`payment-session:${sessionId}`);
+  const session = await kv.get(`kofi-session:${sessionId}`);
 
   if (!session) {
     return res.status(404).json({
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
   const expectedAmount = parseFloat(process.env.PREMIUM_PRICE_EUR || "4.00");
   const premiumDays = parseInt(process.env.PREMIUM_DAYS || "30", 10);
-  const paymentKeys = await kv.keys("payment:*");
+  const paymentKeys = await kv.keys("kofi-payment:*");
 
   for (const key of paymentKeys) {
     const payment = await kv.get(key);
@@ -48,12 +48,14 @@ export default async function handler(req, res) {
       String(payment.payerEmail || "").toLowerCase() ===
       String(session.payerEmail || "").toLowerCase();
 
+    const messageHasSession = String(payment.message || "").includes(sessionId);
+
     const correctPayment =
       payment.verified === true &&
       payment.claimed !== true &&
-      sameEmail &&
       payment.currency === "EUR" &&
-      Number(payment.amount) >= expectedAmount;
+      Number(payment.amount) >= expectedAmount &&
+      (sameEmail || messageHasSession);
 
     if (!correctPayment) continue;
 
@@ -64,14 +66,14 @@ export default async function handler(req, res) {
 
     await kv.set(
       `token:${accessToken}`,
-      { valid: true, expiresAt: expiresAtIso },
+      { valid: true, expiresAt: expiresAtIso, source: "kofi" },
       { ex: 60 * 60 * 24 * premiumDays }
     );
 
     await kv.set(key, { ...payment, claimed: true, claimedBy: sessionId });
 
     await kv.set(
-      `payment-session:${sessionId}`,
+      `kofi-session:${sessionId}`,
       {
         ...session,
         status: "verified",
