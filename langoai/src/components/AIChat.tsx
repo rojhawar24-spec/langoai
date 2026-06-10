@@ -15,7 +15,7 @@ import {
   isPremiumActive,
   PREMIUM_PRICE_EUR,
 } from "@/utils/apiConfig";
-import PayPalCheckout from "@/components/PayPalCheckout";
+import KofiCheckout from "@/components/KofiCheckout";
 
 interface AIChatProps {
   open: boolean;
@@ -31,8 +31,8 @@ const MODES: { key: AIMode; label: string; icon: string; desc: string }[] = [
 export default function AIChat({ open, onClose }: AIChatProps) {
   const { user, updateProfile } = useAuth();
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [showPayPal, setShowPayPal] = useState(false);
-  const [paypalError, setPaypalError] = useState("");
+  const [showKofi, setShowKofi] = useState(false);
+  const [kofiError, setKofiError] = useState("");
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [mode, setMode] = useState<AIMode>("grammar");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -49,8 +49,8 @@ export default function AIChat({ open, onClose }: AIChatProps) {
 
       setIsUnlocked(verified);
       setExpiresAt(verified ? activeExpiresAt : null);
-      setShowPayPal(false);
-      setPaypalError("");
+      setShowKofi(false);
+      setKofiError("");
 
       if (verified) {
         setMessages(filterByMode(mode));
@@ -128,8 +128,8 @@ export default function AIChat({ open, onClose }: AIChatProps) {
     updateProfile({ premium: true, premiumExpiresAt: paymentExpiresAt });
     setExpiresAt(paymentExpiresAt);
     setIsUnlocked(true);
-    setShowPayPal(false);
-    setPaypalError("");
+    setShowKofi(false);
+    setKofiError("");
     setMessages(filterByMode(mode));
     setApiError("");
     setTimeout(() => inputRef.current?.focus(), 200);
@@ -244,28 +244,27 @@ export default function AIChat({ open, onClose }: AIChatProps) {
                 </div>
 
                 <div className="mt-5 rounded-2xl border border-blue-100 bg-blue-50 p-3 text-sm text-blue-900 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-100">
-                  Payment goes to your PayPal.me wallet:
-                  <span className="mt-1 block font-semibold">paypal.me/RojHawar</span>
+                  Payment goes through Ko-fi to your connected PayPal account:
+                  <span className="mt-1 block font-semibold">ko-fi.com/rojhawar</span>
                 </div>
 
                 <div className="mt-5">
-                  {!showPayPal ? (
+                  {!showKofi ? (
                     <button
-                      onClick={() => { setShowPayPal(true); setPaypalError(""); }}
+                      onClick={() => { setShowKofi(true); setKofiError(""); }}
                       className="w-full rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-slate-800 active:scale-[0.98] dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
                     >
-                      Pay EUR {PREMIUM_PRICE_EUR} with PayPal.me
+                      Pay EUR {PREMIUM_PRICE_EUR} with Ko-fi
                     </button>
                   ) : (
                     <div>
-                      <PayPalCheckout
+                      <KofiCheckout
                         onSuccess={handlePaymentSuccess}
-                        onError={(msg) => setPaypalError(msg)}
+                        onError={(msg) => setKofiError(msg)}
                         amount={PREMIUM_PRICE_EUR}
-                        
                       />
-                      {paypalError && <p className="mt-3 text-xs text-red-500">{paypalError}</p>}
-                      <button onClick={() => setShowPayPal(false)} className="mt-3 w-full text-xs font-medium text-slate-400 hover:text-slate-500">
+                      {kofiError && <p className="mt-3 text-xs text-red-500">{kofiError}</p>}
+                      <button onClick={() => setShowKofi(false)} className="mt-3 w-full text-xs font-medium text-slate-400 hover:text-slate-500">
                         Cancel
                       </button>
                     </div>

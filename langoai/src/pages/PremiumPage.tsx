@@ -1,7 +1,6 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { PREMIUM_PERKS } from "@/utils/premium";
 import {
   formatPremiumExpiry,
   isPaymentVerified,
@@ -98,7 +97,7 @@ export default function PremiumPage() {
 
             {paymentDone && (
               <div className="mx-6 mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 dark:border-emerald-800 dark:bg-emerald-900/20">
-                                <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
+                <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
                   Payment confirmed. AI Tutor is open now.
                 </p>
                 <p className="mt-1 text-sm text-emerald-600 dark:text-emerald-400">
@@ -193,41 +192,6 @@ export default function PremiumPage() {
                 <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{desc}</p>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <h2 className="mb-5 text-lg font-bold text-slate-950 dark:text-white">Free vs AI monthly</h2>
-
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] text-left text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800">
-                  <th className="py-3 font-medium text-slate-500">Feature</th>
-                  <th className="py-3 text-center font-medium text-slate-500">Free</th>
-                  <th className="py-3 text-center font-medium text-rose-600 dark:text-rose-300">
-                    EUR {PREMIUM_PRICE_EUR} / month
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {PREMIUM_PERKS.map((perk) => (
-                  <tr key={perk.label} className="border-b border-slate-100 dark:border-slate-800/80">
-                    <td className="flex items-center gap-2 py-3 text-slate-700 dark:text-slate-300">
-                      <span>{perk.icon}</span>
-                      <span>{perk.label}</span>
-                    </td>
-                    <td className="py-3 text-center text-slate-500">
-                      {typeof perk.free === "string" ? perk.free : perk.free ? "Yes" : "-"}
-                    </td>
-                    <td className="py-3 text-center text-rose-600 dark:text-rose-300">
-                      {typeof perk.premium === "string" ? perk.premium : perk.premium ? "Yes" : "-"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </section>
 
