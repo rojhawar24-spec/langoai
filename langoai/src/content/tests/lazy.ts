@@ -1,6 +1,6 @@
 import type { TestItem } from "../types";
 
-export type TestMeta = Pick<TestItem, "id" | "title" | "passScore" | "languageCode" | "topic"> & {
+export type TestMeta = Pick<TestItem, "id" | "title" | "level" | "passScore" | "languageCode" | "topic"> & {
   questionCount: number;
 };
 
@@ -44,6 +44,7 @@ export async function getTestList(lang: string): Promise<TestMeta[]> {
   return tests.map((test) => ({
     id: test.id,
     title: test.title,
+    level: test.level ?? "A1",
     passScore: test.passScore,
     languageCode: test.languageCode,
     topic: test.topic,

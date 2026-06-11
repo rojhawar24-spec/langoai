@@ -53,28 +53,45 @@ export async function getTests(lang: string): Promise<TestItem[]> {
 }
 
 export async function getTopics(lang: string, kind: "grammar" | "words" | "tests"): Promise<string[]> {
-  const pool = kind === "grammar" 
-    ? await getGrammarLessons(lang) 
-    : kind === "words" 
-    ? await getVocabularyWords(lang) 
-    : await getTests(lang);
-  return [...new Set((pool ?? []).map((item: any) => item.topic ?? ""))].filter(Boolean).sort();
+  const pool =
+    kind === "grammar"
+      ? await getGrammarLessons(lang)
+      : kind === "words"
+        ? await getVocabularyWords(lang)
+        : await getTests(lang);
+
+  return [...new Set((pool ?? []).map((item: any) => item.topic ?? ""))]
+    .filter(Boolean)
+    .sort();
 }
 
 export async function getByTopic<T extends { topic?: string }>(
-  lang: string, kind: "grammar" | "words" | "tests", topic: string
+  lang: string,
+  kind: "grammar" | "words" | "tests",
+  topic: string
 ): Promise<T[]> {
-  const pool = kind === "grammar" 
-    ? await getGrammarLessons(lang) 
-    : kind === "words" 
-    ? await getVocabularyWords(lang) 
-    : await getTests(lang);
+  const pool =
+    kind === "grammar"
+      ? await getGrammarLessons(lang)
+      : kind === "words"
+        ? await getVocabularyWords(lang)
+        : await getTests(lang);
+
   return (pool ?? []).filter((i: any) => i.topic === topic) as unknown as T[];
 }
 
 export const LANGUAGE_NAMES: Record<string, string> = {
-  en: "English", nl: "Dutch", fr: "French", de: "German", es: "Spanish",
+  en: "English",
+  nl: "Dutch",
+  fr: "French",
+  de: "German",
+  es: "Spanish",
 };
+
 export const LANGUAGE_FLAGS: Record<string, string> = {
-  en: '🇬🇧', nl: '🇳🇱', fr: '🇫🇷', de: '🇩🇪', es: '🇪🇸',
+  en: "\uD83C\uDDEC\uD83C\uDDE7",
+  nl: "\uD83C\uDDF3\uD83C\uDDF1",
+  fr: "\uD83C\uDDEB\uD83C\uDDF7",
+  de: "\uD83C\uDDE9\uD83C\uDDEA",
+  es: "\uD83C\uDDEA\uD83C\uDDF8",
 };

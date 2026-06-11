@@ -1,16 +1,10 @@
-//
-// Content Engine — type definitions and loader for file‑based content
-//
-
 export interface GrammarLesson {
   id: string;
   title: string;
   level: number;
   topic: string;
-  body: string;         // markdown‑ish body (fallback / introductory text)
+  body: string;
   exercises: GrammarExercise[];
-
-  // ── Structured section fields (all optional, backwards-compatible) ──
 
   /** Short overview / intro shown at the top of the lesson */
   overview?: string;
@@ -24,7 +18,7 @@ export interface GrammarLesson {
   /** Optional label for the time expressions section */
   timeExpressionsLabel?: string;
 
-  /** Verb conjugation / word‑form table */
+  /** Verb conjugation / word-form table */
   conjugationTable?: { header: string; rows: string[][] };
 
   /** Time expressions, trigger words, signals */
@@ -33,7 +27,7 @@ export interface GrammarLesson {
   /** Long-form detailed teaching sections, rendered inside accordions */
   details?: { title: string; body: string }[];
 
-  /** Callout rows (Remember / Tip / Note / Key Point) */
+  /** Callout rows */
   callouts?: {
     type: "remember" | "tip" | "note" | "key";
     label: string;
@@ -50,10 +44,10 @@ export interface GrammarLesson {
   /** Quick review / summary bullets */
   review?: string[];
 
-  /** Q&A table (extends exercises but rendered as a numbered practice table) */
+  /** Q&A table */
   qa?: { question: string; answer: string }[];
 
-  /** Quick overview concept cards, rendered above the rules table */
+  /** Quick overview concept cards */
   conceptCards?: {
     title: string;
     structure: string;
@@ -61,7 +55,6 @@ export interface GrammarLesson {
   }[];
 }
 
-/** One row in the main rules table */
 export interface GrammarRuleRow {
   rule: string;
   structure: string;
@@ -88,6 +81,7 @@ export interface VocabWord {
 export interface TestItem {
   id: string;
   title: string;
+  level?: "A1" | "A2" | "B1" | "B2" | "C1";
   passScore: number;
   languageCode: string;
   topic: string;

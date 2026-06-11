@@ -151,7 +151,9 @@ function Quiz({ questions, onDone }: { questions: Question[]; onDone: (score: nu
       <div className="w-full mb-5">
         <div className="flex justify-between text-xs font-medium text-slate-400 mb-2">
           <span>Question</span>
-          <span>{i + 1}/{questions.length}</span>
+          <span>
+            {i + 1}/{questions.length}
+          </span>
         </div>
         <div className="h-2.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
           <div
@@ -188,12 +190,12 @@ function Quiz({ questions, onDone }: { questions: Question[]; onDone: (score: nu
                   ok && opt === q.answer
                     ? "border-green-400 bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300"
                     : ok && opt === chosen && opt !== q.answer
-                    ? "border-red-400 bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300"
-                    : chosen === opt
-                    ? "border-indigo-400 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
-                    : dark
-                    ? "border-slate-600 text-slate-300 hover:border-slate-400 hover:bg-slate-700"
-                    : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                      ? "border-red-400 bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300"
+                      : chosen === opt
+                        ? "border-indigo-400 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
+                        : dark
+                          ? "border-slate-600 text-slate-300 hover:border-slate-400 hover:bg-slate-700"
+                          : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
                 }`}
               >
                 {opt}
@@ -322,7 +324,7 @@ function SeasonView({ season, lang, onBack, award }: { season: Season; lang: str
           </span>
           <div>
             <h2 className="text-2xl font-extrabold text-slate-800 dark:text-white">{season.title}</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{totalDone}/{total} levels · {pct}% complete</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{totalDone}/{total} levels - {pct}% complete</p>
           </div>
         </div>
 
@@ -332,6 +334,7 @@ function SeasonView({ season, lang, onBack, award }: { season: Season; lang: str
 
         <div className="relative pl-10">
           <div className="absolute left-[23px] top-6 bottom-6 w-[3px] rounded-full bg-slate-200 dark:bg-slate-700" />
+
           {season.levels.map((lvl) => {
             const done = completed.includes(lvl.level);
             const next = !done && (lvl.level === 1 || completed.includes(lvl.level - 1));
@@ -348,8 +351,8 @@ function SeasonView({ season, lang, onBack, award }: { season: Season; lang: str
                     done
                       ? "bg-green-500 border-green-400 text-white shadow-[0_0_20px_rgba(34,197,94,0.5)] scale-110"
                       : next
-                      ? "bg-white dark:bg-slate-700 border-indigo-400 text-indigo-600 dark:text-indigo-300 shadow-[0_0_20px_rgba(99,102,241,0.4)] animate-pulse"
-                      : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-400"
+                        ? "bg-white dark:bg-slate-700 border-indigo-400 text-indigo-600 dark:text-indigo-300 shadow-[0_0_20px_rgba(99,102,241,0.4)] animate-pulse"
+                        : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-400"
                   }`}
                 >
                   {done ? "OK" : lvl.level}
@@ -360,8 +363,8 @@ function SeasonView({ season, lang, onBack, award }: { season: Season; lang: str
                     next
                       ? "border-indigo-200 bg-white dark:border-indigo-500/30 dark:bg-indigo-500/5 group-hover:border-indigo-300 group-hover:shadow-lg dark:group-hover:border-indigo-400"
                       : done
-                      ? "border-green-200 bg-green-50/50 dark:border-green-500/20 dark:bg-green-500/5"
-                      : "border-slate-200 bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50 opacity-50"
+                        ? "border-green-200 bg-green-50/50 dark:border-green-500/20 dark:bg-green-500/5"
+                        : "border-slate-200 bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50 opacity-50"
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -500,8 +503,8 @@ export default function ArenaPage() {
                     allDone
                       ? "border-green-400 shadow-lg shadow-green-200/10"
                       : open
-                      ? "border-slate-200 dark:border-slate-600 hover:border-indigo-300 dark:hover:border-indigo-400 hover:shadow-xl"
-                      : "border-slate-200 dark:border-slate-700 opacity-50"
+                        ? "border-slate-200 dark:border-slate-600 hover:border-indigo-300 dark:hover:border-indigo-400 hover:shadow-xl"
+                        : "border-slate-200 dark:border-slate-700 opacity-50"
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -510,8 +513,8 @@ export default function ArenaPage() {
                         allDone
                           ? "bg-gradient-to-br from-green-400 to-emerald-500 text-white shadow-green-200"
                           : open
-                          ? "bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-amber-200"
-                          : "bg-slate-300 dark:bg-slate-600 text-slate-500"
+                            ? "bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-amber-200"
+                            : "bg-slate-300 dark:bg-slate-600 text-slate-500"
                       }`}
                     >
                       {allDone ? "OK" : open ? season.id : "Lock"}
@@ -527,7 +530,7 @@ export default function ArenaPage() {
                         </div>
                         <span className={`text-xs font-bold shrink-0 ${allDone ? "text-green-500" : "text-slate-500"}`}>{pct}%</span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-1.5">{season.levelCount} levels · {done.length} completed</p>
+                      <p className="text-xs text-slate-400 mt-1.5">{season.levelCount} levels - {done.length} completed</p>
                     </div>
                   </div>
                 </button>
