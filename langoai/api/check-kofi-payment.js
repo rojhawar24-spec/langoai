@@ -23,6 +23,62 @@ function isRecentPaymentForSession(payment, session) {
   return paymentTime >= fiveMinutesBeforeSession && paymentTime <= twoHoursAfterSession;
 }
 
+function isCorrectPayment(payment, session, expectedAmount, sessionId) {
+  if (!payment) return false;
+
+  const paymentEmail = normalizeEmail(payment.payerEmail);
+  const sessionEmail = normalizeEmail(session.payerEmail);
+  const sameEmail = paymentEmail && paymentEmail === sessionEmail;
+  const messageText = `${payment.message || ""} ${payment.searchText || ""}`.toLowerCase();
+  const messageHasSession = messageText.includes(String(sessionId).toLowerCase());
+  const recentFallback = !paymentEmail && isRecentPaymentForSession(payment, session);
+
+  return (
+    payment.verified === true &&
+    payment.claimed !== true &&
+    payment.currency === "EUR" &&
+    Number(payment.amount) >= expectedAmount &&
+    (sameEmail || messageHasSession || recentFallback)
+  );
+}
+
+async function unlockPayment(payment, session, sessionId, paymentKey, premiumDays) {
+  const accessToken = randomBytes(32).toString("hex");
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + premiumDays);
+  const expiresAtIso = expiresAt.toISOString();
+
+  await kv.set(
+    `token:${accessToken}`,
+    { valid: true, expiresAt: expiresAtIso, source: "kofi" },
+    { ex: 60 * 60 * 24 * premiumDays }
+  );
+
+  const claimedPayment = {
+    ...payment,
+    claimed: true,
+    claimedBy: sessionId,
+    claimedAt: new Date().toISOString(),
+  };
+
+  await kv.set(paymentKey, claimedPayment, { ex: 60 * 60 * 24 * 60 });
+  await kv.set(`kofi-payment-session:${sessionId}`, claimedPayment, { ex: 60 * 60 * 24 * 60 });
+
+  await kv.set(
+    `kofi-session:${sessionId}`,
+    {
+      ...session,
+      status: "verified",
+      accessToken,
+      expiresAt: expiresAtIso,
+      verifiedAt: new Date().toISOString(),
+    },
+    { ex: 60 * 60 * 24 * premiumDays }
+  );
+
+  return { accessToken, expiresAt: expiresAtIso };
+}
+
 export default async function handler(req, res) {
   setCors(res);
 
@@ -54,67 +110,23 @@ export default async function handler(req, res) {
 
   const expectedAmount = parseFloat(process.env.PREMIUM_PRICE_EUR || "4.00");
   const premiumDays = parseInt(process.env.PREMIUM_DAYS || "30", 10);
+  const directPaymentKey = `kofi-payment-session:${sessionId}`;
+  const directPayment = await kv.get(directPaymentKey);
+
+  if (isCorrectPayment(directPayment, session, expectedAmount, sessionId)) {
+    const unlocked = await unlockPayment(directPayment, session, sessionId, directPaymentKey, premiumDays);
+    return res.json({ verified: true, ...unlocked });
+  }
+
   const paymentKeys = await kv.keys("kofi-payment:*");
-  const normalizedSessionEmail = normalizeEmail(session.payerEmail);
 
   for (const key of paymentKeys) {
     const payment = await kv.get(key);
-    if (!payment) continue;
 
-    const paymentEmail = normalizeEmail(payment.payerEmail);
-    const sameEmail = paymentEmail && paymentEmail === normalizedSessionEmail;
-    const messageText = `${payment.message || ""} ${payment.searchText || ""}`.toLowerCase();
-    const messageHasSession = messageText.includes(String(sessionId).toLowerCase());
-    const recentFallback = !paymentEmail && isRecentPaymentForSession(payment, session);
+    if (!isCorrectPayment(payment, session, expectedAmount, sessionId)) continue;
 
-    const correctPayment =
-      payment.verified === true &&
-      payment.claimed !== true &&
-      payment.currency === "EUR" &&
-      Number(payment.amount) >= expectedAmount &&
-      (sameEmail || messageHasSession || recentFallback);
-
-    if (!correctPayment) continue;
-
-    const accessToken = randomBytes(32).toString("hex");
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + premiumDays);
-    const expiresAtIso = expiresAt.toISOString();
-
-    await kv.set(
-      `token:${accessToken}`,
-      { valid: true, expiresAt: expiresAtIso, source: "kofi" },
-      { ex: 60 * 60 * 24 * premiumDays }
-    );
-
-    await kv.set(
-      key,
-      {
-        ...payment,
-        claimed: true,
-        claimedBy: sessionId,
-        claimedAt: new Date().toISOString(),
-      },
-      { ex: 60 * 60 * 24 * 60 }
-    );
-
-    await kv.set(
-      `kofi-session:${sessionId}`,
-      {
-        ...session,
-        status: "verified",
-        accessToken,
-        expiresAt: expiresAtIso,
-        verifiedAt: new Date().toISOString(),
-      },
-      { ex: 60 * 60 * 24 * premiumDays }
-    );
-
-    return res.json({
-      verified: true,
-      accessToken,
-      expiresAt: expiresAtIso,
-    });
+    const unlocked = await unlockPayment(payment, session, sessionId, key, premiumDays);
+    return res.json({ verified: true, ...unlocked });
   }
 
   return res.json({ verified: false });

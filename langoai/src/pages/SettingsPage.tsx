@@ -5,7 +5,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslate } from "@/i18n/I18nContext";
 import { UI_LANGUAGES, type UILanguage } from "@/i18n/translations";
 import { hashPassword, verifyPassword } from "@/utils/auth";
-// PayPal.me — no client ID needed
+// Ko-fi payments are verified by server webhook; no browser payment keys needed.
 
 const LEARNING_LANGUAGES = [
   { code: "en", name: "English", flag: "🇬🇧" },
@@ -97,7 +97,7 @@ export default function SettingsPage() {
   );
 }
 
-// ─── Account Section ───
+// Account Section
 
 function AccountSection({
   user,
@@ -308,7 +308,7 @@ function AccountSection({
   );
 }
 
-// ─── Preferences Section ───
+// Preferences Section
 
 function PreferencesSection({
   theme,
@@ -410,7 +410,7 @@ function PreferencesSection({
   );
 }
 
-// ─── Learning Section ───
+// Learning Section
 
 function LearningSection({
   updateProfile,
@@ -458,7 +458,7 @@ function LearningSection({
   );
 }
 
-// ─── AI Settings Section ───
+// AI Settings Section
 
 function AISettingsSection() {
   return (
@@ -474,7 +474,7 @@ function AISettingsSection() {
           <ul className="mt-2 space-y-1 text-xs text-emerald-600 dark:text-emerald-400">
             <li>• Claude API key → Vercel <code className="rounded bg-white/50 px-1 dark:bg-black/20">ANTHROPIC_API_KEY</code></li>
             <li>• AI requests go to <code className="rounded bg-white/50 px-1 dark:bg-black/20">/api/chat</code> (same domain)</li>
-            <li>• Payments via <code className="rounded bg-white/50 px-1 dark:bg-black/20">paypal.me/RojHawar</code></li>
+            <li>• Payments via <code className="rounded bg-white/50 px-1 dark:bg-black/20">ko-fi.com/rojhawar</code></li>
             <li>• Zero API keys in browser, GitHub, or frontend</li>
           </ul>
         </div>
@@ -507,3 +507,4 @@ function AISettingsSection() {
     </div>
   );
 }
+

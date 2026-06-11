@@ -49,6 +49,11 @@ function buildSearchText(payload) {
   return JSON.stringify(payload || {}).toLowerCase();
 }
 
+function findSessionId(text) {
+  const match = String(text || "").match(/kofi_[a-f0-9]{24}/i);
+  return match ? match[0] : "";
+}
+
 export default async function handler(req, res) {
   setCors(res);
 
@@ -105,6 +110,7 @@ export default async function handler(req, res) {
   const message = String(firstValue(payload.message, payload.message_text, payload.note, payload.support_message, ""));
   const expectedAmount = Number(process.env.PREMIUM_PRICE_EUR || "4.00");
   const searchText = buildSearchText(payload);
+  const sessionId = findSessionId(`${message} ${searchText}`);
 
   if (currency !== "EUR" || amount < expectedAmount) {
     await kv.set(
@@ -127,25 +133,28 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, accepted: false, amount, currency });
   }
 
-  await kv.set(
-    `kofi-payment:${transactionId}`,
-    {
-      verified: true,
-      claimed: false,
-      source: "kofi",
-      transactionId,
-      type,
-      amount,
-      currency,
-      payerEmail,
-      fromName: payload.from_name || payload.fromName || "",
-      message,
-      searchText,
-      raw: payload,
-      receivedAt: new Date().toISOString(),
-    },
-    { ex: 60 * 60 * 24 * 60 }
-  );
+  const paymentRecord = {
+    verified: true,
+    claimed: false,
+    source: "kofi",
+    transactionId,
+    sessionId,
+    type,
+    amount,
+    currency,
+    payerEmail,
+    fromName: payload.from_name || payload.fromName || "",
+    message,
+    searchText,
+    raw: payload,
+    receivedAt: new Date().toISOString(),
+  };
+
+  await kv.set(`kofi-payment:${transactionId}`, paymentRecord, { ex: 60 * 60 * 24 * 60 });
+
+  if (sessionId) {
+    await kv.set(`kofi-payment-session:${sessionId}`, paymentRecord, { ex: 60 * 60 * 24 * 60 });
+  }
 
   return res.status(200).json({ ok: true, accepted: true });
 }

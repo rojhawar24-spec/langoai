@@ -84,9 +84,7 @@ export default function DashboardPage() {
             <div className="mb-8 text-center">
               <div className="relative mx-auto mb-5 inline-flex">
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-400 to-purple-600 opacity-40 blur-2xl" />
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-5xl shadow-2xl shadow-indigo-500/40 ring-2 ring-white/20">
-                  🌍
-                </div>
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-5xl shadow-2xl shadow-indigo-500/40 ring-2 ring-white/20">🌍</div>
               </div>
 
               <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
@@ -94,7 +92,7 @@ export default function DashboardPage() {
                 <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text text-transparent">
                   {user.username}
                 </span>
-                !
+                ! 👋
               </h1>
 
               <p className="mt-3 text-base font-medium text-slate-500 dark:text-slate-400">
@@ -176,7 +174,7 @@ export default function DashboardPage() {
               {user.username}
             </span>
             ! 👋
-          </h1>
+              </h1>
 
           {selectedLang && (
             <p className="mt-3 flex items-center gap-3 text-base text-slate-500 dark:text-slate-400">
@@ -370,7 +368,7 @@ export default function DashboardPage() {
 
                   <div className="mt-4 border-t border-slate-100 pt-4 dark:border-white/5">
                     <div className="flex items-center gap-2">
-                      <span className={`text-2xl ${hasActivityToday ? "animate-pulse" : "opacity-30"}`}>
+                      <span className={`text-2xl ${hasActivityToday ? "🔥" : "💤"}`}>
                         🔥
                       </span>
                       <div>
@@ -564,3 +562,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

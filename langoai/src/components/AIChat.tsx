@@ -10,9 +10,9 @@ import {
 import {
   callClaude,
   formatPremiumExpiry,
+  getPaymentExpiresAt,
   getSystemPrompt,
   isPaymentVerified,
-  isPremiumActive,
   PREMIUM_PRICE_EUR,
 } from "@/utils/apiConfig";
 import KofiCheckout from "@/components/KofiCheckout";
@@ -44,8 +44,8 @@ export default function AIChat({ open, onClose }: AIChatProps) {
 
   useEffect(() => {
     if (open) {
-      const verified = isPremiumActive(user) || isPaymentVerified();
-      const activeExpiresAt = user?.premiumExpiresAt ?? localStorage.getItem("langlearn_payment_expires_at");
+      const verified = isPaymentVerified();
+      const activeExpiresAt = getPaymentExpiresAt();
 
       setIsUnlocked(verified);
       setExpiresAt(verified ? activeExpiresAt : null);
@@ -60,7 +60,7 @@ export default function AIChat({ open, onClose }: AIChatProps) {
         setMessages([]);
       }
     }
-  }, [open, mode, user?.premiumExpiresAt]);
+  }, [open, mode]);
 
   useEffect(() => {
     if (scrollRef.current) {

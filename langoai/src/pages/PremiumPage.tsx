@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   formatPremiumExpiry,
+  getPaymentExpiresAt,
   isPaymentVerified,
-  isPremiumActive,
   PREMIUM_DAYS,
   PREMIUM_PRICE_EUR,
 } from "@/utils/apiConfig";
@@ -19,8 +19,8 @@ export default function PremiumPage() {
 
   if (!user) return null;
 
-  const alreadyPremium = isPremiumActive(user) || isPaymentVerified();
-  const premiumExpiresAt = user.premiumExpiresAt ?? localStorage.getItem("langlearn_payment_expires_at");
+  const alreadyPremium = isPaymentVerified();
+  const premiumExpiresAt = getPaymentExpiresAt();
 
   function handlePaymentSuccess(expiresAt: string) {
     updateProfile({ premium: true, premiumExpiresAt: expiresAt });
