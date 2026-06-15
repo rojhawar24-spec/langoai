@@ -1,4 +1,4 @@
-import React, { /* useEffect kept for future use */ useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -6,11 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
+ 
 import type { GrammarLesson } from "@/content/types";
 import { XP_REWARDS } from "@/utils/xp";
 import AdSlot from "@/components/AdSlot";
-
+ 
 import {
   CheckCircle2,
   BookOpen,
@@ -20,17 +20,15 @@ import {
   AlertCircle,
   ArrowLeft,
   Lightbulb,
-  Star,
-  Zap,
-  Heart,
   Sparkles,
-  Palette,
-  Flame,
-  Crown,
-  Gem,
+  Eye,
+  EyeOff,
+  Trophy,
 } from "lucide-react";
-
-/* ── Meertalige labels ──────────────────────────────────────────────── */
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   MEERTALIGE LABELS
+───────────────────────────────────────────────────────────────────────── */
 const UI_LABELS: Record<string, Record<string, string>> = {
   en: {
     rules: "Grammar Rules",
@@ -47,7 +45,8 @@ const UI_LABELS: Record<string, Record<string, string>> = {
     why: "Why?",
     question: "Question",
     answer: "Answer",
-    tapToReveal: "Tap to reveal",
+    tapToReveal: "Tap to reveal answer",
+    hideAnswer: "Hide answer",
     markComplete: "Mark as completed",
     completed: "Completed",
     takeTest: "Take the test",
@@ -68,7 +67,8 @@ const UI_LABELS: Record<string, Record<string, string>> = {
     why: "Waarom?",
     question: "Vraag",
     answer: "Antwoord",
-    tapToReveal: "Tik om te onthullen",
+    tapToReveal: "Tik om het antwoord te zien",
+    hideAnswer: "Antwoord verbergen",
     markComplete: "Markeer als voltooid",
     completed: "Voltooid",
     takeTest: "Doe de test",
@@ -90,6 +90,7 @@ const UI_LABELS: Record<string, Record<string, string>> = {
     question: "Question",
     answer: "Réponse",
     tapToReveal: "Appuyez pour révéler",
+    hideAnswer: "Masquer la réponse",
     markComplete: "Marquer comme terminé",
     completed: "Terminé",
     takeTest: "Passer le test",
@@ -111,6 +112,7 @@ const UI_LABELS: Record<string, Record<string, string>> = {
     question: "Pregunta",
     answer: "Respuesta",
     tapToReveal: "Toca para revelar",
+    hideAnswer: "Ocultar respuesta",
     markComplete: "Marcar como completado",
     completed: "Completado",
     takeTest: "Hacer la prueba",
@@ -132,56 +134,151 @@ const UI_LABELS: Record<string, Record<string, string>> = {
     question: "Frage",
     answer: "Antwort",
     tapToReveal: "Zum Aufdecken tippen",
+    hideAnswer: "Antwort verbergen",
     markComplete: "Als abgeschlossen markieren",
     completed: "Abgeschlossen",
     takeTest: "Test machen",
     back: "Zurück",
   },
 };
-
-/* ── Section Title ──────────────────────────────────────────────────── */
-function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string }) {
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   THEMA PALETTEN — één per CEFR-niveau-kleur
+───────────────────────────────────────────────────────────────────────── */
+const BAR_THEMES = [
+  {
+    top: "bg-gradient-to-r from-indigo-500 via-indigo-400 to-purple-500",
+    badge: "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300",
+    titleText: "text-indigo-800 dark:text-indigo-200",
+    accent: "#4f46e5",
+    accentDark: "#818cf8",
+    chipBg: "bg-indigo-50 dark:bg-indigo-900/20",
+    chipText: "text-indigo-700 dark:text-indigo-300",
+    chipBgLight: "bg-indigo-50/60 dark:bg-indigo-800/30",
+    chipTextDark: "text-indigo-800 dark:text-indigo-200",
+    chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
+    chipTextMedium: "text-slate-600 dark:text-slate-400",
+  },
+  {
+    top: "bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-500",
+    badge: "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300",
+    titleText: "text-emerald-800 dark:text-emerald-200",
+    accent: "#059669",
+    accentDark: "#34d399",
+    chipBg: "bg-emerald-50 dark:bg-emerald-900/20",
+    chipText: "text-emerald-700 dark:text-emerald-300",
+    chipBgLight: "bg-emerald-50/60 dark:bg-emerald-800/30",
+    chipTextDark: "text-emerald-800 dark:text-emerald-200",
+    chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
+    chipTextMedium: "text-slate-600 dark:text-slate-400",
+  },
+  {
+    top: "bg-gradient-to-r from-violet-500 via-violet-400 to-fuchsia-500",
+    badge: "bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300",
+    titleText: "text-violet-800 dark:text-violet-200",
+    accent: "#7c3aed",
+    accentDark: "#a78bfa",
+    chipBg: "bg-violet-50 dark:bg-violet-900/20",
+    chipText: "text-violet-700 dark:text-violet-300",
+    chipBgLight: "bg-violet-50/60 dark:bg-violet-800/30",
+    chipTextDark: "text-violet-800 dark:text-violet-200",
+    chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
+    chipTextMedium: "text-slate-600 dark:text-slate-400",
+  },
+  {
+    top: "bg-gradient-to-r from-rose-500 via-rose-400 to-pink-500",
+    badge: "bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300",
+    titleText: "text-rose-800 dark:text-rose-200",
+    accent: "#e11d48",
+    accentDark: "#fb7185",
+    chipBg: "bg-rose-50 dark:bg-rose-900/20",
+    chipText: "text-rose-700 dark:text-rose-300",
+    chipBgLight: "bg-rose-50/60 dark:bg-rose-800/30",
+    chipTextDark: "text-rose-800 dark:text-rose-200",
+    chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
+    chipTextMedium: "text-slate-600 dark:text-slate-400",
+  },
+  {
+    top: "bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500",
+    badge: "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
+    titleText: "text-amber-800 dark:text-amber-200",
+    accent: "#d97706",
+    accentDark: "#fbbf24",
+    chipBg: "bg-amber-50 dark:bg-amber-900/20",
+    chipText: "text-amber-700 dark:text-amber-300",
+    chipBgLight: "bg-amber-50/60 dark:bg-amber-800/30",
+    chipTextDark: "text-amber-800 dark:text-amber-200",
+    chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
+    chipTextMedium: "text-slate-600 dark:text-slate-400",
+  },
+  {
+    top: "bg-gradient-to-r from-cyan-500 via-cyan-400 to-sky-500",
+    badge: "bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300",
+    titleText: "text-cyan-800 dark:text-cyan-200",
+    accent: "#0891b2",
+    accentDark: "#22d3ee",
+    chipBg: "bg-cyan-50 dark:bg-cyan-900/20",
+    chipText: "text-cyan-700 dark:text-cyan-300",
+    chipBgLight: "bg-cyan-50/60 dark:bg-cyan-800/30",
+    chipTextDark: "text-cyan-800 dark:text-cyan-200",
+    chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
+    chipTextMedium: "text-slate-600 dark:text-slate-400",
+  },
+] as const;
+ 
+ 
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   SECTION TITLE
+───────────────────────────────────────────────────────────────────────── */
+function SectionTitle({
+  icon,
+  label,
+  id,
+  count,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  id?: string;
+  count?: number;
+}) {
   return (
-    <h2 className="font-sans flex items-center gap-3 text-lg sm:text-xl lg:text-2xl font-extrabold text-slate-900 dark:text-white">
-      <span className="gl-section-line h-[3px] w-9 rounded-full flex-shrink-0 shadow-sm" style={{ boxShadow: "0 0 8px rgba(99,102,241,0.45)" }} />
-      {icon && <span className="flex-shrink-0 opacity-80">{icon}</span>}
-      {label}
-    </h2>
+    <div className="flex items-center gap-3 mb-6" id={id}>
+      <div className="flex items-center justify-center w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 shadow-md ring-1 ring-slate-200/60 dark:ring-slate-700/50 shrink-0">
+        <span className="opacity-80">{icon}</span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <h2 className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
+          {label}
+          {count !== undefined && (
+            <span className="ml-2 text-sm font-bold text-slate-400 dark:text-slate-500">
+              ({count})
+            </span>
+          )}
+        </h2>
+        <div className="mt-1 h-[3px] w-16 rounded-full gl-accent-bar" />
+      </div>
+    </div>
   );
 }
-
-/* ── Markdown Renderer (vet, cursief, code, PAS OP) ──────────────────────── */
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   MARKDOWN RENDERER
+───────────────────────────────────────────────────────────────────────── */
 function RenderMarkdown({ text }: { text: string }) {
   const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`|⚠️\s*PAS OP\b)/gi);
-  
   return (
     <span className="font-sans text-[13px] sm:text-sm leading-relaxed">
       {parts.map((part, i) => {
-        if (/^⚠️\s*PAS OP\b/gi.test(part)) {
-          return (
-            <span key={i} className="pas-op-highlight">
-              ⚠️ PAS OP
-            </span>
-          );
-        }
+        if (/^⚠️\s*PAS OP\b/gi.test(part))
+          return <span key={i} className="pas-op-highlight">⚠️ PAS OP</span>;
         if (part.startsWith("**") && part.endsWith("**"))
-          return (
-            <strong key={i} className="font-extrabold text-amber-600 dark:text-amber-400">
-              {part.slice(2, -2)}
-            </strong>
-          );
+          return <strong key={i} className="font-extrabold text-amber-600 dark:text-amber-400">{part.slice(2, -2)}</strong>;
         if (part.startsWith("*") && part.endsWith("*"))
-          return (
-            <em key={i} className="italic font-medium text-rose-500 dark:text-rose-400">
-              {part.slice(1, -1)}
-            </em>
-          );
+          return <em key={i} className="italic font-medium text-rose-500 dark:text-rose-400">{part.slice(1, -1)}</em>;
         if (part.startsWith("`") && part.endsWith("`"))
           return (
-            <code
-              key={i}
-              className="rounded-md bg-indigo-100 dark:bg-indigo-900/50 px-2 py-0.5 text-[11px] sm:text-xs font-mono font-semibold tracking-wide text-indigo-700 dark:text-indigo-300"
-            >
+            <code key={i} className="rounded-md bg-indigo-100 dark:bg-indigo-900/50 px-2 py-0.5 text-[11px] sm:text-xs font-mono font-semibold tracking-wide text-indigo-700 dark:text-indigo-300">
               {part.slice(1, -1)}
             </code>
           );
@@ -190,23 +287,207 @@ function RenderMarkdown({ text }: { text: string }) {
     </span>
   );
 }
-
-/* ── Safe HTML renderer ─────────────────────────────────────────────── */
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   SAFE HTML RENDERER
+───────────────────────────────────────────────────────────────────────── */
 function SafeHtml({ html }: { html: string }) {
-  const processedHtml = html
-    .replace(
-      /<strong(.*?)>([\s\S]*?)<\/strong>/gi,
-      '<strong class="font-extrabold text-slate-900 dark:text-white"$1>$2</strong>'
-    );
+  const processed = html.replace(
+    /<strong(.*?)>([\s\S]*?)<\/strong>/gi,
+    '<strong class="font-extrabold text-slate-900 dark:text-white"$1>$2</strong>'
+  );
   return (
     <div
       className="font-sans text-[13px] sm:text-sm leading-relaxed"
-      dangerouslySetInnerHTML={{ __html: processedHtml }}
+      dangerouslySetInnerHTML={{ __html: processed }}
     />
   );
 }
-
-/* ── Hoofdcomponent ──────────────────────────────────────────────────── */
+ 
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   BEAUTIFUL DATA TABLE (herbruikbaar component)
+───────────────────────────────────────────────────────────────────────── */
+interface BeautifulTableProps {
+  headerRow: string;
+  rows: string[][];
+  themeIndex?: number;
+}
+ 
+function BeautifulTable({ headerRow, rows, themeIndex = 0 }: BeautifulTableProps) {
+  const t = BAR_THEMES[themeIndex % BAR_THEMES.length];
+  const headers = headerRow.split("|").map((h) => h.trim()).filter(Boolean);
+ 
+  return (
+    <div className="gl-table-wrap overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-slate-700/50 shadow-lg">
+      <table className="w-full border-collapse" style={{ minWidth: `${Math.max(480, headers.length * 140)}px` }}>
+        <thead>
+          <tr>
+            {headers.map((h, i) => (
+              <th
+                key={i}
+                className={cn(
+                  t.top,
+                  "px-5 py-4 text-left text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em] text-white",
+                  i === 0 && "rounded-tl-2xl",
+                  i === headers.length - 1 && "rounded-tr-2xl"
+                )}
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, ri) => (
+            <tr
+              key={ri}
+              className={cn(
+                "group transition-colors duration-150",
+                ri % 2 === 1 ? "bg-slate-50/70 dark:bg-slate-800/40" : "bg-white dark:bg-slate-900/20"
+              )}
+              style={{ ["--hover-bg" as string]: `${t.accent}18` }}
+            >
+              {row.map((cell, ci) => (
+                <td
+                  key={ci}
+                  className={cn(
+                    "px-5 py-3.5 text-[13px] sm:text-sm border-t border-slate-100 dark:border-slate-700/30 leading-relaxed align-top",
+                    ci === 0
+                      ? "font-bold text-slate-900 dark:text-slate-100"
+                      : "text-slate-700 dark:text-slate-300",
+                    ri === rows.length - 1 && ci === 0 && "rounded-bl-2xl",
+                    ri === rows.length - 1 && ci === row.length - 1 && "rounded-br-2xl"
+                  )}
+                  dangerouslySetInnerHTML={{
+                    __html: cell
+                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-amber-600 dark:text-amber-400">$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em class="italic text-rose-500 dark:text-rose-400">$1</em>')
+                      .replace(/`(.*?)`/g, '<code class="rounded bg-indigo-100 dark:bg-indigo-900/40 px-1.5 py-0.5 text-[11px] font-mono font-semibold text-indigo-700 dark:text-indigo-300">$1</code>')
+                      .replace(/'(.*?)'/g, '<span class="font-mono font-semibold text-amber-600 dark:text-amber-400">\'$1\'</span>'),
+                  }}
+                />
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   QA COMPONENT
+───────────────────────────────────────────────────────────────────────── */
+function QASection({
+  qa,
+  labels,
+}: {
+  qa: { question: string; answer: string }[];
+  labels: Record<string, string>;
+}) {
+  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
+  const toggle = (i: number) => setRevealed((prev) => ({ ...prev, [i]: !prev[i] }));
+ 
+  return (
+    <div className="space-y-4">
+      {qa.map((item, i) => {
+        const isOpen = !!revealed[i];
+        const t = BAR_THEMES[i % BAR_THEMES.length];
+        return (
+          <div key={i} className="gl-card rounded-2xl overflow-hidden transition-all duration-300">
+            {/* Gekleurde topbalk */}
+            <div className={cn("h-1.5 w-full", t.top)} />
+ 
+            {/* Vraag */}
+            <div className="px-5 pt-4 pb-3 flex items-start gap-4">
+              <span className={cn("shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black", t.badge)}>
+                {i + 1}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-1.5">
+                  {labels.question}
+                </p>
+                <p className="text-sm sm:text-base text-slate-800 dark:text-slate-200 font-semibold leading-relaxed">
+                  <RenderMarkdown text={item.question} />
+                </p>
+              </div>
+            </div>
+ 
+            {/* Antwoord */}
+            <div className={cn(
+              "mx-4 mb-4 rounded-xl overflow-hidden transition-all duration-300",
+              isOpen ? "bg-emerald-50/80 dark:bg-emerald-900/20 ring-1 ring-emerald-200 dark:ring-emerald-700/40" : "bg-slate-50 dark:bg-slate-800/30"
+            )}>
+              <button
+                onClick={() => toggle(i)}
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold transition-all duration-200"
+              >
+                <span className={isOpen ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400"}>
+                  {isOpen ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </span>
+                <span className={isOpen ? "text-emerald-700 dark:text-emerald-300" : "text-slate-500 dark:text-slate-400"}>
+                  {isOpen ? labels.hideAnswer : labels.tapToReveal}
+                </span>
+              </button>
+              {isOpen && (
+                <div className="px-4 pb-4 text-sm leading-relaxed text-slate-700 dark:text-slate-200 border-t border-emerald-100 dark:border-emerald-800/30 pt-3">
+                  <RenderMarkdown text={item.answer} />
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   PROGRESS INDICATOR
+───────────────────────────────────────────────────────────────────────── */
+function LessonProgress({ completed }: { completed: boolean }) {
+  const [scrollPct, setScrollPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement;
+      const pct = Math.min(100, (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100) || 0;
+      setScrollPct(pct);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+ 
+  return (
+    <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-slate-200/60 dark:bg-slate-800/60">
+      <div
+        className={cn(
+          "h-full transition-all duration-150",
+          completed
+            ? "bg-gradient-to-r from-emerald-400 to-teal-500"
+            : "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+        )}
+        style={{ width: `${scrollPct}%` }}
+      />
+    </div>
+  );
+}
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   MARKDOWN → HTML HELPER (buiten render)
+───────────────────────────────────────────────────────────────────────── */
+function buildDetailHtml(raw: string): string {
+  if (typeof raw !== "string") return "";
+  return raw
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/`(.*?)`/g, "<code>$1</code>")
+    .replace(/⚠️\s*PAS OP\b/gi, '<span class="pas-op-highlight">⚠️ PAS OP</span>');
+}
+ 
+/* ─────────────────────────────────────────────────────────────────────────
+   HOOFDCOMPONENT
+───────────────────────────────────────────────────────────────────────── */
 function GrammarLessonDesign({
   lesson,
   completed,
@@ -222,746 +503,527 @@ function GrammarLessonDesign({
   onTest: () => void;
   onBack?: () => void;
 }) {
-
-  // ✅ PAS OP stijl wordt geladen via index.css
-
   const langCode = useMemo(() => lesson.id.split("-")[0]?.toLowerCase() ?? "nl", [lesson.id]);
   const labels = useMemo(() => UI_LABELS[langCode] ?? UI_LABELS["nl"], [langCode]);
-
+ 
   const LEVELS = ["A1", "A2", "B1", "B2", "C1"] as const;
   const lvlToCEFR = useCallback((n: number) => LEVELS[Math.min(Math.max(n - 1, 0), 4)], []);
-
-  /* ── Thema's voor kaarten ────────────────────────────────────────────── */
-  const barThemes = [
-    {
-      top: "bg-gradient-to-r from-indigo-500 via-indigo-400 to-purple-500",
-      badge: "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300",
-      titleText: "text-indigo-800 dark:text-indigo-200",
-      accent: "#4f46e5",
-      accentDark: "#818cf8",
-      chipBg: "bg-indigo-50 dark:bg-indigo-900/20",
-      chipText: "text-indigo-700 dark:text-indigo-300",
-      chipBgLight: "bg-indigo-100/60 dark:bg-indigo-800/30",
-      chipTextDark: "text-indigo-800 dark:text-indigo-200",
-      chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
-      chipTextMedium: "text-slate-600 dark:text-slate-400",
-    },
-    {
-      top: "bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-500",
-      badge: "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300",
-      titleText: "text-emerald-800 dark:text-emerald-200",
-      accent: "#059669",
-      accentDark: "#34d399",
-      chipBg: "bg-emerald-50 dark:bg-emerald-900/20",
-      chipText: "text-emerald-700 dark:text-emerald-300",
-      chipBgLight: "bg-emerald-100/60 dark:bg-emerald-800/30",
-      chipTextDark: "text-emerald-800 dark:text-emerald-200",
-      chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
-      chipTextMedium: "text-slate-600 dark:text-slate-400",
-    },
-    {
-      top: "bg-gradient-to-r from-violet-500 via-violet-400 to-fuchsia-500",
-      badge: "bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300",
-      titleText: "text-violet-800 dark:text-violet-200",
-      accent: "#7c3aed",
-      accentDark: "#a78bfa",
-      chipBg: "bg-violet-50 dark:bg-violet-900/20",
-      chipText: "text-violet-700 dark:text-violet-300",
-      chipBgLight: "bg-violet-100/60 dark:bg-violet-800/30",
-      chipTextDark: "text-violet-800 dark:text-violet-200",
-      chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
-      chipTextMedium: "text-slate-600 dark:text-slate-400",
-    },
-    {
-      top: "bg-gradient-to-r from-rose-500 via-rose-400 to-pink-500",
-      badge: "bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300",
-      titleText: "text-rose-800 dark:text-rose-200",
-      accent: "#e11d48",
-      accentDark: "#fb7185",
-      chipBg: "bg-rose-50 dark:bg-rose-900/20",
-      chipText: "text-rose-700 dark:text-rose-300",
-      chipBgLight: "bg-rose-100/60 dark:bg-rose-800/30",
-      chipTextDark: "text-rose-800 dark:text-rose-200",
-      chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
-      chipTextMedium: "text-slate-600 dark:text-slate-400",
-    },
-    {
-      top: "bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500",
-      badge: "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
-      titleText: "text-amber-800 dark:text-amber-200",
-      accent: "#d97706",
-      accentDark: "#fbbf24",
-      chipBg: "bg-amber-50 dark:bg-amber-900/20",
-      chipText: "text-amber-700 dark:text-amber-300",
-      chipBgLight: "bg-amber-100/60 dark:bg-amber-800/30",
-      chipTextDark: "text-amber-800 dark:text-amber-200",
-      chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
-      chipTextMedium: "text-slate-600 dark:text-slate-400",
-    },
-    {
-      top: "bg-gradient-to-r from-cyan-500 via-cyan-400 to-sky-500",
-      badge: "bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300",
-      titleText: "text-cyan-800 dark:text-cyan-200",
-      accent: "#0891b2",
-      accentDark: "#22d3ee",
-      chipBg: "bg-cyan-50 dark:bg-cyan-900/20",
-      chipText: "text-cyan-700 dark:text-cyan-300",
-      chipBgLight: "bg-cyan-100/60 dark:bg-cyan-800/30",
-      chipTextDark: "text-cyan-800 dark:text-cyan-200",
-      chipBgAlt: "bg-slate-50 dark:bg-slate-700/30",
-      chipTextMedium: "text-slate-600 dark:text-slate-400",
-    },
-  ];
-
-  const themeIndex = useMemo(() => (lesson.level - 1) % barThemes.length, [lesson.level]);
-  const tableTheme = useMemo(() => barThemes[themeIndex], [themeIndex]);
-
-  /* ── Iconen voor callouts ────────────────────────────────────────────── */
-  const calloutIcons = [Lightbulb, Sparkles, Zap, Heart, Star, Flame, Crown, Gem, Palette];
-
-  /* ── Kleuren voor callouts ────────────────────────────────────────────── */
-  const calloutColors = [
-    { border: "border-l-amber-500", bg: "bg-gradient-to-br from-amber-50 to-white dark:from-amber-950/30 dark:to-slate-900/50", icon: "text-amber-600 dark:text-amber-400" },
-    { border: "border-l-emerald-500", bg: "bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950/30 dark:to-slate-900/50", icon: "text-emerald-600 dark:text-emerald-400" },
-    { border: "border-l-indigo-500", bg: "bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950/30 dark:to-slate-900/50", icon: "text-indigo-600 dark:text-indigo-400" },
-    { border: "border-l-rose-500", bg: "bg-gradient-to-br from-rose-50 to-white dark:from-rose-950/30 dark:to-slate-900/50", icon: "text-rose-600 dark:text-rose-400" },
-    { border: "border-l-violet-500", bg: "bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/30 dark:to-slate-900/50", icon: "text-violet-600 dark:text-violet-400" },
-    { border: "border-l-cyan-500", bg: "bg-gradient-to-br from-cyan-50 to-white dark:from-cyan-950/30 dark:to-slate-900/50", icon: "text-cyan-600 dark:text-cyan-400" },
-    { border: "border-l-orange-500", bg: "bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/30 dark:to-slate-900/50", icon: "text-orange-600 dark:text-orange-400" },
-    { border: "border-l-teal-500", bg: "bg-gradient-to-br from-teal-50 to-white dark:from-teal-950/30 dark:to-slate-900/50", icon: "text-teal-600 dark:text-teal-400" },
-    { border: "border-l-pink-500", bg: "bg-gradient-to-br from-pink-50 to-white dark:from-pink-950/30 dark:to-slate-900/50", icon: "text-pink-600 dark:text-pink-400" },
-  ];
-
-  /* ── Kleuren voor snelle herhaling ───────────────────────────────────── */
-  const reviewBadgeColors = [
-    "bg-emerald-600 text-white",
-    "bg-indigo-600 text-white",
-    "bg-amber-600 text-white",
-    "bg-rose-600 text-white",
-    "bg-violet-600 text-white",
-    "bg-cyan-600 text-white",
-  ];
-
-  const reviewColors = [
-    "border-l-emerald-500",
-    "border-l-indigo-500",
-    "border-l-amber-500",
-    "border-l-rose-500",
-    "border-l-violet-500",
-    "border-l-cyan-500",
-  ];
-
-  /* ── Helper: render Markdown to HTML string ────────────────────────── */
-const renderMarkdownToHtml = useCallback((text: string): string => {
-  if (!text) return "";
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-amber-600 dark:text-amber-400">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em class="italic font-medium text-rose-500 dark:text-rose-400">$1</em>')
-    .replace(/`(.*?)`/g, '<code class="rounded-md bg-indigo-100 dark:bg-indigo-900/50 px-2 py-0.5 text-[11px] sm:text-xs font-mono font-semibold tracking-wide text-indigo-700 dark:text-indigo-300">$1</code>')
-    .replace(/⚠️\s*PAS OP\b/gi, '<span class="pas-op-highlight">⚠️ PAS OP</span>');
-}, []);
-
-  /* ── Enrichment voor HTML details ───────────────────────────────────── */
-const buildDetailHtml = (raw: string) =>
-  typeof raw === "string"
-    ? raw
-        .replace(/\*\*(.*?)\*\*/g, `<strong>$1</strong>`)
-        .replace(/\*(.*?)\*/g, `<em>$1</em>`)
-        .replace(/`(.*?)`/g, `<code>$1</code>`)
-        .replace(/⚠️\s*PAS OP\b/gi, '<span class="pas-op-highlight">⚠️ PAS OP</span>')
-    : "";
-
-  const getProcessedContent = useCallback((content: string): string => {
-    if (!content) return "";
-    
-    let html = buildDetailHtml(content);
-
-    html = html.replace(
-      /^> (.*)$/gm,
-      `<blockquote class="my-3 pl-4 border-l-4 border-indigo-300 dark:border-indigo-700 py-1.5 pr-3 bg-indigo-50/40 dark:bg-indigo-900/15 rounded-r-lg italic text-slate-600 dark:text-slate-400 leading-relaxed">
-        <span class="not-italic text-indigo-500 dark:text-indigo-400 mr-1">"</span>$1<span class="not-italic text-indigo-500 dark:text-indigo-400 ml-1">"</span>
-      </blockquote>`
-    );
-
-    html = html.replace(
-      /^• (.*)$/gm,
-      `<li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">$1</li>`
-    );
-
-    html = html.replace(/\n\n/g, "</p><p class='my-2.5'>");
-    html = html.replace(/^(?!<[a-z])/im, "<p class='my-2.5'>");
-    html = html.replace(/(?<!>)$/g, "</p>");
-
-    html = html.replace(/(<p>\s*)(<li[\s\S]*?<\/li>)+/g, (match) =>
-      match.replace(/<p>\s*/, "").replace(/<\/p>/, "")
-    );
-    html = html.replace(/(<\/li>\s*){2,}/g, "</li>");
-    html = html.replace(/<li[\s\S]*?<\/li>/, (match) => `<ul class="my-3 space-y-1.5 pl-1">\n${match}\n</ul>`);
-
-    html = html.replace(
-      /\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,
-      (_full: string, headerRow: string, bodyRows: string) => {
-        const headers = headerRow.split("|").map((h: string) => h.trim()).filter(Boolean);
-        const rows = bodyRows.trim().split("\n").map((r: string) =>
-          r.split("|").map((c: string) => c.trim()).filter(Boolean)
-        );
-        
-        let tableHtml = '<div class="overflow-x-auto my-8 rounded-2xl border border-[' + tableTheme.accent + ']/100 dark:border-[' + tableTheme.accentDark + ']/100 shadow-lg bg-white dark:bg-slate-800/90 backdrop-blur-sm">';
-        tableHtml += '<table class="w-full border-collapse min-w-[480px]"><thead><tr>';
-        
-        headers.forEach(function(h) {
-          tableHtml += '<th class="' + tableTheme.top + ' dark:bg-[' + tableTheme.accentDark + ']/80 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.1em] px-6 py-4 text-white text-left">' + h + '</th>';
-        });
-        
-        tableHtml += '</tr></thead><tbody>';
-
-        rows.forEach(function(row, ri) {
-          tableHtml += '<tr class="' + (ri % 2 ? tableTheme.chipBgLight : 'bg-white dark:bg-slate-800/20') + ' hover:bg-[' + tableTheme.accent + ']/25 dark:hover:bg-[' + tableTheme.accentDark + ']/10 transition-colors">';
-          
-          row.forEach(function(cell, ci) {
-            var enhancedCell = cell
-              .replace(/'(.*?)'/g, '<span class="font-mono font-semibold text-amber-600 dark:text-amber-400 tracking-wide">\'$1\'</span>')
-              .replace(/ó/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ó</span>')
-              .replace(/á/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">á</span>')
-              .replace(/é/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">é</span>')
-              .replace(/í/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">í</span>')
-              .replace(/ú/g, '<span class="text-indigo-600 dark:text-indigo-300 font-semibold">ú</span>');
-            
-             var cellClass = ci === 0 ? 'font-semibold text-slate-900 dark:text-slate-100' : 'text-slate-800 dark:text-slate-200';
-             tableHtml += '<td class="px-6 py-4 border-t border-[' + tableTheme.accent + ']/100 dark:border-[' + tableTheme.accentDark + ']/100 text-sm sm:text-[15px] ' + cellClass + '">' + enhancedCell + '</td>';
+ 
+  const themeIndex = useMemo(() => (lesson.level - 1) % BAR_THEMES.length, [lesson.level]);
+  const tableTheme = useMemo(() => BAR_THEMES[themeIndex], [themeIndex]);
+ 
+  /* ── Accordion content processor ─────────────────────────────────── */
+  const getProcessedContent = useCallback(
+    (content: string): string => {
+      if (!content) return "";
+      let html = buildDetailHtml(content);
+ 
+      html = html.replace(
+        /^> (.*)$/gm,
+        `<blockquote class="my-3 pl-4 border-l-4 border-indigo-300 dark:border-indigo-700 py-1.5 pr-3 bg-indigo-50/40 dark:bg-indigo-900/15 rounded-r-lg italic text-slate-600 dark:text-slate-400 leading-relaxed">
+          <span class="not-italic text-indigo-500 mr-1">"</span>$1<span class="not-italic text-indigo-500 ml-1">"</span>
+        </blockquote>`
+      );
+ 
+      html = html.replace(
+        /^• (.*)$/gm,
+        `<li class="ml-1.5 my-1 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-[0.6rem] before:w-1.5 before:h-1.5 before:rounded-full before:bg-indigo-400 dark:before:bg-indigo-500 text-slate-700 dark:text-slate-300">$1</li>`
+      );
+ 
+      html = html.replace(/\n\n/g, "</p><p class='my-2.5'>");
+      html = html.replace(/^(?!<[a-z])/im, "<p class='my-2.5'>");
+      html = html.replace(/(?<!>)$/g, "</p>");
+      html = html.replace(/(<p>\s*)(<li[\s\S]*?<\/li>)+/g, (match) =>
+        match.replace(/<p>\s*/, "").replace(/<\/p>/, "")
+      );
+      html = html.replace(/<li[\s\S]*?<\/li>/, (match) =>
+        `<ul class="my-3 space-y-1.5 pl-1">\n${match}\n</ul>`
+      );
+ 
+      /* Markdown-style tables in accordion bodies */
+      html = html.replace(
+        /\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,
+        (_full: string, headerRow: string, bodyRows: string) => {
+          const headers = headerRow.split("|").map((h: string) => h.trim()).filter(Boolean);
+          const rows = bodyRows
+            .trim()
+            .split("\n")
+            .map((r: string) => r.split("|").map((c: string) => c.trim()).filter(Boolean));
+ 
+          let out = `<div class="overflow-x-auto my-6 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-md"><table class="w-full border-collapse" style="min-width:${Math.max(480, headers.length * 140)}px"><thead><tr>`;
+          headers.forEach((h) => {
+            out += `<th class="${tableTheme.top} px-5 py-3.5 text-left text-[10px] font-extrabold uppercase tracking-[0.15em] text-white">${h}</th>`;
           });
-          
-          tableHtml += '</tr>';
-        });
-        
-        tableHtml += '</tbody></table></div>';
-        return tableHtml;
-      }
-    );
-
-    return html;
-  }, [tableTheme]);
-
+          out += `</tr></thead><tbody>`;
+          rows.forEach((row, ri) => {
+            out += `<tr class="${ri % 2 === 1 ? "bg-slate-50/70 dark:bg-slate-800/40" : "bg-white dark:bg-slate-900/20"}">`;
+            row.forEach((cell, ci) => {
+              out += `<td class="px-5 py-3.5 text-sm border-t border-slate-100 dark:border-slate-700/30 leading-relaxed ${ci === 0 ? "font-bold text-slate-900 dark:text-slate-100" : "text-slate-700 dark:text-slate-300"}">${cell}</td>`;
+            });
+            out += `</tr>`;
+          });
+          out += `</tbody></table></div>`;
+          return out;
+        }
+      );
+ 
+      return html;
+    },
+    [tableTheme]
+  );
+ 
+ 
   if (!lesson) {
     return <div className="animate-pulse h-40 bg-slate-200 rounded-2xl my-8" />;
   }
-
+ 
   return (
-    <div className="relative min-h-screen">
+    <>
+      {/* ── Lees-voortgangsbalk bovenaan ── */}
+      <LessonProgress completed={completed} />
+ 
       <style>{`
-        /* ── Light mode page background ── */
+        /* ── Light page background ── */
         .gl-page {
-          background-color: #f6f7fb;
+          background-color: #f4f5fb;
           background-image:
-            radial-gradient(ellipse 70% 55% at 75% -8%, rgba(99,102,241,0.13) 0%, transparent 68%),
-            radial-gradient(ellipse 50% 40% at -5% 60%, rgba(168,85,247,0.07) 0%, transparent 60%),
-            radial-gradient(circle at 1px 1px, rgba(99,102,241,0.055) 1px, transparent 0);
-          background-size: 100% 100%, 100% 100%, 22px 22px;
+            radial-gradient(ellipse 80% 60% at 70% -10%, rgba(99,102,241,.12) 0%, transparent 65%),
+            radial-gradient(ellipse 55% 45% at -5% 65%, rgba(168,85,247,.07) 0%, transparent 58%),
+            radial-gradient(circle at 1px 1px, rgba(99,102,241,.045) 1px, transparent 0);
+          background-size: 100% 100%, 100% 100%, 24px 24px;
         }
-        /* ── Dark mode page background ── */
+        /* ── Dark page background ── */
         .dark .gl-page {
-          background-color: #0c1120;
+          background-color: #0b1122;
           background-image:
-            radial-gradient(ellipse 75% 55% at 65% -6%, rgba(99,102,241,0.22) 0%, transparent 62%),
-            radial-gradient(ellipse 55% 45% at 100% 85%, rgba(168,85,247,0.11) 0%, transparent 58%),
-            radial-gradient(ellipse 30% 25% at 0% 40%, rgba(56,189,248,0.06) 0%, transparent 50%),
-            radial-gradient(circle at 1px 1px, rgba(148,163,184,0.038) 1px, transparent 0);
-          background-size: 100% 100%, 100% 100%, 100% 100%, 22px 22px;
+            radial-gradient(ellipse 75% 55% at 65% -8%, rgba(99,102,241,.22) 0%, transparent 62%),
+            radial-gradient(ellipse 55% 45% at 100% 85%, rgba(168,85,247,.11) 0%, transparent 58%),
+            radial-gradient(ellipse 30% 25% at 0% 42%, rgba(56,189,248,.06) 0%, transparent 50%),
+            radial-gradient(circle at 1px 1px, rgba(148,163,184,.032) 1px, transparent 0);
+          background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px;
         }
-        /* ── Section title accent line ── */
-        .gl-section-line {
+        /* ── Accent bar under section titles ── */
+        .gl-accent-bar {
           background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
         }
-        /* ── Card glass light ── */
+        /* ── Card glass ── */
         .gl-card {
-          background: rgba(255,255,255,0.92);
-          border: 1px solid rgba(226,232,240,0.7);
-          box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(99,102,241,0.06);
+          background: rgba(255,255,255,0.93);
+          border: 1px solid rgba(226,232,240,0.65);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(99,102,241,0.055);
+          transition: box-shadow 0.25s ease, transform 0.25s ease;
         }
         .dark .gl-card {
-          background: rgba(30,41,59,0.72);
-          border: 1px solid rgba(51,65,85,0.5);
-          box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 24px rgba(0,0,0,0.25);
+          background: rgba(30,41,59,0.70);
+          border: 1px solid rgba(51,65,85,0.45);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.32), 0 6px 24px rgba(0,0,0,0.22);
           backdrop-filter: blur(12px);
         }
         .gl-card:hover {
-          box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 32px rgba(99,102,241,0.10);
+          box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 10px 36px rgba(99,102,241,0.10);
         }
         .dark .gl-card:hover {
-          box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 12px 40px rgba(99,102,241,0.15);
+          box-shadow: 0 3px 10px rgba(0,0,0,0.4), 0 14px 44px rgba(99,102,241,0.14);
         }
-        /* ── Table card ── */
+        /* ── Table wrapper ── */
         .gl-table-wrap {
-          background: rgba(255,255,255,0.96);
-          border: 1px solid rgba(226,232,240,0.8);
+          background: rgba(255,255,255,0.97);
           box-shadow: 0 2px 12px rgba(99,102,241,0.07);
         }
         .dark .gl-table-wrap {
-          background: rgba(30,41,59,0.75);
-          border: 1px solid rgba(51,65,85,0.55);
+          background: rgba(15,23,42,0.75);
           box-shadow: 0 4px 24px rgba(0,0,0,0.3);
           backdrop-filter: blur(10px);
         }
+        /* ── PAS OP badge ── */
+        .pas-op-highlight {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-weight: 900;
+          color: #b45309;
+          background: linear-gradient(135deg, #fef3c7, #fde68a);
+          border: 1.5px solid #fbbf24;
+          border-radius: 6px;
+          padding: 1px 8px;
+          font-size: 0.8em;
+        }
+        .dark .pas-op-highlight {
+          color: #fbbf24;
+          background: linear-gradient(135deg, rgba(254,243,199,0.12), rgba(253,230,138,0.08));
+          border-color: rgba(251,191,36,0.4);
+        }
+        /* ── Hover row highlight ── */
+        tr:hover td {
+          background-color: rgba(99,102,241,0.04);
+        }
+        .dark tr:hover td {
+          background-color: rgba(99,102,241,0.06);
+        }
+        /* ── Scroll offset voor ankerpunten ── */
+        section[id] {
+          scroll-margin-top: 80px;
+        }
       `}</style>
-
-      <div className="gl-page absolute inset-0 pointer-events-none" aria-hidden />
-
-      {/* ── Content ── */}
-      <div className="relative max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8 font-sans">
-
-        {/* ═══════════ HEADER ═══════════ */}
-        <header className="mb-12">
-          <div className="flex items-center gap-2.5 mb-4 flex-wrap">
-            {onBack && (
-              <button
-                onClick={onBack}
-                className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-400 transition-all"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                {labels.back}
-              </button>
-            )}
-            <span className="rounded-full px-3 py-1.5 text-xs font-black tracking-wide uppercase bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md">
-              {lvlToCEFR(lesson.level)}
-            </span>
-            <span className="rounded-full bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 px-3 py-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 shadow-sm">
-              {lesson.topic}
-            </span>
-          </div>
-          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              {lesson.title}
-            </span>
-          </h1>
-          {lesson.overview && (
-            <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl border-l-[3px] border-amber-400 pl-4 py-2 pr-3 rounded-r-xl bg-amber-50/70 dark:bg-amber-900/10 shadow-[inset_0_0_0_1px_rgba(251,191,36,0.12)]">
-              <RenderMarkdown text={lesson.overview} />
-            </p>
-          )}
-        </header>
-
-        <div className="space-y-10">
-          {/* ═══════════ DATA TABLE ═══════════ */}
-          {lesson.timeExpressions && (
-            <section id={lesson.anchorSectionId ?? "table"} className="scroll-mt-20">
-              <SectionTitle
-                icon={<BookOpen className="w-6 h-6" />}
-                label={lesson.timeExpressionsLabel || ""}
-              />
-              <div className="gl-table-wrap overflow-x-auto rounded-2xl mt-4">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className={`${tableTheme.top} dark:bg-[${tableTheme.accentDark}]/80 text-white`}>
-                      {lesson.timeExpressions.header.split("|").map((h, i) => (
-                        <th key={i} className="px-4 py-3.5 text-left text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.15em]">
-                          {h.trim()}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {lesson.timeExpressions.rows.map((row, ri) => (
-                      <tr
-                        key={ri}
-                        className={
-                          ri % 2 === 1
-                            ? `bg-${tableTheme.chipBgLight} dark:bg-${tableTheme.chipBgAlt}`
-                            : `bg-white dark:bg-slate-800/20`
-                        }
-                      >
-                        {row.map((cell, ci) => (
-                          <td
-                            key={ci}
-                            className={`px-4 py-3 text-[13px] sm:text-sm border-t border-[${tableTheme.accent}]/100 dark:border-[${tableTheme.accentDark}]/100 leading-relaxed ${
-                              ci === 0
-                                ? "font-bold text-slate-900 dark:text-slate-100"
-                                : ci === 2
-                                ? `text-[${tableTheme.accent}] dark:text-[${tableTheme.accentDark}] font-semibold`
-                                : ci === 3
-                                ? "text-slate-500 dark:text-slate-400"
-                                : "text-slate-700 dark:text-slate-200"
-                            }`}
-                            dangerouslySetInnerHTML={{
-                              __html: renderMarkdownToHtml(cell)
-                                .replace(
-                                  /'(.*?)'/g,
-                                  '<span class="font-mono font-semibold text-amber-600 dark:text-amber-400 tracking-wide">\'$1\'</span>'
-                                ),
-                            }}
-                          />
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
-
-          {/* ═══════════ GEDETAILLEERDE UITLEG (accordions) ═══════════ */}
-          {lesson.details && lesson.details.length > 0 && (
-            <section id="explanation" className="scroll-mt-20">
-              <SectionTitle
-                icon={<FileText className="w-6 h-6 text-slate-400" />}
-                label={labels.detailedExplanation}
-              />
-              <Accordion type="single" className="space-y-3 mt-4">
-                {lesson.details.map((sec, i) => {
-                  const t = barThemes[i % barThemes.length];
-                  return (
-                    <AccordionItem
-                      key={i}
-                      value={`item-${i}`}
-                      className={cn(
-                        "gl-card group overflow-hidden rounded-2xl transition-shadow",
-                        "border-l-4 data-[state=open]:border-l-indigo-500",
-                      )}
+ 
+      {/* ── Full-page background layer ── */}
+      <div className="gl-page fixed inset-0 pointer-events-none -z-10" aria-hidden />
+ 
+      <div className="relative min-h-screen">
+        <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <main className="font-sans">
+ 
+              {/* ═══ HEADER ═══ */}
+              <header className="mb-12">
+                <div className="flex items-center gap-2.5 mb-5 flex-wrap">
+                  {onBack && (
+                    <button
+                      onClick={onBack}
+                      className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:bg-indigo-900/20 dark:hover:text-indigo-400 transition-all"
                     >
-                      <div className={`h-2 w-full shrink-0 ${t.top}`} />
-                      <AccordionTrigger
-                        className={cn(
-                          "flex items-center gap-3 px-5 py-4",
-                          "hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition-colors duration-200",
-                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/40",
-                          "text-left w-full"
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            "shrink-0 h-9 min-w-[36px] px-2 rounded-xl inline-flex items-center justify-center text-sm font-black",
-                            t.badge
-                          )}
-                        >
-                          {i + 1}
-                        </span>
-                        <span className={cn("flex-1 min-w-0 font-extrabold text-sm", t.titleText)}>
-                          {sec.title}
-                        </span>
-                      </AccordionTrigger>
-                      <AccordionContent>
+                      <ArrowLeft className="h-4 w-4" />
+                      {labels.back}
+                    </button>
+                  )}
+                  <span className="rounded-full px-3.5 py-1.5 text-xs font-black tracking-wide uppercase bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md shadow-indigo-500/25">
+                    {lvlToCEFR(lesson.level)}
+                  </span>
+                  <span className="rounded-full bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 px-3.5 py-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 shadow-sm">
+                    {lesson.topic}
+                  </span>
+                  {completed && (
+                    <span className="ml-auto flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                      <Trophy className="w-3.5 h-3.5" />
+                      +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
+                    </span>
+                  )}
+                </div>
+ 
+                <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-5 leading-tight">
+                  <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    {lesson.title}
+                  </span>
+                </h1>
+ 
+                {lesson.overview && (
+                  <div className="relative rounded-2xl overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-orange-400 rounded-full" />
+                    <p className="pl-5 pr-4 py-3.5 text-slate-600 dark:text-slate-300 text-[15px] leading-relaxed bg-amber-50/70 dark:bg-amber-900/10 rounded-2xl ring-1 ring-amber-200/50 dark:ring-amber-700/20">
+                      <RenderMarkdown text={lesson.overview} />
+                    </p>
+                  </div>
+                )}
+              </header>
+ 
+              {/* ═══════════════════════════════════════════════════════
+                  SECTIES
+              ═══════════════════════════════════════════════════════ */}
+              <div className="space-y-14">
+ 
+                {/* ─── DATA TABEL ─── */}
+                {lesson.timeExpressions && (
+                  <section id="toc-table" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<BookOpen className="w-5 h-5 text-indigo-500" />}
+                      label={lesson.timeExpressionsLabel || ""}
+                    />
+                    <BeautifulTable
+                      headerRow={lesson.timeExpressions.header}
+                      rows={lesson.timeExpressions.rows}
+                      themeIndex={themeIndex}
+                    />
+                  </section>
+                )}
+ 
+                {/* ─── GEDETAILLEERDE UITLEG (accordions) ─── */}
+                {lesson.details && lesson.details.length > 0 && (
+                  <section id="toc-explanation" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<FileText className="w-5 h-5 text-violet-500" />}
+                      label={labels.detailedExplanation}
+                      count={lesson.details.length}
+                    />
+                    <Accordion type="single" collapsible className="space-y-3">
+                      {lesson.details.map((sec, i) => {
+                        const t = BAR_THEMES[i % BAR_THEMES.length];
+                        return (
+                          <AccordionItem
+                            key={i}
+                            value={`detail-${i}`}
+                            className={cn(
+                              "gl-card overflow-hidden rounded-2xl",
+                              "data-[state=open]:shadow-lg data-[state=open]:ring-2 data-[state=open]:ring-indigo-200 dark:data-[state=open]:ring-indigo-800/50"
+                            )}
+                          >
+                            <div className={cn("h-1.5 w-full shrink-0", t.top)} />
+                            <AccordionTrigger
+                              className={cn(
+                                "flex items-center gap-3 px-5 py-4",
+                                "hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition-colors duration-200",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-400/40",
+                                "text-left w-full"
+                              )}
+                            >
+                              <span className={cn("shrink-0 h-9 w-9 rounded-xl inline-flex items-center justify-center text-sm font-black shadow-sm", t.badge)}>
+                                {i + 1}
+                              </span>
+                              <span className={cn("flex-1 min-w-0 font-extrabold text-sm sm:text-base", t.titleText)}>
+                                {sec.title}
+                              </span>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className={cn(
+                                "px-5 pb-6 pt-1 text-slate-700 dark:text-slate-300",
+                                "prose prose-slate dark:prose-invert max-w-none",
+                                "prose-p:my-2.5 prose-p:text-[13px] sm:prose-p:text-sm prose-p:leading-relaxed",
+                                "prose-strong:font-extrabold prose-strong:text-slate-900 dark:prose-strong:text-slate-100",
+                                "prose-em:italic prose-em:font-medium prose-em:text-rose-600 dark:prose-em:text-rose-400",
+                                "prose-code:rounded-lg prose-code:bg-indigo-100 dark:prose-code:bg-indigo-900/40 prose-code:px-2 prose-code:py-0.5 prose-code:text-[11px] prose-code:font-mono prose-code:font-semibold prose-code:text-indigo-700 dark:prose-code:text-indigo-300",
+                                "prose-blockquote:border-amber-400 prose-blockquote:bg-amber-50/50 dark:prose-blockquote:bg-amber-900/10",
+                                "prose-ul:list-none prose-li:pl-5 prose-li:relative",
+                                "max-sm:prose-sm"
+                              )}>
+                                <SafeHtml html={getProcessedContent(sec.body)} />
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
+                    </Accordion>
+                  </section>
+                )}
+ 
+                {/* ─── GRAMMATICAREGELS (grid kaarten) ─── */}
+                {lesson.rulesTable && lesson.rulesTable.length > 0 && (
+                  <section id="toc-rules" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<Sparkles className="w-5 h-5 text-amber-500" />}
+                      label={labels.rules}
+                      count={lesson.rulesTable.length}
+                    />
+                    <div className="grid sm:grid-cols-2 gap-5">
+                      {lesson.rulesTable.map((r, i) => {
+                        const t = BAR_THEMES[i % BAR_THEMES.length];
+                        return (
+                          <div
+                            key={i}
+                            className="gl-card group relative flex flex-col rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-400"
+                          >
+                            {/* Sheen-effect bij hover */}
+                            <div className={cn("h-2 shrink-0 relative overflow-hidden", t.top)}>
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+                            </div>
+ 
+                            <div className="flex-1 p-5 sm:p-6 space-y-4">
+                              <div className="flex items-start gap-3">
+                                <span className={cn("shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black shadow-md ring-2 ring-white/80 dark:ring-slate-700/80", t.badge)}>
+                                  {i + 1}
+                                </span>
+                                <h3 className={cn("font-sans font-extrabold text-base sm:text-lg leading-snug pt-1", t.titleText)}>
+                                  {r.rule}
+                                </h3>
+                              </div>
+ 
+                              {/* Structuur */}
+                              <div className="rounded-xl bg-slate-50/90 dark:bg-slate-900/50 p-3.5 ring-1 ring-slate-200/50 dark:ring-slate-700/30">
+                                <p className="text-[9px] font-black uppercase tracking-[0.25em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
+                                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: t.accent }} />
+                                  {labels.structure}
+                                </p>
+                                <div className={cn("text-sm leading-relaxed", t.chipText)}>
+                                  <RenderMarkdown text={r.structure} />
+                                </div>
+                              </div>
+ 
+                              {/* Voorbeeld */}
+                              <div className="rounded-xl bg-amber-50/80 dark:bg-amber-900/15 p-3.5 ring-1 ring-amber-200/50 dark:ring-amber-700/20">
+                                <p className="text-[9px] font-black uppercase tracking-[0.25em] mb-2 flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                  {labels.example}
+                                </p>
+                                <div className={cn("text-sm leading-relaxed", t.chipTextDark)}>
+                                  <RenderMarkdown text={r.example} />
+                                </div>
+                              </div>
+ 
+                              {/* Gebruik */}
+                              <div className="rounded-xl bg-sky-50/70 dark:bg-sky-900/10 p-3.5 ring-1 ring-sky-200/40 dark:ring-sky-700/20">
+                                <p className="text-[9px] font-black uppercase tracking-[0.25em] mb-2 flex items-center gap-1.5 text-sky-600 dark:text-sky-400">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
+                                  {labels.usage}
+                                </p>
+                                <div className={cn("text-sm leading-relaxed", t.chipTextMedium)}>
+                                  <RenderMarkdown text={r.usage} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
+ 
+                {/* ─── BELANGRIJKE PUNTEN (callouts) ─── */}
+                {lesson.callouts && lesson.callouts.length > 0 && (
+                  <section id="toc-callouts" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<AlertCircle className="w-5 h-5 text-amber-500" />}
+                      label={(lesson as any).calloutsLabel || labels.importantPoints}
+                      count={lesson.callouts.length}
+                    />
+                    <div className="space-y-3">
+                      {lesson.callouts.map((c, i) => (
                         <div
-                          className={cn(
-                            "px-5 pb-5 space-y-0.5 text-slate-700 dark:text-slate-300",
-                            "prose prose-slate dark:prose-invert max-w-none",
-                            "prose-p:my-2.5 prose-p:text-[13px] sm:prose-p:text-sm prose-p:leading-relaxed",
-                            "prose-strong:font-extrabold prose-strong:text-slate-900 prose-strong:dark:text-slate-100",
-                            "prose-em:italic prose-em:font-medium prose-em:text-rose-600 prose-em:dark:text-rose-400",
-                            "prose-code:rounded-lg prose-code:bg-indigo-100 prose-code:dark:bg-indigo-900/40 prose-code:px-2 prose-code:py-0.5 prose-code:text-[11px] sm:prose-code:text-xs prose-code:font-mono prose-code:font-semibold prose-code:tracking-wide prose-code:text-indigo-700 prose-code:dark:text-indigo-300",
-                            "prose-blockquote:my-3 prose-blockquote:border-l-4 prose-blockquote:border-amber-400 prose-blockquote:bg-amber-50/50 prose-blockquote:dark:bg-amber-900/10 prose-blockquote:rounded-r-xl prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:text-slate-600 prose-blockquote:dark:text-slate-400",
-                            "prose-ul:my-3 prose-ul:space-y-1.5 prose-ul:list-none",
-                            "prose-li:ml-1.5 prose-li:relative prose-li:pl-5 prose-li:text-slate-700 prose-li:dark:text-slate-300 prose-li:text-sm sm:prose-li:text-base",
-                            "prose-li:before:content-[''] prose-li:before:absolute prose-li:before:left-0 prose-li:before:top-2 prose-li:before:w-1.5 prose-li:before:h-1.5 prose-li:before:rounded-full prose-li:before:bg-indigo-400 prose-li:before:dark:bg-indigo-500",
-                            "max-sm:prose-sm"
-                          )}
+                          key={i}
+                          className="gl-card rounded-2xl border-l-4 border-amber-400 dark:border-amber-500 overflow-hidden"
                         >
-                          <SafeHtml html={getProcessedContent(sec.body)} />
+                          <div className="flex items-start gap-4 px-5 py-4">
+                            <div className="shrink-0 mt-0.5 w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                              <Lightbulb className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              {c.label && (
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600 dark:text-amber-500 mb-1">
+                                  {c.label}
+                                </p>
+                              )}
+                              <div className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+                                <RenderMarkdown text={c.text} />
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  );
-                })}
-              </Accordion>
-            </section>
-          )}
-
-          {/* ═══════════ GRAMMATICAREGELS (kaartjes) ═══════════ */}
-          {lesson.rulesTable && lesson.rulesTable.length > 0 && (
-            <section id="rules" className="scroll-mt-20">
-              <SectionTitle
-                icon={<Sparkles className="w-6 h-6 text-amber-500" />}
-                label={labels.rules}
-              />
-              <div className="grid sm:grid-cols-2 gap-6 mt-6">
-                {lesson.rulesTable.map((r, i) => {
-                  const t = barThemes[i % barThemes.length];
-                  return (
-                    <div
-                      key={i}
-                      className="gl-card group relative flex flex-col rounded-2xl overflow-hidden hover:-translate-y-1.5 transition-all duration-500"
-                    >
-                      <div className={`h-2.5 shrink-0 ${t.top} relative`}>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-out" />
-                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-1 rounded-full blur-sm opacity-60" style={{ backgroundColor: t.accent }} />
-                      </div>
-
-                      <div className="flex-1 p-5 sm:p-6">
-                        <div className="flex items-center gap-3 mb-4">
-                          <span className={`shrink-0 w-10 h-10 rounded-2xl ${t.badge} flex items-center justify-center text-lg font-black shadow-md ring-2 ring-white/80 dark:ring-slate-700/80`}>
+                      ))}
+                    </div>
+                  </section>
+                )}
+ 
+                {/* ─── VEELGEMAAKTE FOUTEN ─── */}
+                {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
+                  <section id="toc-mistakes" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<Target className="w-5 h-5 text-rose-500" />}
+                      label={labels.commonMistakes}
+                      count={lesson.commonMistakes.length}
+                    />
+                    <div className="gl-table-wrap overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-slate-700/50 shadow-lg">
+                      <table className="w-full border-collapse min-w-[520px]">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600">
+                            <th className="px-5 py-4 text-left text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em] text-white rounded-tl-2xl w-[30%]">
+                              {labels.incorrect}
+                            </th>
+                            <th className="px-5 py-4 text-left text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em] text-white w-[30%]">
+                              {labels.correct}
+                            </th>
+                            <th className="px-5 py-4 text-left text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em] text-white rounded-tr-2xl w-[40%]">
+                              {labels.why}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {lesson.commonMistakes.map((m, i) => (
+                            <tr
+                              key={i}
+                              className={cn(
+                                "transition-colors duration-150",
+                                i % 2 === 1 ? "bg-slate-50/70 dark:bg-slate-800/40" : "bg-white dark:bg-slate-900/20"
+                              )}
+                            >
+                              <td className="px-5 py-4 text-sm font-semibold text-rose-600 dark:text-rose-400 line-through border-t border-slate-100 dark:border-slate-700/30 align-top leading-relaxed">
+                                {m.incorrect}
+                              </td>
+                              <td className="px-5 py-4 text-sm font-bold text-emerald-700 dark:text-emerald-400 border-t border-slate-100 dark:border-slate-700/30 align-top leading-relaxed">
+                                {m.correct}
+                              </td>
+                              <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300 italic border-t border-slate-100 dark:border-slate-700/30 align-top leading-relaxed">
+                                <RenderMarkdown text={m.explanation} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
+ 
+                {/* ─── SNELLE HERHALING ─── */}
+                {lesson.review && lesson.review.length > 0 && (
+                  <section id="toc-review" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                      label={(lesson as any).reviewLabel || labels.quickReview}
+                      count={lesson.review.length}
+                    />
+                    <div className="gl-card rounded-2xl overflow-hidden divide-y divide-slate-100 dark:divide-slate-700/40">
+                      {lesson.review.map((item, i) => (
+                        <div key={i} className="flex items-start gap-4 px-5 py-4 hover:bg-slate-50/60 dark:hover:bg-slate-700/20 transition-colors duration-150">
+                          <span className="shrink-0 mt-0.5 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-[11px] font-black text-indigo-600 dark:text-indigo-400">
                             {i + 1}
                           </span>
-                          <h3 className={`font-sans font-extrabold text-base sm:text-lg leading-snug ${t.titleText}`}>
-                            {r.rule}
-                          </h3>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div className="rounded-xl bg-slate-50/80 dark:bg-slate-900/50 p-3.5 ring-1 ring-slate-200/60 dark:ring-slate-700/40">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
-                              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accent }} />
-                              {labels.structure}
-                            </p>
-                            <div className={`text-sm leading-relaxed ${t.chipText}`}>
-                              <RenderMarkdown text={r.structure} />
-                            </div>
-                          </div>
-                          <div className="rounded-xl bg-amber-50/70 dark:bg-amber-900/20 p-3.5 ring-1 ring-amber-200/60 dark:ring-amber-700/30">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accentDark }}>
-                              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accentDark }} />
-                              {labels.example}
-                            </p>
-                            <div className={`text-sm leading-relaxed ${t.chipTextDark}`}>
-                              <RenderMarkdown text={r.example} />
-                            </div>
-                          </div>
-                          <div className="rounded-xl bg-blue-50/70 dark:bg-blue-900/20 p-3.5 ring-1 ring-blue-200/60 dark:ring-blue-700/30">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5" style={{ color: t.accent }}>
-                              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: t.accent }} />
-                              {labels.usage}
-                            </p>
-                            <div className={`text-sm leading-relaxed ${t.chipTextMedium}`}>
-                              <RenderMarkdown text={r.usage} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-white/60 dark:group-hover:ring-slate-500/30 pointer-events-none transition-all duration-500" />
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {/* ═══════════ BELANGRIJKE PUNTEN (callouts) ═══════════ */}
-          {lesson.callouts && lesson.callouts.length > 0 && (
-            <section id="callouts" className="scroll-mt-20">
-              <SectionTitle
-                icon={<AlertCircle className="w-6 h-6 text-amber-500" />}
-                label={(lesson as any).calloutsLabel || labels.importantPoints}
-              />
-              <div className="grid gap-5 mt-6 sm:grid-cols-2">
-                {lesson.callouts.map((c, i) => {
-                  const Icon = calloutIcons[i % calloutIcons.length];
-                  const col = calloutColors[i % calloutColors.length];
-                  return (
-                    <div
-                      key={i}
-                      className="gl-card group relative rounded-2xl overflow-hidden hover:scale-[1.01] transition-all duration-500"
-                    >
-                      <div className="absolute left-0 top-0 bottom-0 w-1.5 flex flex-col">
-                        <div className={`w-full flex-1 ${col.border} relative`} style={{ backgroundColor: col.icon }}>
-                          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-8 rounded-full blur-md opacity-40" style={{ backgroundColor: col.icon }} />
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-4 pl-7 p-5">
-                        <div className="relative shrink-0">
-                          <div className="absolute inset-0 rounded-2xl blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500" style={{ backgroundColor: col.icon }} />
-                          <div className={cn(
-                            "relative w-11 h-11 rounded-2xl flex items-center justify-center shadow-md ring-1",
-                            "bg-white/90 ring-white/50",
-                            "dark:bg-slate-900/80 dark:ring-slate-700/50",
-                          )}>
-                            <Icon className="w-5 h-5" style={{ color: col.icon }} />
-                          </div>
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500 mb-1.5">
-                            {c.label}
+                          <p className="flex-1 text-sm sm:text-[15px] leading-relaxed text-slate-800 dark:text-slate-200">
+                            <RenderMarkdown text={item} />
                           </p>
-                          <div className="text-sm leading-relaxed text-slate-700 dark:text-slate-200 font-medium">
-                            <RenderMarkdown text={c.text} />
-                          </div>
                         </div>
-                      </div>
-
-                      <div className="absolute -top-6 -right-6 w-12 h-12 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" style={{ backgroundColor: col.icon }} />
+                      ))}
                     </div>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {/* ═══════════ VEELGEMAAKTE FOUTEN ═══════════ */}
-          {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
-            <section id="mistakes" className="scroll-mt-20">
-              <SectionTitle
-                icon={<Target className="w-6 h-6 text-rose-500" />}
-                label={labels.commonMistakes}
-              />
-              <div className="gl-table-wrap overflow-x-auto rounded-2xl mt-4">
-                <table className="w-full border-collapse min-w-[480px] sm:min-w-[600px]">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600">
-                      <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
-                        {labels.incorrect}
-                      </th>
-                      <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
-                        {labels.correct}
-                      </th>
-                      <th className="px-5 py-3.5 text-left text-xs sm:text-sm font-black uppercase tracking-wider text-white">
-                        {labels.why}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {lesson.commonMistakes.map((m, i) => (
-                      <tr
-                        key={i}
-                        className={
-                          i % 2 === 1
-                            ? "bg-slate-50/60 dark:bg-slate-700/20"
-                            : "bg-white dark:bg-slate-800/10"
-                        }
-                      >
-                        <td className="px-5 py-3.5 text-sm text-rose-600 dark:text-rose-400 line-through font-medium border-t border-slate-100 dark:border-slate-700/30">
-                          {m.incorrect}
-                        </td>
-                        <td className="px-5 py-3.5 text-sm text-emerald-700 dark:text-emerald-400 font-bold border-t border-slate-100 dark:border-slate-700/30">
-                          {m.correct}
-                        </td>
-                        <td className="px-5 py-3.5 text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed border-t border-slate-100 dark:border-slate-700/30">
-                          <RenderMarkdown text={m.explanation} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
-
-          {/* ═══════════ SNELLE HERHALING ═══════════ */}
-          {lesson.review && lesson.review.length > 0 && (
-            <section id="review" className="scroll-mt-20">
-              <SectionTitle
-                icon={<CheckCircle2 className="w-6 h-6 text-emerald-500" />}
-                label={(lesson as any).reviewLabel || labels.quickReview}
-              />
-              <div className="space-y-4 mt-6">
-                {lesson.review.map((item, i) => {
-                  const rawColorClasses = reviewColors[i % reviewColors.length];
-                  const accentBorderClass = rawColorClasses
-                    .split(' ')
-                    .find((c) => c.startsWith('border-l-'));
-                  const accentColor = accentBorderClass
-                    ? accentBorderClass.replace('border-l-', '')
-                    : 'emerald-500';
-                  const badgeClasses = reviewBadgeColors[i % reviewBadgeColors.length];
-                  return (
-                    <div
-                      key={i}
-                      className="gl-card group relative flex items-center gap-5 rounded-2xl overflow-hidden hover:translate-x-1 transition-all duration-500 pl-7 pr-5 py-5"
+                  </section>
+                )}
+ 
+                {/* ─── OEFENVRAGEN ─── */}
+                {lesson.qa && lesson.qa.length > 0 && (
+                  <section id="toc-qa" className="scroll-mt-20">
+                    <SectionTitle
+                      icon={<HelpCircle className="w-5 h-5 text-indigo-500" />}
+                      label={(lesson as any).qaLabel || labels.practiceQuestions}
+                      count={lesson.qa.length}
+                    />
+                    <QASection qa={lesson.qa} labels={labels} />
+                  </section>
+                )}
+ 
+                {/* ─── ACTIEKNOPPEN ─── */}
+                <div className="flex flex-col gap-3 sm:flex-row pt-2 pb-4">
+                  {completed ? (
+                    <span className="inline-flex items-center gap-2.5 rounded-2xl px-6 py-3.5 text-sm font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-300 dark:border-emerald-700 shadow-md">
+                      <CheckCircle2 className="w-5 h-5" />
+                      {labels.completed}
+                      <span className="ml-auto text-xs font-black bg-emerald-200/70 dark:bg-emerald-800/50 px-2 py-0.5 rounded-lg">
+                        +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
+                      </span>
+                    </span>
+                  ) : (
+                    <button
+                      onClick={onComplete}
+                      className="inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:brightness-110 active:scale-[0.97] transition-all"
                     >
-                      <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-${accentColor} overflow-hidden`}>
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40 -translate-y-full group-hover:translate-y-full transition-transform duration-700 ease-out" />
-                        <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-10 rounded-full blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500 bg-${accentColor}`} />
-                      </div>
-                      <div className="relative shrink-0">
-                        <div className={`absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 bg-${accentColor}`} />
-                        <span className={`relative flex items-center justify-center w-10 h-10 rounded-full shadow-md ring-1 ring-white/60 dark:ring-slate-700/60 text-sm font-black ${badgeClasses}`}>
-                          {i + 1}
-                        </span>
-                      </div>
-                      <p className="flex-1 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-semibold">
-                        <RenderMarkdown text={item} />
-                      </p>
-                    </div>
-                  );
-                })}
+                      <CheckCircle2 className="w-4.5 h-4.5" />
+                      {labels.markComplete}
+                      <span className="ml-auto text-xs font-black bg-white/20 px-2 py-0.5 rounded-lg">
+                        +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
+                      </span>
+                    </button>
+                  )}
+                  {hasTest && (
+                    <button
+                      onClick={onTest}
+                      className="inline-flex items-center gap-2.5 rounded-2xl border-2 border-amber-400/70 bg-gradient-to-br from-amber-50 to-white dark:from-amber-900/10 dark:to-slate-800/40 px-7 py-3.5 text-sm font-bold text-amber-700 dark:text-amber-300 hover:border-amber-400 hover:bg-amber-50/90 dark:hover:bg-amber-900/20 active:scale-[0.97] transition-all shadow-md"
+                    >
+                      <Trophy className="w-4.5 h-4.5" />
+                      {labels.takeTest}
+                    </button>
+                  )}
+                </div>
+ 
+                <AdSlot className="mt-2" />
               </div>
-            </section>
-          )}
-
-          {/* ═══════════ OEFENVRAGEN ═══════════ */}
-          {lesson.qa && lesson.qa.length > 0 && (
-            <section id="qa" className="scroll-mt-20">
-              <SectionTitle
-                icon={<HelpCircle className="w-6 h-6 text-indigo-500" />}
-                label={(lesson as any).qaLabel || labels.practiceQuestions}
-              />
-              <QASection qa={lesson.qa} labels={labels} />
-            </section>
-          )}
-
-          {/* ═══════════ ACTIEKNOPPEN ═══════════ */}
-          <div className="flex flex-col gap-3 sm:flex-row pt-4">
-            {completed ? (
-              <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-400 dark:border-emerald-500 shadow-md">
-                <CheckCircle2 className="w-5 h-5" />
-                {labels.completed} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
-              </span>
-            ) : (
-              <button
-                onClick={onComplete}
-                className="rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-xl hover:shadow-indigo-500/40 hover:brightness-110 active:scale-[0.97]"
-              >
-                {labels.markComplete} · +{XP_REWARDS.GRAMMAR_LESSON_COMPLETE} XP
-              </button>
-            )}
-            {hasTest && (
-              <button
-                onClick={onTest}
-                className="rounded-2xl border-2 border-amber-400/60 bg-gradient-to-br from-amber-50 to-white dark:from-amber-900/10 dark:to-slate-800/40 px-7 py-3 text-sm font-bold text-amber-700 dark:text-amber-300 transition-all hover:bg-amber-50/80 dark:hover:bg-amber-900/20 hover:border-amber-400 active:scale-[0.97] shadow-md"
-              >
-                {labels.takeTest}
-              </button>
-            )}
-          </div>
-          <AdSlot className="mt-4" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── QA Component ─────────────────────────────────────────────────── */
-function QASection({ qa, labels }: { qa: { question: string; answer: string }[]; labels: Record<string, string> }) {
-  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
-  const toggle = (i: number) =>
-    setRevealed((prev) => ({ ...prev, [i]: !prev[i] }));
-    
-  return (
-    <div className="space-y-3 mt-4">
-      {qa.map((item, i) => (
-        <div
-          key={i}
-          className="gl-card rounded-2xl overflow-hidden transition-all"
-        >
-          <div className="p-5 border-b border-slate-100 dark:border-slate-700/30">
-            <p className="text-xs font-black text-slate-400 dark:text-slate-500 mb-1.5 uppercase tracking-wider">
-              {labels.question}
-            </p>
-            <p className="text-sm text-slate-800 dark:text-slate-200 font-semibold leading-relaxed">
-              <RenderMarkdown text={item.question} />
-            </p>
-          </div>
-          <div className="p-5 bg-slate-50/50 dark:bg-slate-800/30">
-            <button
-              onClick={() => toggle(i)}
-              className={`font-bold rounded-xl px-5 py-2.5 text-sm transition-all duration-300 ${
-                revealed[i]
-                  ? "text-emerald-700 dark:text-emerald-400 bg-emerald-100/80 dark:bg-emerald-900/30 shadow-inner"
-                  : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
-              }`}
-            >
-              {revealed[i] ? (
-                <span>
-                  <RenderMarkdown text={item.answer} />
-                </span>
-              ) : (
-                labels.tapToReveal
-              )}
-            </button>
+            </main>
           </div>
         </div>
-      ))}
-    </div>
+    </>
   );
 }
-
+ 
 export default React.memo(GrammarLessonDesign);
+ 
