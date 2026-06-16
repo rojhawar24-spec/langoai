@@ -81,7 +81,7 @@ export interface VocabWord {
 export interface TestItem {
   id: string;
   title: string;
-  level?: "A1" | "A2" | "B1" | "B2" | "C1";
+  level?:  | "A0" | "A1" | "A2" | "B1" | "B2" | "C1";
   passScore: number;
   languageCode: string;
   topic: string;
