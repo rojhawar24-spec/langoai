@@ -1,39 +1,15 @@
 {
-  "id": 1,
-  "title": "Greetings & Introductions",
+  "id": 27,
+  "title": "Alle Oefentypes",
   "levels": [
     {
       "level": 1,
       "questions": [
         {
           "type": "translation",
-          "question": "Good morning",
-          "answer": "Goedemorgen",
+          "question": "Vertaal 'good morning'",
+          "answer": "goedemorgen",
           "options": []
-        },
-        {
-          "type": "translation",
-          "question": "Good evening",
-          "answer": "Goedenavond",
-          "options": []
-        },
-        {
-          "type": "multiple-choice",
-          "question": "What does 'Hallo' mean?",
-          "answer": "Hello",
-          "options": ["Hello", "Goodbye", "Please", "Sorry"]
-        },
-        {
-          "type": "translation",
-          "question": "Thank you",
-          "answer": "Dank je wel",
-          "options": []
-        },
-        {
-          "type": "multiple-choice",
-          "question": "'Tot ziens' means:",
-          "answer": "See you later",
-          "options": ["See you later", "Good morning", "Thank you", "Please"]
         }
       ]
     },
@@ -41,34 +17,331 @@
       "level": 2,
       "questions": [
         {
-          "type": "translation",
-          "question": "My name is...",
-          "answer": "Ik heet...",
-          "options": []
-        },
-        {
-          "type": "translation",
-          "question": "How are you?",
-          "answer": "Hoe gaat het?",
-          "options": []
-        },
+          "type": "multiple-choice",
+          "question": "Ik ___ naar school",
+          "answer": "ga",
+          "options": ["ga", "gaat", "gaan", "ging"]
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "questions": [
         {
           "type": "fill-blank",
-          "question": "Ik ___ Roj. (I am Roj)",
-          "answer": "ben",
+          "question": "Ik eet een ___",
+          "answer": "appel",
           "options": []
-        },
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "questions": [
+        {
+          "type": "composition",
+          "question": "Schrijf: 'Ik hou van jou'",
+          "answer": "Ik hou van jou",
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "questions": [
+        {
+          "type": "listening",
+          "question": "Wat hoor je?",
+          "answer": "Ik drink water",
+          "audio": "/audio/nl/drink-water.mp3",
+          "options": ["Ik drink water", "Ik eet brood", "Ik loop snel"]
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "questions": [
+        {
+          "type": "picture-sentence",
+          "question": "Welke zin past bij het plaatje?",
+          "answer": "Het is een fiets",
+          "imageUrl": "/img/nl/fiets.jpg",
+          "options": ["Het is een auto", "Het is een fiets", "Het is een bus"]
+        }
+      ]
+    },
+    {
+      "level": 7,
+      "questions": [
+        {
+          "type": "qa",
+          "question": "Wat is jouw naam?",
+          "answer": "Mijn naam is Anna",
+          "options": ["Mijn naam is Anna", "Ik ben 20", "Goed, dank je"]
+        }
+      ]
+    },
+    {
+      "level": 8,
+      "questions": [
+        {
+          "type": "who-does-what",
+          "question": "Wie doet wat? Sleep het label naar de juiste persoon",
+          "answer": "juist",
+          "images": ["/img/nl/leraar.jpg", "/img/nl/dokter.jpg"],
+          "labels": ["leraar", "dokter"]
+        }
+      ]
+    },
+    {
+      "level": 9,
+      "questions": [
+        {
+          "type": "order-sentences",
+          "question": "Zet de woorden in de juiste volgorde",
+          "answer": "Ik ga naar school",
+          "sentences": ["school", "naar", "ga", "Ik"],
+          "correctOrder": [3, 2, 1, 0],
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 10,
+      "questions": [
+        {
+          "type": "opposites",
+          "question": "groot",
+          "answer": "klein",
+          "options": ["klein", "lang", "dik", "hoog"]
+        }
+      ]
+    },
+    {
+      "level": 11,
+      "questions": [
+        {
+          "type": "listen-answer",
+          "question": "Wat hoor je?",
+          "answer": "Ik woon in Amsterdam",
+          "audio": "/audio/nl/woon-amsterdam.mp3",
+          "options": ["Ik woon in Amsterdam", "Ik woon in Rotterdam", "Ik kom uit Utrecht"]
+        }
+      ]
+    },
+    {
+      "level": 12,
+      "questions": [
+        {
+          "type": "fill-dialogue",
+          "question": "Vul het gesprek aan",
+          "answer": "Goed",
+          "dialogue": [
+            { "speaker": "A", "text": "Hoi, hoe gaat het?" },
+            { "speaker": "B", "text": "___", "isBlank": true },
+            { "speaker": "A", "text": "Fijn om te horen!" }
+          ],
+          "options": ["Goed", "Slecht", "Geen idee"]
+        }
+      ]
+    },
+    {
+      "level": 13,
+      "questions": [
+        {
+          "type": "odd-one-out",
+          "question": "Welk woord hoort er niet bij?",
+          "answer": "water",
+          "options": ["brood", "kaas", "water", "ham"]
+        }
+      ]
+    },
+    {
+      "level": 14,
+      "questions": [
+        {
+          "type": "complete-story",
+          "question": "Ik doe de deur open. Buiten is het koud, dus ik...",
+          "answer": "trek mijn jas aan",
+          "storyLines": ["Ik doe de deur open.", "Buiten is het koud, dus ik..."],
+          "options": ["trek mijn jas aan", "ga zwemmen", "eet een ijsje"]
+        }
+      ]
+    },
+    {
+      "level": 15,
+      "questions": [
+        {
+          "type": "correct-the-error",
+          "question": "Ik drinkt water",
+          "answer": "drink",
+          "errorWord": "drinkt",
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 16,
+      "questions": [
+        {
+          "type": "true-false",
+          "question": "De zon draait om de aarde.",
+          "answer": "Fout",
+          "options": ["Juist", "Fout"]
+        }
+      ]
+    },
+    {
+      "level": 17,
+      "questions": [
+        {
+          "type": "listen-count",
+          "question": "Hoe vaak hoor je het woord 'water'?",
+          "answer": "3",
+          "audio": "/audio/nl/water-3x.mp3",
+          "count": 5,
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 18,
+      "questions": [
+        {
+          "type": "four-images-one-word",
+          "question": "Welk woord past bij deze vier plaatjes?",
+          "answer": "fiets",
+          "fourImages": [
+            "/img/nl/fiets1.jpg",
+            "/img/nl/fiets2.jpg",
+            "/img/nl/fiets3.jpg",
+            "/img/nl/fiets4.jpg"
+          ],
+          "options": ["auto", "fiets", "bus", "trein"]
+        }
+      ]
+    },
+    {
+      "level": 19,
+      "questions": [
+        {
+          "type": "match-pairs",
+          "question": "Koppel de woorden aan de juiste betekenis",
+          "answer": "",
+          "pairs": [
+            ["zon", "warm"],
+            ["ijs", "koud"],
+            ["regen", "nat"]
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 20,
+      "questions": [
+        {
+          "type": "sort-category",
+          "question": "Sorteer de woorden in de juiste categorie",
+          "answer": "",
+          "categories": ["Eten", "Drinken", "Dieren"],
+          "categoryAnswers": {
+            "Eten": ["brood", "appel"],
+            "Drinken": ["water", "melk"],
+            "Dieren": ["hond", "kat"]
+          },
+          "options": ["brood", "water", "hond", "appel", "melk", "kat"]
+        }
+      ]
+    },
+    {
+      "level": 21,
+      "questions": [
+        {
+          "type": "speed-tap",
+          "question": "Tik zo vaak mogelijk op het juiste woord: 'hond'",
+          "answer": "hond",
+          "options": ["hond", "kat", "muis", "paard"],
+          "timeLimit": 5
+        }
+      ]
+    },
+    {
+      "level": 22,
+      "questions": [
+        {
+          "type": "word-chain",
+          "question": "Maak een woordenketting. Startwoord: 'appel'",
+          "answer": "",
+          "chainStart": "appel",
+          "options": ["lam", "melk", "kip", "peer"]
+        }
+      ]
+    },
+    {
+      "level": 23,
+      "questions": [
+        {
+          "type": "click-word",
+          "question": "Klik op het juiste woord in de zin",
+          "answer": "school",
+          "sentenceForClick": "Ik ga elke dag naar school",
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 24,
+      "questions": [
+        {
+          "type": "order-sentences",
+          "question": "Zet de zinnen in de juiste volgorde (een ochtendverhaal)",
+          "answer": "Ik sta op. Ik eet ontbijt. Ik ga naar school.",
+          "sentences": [
+            "Ik eet ontbijt.",
+            "Ik ga naar school.",
+            "Ik sta op."
+          ],
+          "correctOrder": [2, 0, 1],
+          "options": []
+        }
+      ]
+    },
+    {
+      "level": 25,
+      "questions": [
+        {
+          "type": "qa",
+          "question": "Wat is je lievelingsdier?",
+          "answer": "hond",
+          "options": ["hond", "appel", "tafel"]
+        }
+      ]
+    },
+    {
+      "level": 26,
+      "questions": [
+        {
+          "type": "picture-sentence",
+          "question": "Welke zin beschrijft het plaatje?",
+          "answer": "De man loopt op straat",
+          "imageUrl": "/img/nl/lopen-straat.jpg",
+          "options": [
+            "De man loopt op straat",
+            "De vrouw fietst in het park",
+            "Het kind zwemt in zee"
+          ]
+        }
+      ]
+    },
+    {
+      "level": 27,
+      "questions": [
         {
           "type": "multiple-choice",
-          "question": "'Nice to meet you':",
-          "answer": "Aangenaam",
-          "options": ["Aangenaam", "Tot ziens", "Alsjeblieft", "Dank je"]
-        },
-        {
-          "type": "translation",
-          "question": "I am from...",
-          "answer": "Ik kom uit...",
-          "options": []
+          "question": "Kies de beste afscheidsgroet",
+          "answer": "Tot ziens",
+          "options": ["Tot ziens", "Hallo", "Goedemorgen", "Welterusten"]
         }
       ]
     }

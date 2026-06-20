@@ -28,13 +28,20 @@ function markCompleted(id: string) {
   return s;
 }
 
-const LEVELS = ["A0", "A1", "A2", "B1", "B2", "C1"] as const;
+const LEVELS = ["A0", "A1", "A2", "B1", "B2", "C1", "C2"] as const;
 
 type Level = typeof LEVELS[number];
 
-const lvlToCEFR = (n: number): string => LEVELS[Math.min(Math.max(n - 1, 0), 5)];
+const lvlToCEFR = (n: number): string => LEVELS[Math.min(Math.max(n - 1, 0), LEVELS.length - 1)];
+
 const lvlColors: Record<Level, { bg: string; light: string; text: string; border: string; glow: string }> = {
-A0: { bg: "bg-rose-500", text: "text-rose-600", border: "border-rose-300", light: "bg-rose-50", glow: "shadow-rose-200" },  
+  A0: {
+    bg: "bg-rose-500",
+    light: "bg-rose-50/70 dark:bg-rose-950/30",
+    text: "text-rose-700 dark:text-rose-300",
+    border: "border-rose-200/60 dark:border-rose-800/40",
+    glow: "shadow-rose-500/20",
+  },
   A1: {
     bg: "bg-emerald-500",
     light: "bg-emerald-50/70 dark:bg-emerald-950/30",
@@ -70,6 +77,13 @@ A0: { bg: "bg-rose-500", text: "text-rose-600", border: "border-rose-300", light
     border: "border-rose-200/60 dark:border-rose-800/40",
     glow: "shadow-rose-500/20",
   },
+  C2: {
+    bg: "bg-amber-500",
+    light: "bg-amber-50/70 dark:bg-amber-950/30",
+    text: "text-amber-700 dark:text-amber-300",
+    border: "border-amber-200/60 dark:border-amber-800/40",
+    glow: "shadow-amber-500/20",
+  },
 };
 
 export default function GrammarPage() {
@@ -80,7 +94,7 @@ export default function GrammarPage() {
   const [allLessons, setAllLessons] = useState<GrammarLessonMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [completed, setCompleted] = useState<Set<string>>(getCompleted);
-  const [activeLevel, setActiveLevel] = useState<Level>("A1");
+  const [activeLevel, setActiveLevel] = useState<Level>("A0");
   const [selectedLesson, setSelectedLesson] = useState<GrammarLesson | null>(null);
   const [search, setSearch] = useState("");
   const [celebrate, setCelebrate] = useState(false);
@@ -111,7 +125,9 @@ export default function GrammarPage() {
             <div className="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-slate-800"></div>
             <div className="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
           </div>
-          <p className="text-sm font-medium tracking-wide text-slate-500 dark:text-slate-400 animate-pulse">Lessen laden...</p>
+          <p className="text-sm font-medium tracking-wide text-slate-500 dark:text-slate-400 animate-pulse">
+            Lessen laden...
+          </p>
         </div>
       </div>
     );
@@ -157,7 +173,13 @@ export default function GrammarPage() {
     return (
       <>
         {celebrate && <Celebration newLevel={newLvl} onDone={() => setCelebrate(false)} />}
-        <Suspense fallback={<div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-950"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-indigo-500"></div></div>}>
+        <Suspense
+          fallback={
+            <div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-indigo-500"></div>
+            </div>
+          }
+        >
           <GrammarLessonDesign
             lesson={selectedLesson}
             onBack={() => setSelectedLesson(null)}
@@ -175,19 +197,22 @@ export default function GrammarPage() {
 
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-      
-      {/* --- Premium Mesh Gradient Background --- */}
+      {/* Achtergrond gloed */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-indigo-400/20 blur-[100px] dark:bg-indigo-600/10" />
         <div className="absolute top-1/3 -left-20 h-[400px] w-[400px] rounded-full bg-emerald-400/20 blur-[100px] dark:bg-emerald-600/10" />
         <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-violet-400/20 blur-[100px] dark:bg-violet-600/10" />
-        {/* Subtle noise texture overlay for premium feel */}
-        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+        <div
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
 
       {celebrate && <Celebration newLevel={newLvl} onDone={() => setCelebrate(false)} />}
 
-      {/* --- Glassmorphic Sticky Header --- */}
+      {/* Sticky Header */}
       <div className="sticky top-0 z-30 border-b border-slate-200/50 bg-white/60 backdrop-blur-xl dark:border-slate-800/50 dark:bg-slate-950/60">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <button
@@ -195,7 +220,9 @@ export default function GrammarPage() {
             className="group flex items-center gap-2 text-sm font-semibold text-slate-500 transition-all hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 transition-colors group-hover:bg-indigo-50 dark:bg-slate-800 dark:group-hover:bg-indigo-950/50">
-              <svg className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+              <svg className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+              </svg>
             </div>
             <span className="hidden sm:inline">Dashboard</span>
           </button>
@@ -209,22 +236,27 @@ export default function GrammarPage() {
                 {completedCount}<span className="text-slate-400 font-normal">/{allLessons.length}</span>
               </span>
               <div className="relative h-2 w-20 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-                <div 
-                  className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all duration-700 ease-out shadow-[0_0_12px_rgba(16,185,129,0.5)]" 
-                  style={{ width: `${pct}%` }} 
+                <div
+                  className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all duration-700 ease-out shadow-[0_0_12px_rgba(16,185,129,0.5)]"
+                  style={{ width: `${pct}%` }}
                 />
               </div>
               <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">{pct}%</span>
             </div>
           </div>
 
-          <div className="w-10 sm:w-20" /> {/* Spacer for perfect centering */}
+          <div className="w-10 sm:w-20" />
         </div>
 
-        {/* --- Search & Level Filters --- */}
+        {/* Zoeken & Filters */}
         <div className="mx-auto max-w-5xl px-4 pb-4">
           <div className="relative mb-4 group">
-            <svg className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-indigo-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -259,10 +291,8 @@ export default function GrammarPage() {
         </div>
       </div>
 
-      {/* --- Main Content Area --- */}
+      {/* Inhoud */}
       <div className="relative mx-auto mt-8 max-w-3xl px-4 pb-32">
-        
-        {/* Active Level Info Banner */}
         {!search && (
           <div className={`mb-8 flex items-center justify-between rounded-2xl border px-5 py-4 backdrop-blur-sm ${cls.light} ${cls.border}`}>
             <div className="flex items-center gap-4">
@@ -280,7 +310,9 @@ export default function GrammarPage() {
         {filteredLessons.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-white/40 py-20 text-center dark:border-slate-800 dark:bg-slate-900/40 backdrop-blur-sm">
             <div className="mb-4 rounded-full bg-slate-100 p-4 dark:bg-slate-800">
-              <svg className="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <svg className="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </div>
             <p className="text-lg font-bold text-slate-700 dark:text-slate-200">Geen lessen gevonden</p>
             <p className="mt-1 text-sm text-slate-500">Probeer een andere zoekterm of kies een ander niveau.</p>
@@ -302,16 +334,16 @@ export default function GrammarPage() {
                         : "border-slate-200/60 bg-white/60 hover:border-indigo-300/80 hover:shadow-indigo-500/10 dark:border-slate-800/60 dark:bg-slate-900/40 dark:hover:border-indigo-500/40 dark:hover:shadow-indigo-500/10 backdrop-blur-md"
                     }`}
                   >
-                    {/* Decorative side accent bar */}
                     <div className={`absolute left-0 top-0 bottom-0 w-1.5 transition-all duration-300 ${done ? 'bg-emerald-500' : 'bg-transparent group-hover:bg-indigo-500'}`} />
 
                     <div className="flex items-start gap-4">
-                      {/* Icon / Status Circle */}
-                      <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-all duration-300 ${
-                        done 
-                          ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400" 
-                          : `${levelColor.light} ${levelColor.text} group-hover:scale-105`
-                      }`}>
+                      <div
+                        className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-all duration-300 ${
+                          done
+                            ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400"
+                            : `${levelColor.light} ${levelColor.text} group-hover:scale-105`
+                        }`}
+                      >
                         {done ? (
                           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                         ) : (
@@ -319,7 +351,6 @@ export default function GrammarPage() {
                         )}
                       </div>
 
-                      {/* Text Content */}
                       <div className="flex-1 min-w-0 pt-0.5">
                         <div className="mb-2 flex flex-wrap items-center gap-2">
                           <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm ${levelColor.bg}`}>
@@ -340,7 +371,6 @@ export default function GrammarPage() {
                         </h3>
                       </div>
 
-                      {/* Hover Arrow */}
                       <div className="mt-2 flex h-9 w-9 items-center justify-center rounded-full bg-slate-50 text-slate-300 transition-all duration-300 group-hover:bg-indigo-50 group-hover:text-indigo-500 dark:bg-slate-800 dark:text-slate-600 dark:group-hover:bg-indigo-900/30 dark:group-hover:text-indigo-400">
                         <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
