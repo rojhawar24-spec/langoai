@@ -1,11 +1,6 @@
 import { kv } from "@vercel/kv";
 import { randomBytes } from "crypto";
-
-function setCors(res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-}
+import { setCors, rateLimit } from "./_helpers.js";
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
@@ -14,25 +9,20 @@ function normalizeEmail(email) {
 function isRecentPaymentForSession(payment, session) {
   const paymentTime = new Date(payment.receivedAt || 0).getTime();
   const sessionTime = new Date(session.createdAt || 0).getTime();
-
   if (!paymentTime || !sessionTime) return false;
-
   const fiveMinutesBeforeSession = sessionTime - 5 * 60 * 1000;
   const twoHoursAfterSession = sessionTime + 2 * 60 * 60 * 1000;
-
   return paymentTime >= fiveMinutesBeforeSession && paymentTime <= twoHoursAfterSession;
 }
 
 function isCorrectPayment(payment, session, expectedAmount, sessionId) {
   if (!payment) return false;
-
   const paymentEmail = normalizeEmail(payment.payerEmail);
   const sessionEmail = normalizeEmail(session.payerEmail);
   const sameEmail = paymentEmail && paymentEmail === sessionEmail;
   const messageText = `${payment.message || ""} ${payment.searchText || ""}`.toLowerCase();
   const messageHasSession = messageText.includes(String(sessionId).toLowerCase());
   const recentFallback = !paymentEmail && isRecentPaymentForSession(payment, session);
-
   return (
     payment.verified === true &&
     payment.claimed !== true &&
@@ -54,25 +44,12 @@ async function unlockPayment(payment, session, sessionId, paymentKey, premiumDay
     { ex: 60 * 60 * 24 * premiumDays }
   );
 
-  const claimedPayment = {
-    ...payment,
-    claimed: true,
-    claimedBy: sessionId,
-    claimedAt: new Date().toISOString(),
-  };
-
+  const claimedPayment = { ...payment, claimed: true, claimedBy: sessionId, claimedAt: new Date().toISOString() };
   await kv.set(paymentKey, claimedPayment, { ex: 60 * 60 * 24 * 60 });
   await kv.set(`kofi-payment-session:${sessionId}`, claimedPayment, { ex: 60 * 60 * 24 * 60 });
-
   await kv.set(
     `kofi-session:${sessionId}`,
-    {
-      ...session,
-      status: "verified",
-      accessToken,
-      expiresAt: expiresAtIso,
-      verifiedAt: new Date().toISOString(),
-    },
+    { ...session, status: "verified", accessToken, expiresAt: expiresAtIso, verifiedAt: new Date().toISOString() },
     { ex: 60 * 60 * 24 * premiumDays }
   );
 
@@ -80,32 +57,25 @@ async function unlockPayment(payment, session, sessionId, paymentKey, premiumDay
 }
 
 export default async function handler(req, res) {
-  setCors(res);
-
+  setCors(res, req);
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
 
-  const { sessionId } = req.body || {};
-
-  if (!sessionId) {
-    return res.status(400).json({ error: "Missing Ko-fi payment session." });
+  // Rate limit: max 20 checks per minuut per IP (voorkomt brute-force op sessionId)
+  const rl = rateLimit(req, { maxRequests: 20, windowMs: 60_000 });
+  if (!rl.ok) {
+    res.setHeader("Retry-After", "60");
+    return res.status(429).json({ error: "Too many requests." });
   }
+
+  const { sessionId } = req.body || {};
+  if (!sessionId) return res.status(400).json({ error: "Missing Ko-fi payment session." });
 
   const session = await kv.get(`kofi-session:${sessionId}`);
-
-  if (!session) {
-    return res.status(404).json({
-      verified: false,
-      error: "Payment session expired. Start payment again.",
-    });
-  }
+  if (!session) return res.status(404).json({ verified: false, error: "Payment session expired. Start payment again." });
 
   if (session.status === "verified" && session.accessToken && session.expiresAt) {
-    return res.json({
-      verified: true,
-      accessToken: session.accessToken,
-      expiresAt: session.expiresAt,
-    });
+    return res.json({ verified: true, accessToken: session.accessToken, expiresAt: session.expiresAt });
   }
 
   const expectedAmount = parseFloat(process.env.PREMIUM_PRICE_EUR || "4.00");
@@ -119,12 +89,9 @@ export default async function handler(req, res) {
   }
 
   const paymentKeys = await kv.keys("kofi-payment:*");
-
   for (const key of paymentKeys) {
     const payment = await kv.get(key);
-
     if (!isCorrectPayment(payment, session, expectedAmount, sessionId)) continue;
-
     const unlocked = await unlockPayment(payment, session, sessionId, key, premiumDays);
     return res.json({ verified: true, ...unlocked });
   }

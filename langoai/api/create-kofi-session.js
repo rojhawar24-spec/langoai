@@ -1,11 +1,6 @@
-﻿import { kv } from "@vercel/kv";
+import { kv } from "@vercel/kv";
 import { randomBytes } from "crypto";
-
-function setCors(res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-}
+import { setCors, rateLimit } from "./_helpers.js";
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
@@ -21,13 +16,18 @@ function buildKofiUrl(amount, sessionId, payerEmail) {
 }
 
 export default async function handler(req, res) {
-  setCors(res);
-
+  setCors(res, req);
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
 
-  const payerEmail = normalizeEmail(req.body?.payerEmail);
+  // Rate limit: max 10 sessies per minuut per IP (payment endpoint)
+  const rl = rateLimit(req, { maxRequests: 10, windowMs: 60_000 });
+  if (!rl.ok) {
+    res.setHeader("Retry-After", "60");
+    return res.status(429).json({ error: "Too many requests. Probeer het over een minuut opnieuw." });
+  }
 
+  const payerEmail = normalizeEmail(req.body?.payerEmail);
   if (!payerEmail || !payerEmail.includes("@")) {
     return res.status(400).json({ error: "Enter the email you will pay with on Ko-fi." });
   }
@@ -38,13 +38,7 @@ export default async function handler(req, res) {
 
   await kv.set(
     `kofi-session:${sessionId}`,
-    {
-      status: "pending",
-      payerEmail,
-      amount,
-      currency,
-      createdAt: new Date().toISOString(),
-    },
+    { status: "pending", payerEmail, amount, currency, createdAt: new Date().toISOString() },
     { ex: 60 * 60 * 2 }
   );
 

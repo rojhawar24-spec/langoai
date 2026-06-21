@@ -34,17 +34,26 @@ export default function DashboardPage() {
     setLangChosen(localStorage.getItem(key) === "true");
   }, [user?.id, user?.username]);
  
-  const dailyGoal = useMemo(() => getDailyGoalProgress(), []);
+  const dailyGoal = useMemo(() => getDailyGoalProgress(), [user?.totalXP]);
   const { streak: computedStreak, todayActive: hasActivityToday } = useMemo(
     () => computeStreak(),
-    [user?.streak],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user?.streak, user?.lastActivityDate],
   );
-  const last7Days = useMemo(() => getLast7Days(), [user?.streak]);
- 
+  const last7Days = useMemo(
+    () => getLast7Days(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user?.streak, user?.lastActivityDate],
+  );
+
+  const totalXP = user?.totalXP;
   useEffect(() => {
     if (!user) return;
     checkBadges({ totalXP: user.totalXP, streak: computedStreak });
-  }, [user, computedStreak, checkBadges]);
+    // checkBadges intentionally excluded: het re-creëert bij elke user-update
+    // waardoor een oneindige loop ontstaat (user → checkBadges → badge → render → …)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalXP, computedStreak]);
  
   if (!user) return null;
  
@@ -57,7 +66,8 @@ export default function DashboardPage() {
  
   // Taal kiezen — ook interfacetaal instellen!
   function selectLanguage(code: string) {
-    updateProfile({ currentLanguage: code, interfaceLanguage: code });
+    // Only update the learning language — interfaceLanguage is a separate user preference
+    updateProfile({ currentLanguage: code });
     localStorage.setItem(languageChoiceKey, "true");
     setLangChosen(true);
   }
@@ -582,4 +592,3 @@ export default function DashboardPage() {
     </div>
   );
 }
- 

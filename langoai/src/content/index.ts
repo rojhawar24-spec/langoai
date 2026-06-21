@@ -1,9 +1,19 @@
 import type { GrammarLesson, VocabWord, TestItem } from "./types";
 
+// Expliciete imports zodat Vite correct kan code-splitten.
+// Template-string imports (`./grammar/${lang}/index.ts`) worden door Vite
+// NIET gesplitst — alle talen belanden in één bundle.
+
 async function loadGrammar(lang: string): Promise<GrammarLesson[]> {
   try {
-    const mod = await import(`./grammar/${lang}/index.ts`);
-    return (mod as Record<string, GrammarLesson[]>)[`${lang}Grammar`] || [];
+    switch (lang) {
+      case "nl": return (await import("./grammar/nl/index")).nlGrammar ?? [];
+      case "en": return (await import("./grammar/en/index")).enGrammar ?? [];
+      case "fr": return (await import("./grammar/fr/index")).frGrammar ?? [];
+      case "de": return (await import("./grammar/de/index")).deGrammar ?? [];
+      case "es": return (await import("./grammar/es/index")).esGrammar ?? [];
+      default: return [];
+    }
   } catch {
     return [];
   }
@@ -11,8 +21,14 @@ async function loadGrammar(lang: string): Promise<GrammarLesson[]> {
 
 async function loadWords(lang: string): Promise<VocabWord[]> {
   try {
-    const mod = await import(`./words/${lang}.ts`);
-    return (mod as Record<string, VocabWord[]>)[`${lang}Words`] || [];
+    switch (lang) {
+      case "nl": return (await import("./words/nl")).nlWords ?? [];
+      case "en": return (await import("./words/en")).enWords ?? [];
+      case "fr": return (await import("./words/fr")).frWords ?? [];
+      case "de": return (await import("./words/de")).deWords ?? [];
+      case "es": return (await import("./words/es")).esWords ?? [];
+      default: return [];
+    }
   } catch {
     return [];
   }
@@ -20,8 +36,14 @@ async function loadWords(lang: string): Promise<VocabWord[]> {
 
 async function loadTests(lang: string): Promise<TestItem[]> {
   try {
-    const mod = await import(`./tests/${lang}.ts`);
-    return (mod as Record<string, TestItem[]>)[`${lang}Tests`] || [];
+    switch (lang) {
+      case "en": return (await import("./tests/en")).enTests ?? [];
+      case "fr": return (await import("./tests/fr")).frTests ?? [];
+      case "de": return (await import("./tests/de")).deTests ?? [];
+      case "es": return (await import("./tests/es")).esTests ?? [];
+      // nl gebruikt het lazy systeem in tests/lazy.ts — geen directe import nodig
+      default: return [];
+    }
   } catch {
     return [];
   }
@@ -93,5 +115,5 @@ export const LANGUAGE_FLAGS: Record<string, string> = {
   nl: "\uD83C\uDDF3\uD83C\uDDF1",
   fr: "\uD83C\uDDEB\uD83C\uDDF7",
   de: "\uD83C\uDDE9\uD83C\uDDEA",
-  es: "\uD83C\uDDEA\uD83C\uDDF8",
+  es: "\uD83C\uDDE7\uD83C\uDDEA",
 };
