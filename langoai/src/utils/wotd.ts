@@ -36,7 +36,8 @@ function saveProgress(p: Record<string, WordProgress>): void {
 }
 
 function getToday(): string {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 function daysSince(start: Date): number {
@@ -52,12 +53,13 @@ export function markWordKnown(wordId: string): WordProgress {
 
   const reviewDate = new Date();
   reviewDate.setDate(reviewDate.getDate() + 7);
+  const reviewDateStr = `${reviewDate.getFullYear()}-${String(reviewDate.getMonth() + 1).padStart(2, "0")}-${String(reviewDate.getDate()).padStart(2, "0")}`;
 
   const prog: WordProgress = {
     id: wordId,
     lastResult: "known",
     lastInteractionDate: today,
-    nextReviewDate: reviewDate.toISOString().slice(0, 10),
+    nextReviewDate: reviewDateStr,
   };
 
   all[wordId] = { ...existing, ...prog };
@@ -72,12 +74,13 @@ export function markWordUnknown(wordId: string): WordProgress {
 
   const reviewDate = new Date();
   reviewDate.setDate(reviewDate.getDate() + 1);
+  const reviewDateStr = `${reviewDate.getFullYear()}-${String(reviewDate.getMonth() + 1).padStart(2, "0")}-${String(reviewDate.getDate()).padStart(2, "0")}`;
 
   const prog: WordProgress = {
     id: wordId,
     lastResult: "unknown",
     lastInteractionDate: today,
-    nextReviewDate: reviewDate.toISOString().slice(0, 10),
+    nextReviewDate: reviewDateStr,
   };
 
   all[wordId] = { ...existing, ...prog };

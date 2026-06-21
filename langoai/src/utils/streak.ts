@@ -10,7 +10,8 @@ const STREAK_HISTORY_KEY = "langlearn_streak_dates";
  * Returns YYYY-MM-DD for the user's local date.
  */
 export function getTodayLocal(): string {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 /**
@@ -19,7 +20,7 @@ export function getTodayLocal(): string {
 export function getDateDaysAgo(days: number): string {
   const d = new Date();
   d.setDate(d.getDate() - days);
-  return d.toISOString().slice(0, 10);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 /**
@@ -138,7 +139,7 @@ export function getLast7Days(): { date: string; label: string; active: boolean; 
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     days.push({
       date: dateStr,
       label: dayNames[d.getDay()],
