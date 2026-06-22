@@ -5,7 +5,8 @@
 
 const POSITION_KEY = "langlearn_saved_position";
 
-export type PageId = "grammar" | "vocabulary" | "tests" | "exercises";
+// ㉑ "exercises" verwijderd — /exercises route bestaat niet in App.tsx
+export type PageId = "grammar" | "vocabulary" | "tests";
 
 export interface SavedPosition {
   page: PageId;
@@ -21,24 +22,10 @@ export interface SavedPosition {
   testIndex?: number;
   testAnswers?: string[];
   testTopic?: string;
-  // Exercises
-  exerciseState?: string;       // "selecting" | "active" | "feedback"
-  exerciseTopic?: string;
-  exerciseIndex?: number;
-  exerciseScore?: { correct: number; wrong: number };
-  exerciseXPEarned?: number;
 }
 
 export function savePosition(pos: SavedPosition): void {
-  // Don't save "finished" exercise states
-  if (pos.page === "exercises" && pos.exerciseState === "finished") {
-    clearPosition();
-    return;
-  }
-  // Don't save submitted tests
-  if (pos.page === "tests" && pos.testAnswers && pos.testAnswers.length === 0 && pos.testId) {
-    // still in progress — allow saving
-  }
+  // ㉒ Lege if-block verwijderd — code deed niets
   localStorage.setItem(POSITION_KEY, JSON.stringify({ ...pos, timestamp: Date.now() }));
 }
 
@@ -67,21 +54,15 @@ export function getResumeRoute(): { route: string; label: string; icon: string }
   const pos = getSavedPosition();
   if (!pos) return null;
 
-  const label = pos.page === "grammar"
-    ? "Continue Grammar"
-    : pos.page === "vocabulary"
-    ? "Continue Vocabulary"
-    : pos.page === "tests"
-    ? "Continue Test"
-    : "Continue Practice";
+  const label =
+    pos.page === "grammar"
+      ? "Continue Grammar"
+      : pos.page === "vocabulary"
+      ? "Continue Vocabulary"
+      : "Continue Test";
 
-  const icon = pos.page === "grammar"
-    ? "📖"
-    : pos.page === "vocabulary"
-    ? "📦"
-    : pos.page === "tests"
-    ? "📝"
-    : "🎯";
+  const icon =
+    pos.page === "grammar" ? "📖" : pos.page === "vocabulary" ? "📦" : "📝";
 
   return { route: `/${pos.page}`, label, icon };
 }

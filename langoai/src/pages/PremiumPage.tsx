@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslate } from "@/i18n/I18nContext";
 import {
   formatPremiumExpiry,
   getPaymentExpiresAt,
@@ -13,6 +14,7 @@ import KofiCheckout from "@/components/KofiCheckout";
 export default function PremiumPage() {
   const { user, updateProfile } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslate();
   const [showKofi, setShowKofi] = useState(false);
   const [kofiError, setKofiError] = useState("");
   const [paymentDone, setPaymentDone] = useState(false);
@@ -42,7 +44,7 @@ export default function PremiumPage() {
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Dashboard
+          {t("generic.back_dashboard")}
         </button>
 
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">

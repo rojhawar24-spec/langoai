@@ -20,7 +20,7 @@ type Tab = "account" | "preferences" | "learning" | "ai";
 export default function SettingsPage() {
   const { user, updateProfile, logout } = useAuth();
   const { theme, setTheme } = useTheme();
-  const { uiLanguage, setUILanguage } = useTranslate();
+  const { uiLanguage, setUILanguage, t } = useTranslate();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<Tab>("account");
@@ -37,7 +37,7 @@ export default function SettingsPage() {
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Dashboard
+          {t("generic.back_dashboard")}
         </button>
 
         <h1 className="mb-8 text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">
@@ -88,6 +88,7 @@ export default function SettingsPage() {
               user={user}
               updateProfile={updateProfile}
               navigate={navigate}
+              t={t}
             />
           )}
           {activeTab === "ai" && <AISettingsSection />}
@@ -415,10 +416,12 @@ function PreferencesSection({
 function LearningSection({
   updateProfile,
   navigate,
+  t,
 }: {
   user: NonNullable<ReturnType<typeof useAuth>["user"]>;
   updateProfile: ReturnType<typeof useAuth>["updateProfile"];
   navigate: ReturnType<typeof useNavigate>;
+  t: (key: string) => string;
 }) {
   return (
     <div className="space-y-8">
@@ -432,7 +435,7 @@ function LearningSection({
         </p>
         <button
           onClick={() => {
-            if (confirm("Reset all learning progress? This cannot be undone.")) {
+            if (window.confirm(t("settings.resetConfirm"))) {
               updateProfile({ totalXP: 0, level: 1, streak: 0, lastActivityDate: null });
               navigate("/dashboard");
             }
@@ -507,4 +510,3 @@ function AISettingsSection() {
     </div>
   );
 }
-

@@ -79,8 +79,8 @@ export default function App() {
       <Routes>
               <Route path="/login" element={<><LoginPage /><Footer minimal /></>} />
               <Route path="/register" element={<><RegisterPage /><Footer minimal /></>} />
-              <Route path="/privacy" element={<LazyPage><PrivacyPolicyPage /></LazyPage>} />
-              <Route path="/terms" element={<LazyPage><TermsPage /></LazyPage>} />
+              <Route path="/privacy" element={<LazyPage><AuthenticatedLayout><PrivacyPolicyPage /></AuthenticatedLayout></LazyPage>} />
+              <Route path="/terms" element={<LazyPage><AuthenticatedLayout><TermsPage /></AuthenticatedLayout></LazyPage>} />
               <Route path="/dashboard" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><DashboardPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
               <Route path="/grammar" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><GrammarPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />
               <Route path="/vocabulary" element={<ProtectedRouteWrapper><LazyPage><AuthenticatedLayout><VocabularyPage /></AuthenticatedLayout></LazyPage></ProtectedRouteWrapper>} />

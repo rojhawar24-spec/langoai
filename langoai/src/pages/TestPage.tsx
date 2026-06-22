@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslate } from "@/i18n/I18nContext";
 import { LANGUAGE_FLAGS } from "@/content/index";
 import type { TestItem } from "@/content/types";
 import type { TestMeta } from "@/content/tests/lazy";
@@ -9,10 +10,11 @@ import { XP_REWARDS, createXPAwarder } from "@/utils/xp";
 import { addMistake } from "@/utils/mistakes";
 import Celebration from "@/components/Celebration";
 
-const LEVELS = ["A1", "A2", "B1", "B2", "C1"] as const;
+const LEVELS = ["A0", "A1", "A2", "B1", "B2", "C1"] as const;
 type Level = typeof LEVELS[number];
 
 const lvlColors: Record<Level, { bg: string; light: string; dot: string }> = {
+  A0: { bg: "bg-rose-400", light: "bg-rose-50 border-rose-200 dark:bg-rose-900/20 dark:border-rose-700", dot: "bg-rose-400" },
   A1: { bg: "bg-emerald-500", light: "bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-700", dot: "bg-emerald-500" },
   A2: { bg: "bg-teal-500", light: "bg-teal-50 border-teal-200 dark:bg-teal-900/20 dark:border-teal-700", dot: "bg-teal-500" },
   B1: { bg: "bg-blue-500", light: "bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-700", dot: "bg-blue-500" },
@@ -31,6 +33,7 @@ function TestTaker({
   onDone: () => void;
   languageCode: string;
 }) {
+  const { t } = useTranslate();
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -78,7 +81,7 @@ function TestTaker({
         <div className="mx-auto max-w-2xl px-4 py-12 text-center sm:px-6">
           <div className="text-6xl mb-4">{passed ? "Passed" : "Practice"}</div>
           <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
-            {passed ? "Test Passed!" : "Keep Practicing!"}
+            {passed ? t("tests.passed") : t("tests.keep_practicing")}
           </h2>
           <p className="text-slate-500 mt-1">{test.title}</p>
 

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslate } from "@/i18n/I18nContext";
 import { xpForNextLevel, xpRequiredForLevel } from "@/utils/xp";
 import { computeStreak, getLast7Days } from "@/utils/streak";
 import { useStreakReconciler } from "@/hooks/useStreakReconciler";
@@ -17,6 +18,7 @@ const LEARNING_LANGUAGES = [
 export default function ProfilePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslate();
   useStreakReconciler();
 
   if (!user) return null;
@@ -51,7 +53,7 @@ export default function ProfilePage() {
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Dashboard
+          {t("generic.back_dashboard")}
         </button>
 
         <div className="mb-8 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">

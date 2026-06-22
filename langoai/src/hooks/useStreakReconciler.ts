@@ -14,7 +14,7 @@ export function useStreakReconciler() {
     if (!user) return;
 
     // One-time backfill for users who existed before the streak engine
-    bootstrapStreakData(user.lastActivityDate);
+    bootstrapStreakData(user.lastActivityDate ?? null);
 
     // Reconcile: compute streak from raw data, update profile if stale
     const { streak, changed } = reconcileStreak(user.streak);
