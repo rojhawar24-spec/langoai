@@ -1,14 +1,16 @@
-//
-// Centralised XP & levelling system
-// XP needed for the next level = current level × 100 (cumulative total)
-//
+// src/utils/xp.ts
+// ✅ DEFINITIEF CORRECT:
+//    - createXPAwarder werkt met BEIDE aanroepvormen:
+//      1. createXPAwarder(updateProfile)         ← oude manier (5 pagina's ongewijzigd)
+//      2. createXPAwarder(user, updateProfile)   ← nieuwe manier
+//    - Wanneer alleen updateProfile meegegeven: user wordt uit memory cache gelezen
+//    - Memory cache wordt bijgehouden door AuthContext via setCurrentUser()
 
 import { addDailyXP } from "@/utils/progress";
-import { markTodayActive, computeStreak } from "@/utils/streak";
-import type { UserData } from "@/utils/storage";
-import { getTodayDate } from "@/utils/progress";
+import { markTodayActive, computeStreak, getTodayLocal } from "@/utils/streak";
+import { type UserData, getCurrentUser } from "@/utils/storage";
 
-// ---- XP rewards ----
+// ── XP rewards ──────────────────────────────────────────────────────────
 export const XP_REWARDS = {
   GRAMMAR_LESSON_COMPLETE: 10,
   VOCABULARY_WORD_LEARNED: 5,
@@ -19,9 +21,8 @@ export const XP_REWARDS = {
   STREAK_30_DAYS: 50,
 } as const;
 
-// ---- Level calculation ----
+// ── Level berekening ─────────────────────────────────────────────────────
 export function computeLevel(totalXP: number): number {
-  // Level N requires total XP >= 100 * (N-1)*N / 2
   let level = 1;
   while (xpRequiredForLevel(level + 1) <= totalXP) {
     level++;
@@ -29,23 +30,20 @@ export function computeLevel(totalXP: number): number {
   return level;
 }
 
-/** Total XP required to reach the given level (cumulative) */
 export function xpRequiredForLevel(level: number): number {
   if (level <= 1) return 0;
   return 100 * ((level - 1) * level) / 2;
 }
 
-/** XP needed to advance from current level to next */
 export function xpForNextLevel(currentLevel: number): number {
   return currentLevel * 100;
 }
 
-/** How much XP the user has earned within the current level */
 export function xpInCurrentLevel(totalXP: number, level: number): number {
   return totalXP - xpRequiredForLevel(level);
 }
 
-// ---- XP awarding (pure logic) ----
+// ── XP award resultaat ───────────────────────────────────────────────────
 export interface XPAwardResult {
   newTotalXP: number;
   newLevel: number;
@@ -55,66 +53,79 @@ export interface XPAwardResult {
   dailyGoalReached: boolean;
 }
 
-export function calculateXPAward(
-  user: UserData,
-  amount: number
-): XPAwardResult {
-  const oldLevel = user.level;
-  const newTotalXP = user.totalXP + amount;
-  const newLevel = computeLevel(newTotalXP);
-  const leveledUp = newLevel > oldLevel;
-
-  // Record daily XP
-  const dailyXP = addDailyXP(amount);
-  markTodayActive();
-
-  const dailyGoalReached = dailyXP >= 50 && dailyXP - amount < 50;
-
-  return {
-    newTotalXP,
-    newLevel,
-    leveledUp,
-    oldLevel,
-    dailyXP,
-    dailyGoalReached,
-  };
-}
-
-// ---- Hook for awarding XP within components ----
-/**
- * Creates an XP awarder function that works with a passed-in user object.
- * This is safer than reading from localStorage, especially after Supabase integration.
- *
- * @param user - The current user object
- * @param updateProfile - Function to update the user profile
- * @returns A function to award XP
- */
+// ── ✅ BACKWARD COMPATIBLE createXPAwarder ────────────────────────────────
+//
+// Manier 1 (oud — 5 bestaande pagina's, ONGEWIJZIGD):
+//   const award = createXPAwarder(updateProfile)
+//   → user wordt gelezen uit memory cache (gevuld door AuthContext)
+//
+// Manier 2 (nieuw — expliciet):
+//   const award = createXPAwarder(user, updateProfile)
+//   → user wordt direct meegegeven
+//
+// 🔒 Sinds de server-authoritative XP fix (zie AuthContext.tsx +
+// supabase/schema.sql, award_xp()) doet updateProfile() hieronder niet
+// meer een directe kolom-write — het herkent deze exacte 4-velden-vorm en
+// routeert 'm naar een gevalideerde RPC. Niets in DIT bestand hoefde
+// daarvoor te veranderen: de optimistische berekening hieronder bepaalt
+// nog steeds wat de UI DIRECT laat zien (voor instant feedback), de RPC
+// bepaalt wat er written wordt. Als de server een ander bedrag toestaat
+// dan verwacht (bv. dagelijkse cap bereikt), corrigeert de eerstvolgende
+// profile-refresh dat vanzelf.
 export function createXPAwarder(
-  user: UserData,
-  updateProfile: (u: Partial<UserData>) => void
+  userOrUpdateFn: UserData | ((u: Partial<UserData>) => void),
+  updateProfileArg?: (u: Partial<UserData>) => void
 ) {
   return function awardXP(amount: number): XPAwardResult {
+    // Bepaal user en updateProfile op basis van aanroepvorm
+    let user: UserData | null;
+    let updateProfile: (u: Partial<UserData>) => void;
+
+    if (typeof userOrUpdateFn === "function") {
+      // Manier 1: createXPAwarder(updateProfile)
+      user = getCurrentUser(); // ✅ Memory cache — gevuld door AuthContext
+      updateProfile = userOrUpdateFn;
+    } else {
+      // Manier 2: createXPAwarder(user, updateProfile)
+      user = userOrUpdateFn;
+      updateProfile = updateProfileArg!;
+    }
+
     if (!user) throw new Error("No user logged in");
 
-    const result = calculateXPAward(user, amount);
+    // ── Bereken nieuwe XP en level ───────────────────────────────────────
+    const oldLevel   = user.level;
+    const newTotalXP = user.totalXP + amount;
+    const newLevel   = computeLevel(newTotalXP);
+    const leveledUp  = newLevel > oldLevel;
 
-    const updates: Partial<UserData> = {
-      totalXP: result.newTotalXP,
-      level: result.newLevel,
-      lastActivityDate: getTodayDate(),
-    };
+    // ── Dagelijkse XP en streak bijwerken ────────────────────────────────
+    const dailyXP         = addDailyXP(amount);
+    markTodayActive();
+    const dailyGoalReached = dailyXP >= 50 && dailyXP - amount < 50;
 
-    // Use the centralised streak engine
     const { streak: computedStreak } = computeStreak();
-    updates.streak = computedStreak;
 
-    updateProfile(updates);
+    // ── Profiel opslaan ──────────────────────────────────────────────────
+    updateProfile({
+      totalXP:          newTotalXP,
+      level:            newLevel,
+      streak:           computedStreak,
+      lastActivityDate: getTodayLocal(),
+    });
 
-    return result;
+    return {
+      newTotalXP,
+      newLevel,
+      leveledUp,
+      oldLevel,
+      dailyXP,
+      dailyGoalReached,
+    };
   };
 }
 
-// ---- XP history (for debugging/transparency) ----
+// ── XP geschiedenis ──────────────────────────────────────────────────────
 const XP_HISTORY_KEY = "langlearn_xp_history";
 
 export interface XPRecord {
@@ -133,7 +144,6 @@ export function addXPRecord(amount: number, source: string): void {
     const raw = localStorage.getItem(XP_HISTORY_KEY);
     const history: XPRecord[] = raw ? JSON.parse(raw) : [];
     history.push(record);
-    // Keep only last 100 entries
     if (history.length > 100) history.shift();
     localStorage.setItem(XP_HISTORY_KEY, JSON.stringify(history));
   } catch {

@@ -1,0 +1,31 @@
+# Dependabot-configuratie (audit-verzoek): scant wekelijks op kwetsbare/
+# verouderde dependencies en maakt automatisch pull requests aan.
+# ⚠️ Dit bestand alleen is niet genoeg — Dependabot moet ook ingeschakeld
+# staan onder GitHub → jouw repo → Settings → Security → Dependabot.
+# Dat kan ik niet voor je aanzetten; dat is een instelling in jouw GitHub-
+# account, geen bestand in de code.
+version: 2
+updates:
+  # Frontend + serverless API dependencies (package.json)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    groups:
+      # Kleine patch/minor-updates samen bundelen zodat je niet 20 losse
+      # PR's krijgt voor onbelangrijke versiebumpjes.
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+      - "security"
+
+  # GitHub Actions workflows zelf ook up-to-date houden (indien aanwezig)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
