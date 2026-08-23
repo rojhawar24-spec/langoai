@@ -1,0 +1,11 @@
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex 5af13c4..c36eaef 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -3,3 +3,5 @@[m [mdist[m
+ .env[m
+ .env.local[m
+ *.db[m
+[32m+[m
+[32m+[m[32m.vercel[m
