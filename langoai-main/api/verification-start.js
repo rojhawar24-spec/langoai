@@ -53,8 +53,9 @@ export default async function handler(req, res) {
   }
 
   const ip = getIp(req);
-  const ipOk = await rateLimit(`rl:verif-start:ip:${ip}`, 10, 60);
-  const emailOk = await rateLimit(`rl:verif-start:email:${email}`, 5, 3600);
+  // Increased limits to allow more testing and normal usage
+  const ipOk = await rateLimit(`rl:verif-start:ip:${ip}`, 50, 60);   // 50 requests per minute
+  const emailOk = await rateLimit(`rl:verif-start:email:${email}`, 20, 3600); // 20 per hour
   if (!ipOk || !emailOk) {
     res.setHeader("Retry-After", "60");
     return res.status(429).json({ error: "too_many_requests" });
