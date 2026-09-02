@@ -1,5 +1,5 @@
 export type UILanguage = "en" | "nl" | "fr" | "de" | "es";
-
+ 
 export const UI_LANGUAGES: { code: UILanguage; name: string; flag: string }[] = [
   { code: "en", name: "English",    flag: "🇬🇧" },
   { code: "nl", name: "Nederlands", flag: "🇳🇱" },
@@ -7,9 +7,9 @@ export const UI_LANGUAGES: { code: UILanguage; name: string; flag: string }[] = 
   { code: "de", name: "Deutsch",    flag: "🇩🇪" },
   { code: "es", name: "Español",    flag: "🇪🇸" },
 ];
-
+ 
 type Dict = Record<string, string>;
-
+ 
 // ─────────────────────────────────────────────
 // ENGLISH (basis — alle andere talen erven hiervan)
 // ─────────────────────────────────────────────
@@ -26,7 +26,7 @@ const en: Dict = {
   "topbar.privacyPolicy": "Privacy Policy",
   "topbar.termsOfService": "Terms of Service",
   "grammar.loadMore": "Load more lessons",
-
+ 
   "login.title": "Welcome back",
   "login.subtitle": "Log in to continue",
   "login.identifier": "Username or Email",
@@ -54,7 +54,7 @@ const en: Dict = {
   "login.mfaVerifyButton": "Verify",
   "login.forgotEmailInvalid": "Please enter a valid email address.",
   "login.forgotErrorSend": "Could not send reset email. Please try again.",
-
+ 
   "register.title": "Create your account",
   "register.subtitle": "Start learning today",
   "register.email": "Email",
@@ -74,7 +74,7 @@ const en: Dict = {
   "register.errorConfirmMatch": "Passwords do not match.",
   "register.errorEmailExists": "An account with this email already exists.",
   "register.errorUsernameTaken": "This username is already taken.",
-
+ 
   "dashboard.welcome": "Welcome back,",
   "dashboard.noLanguagePrompt": "Pick a language below to start learning!",
   "dashboard.learningLanguage": "Learning",
@@ -129,13 +129,13 @@ const en: Dict = {
   "dashboard.streakBonus": "Streak bonus! +{xp} XP for reaching 7 days",
   "dashboard.streakBonus30": "30-day champion",
   "dashboard.levelUp": "🎉 You're ready to level up!",
-
+ 
   "lang.en": "English",
   "lang.nl": "Dutch",
   "lang.fr": "French",
   "lang.de": "German",
   "lang.es": "Spanish",
-
+ 
   "wotd.title": "Word of the Day",
   "wotd.i_know": "I Know This",
   "wotd.show_hint": "Need a hint?",
@@ -148,7 +148,7 @@ const en: Dict = {
   "wotd.words_learned": "words learned",
   "wotd.youre_done": "You're Done for Today",
   "wotd.see_tomorrow": "See you tomorrow!",
-
+ 
   "grammar.title": "Grammar Lessons",
   "grammar.back_lessons": "Back to Lessons",
   "grammar.learn": "Learn",
@@ -169,7 +169,7 @@ const en: Dict = {
   "grammar.mistakes_title": "Common mistakes",
   "grammar.review": "Quick review",
   "grammar.qa": "Practice questions",
-
+ 
   "vocab.title": "Vocabulary",
   "vocab.back": "Back to Vocabulary",
   "vocab.mark_learned": "Mark as Learned",
@@ -177,7 +177,7 @@ const en: Dict = {
   "vocab.search": "Search words...",
   "vocab.example": "Example",
   "vocab.progress": "learned",
-
+ 
   "tests.title": "Tests and Quizzes",
   "tests.back": "Back to Tests",
   "tests.search": "Search tests...",
@@ -190,7 +190,7 @@ const en: Dict = {
   "tests.submit": "Submit Test",
   "tests.previous": "Previous",
   "tests.next": "Next",
-
+ 
   "exercise.title": "Practice Mode",
   "exercise.subtitle": "Pick a topic and answer questions.",
   "exercise.all_topics": "All Topics",
@@ -203,7 +203,7 @@ const en: Dict = {
   "exercise.complete": "Practice Complete!",
   "exercise.accuracy": "accuracy",
   "exercise.earned": "XP earned",
-
+ 
   "mistakes.title": "Mistake Review",
   "mistakes.subtitle": "Learn from your mistakes",
   "mistakes.search": "Search mistakes...",
@@ -223,7 +223,7 @@ const en: Dict = {
   "mistakes.practice_again": "Practice Again",
   "mistakes.source_exercise": "Practice",
   "mistakes.source_test": "Test",
-
+ 
   "ai.title": "AI Tutor",
   "ai.grammar_feat": "Grammar explanations",
   "ai.translate_feat": "Translate anything",
@@ -236,7 +236,7 @@ const en: Dict = {
   "ai.translate_desc": "Translate phrases and sentences",
   "ai.convo_desc": "Practice speaking naturally",
   "ai.powered_by": "powered by Claude",
-
+ 
   "profile.member_since": "Member since",
   "profile.learning_langs": "Learning Languages",
   "profile.earned": "Earned!",
@@ -258,7 +258,7 @@ const en: Dict = {
   "profile.daysActiveThisWeek": "{activeDays} of 7 days active this week",
   "profile.achievements": "Achievements",
   "profile.backToDashboard": "Back to Dashboard",
-
+ 
   "settings.title": "Settings",
   "settings.back": "Back to Dashboard",
   "settings.account": "Account",
@@ -327,7 +327,7 @@ const en: Dict = {
   "settings.deleteConfirmText": "Type your username {username} to confirm permanent deletion. This cannot be undone.",
   "settings.deleteConfirmPlaceholder": "Type \"{username}\" to confirm",
   "settings.deleteButton": "Delete",
-
+ 
   "nav.home": "Home",
   "nav.profile": "Profile",
   "nav.grammar": "Grammar",
@@ -346,7 +346,7 @@ const en: Dict = {
   "register.errorGeneral": "Something went wrong. Please try again.",
   "register.haveAccount": "Already have an account?",
   "register.login": "Log in",
-
+ 
   "register.veryWeak": "Very weak",
   "cookie.title": "We use cookies",
   "cookie.description": "We use cookies and localStorage to make the app work and show relevant ads. See our",
@@ -364,7 +364,7 @@ const en: Dict = {
   "boundary.message": "An unexpected error occurred. Your data is safe — try reloading the page, or go back to the dashboard.",
   "boundary.retry": "Try again",
   "boundary.toDashboard": "To dashboard",
-
+ 
   "register.weak": "Weak",
   "register.fair": "Fair",
   "register.strong": "Strong",
@@ -372,14 +372,7 @@ const en: Dict = {
   "register.passwordShort": "Password must be at least 8 characters.",
   "register.passwordWeak": "Password is too weak. Add numbers or symbols.",
   "tests.allLevels": "All Levels",
-
-
-
-
-
-
-
-
+ 
   "ai.coming_soon_desc": "The AI Tutor is coming soon. We are working hard to give you the best learning experience!",
   "ai.coming_soon_badge": "soon",
   "ai.feature_grammar": "Grammar help",
@@ -389,7 +382,7 @@ const en: Dict = {
   "ai.open_panel": "Open AI Tutor",
   "ai.open_panel_new": "Open AI Tutor — new messages",
   "nav.arena": "Legend",
-
+ 
   "arena.back": "← Dashboard",
   "arena.subtitle": "Complete seasons. Earn XP. Become fluent.",
   "arena.noContent": "No content for {lang}",
@@ -399,7 +392,7 @@ const en: Dict = {
   "arena.levelLocked": "Level locked",
   "arena.levelQuestions": "{count} questions",
   "arena.backToSeasons": "← All Seasons",
-
+ 
   "testpage.back": "← Dashboard",
   "testpage.testsTitle": "📝 {flag} Tests",
   "testpage.allLevels": "All Levels",
@@ -417,14 +410,14 @@ const en: Dict = {
   "testpage.results": "results",
   "testpage.clear": "clear",
   "testpage.noLessons": "No lessons found",
-
+ 
   "grammarpage.back": "← Dashboard",
   "grammarpage.searchPlaceholder": "Search lessons...",
   "grammarpage.allLevels": "All Levels",
-
+ 
   "vocabpage.back": "Back to Dashboard",
   "vocabpage.learnedCount": "{learned}/{total} learned",
-
+ 
   "mistakespage.back": "← Mistakes",
   "mistakespage.backDetail": "Back to Mistakes",
   "mistakespage.practiceAgain": "Practice Again",
@@ -438,19 +431,19 @@ const en: Dict = {
   "mistakesview.unreviewed": "Unreviewed",
   "mistakesview.reviewed": "Reviewed",
   "mistakesview.all": "all",
-
+ 
   "generic.back_dashboard": "Back",
   "generic.cancel": "Cancel",
   "generic.save": "Save",
   "generic.loading": "Loading...",
-
+ 
   "placeholder.email": "you@example.com",
   "placeholder.username": "username",
   "placeholder.password": "Min. 8 characters",
   "placeholder.confirmPassword": "Re-enter password",
   "placeholder.identifier": "username or email",
   "placeholder.passwordLogin": "Enter password",
-
+ 
   // ✅ Aangevuld (audit ronde 3 — volledige tekst-controle)
   "resetpw.errorTooShort": "Password must be at least 8 characters.",
   "resetpw.errorMismatch": "Passwords do not match.",
@@ -549,7 +542,7 @@ const en: Dict = {
   "arena.season": "Season",
   "arena.xpEarned": "+{xp} XP earned!",
   "arena.tryAgain": "Try again!",
-
+ 
   "arena.type.translation": "Translate",
   "arena.type.multipleChoice": "Choose the right one",
   "arena.type.fillBlank": "Fill in",
@@ -843,7 +836,7 @@ const en: Dict = {
   "privacy.s3.li2": "Providing the language-learning service (lessons, tests, XP, streak)",
   "privacy.s3.li4": "Securing the service (rate limiting, abuse detection)",
   "privacy.s3.li5": "Displaying advertisements to free users (Google AdSense)",
-  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",,
+  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",
   "privacy.s3.noSale": "❌ We do NOT sell your personal data to third parties.",
   "privacy.s4.title": "4. How Long Do We Keep Your Data? (Retention Periods)",
   "privacy.s4.li1": "Account data: For as long as your account is active. Erased within 30 days upon deletion.",
@@ -857,7 +850,7 @@ const en: Dict = {
   "privacy.s5.vercelName": "Vercel (hosting & serverless functions)",
   "privacy.s5.vercelInfo": "Hosting of the website and API. Vercel is based in the US but is GDPR-compliant (Standard Contractual Clauses).",
   "privacy.s5.anthropicName": "Anthropic / Claude API (AI Tutor)",
-  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",,
+  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",
   "privacy.s5.adsenseName": "Google AdSense (advertisements)",
   "privacy.s5.adsenseInfo": "Displays advertisements to free users. Google may place cookies for personalized advertising.",
   "privacy.s5.privacyLinkText": "Privacy Policy →",
@@ -907,13 +900,13 @@ const en: Dict = {
   "privacy.s12.response": "Response within 30 days (statutory GDPR period).",
   "legal.translationNotice": "This document was originally drafted in Dutch. In the event of any discrepancy between language versions, the Dutch version shall prevail.",
 };
-
+ 
 // ─────────────────────────────────────────────
 // NEDERLANDS
 // ─────────────────────────────────────────────
 const nl: Dict = {
   ...en,
-
+ 
   "topbar.level": "Niveau",
   "topbar.xp": "EP",
   "topbar.logout": "Uitloggen",
@@ -926,7 +919,7 @@ const nl: Dict = {
   "topbar.privacyPolicy": "Privacybeleid",
   "topbar.termsOfService": "Algemene voorwaarden",
   "grammar.loadMore": "Laad meer lessen",
-
+ 
   "login.title": "Welkom terug",
   "login.subtitle": "Log in om verder te gaan",
   "login.identifier": "Gebruikersnaam of e-mail",
@@ -954,7 +947,7 @@ const nl: Dict = {
   "login.mfaVerifyButton": "Verifiëren",
   "login.forgotEmailInvalid": "Voer een geldig e-mailadres in.",
   "login.forgotErrorSend": "Kon reset-e-mail niet versturen. Probeer het opnieuw.",
-
+ 
   "register.title": "Account aanmaken",
   "register.subtitle": "Begin vandaag met leren",
   "register.email": "E-mail",
@@ -974,7 +967,7 @@ const nl: Dict = {
   "register.errorConfirmMatch": "Wachtwoorden komen niet overeen.",
   "register.errorEmailExists": "Er bestaat al een account met dit e-mailadres.",
   "register.errorUsernameTaken": "Deze gebruikersnaam is al bezet.",
-
+ 
   "dashboard.welcome": "Welkom terug,",
   "dashboard.noLanguagePrompt": "Kies hieronder een taal om te beginnen!",
   "dashboard.learningLanguage": "Bezig met leren",
@@ -1029,13 +1022,13 @@ const nl: Dict = {
   "dashboard.streakBonus": "Streak bonus! +{xp} EP voor 7 dagen",
   "dashboard.streakBonus30": "30-dagen kampioen",
   "dashboard.levelUp": "🎉 Je bent klaar om te levelen!",
-
+ 
   "lang.en": "Engels",
   "lang.nl": "Nederlands",
   "lang.fr": "Frans",
   "lang.de": "Duits",
   "lang.es": "Spaans",
-
+ 
   "wotd.title": "Woord van de Dag",
   "wotd.i_know": "Ik ken dit",
   "wotd.show_hint": "Hint nodig?",
@@ -1048,7 +1041,7 @@ const nl: Dict = {
   "wotd.words_learned": "woorden geleerd",
   "wotd.youre_done": "Je bent klaar voor vandaag",
   "wotd.see_tomorrow": "Tot morgen!",
-
+ 
   "grammar.title": "Grammatica Lessen",
   "grammar.back_lessons": "Terug naar Lessen",
   "grammar.learn": "Leren",
@@ -1069,7 +1062,7 @@ const nl: Dict = {
   "grammar.mistakes_title": "Veelgemaakte fouten",
   "grammar.review": "Snelle herhaling",
   "grammar.qa": "Oefeningsvragen",
-
+ 
   "vocab.title": "Woordenschat",
   "vocab.back": "Terug naar Woordenschat",
   "vocab.mark_learned": "Markeer als geleerd",
@@ -1077,7 +1070,7 @@ const nl: Dict = {
   "vocab.search": "Zoek woorden...",
   "vocab.example": "Voorbeeld",
   "vocab.progress": "geleerd",
-
+ 
   "tests.title": "Toetsen en Quizzen",
   "tests.back": "Terug naar Toetsen",
   "tests.search": "Zoek toetsen...",
@@ -1090,7 +1083,7 @@ const nl: Dict = {
   "tests.submit": "Toets indienen",
   "tests.previous": "Vorige",
   "tests.next": "Volgende",
-
+ 
   "exercise.title": "Oefenmodus",
   "exercise.subtitle": "Kies een onderwerp en beantwoord vragen.",
   "exercise.all_topics": "Alle onderwerpen",
@@ -1103,7 +1096,7 @@ const nl: Dict = {
   "exercise.complete": "Oefening voltooid!",
   "exercise.accuracy": "nauwkeurigheid",
   "exercise.earned": "EP verdiend",
-
+ 
   "mistakes.title": "Fout Herstel",
   "mistakes.subtitle": "Leer van je fouten",
   "mistakes.search": "Zoek fouten...",
@@ -1123,7 +1116,7 @@ const nl: Dict = {
   "mistakes.practice_again": "Opnieuw oefenen",
   "mistakes.source_exercise": "Oefening",
   "mistakes.source_test": "Toets",
-
+ 
   "ai.title": "AI Tutor",
   "ai.grammar_feat": "Grammatica uitleg",
   "ai.translate_feat": "Alles vertalen",
@@ -1136,7 +1129,7 @@ const nl: Dict = {
   "ai.translate_desc": "Vertaal zinnen en uitdrukkingen",
   "ai.convo_desc": "Oefen natuurlijk spreken",
   "ai.powered_by": "aangedreven door Claude",
-
+ 
   "profile.member_since": "Lid sinds",
   "profile.learning_langs": "Leertalen",
   "profile.earned": "Verdiend!",
@@ -1158,7 +1151,7 @@ const nl: Dict = {
   "profile.daysActiveThisWeek": "{activeDays} van 7 dagen actief deze week",
   "profile.achievements": "Prestaties",
   "profile.backToDashboard": "Terug naar Dashboard",
-
+ 
   "settings.title": "Instellingen",
   "settings.back": "Terug naar Dashboard",
   "settings.account": "Account",
@@ -1221,7 +1214,7 @@ const nl: Dict = {
   "settings.deleteConfirmText": "Typ je gebruikersnaam {username} om permanente verwijdering te bevestigen. Dit kan niet ongedaan worden gemaakt.",
   "settings.deleteConfirmPlaceholder": "Typ \"{username}\" om te bevestigen",
   "settings.deleteButton": "Verwijderen",
-
+ 
   "nav.home": "Home",
   "nav.profile": "Profiel",
   "nav.grammar": "Grammatica",
@@ -1232,7 +1225,7 @@ const nl: Dict = {
   "nav.mistakes": "Fouten",
   "nav.ai_chat": "AI Chat",
   "ai.coming_soon": "Binnenkort beschikbaar",
-
+ 
   "register.veryWeak": "Zeer zwak",
   "cookie.title": "Wij gebruiken cookies",
   "cookie.description": "Wij gebruiken cookies en localStorage om de app te laten werken en relevante advertenties te tonen. Zie onze",
@@ -1250,7 +1243,7 @@ const nl: Dict = {
   "boundary.message": "Er trad een onverwachte fout op. Je gegevens zijn veilig — probeer de pagina opnieuw te laden, of ga terug naar het dashboard.",
   "boundary.retry": "Probeer opnieuw",
   "boundary.toDashboard": "Naar dashboard",
-
+ 
   "register.weak": "Zwak",
   "register.fair": "Redelijk",
   "register.strong": "Sterk",
@@ -1258,7 +1251,7 @@ const nl: Dict = {
   "register.passwordShort": "Wachtwoord moet minimaal 8 tekens zijn.",
   "register.passwordWeak": "Wachtwoord is te zwak. Voeg cijfers of symbolen toe.",
   "tests.allLevels": "Alle niveaus",
-
+ 
   "ai.coming_soon_desc": "De AI Tutor komt binnenkort. We werken hard om je de beste leerervaring te geven!",
   "ai.coming_soon_badge": "binnenkort",
   "ai.feature_grammar": "Grammatica hulp",
@@ -1268,13 +1261,13 @@ const nl: Dict = {
   "ai.open_panel": "AI Tutor openen",
   "ai.open_panel_new": "AI Tutor openen — nieuwe berichten",
   "nav.arena": "Legende",
-
+ 
   "arena.back": "← Dashboard",
   "arena.subtitle": "Voltooi seizoenen. Verdien EP. Word vloeiend.",
   "arena.locked": "Vergrendeld",
   "arena.levelComplete": "Voltooid",
   "arena.backToSeasons": "← Alle Seizoenen",
-
+ 
   "testpage.back": "← Dashboard",
   "testpage.allLevels": "Alle Niveaus",
   "testpage.noTests": "Geen toetsen gevonden",
@@ -1285,13 +1278,13 @@ const nl: Dict = {
   "testpage.backToTests": "← Terug naar Toetsen",
   "testpage.dashboard": "Dashboard",
   "testpage.noLessons": "Geen lessen gevonden",
-
+ 
   "grammarpage.back": "← Dashboard",
   "grammarpage.searchPlaceholder": "Zoek lessen...",
   "grammarpage.allLevels": "Alle Niveaus",
-
+ 
   "vocabpage.back": "Terug naar Dashboard",
-
+ 
   "mistakespage.back": "← Fouten",
   "mistakespage.backDetail": "Terug naar Fouten",
   "mistakespage.practiceAgain": "Opnieuw oefenen",
@@ -1304,19 +1297,19 @@ const nl: Dict = {
   "mistakesview.unreviewed": "Niet beoordeeld",
   "mistakesview.reviewed": "Beoordeeld",
   "mistakesview.all": "alles",
-
+ 
   "generic.back_dashboard": "Terug",
   "generic.cancel": "Annuleren",
   "generic.save": "Opslaan",
   "generic.loading": "Laden...",
-
+ 
   "placeholder.email": "jij@voorbeeld.nl",
   "placeholder.username": "gebruikersnaam",
   "placeholder.password": "Min. 8 tekens",
   "placeholder.confirmPassword": "Wachtwoord opnieuw",
   "placeholder.identifier": "gebruikersnaam of e-mail",
   "placeholder.passwordLogin": "Voer wachtwoord in",
-
+ 
   // ✅ Aangevuld (audit — taal-controle): ontbrekende sleutels t.o.v. 'en'
   "settings.demoMode": "(Demo) configuratie opgeslagen in localStorage — ga naar Vercel voor een echte deployment.",
   "settings.aiModel": "AI-model",
@@ -1345,7 +1338,7 @@ const nl: Dict = {
   "testpage.clear": "wissen",
   "vocabpage.learnedCount": "{learned}/{total} geleerd",
   "mistakeslevel.noResults": "Wis alle fouten",
-
+ 
   // ✅ Aangevuld (audit ronde 3 — volledige tekst-controle)
   "resetpw.errorTooShort": "Wachtwoord moet minstens 8 tekens bevatten.",
   "resetpw.errorMismatch": "Wachtwoorden komen niet overeen.",
@@ -1444,7 +1437,7 @@ const nl: Dict = {
   "arena.season": "Seizoen",
   "arena.xpEarned": "+{xp} XP verdiend!",
   "arena.tryAgain": "Probeer het nogmaals!",
-
+ 
   "arena.type.translation": "Vertaal",
   "arena.type.multipleChoice": "Kies het juiste",
   "arena.type.fillBlank": "Vul in",
@@ -1738,7 +1731,7 @@ const nl: Dict = {
   "privacy.s3.li2": "Leveren van de taalleerservice (lessen, tests, XP, streak)",
   "privacy.s3.li4": "Beveiligen van de service (rate limiting, misbruikdetectie)",
   "privacy.s3.li5": "Tonen van advertenties aan gratis gebruikers (Google AdSense)",
-  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",,
+  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",
   "privacy.s3.noSale": "❌ Wij verkopen jouw persoonsgegevens NIET aan derden.",
   "privacy.s4.title": "4. Hoe lang bewaren wij jouw gegevens? (Bewaartermijnen)",
   "privacy.s4.li1": "Accountgegevens: Zolang je account actief is. Bij verwijdering binnen 30 dagen gewist.",
@@ -1752,7 +1745,7 @@ const nl: Dict = {
   "privacy.s5.vercelName": "Vercel (hosting & serverless functies)",
   "privacy.s5.vercelInfo": "Hosting van de website en API. Vercel is gevestigd in de VS maar is GDPR-compliant (Standard Contractual Clauses).",
   "privacy.s5.anthropicName": "Anthropic / Claude API (AI Tutor)",
-  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",,
+  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",
   "privacy.s5.adsenseName": "Google AdSense (advertenties)",
   "privacy.s5.adsenseInfo": "Toont advertenties aan gratis gebruikers. Google kan cookies plaatsen voor gepersonaliseerde advertenties.",
   "privacy.s5.privacyLinkText": "Privacybeleid →",
@@ -1802,13 +1795,13 @@ const nl: Dict = {
   "privacy.s12.response": "Reactie binnen 30 dagen (wettelijke GDPR-termijn).",
   "legal.translationNotice": "Dit document is oorspronkelijk opgesteld in het Nederlands. Bij verschillen tussen taalversies is de Nederlandse versie bindend.",
 };
-
+ 
 // ─────────────────────────────────────────────
 // FRANÇAIS
 // ─────────────────────────────────────────────
 const fr: Dict = {
   ...en,
-
+ 
   "topbar.level": "Niveau",
   "topbar.xp": "XP",
   "topbar.logout": "Se déconnecter",
@@ -1821,7 +1814,7 @@ const fr: Dict = {
   "topbar.privacyPolicy": "Politique de confidentialité",
   "topbar.termsOfService": "Conditions d'utilisation",
   "grammar.loadMore": "Charger plus de leçons",
-
+ 
   "login.title": "Bon retour",
   "login.subtitle": "Connectez-vous pour continuer",
   "login.identifier": "Nom d'utilisateur ou e-mail",
@@ -1849,7 +1842,7 @@ const fr: Dict = {
   "login.mfaVerifyButton": "Vérifier",
   "login.forgotEmailInvalid": "Merci d'entrer une adresse e-mail valide.",
   "login.forgotErrorSend": "Impossible d'envoyer l'e-mail de réinitialisation. Réessaie.",
-
+ 
   "register.title": "Créer votre compte",
   "register.subtitle": "Commencez à apprendre aujourd'hui",
   "register.email": "E-mail",
@@ -1869,7 +1862,7 @@ const fr: Dict = {
   "register.errorConfirmMatch": "Les mots de passe ne correspondent pas.",
   "register.errorEmailExists": "Un compte avec cet e-mail existe déjà.",
   "register.errorUsernameTaken": "Ce nom d'utilisateur est déjà pris.",
-
+ 
   "dashboard.welcome": "Bon retour,",
   "dashboard.noLanguagePrompt": "Choisissez une langue ci-dessous pour commencer !",
   "dashboard.learningLanguage": "En train d'apprendre",
@@ -1923,13 +1916,13 @@ const fr: Dict = {
   "dashboard.streakBonus": "Bonus de série ! +{xp} XP pour 7 jours",
   "dashboard.streakBonus30": "Champion 30 jours",
   "dashboard.levelUp": "🎉 Vous êtes prêt à monter de niveau !",
-
+ 
   "lang.en": "Anglais",
   "lang.nl": "Néerlandais",
   "lang.fr": "Français",
   "lang.de": "Allemand",
   "lang.es": "Espagnol",
-
+ 
   "wotd.title": "Mot du Jour",
   "wotd.i_know": "Je connais",
   "wotd.show_hint": "Besoin d'un indice ?",
@@ -1942,7 +1935,7 @@ const fr: Dict = {
   "wotd.words_learned": "mots appris",
   "wotd.youre_done": "Vous avez terminé pour aujourd'hui",
   "wotd.see_tomorrow": "À demain !",
-
+ 
   "grammar.title": "Leçons de Grammaire",
   "grammar.back_lessons": "Retour aux Leçons",
   "grammar.learn": "Apprendre",
@@ -1963,7 +1956,7 @@ const fr: Dict = {
   "grammar.mistakes_title": "Erreurs courantes",
   "grammar.review": "Révision rapide",
   "grammar.qa": "Questions de pratique",
-
+ 
   "vocab.title": "Vocabulaire",
   "vocab.back": "Retour au Vocabulaire",
   "vocab.mark_learned": "Marquer comme appris",
@@ -1971,7 +1964,7 @@ const fr: Dict = {
   "vocab.search": "Chercher des mots...",
   "vocab.example": "Exemple",
   "vocab.progress": "appris",
-
+ 
   "tests.title": "Tests et Quiz",
   "tests.back": "Retour aux Tests",
   "tests.search": "Chercher des tests...",
@@ -1984,7 +1977,7 @@ const fr: Dict = {
   "tests.submit": "Soumettre le test",
   "tests.previous": "Précédent",
   "tests.next": "Suivant",
-
+ 
   "exercise.title": "Mode Pratique",
   "exercise.subtitle": "Choisissez un sujet et répondez aux questions.",
   "exercise.all_topics": "Tous les sujets",
@@ -1997,7 +1990,7 @@ const fr: Dict = {
   "exercise.complete": "Pratique Terminée !",
   "exercise.accuracy": "précision",
   "exercise.earned": "XP gagnés",
-
+ 
   "mistakes.title": "Révision des Erreurs",
   "mistakes.subtitle": "Apprenez de vos erreurs",
   "mistakes.search": "Chercher des erreurs...",
@@ -2017,7 +2010,7 @@ const fr: Dict = {
   "mistakes.practice_again": "Pratiquer à nouveau",
   "mistakes.source_exercise": "Pratique",
   "mistakes.source_test": "Test",
-
+ 
   "ai.title": "Tuteur IA",
   "ai.grammar_feat": "Explications de grammaire",
   "ai.translate_feat": "Traduire n'importe quoi",
@@ -2030,7 +2023,7 @@ const fr: Dict = {
   "ai.translate_desc": "Traduisez des phrases et des expressions",
   "ai.convo_desc": "Pratiquez de manière naturelle",
   "ai.powered_by": "propulsé par Claude",
-
+ 
   "profile.member_since": "Membre depuis",
   "profile.learning_langs": "Langues apprises",
   "profile.earned": "Gagné !",
@@ -2051,7 +2044,7 @@ const fr: Dict = {
   "profile.daysActiveThisWeek": "{activeDays} sur 7 jours actifs cette semaine",
   "profile.achievements": "Réussites",
   "profile.backToDashboard": "Retour au Tableau de Bord",
-
+ 
   "settings.title": "Paramètres",
   "settings.back": "Retour au Tableau de Bord",
   "settings.account": "Compte",
@@ -2114,7 +2107,7 @@ const fr: Dict = {
   "settings.deleteConfirmText": "Tape ton nom d'utilisateur {username} pour confirmer la suppression définitive. Cette action est irréversible.",
   "settings.deleteConfirmPlaceholder": "Tape « {username} » pour confirmer",
   "settings.deleteButton": "Supprimer",
-
+ 
   "nav.home": "Accueil",
   "nav.profile": "Profil",
   "nav.grammar": "Grammaire",
@@ -2125,7 +2118,7 @@ const fr: Dict = {
   "nav.mistakes": "Erreurs",
   "nav.ai_chat": "Chat IA",
   "ai.coming_soon": "Bientôt disponible",
-
+ 
   "register.veryWeak": "Très faible",
   "cookie.title": "Nous utilisons des cookies",
   "cookie.description": "Nous utilisons des cookies et localStorage pour faire fonctionner l'app et afficher des publicités. Voir notre",
@@ -2143,7 +2136,7 @@ const fr: Dict = {
   "boundary.message": "Une erreur inattendue s'est produite. Tes données sont en sécurité — essaie de recharger la page, ou retourne au tableau de bord.",
   "boundary.retry": "Réessayer",
   "boundary.toDashboard": "Au tableau de bord",
-
+ 
   "register.weak": "Faible",
   "register.fair": "Correct",
   "register.strong": "Fort",
@@ -2151,7 +2144,7 @@ const fr: Dict = {
   "register.passwordShort": "Le mot de passe doit contenir au moins 8 caractères.",
   "register.passwordWeak": "Mot de passe trop faible. Ajoutez des chiffres ou symboles.",
   "tests.allLevels": "Tous les niveaux",
-
+ 
   "ai.coming_soon_desc": "Le tuteur IA arrive bientôt. Nous travaillons dur pour vous offrir la meilleure expérience!",
   "ai.coming_soon_badge": "bientôt",
   "ai.feature_grammar": "Aide en grammaire",
@@ -2161,13 +2154,13 @@ const fr: Dict = {
   "ai.open_panel": "Ouvrir AI Tutor",
   "ai.open_panel_new": "Ouvrir AI Tutor — nouveaux messages",
   "nav.arena": "Légende",
-
+ 
   "arena.back": "← Tableau de Bord",
   "arena.subtitle": "Complétez des saisons. Gagnez des XP. Devenez bilingue.",
   "arena.locked": "Verrouillé",
   "arena.levelComplete": "Terminé",
   "arena.backToSeasons": "← Toutes les Saisons",
-
+ 
   "testpage.back": "← Tableau de Bord",
   "testpage.allLevels": "Tous les Niveaux",
   "testpage.noTests": "Aucun test trouvé",
@@ -2178,13 +2171,13 @@ const fr: Dict = {
   "testpage.backToTests": "← Retour aux Tests",
   "testpage.dashboard": "Tableau de Bord",
   "testpage.noLessons": "Aucune leçon trouvée",
-
+ 
   "grammarpage.back": "← Tableau de Bord",
   "grammarpage.searchPlaceholder": "Chercher des leçons...",
   "grammarpage.allLevels": "Tous les Niveaux",
-
+ 
   "vocabpage.back": "Retour au Tableau de Bord",
-
+ 
   "mistakespage.back": "← Erreurs",
   "mistakespage.backDetail": "Retour aux Erreurs",
   "mistakespage.practiceAgain": "Pratiquer à Nouveau",
@@ -2197,19 +2190,19 @@ const fr: Dict = {
   "mistakesview.unreviewed": "Non révisé",
   "mistakesview.reviewed": "Révisé",
   "mistakesview.all": "tout",
-
+ 
   "generic.back_dashboard": "Retour",
   "generic.cancel": "Annuler",
   "generic.save": "Enregistrer",
   "generic.loading": "Chargement...",
-
+ 
   "placeholder.email": "vous@exemple.fr",
   "placeholder.username": "nom d'utilisateur",
   "placeholder.password": "Min. 8 caractères",
   "placeholder.confirmPassword": "Ressaisir le mot de passe",
   "placeholder.identifier": "nom d'utilisateur ou e-mail",
   "placeholder.passwordLogin": "Entrez le mot de passe",
-
+ 
   // ✅ Aangevuld (audit — taal-controle): ontbrekende sleutels t.o.v. 'en'
   "dashboard.continueInLang": "Reprends là où tu t'es arrêté en",
   "profile.xpToNext": "{xpCurrent} / {xpNeeded} XP -> Niveau {nextLevel}",
@@ -2240,7 +2233,7 @@ const fr: Dict = {
   "testpage.clear": "effacer",
   "vocabpage.learnedCount": "{learned}/{total} appris",
   "mistakeslevel.noResults": "Effacer toutes les erreurs",
-
+ 
   // ✅ Aangevuld (audit ronde 3 — volledige tekst-controle)
   "resetpw.errorTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
   "resetpw.errorMismatch": "Les mots de passe ne correspondent pas.",
@@ -2339,7 +2332,7 @@ const fr: Dict = {
   "arena.season": "Saison",
   "arena.xpEarned": "+{xp} XP gagnés !",
   "arena.tryAgain": "Réessayez !",
-
+ 
   "arena.type.translation": "Traduire",
   "arena.type.multipleChoice": "Choisis la bonne réponse",
   "arena.type.fillBlank": "Complète",
@@ -2633,7 +2626,7 @@ const fr: Dict = {
   "privacy.s3.li2": "Fourniture du service d'apprentissage des langues (leçons, tests, XP, série de jours)",
   "privacy.s3.li4": "Sécurisation du service (limitation du débit, détection des abus)",
   "privacy.s3.li5": "Affichage de publicités aux utilisateurs de l'offre gratuite (Google AdSense)",
-  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",,
+  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",
   "privacy.s3.noSale": "❌ Nous ne vendons PAS vos données personnelles à des tiers.",
   "privacy.s4.title": "4. Combien de temps conservons-nous vos données ? (Durées de conservation)",
   "privacy.s4.li1": "Données de compte : tant que votre compte est actif. Effacées dans un délai de 30 jours après suppression.",
@@ -2647,7 +2640,7 @@ const fr: Dict = {
   "privacy.s5.vercelName": "Vercel (hébergement et fonctions serverless)",
   "privacy.s5.vercelInfo": "Hébergement du site web et de l'API. Vercel est établi aux États-Unis mais est conforme au RGPD (clauses contractuelles types).",
   "privacy.s5.anthropicName": "Anthropic / API Claude (tuteur IA)",
-  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",,
+  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",
   "privacy.s5.adsenseName": "Google AdSense (publicités)",
   "privacy.s5.adsenseInfo": "Affiche des publicités aux utilisateurs de l'offre gratuite. Google peut déposer des cookies à des fins de publicité personnalisée.",
   "privacy.s5.privacyLinkText": "Politique de confidentialité →",
@@ -2697,13 +2690,13 @@ const fr: Dict = {
   "privacy.s12.response": "Réponse sous 30 jours (délai légal prévu par le RGPD).",
   "legal.translationNotice": "Ce document a été rédigé à l'origine en néerlandais. En cas de divergence entre les versions linguistiques, la version néerlandaise fait foi.",
 };
-
+ 
 // ─────────────────────────────────────────────
 // DEUTSCH
 // ─────────────────────────────────────────────
 const de: Dict = {
   ...en,
-
+ 
   "topbar.level": "Level",
   "topbar.xp": "XP",
   "topbar.logout": "Abmelden",
@@ -2716,7 +2709,7 @@ const de: Dict = {
   "topbar.privacyPolicy": "Datenschutzerklärung",
   "topbar.termsOfService": "Nutzungsbedingungen",
   "grammar.loadMore": "Weitere Lektionen laden",
-
+ 
   "login.title": "Willkommen zurück",
   "login.subtitle": "Melde dich an, um fortzufahren",
   "login.identifier": "Benutzername oder E-Mail",
@@ -2744,7 +2737,7 @@ const de: Dict = {
   "login.mfaVerifyButton": "Bestätigen",
   "login.forgotEmailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
   "login.forgotErrorSend": "E-Mail zum Zurücksetzen konnte nicht gesendet werden. Versuch es erneut.",
-
+ 
   "register.title": "Konto erstellen",
   "register.subtitle": "Fang heute mit dem Lernen an",
   "register.email": "E-Mail",
@@ -2764,7 +2757,7 @@ const de: Dict = {
   "register.errorConfirmMatch": "Passwörter stimmen nicht überein.",
   "register.errorEmailExists": "Ein Konto mit dieser E-Mail existiert bereits.",
   "register.errorUsernameTaken": "Dieser Benutzername ist bereits vergeben.",
-
+ 
   "dashboard.welcome": "Willkommen zurück,",
   "dashboard.noLanguagePrompt": "Wähle unten eine Sprache, um loszulegen!",
   "dashboard.learningLanguage": "Lerne gerade",
@@ -2818,13 +2811,13 @@ const de: Dict = {
   "dashboard.streakBonus": "Streak-Bonus! +{xp} XP für 7 Tage",
   "dashboard.streakBonus30": "30-Tage-Champion",
   "dashboard.levelUp": "🎉 Du bist bereit, aufzusteigen!",
-
+ 
   "lang.en": "Englisch",
   "lang.nl": "Niederländisch",
   "lang.fr": "Französisch",
   "lang.de": "Deutsch",
   "lang.es": "Spanisch",
-
+ 
   "wotd.title": "Wort des Tages",
   "wotd.i_know": "Das kenne ich",
   "wotd.show_hint": "Tipp benötigt?",
@@ -2837,7 +2830,7 @@ const de: Dict = {
   "wotd.words_learned": "Wörter gelernt",
   "wotd.youre_done": "Du bist für heute fertig",
   "wotd.see_tomorrow": "Bis morgen!",
-
+ 
   "grammar.title": "Grammatik-Lektionen",
   "grammar.back_lessons": "Zurück zu den Lektionen",
   "grammar.learn": "Lernen",
@@ -2858,7 +2851,7 @@ const de: Dict = {
   "grammar.mistakes_title": "Häufige Fehler",
   "grammar.review": "Schnelle Wiederholung",
   "grammar.qa": "Übungsfragen",
-
+ 
   "vocab.title": "Wortschatz",
   "vocab.back": "Zurück zum Wortschatz",
   "vocab.mark_learned": "Als gelernt markieren",
@@ -2866,7 +2859,7 @@ const de: Dict = {
   "vocab.search": "Wörter suchen...",
   "vocab.example": "Beispiel",
   "vocab.progress": "gelernt",
-
+ 
   "tests.title": "Tests und Quizze",
   "tests.back": "Zurück zu den Tests",
   "tests.search": "Tests suchen...",
@@ -2879,7 +2872,7 @@ const de: Dict = {
   "tests.submit": "Test abgeben",
   "tests.previous": "Zurück",
   "tests.next": "Weiter",
-
+ 
   "exercise.title": "Übungsmodus",
   "exercise.subtitle": "Wähle ein Thema und beantworte Fragen.",
   "exercise.all_topics": "Alle Themen",
@@ -2892,7 +2885,7 @@ const de: Dict = {
   "exercise.complete": "Übung abgeschlossen!",
   "exercise.accuracy": "Genauigkeit",
   "exercise.earned": "XP verdient",
-
+ 
   "mistakes.title": "Fehler-Review",
   "mistakes.subtitle": "Lerne aus deinen Fehlern",
   "mistakes.search": "Fehler suchen...",
@@ -2912,7 +2905,7 @@ const de: Dict = {
   "mistakes.practice_again": "Erneut üben",
   "mistakes.source_exercise": "Übung",
   "mistakes.source_test": "Test",
-
+ 
   "ai.title": "KI-Tutor",
   "ai.grammar_feat": "Grammatikerklärungen",
   "ai.translate_feat": "Alles übersetzen",
@@ -2925,7 +2918,7 @@ const de: Dict = {
   "ai.translate_desc": "Übersetze Phrasen und Sätze",
   "ai.convo_desc": "Natürlich sprechen üben",
   "ai.powered_by": "powered by Claude",
-
+ 
   "profile.member_since": "Mitglied seit",
   "profile.learning_langs": "Lernsprachen",
   "profile.earned": "Verdient!",
@@ -2946,7 +2939,7 @@ const de: Dict = {
   "profile.daysActiveThisWeek": "{activeDays} von 7 Tagen diese Woche aktiv",
   "profile.achievements": "Errungenschaften",
   "profile.backToDashboard": "Zurück zum Dashboard",
-
+ 
   "settings.title": "Einstellungen",
   "settings.back": "Zurück zum Dashboard",
   "settings.account": "Konto",
@@ -3009,7 +3002,7 @@ const de: Dict = {
   "settings.deleteConfirmText": "Gib deinen Benutzernamen {username} ein, um die endgültige Löschung zu bestätigen. Dies kann nicht rückgängig gemacht werden.",
   "settings.deleteConfirmPlaceholder": "Gib \"{username}\" ein, um zu bestätigen",
   "settings.deleteButton": "Löschen",
-
+ 
   "nav.home": "Startseite",
   "nav.profile": "Profil",
   "nav.grammar": "Grammatik",
@@ -3020,7 +3013,7 @@ const de: Dict = {
   "nav.mistakes": "Fehler",
   "nav.ai_chat": "KI-Chat",
   "ai.coming_soon": "Demnächst verfügbar",
-
+ 
   "register.veryWeak": "Sehr schwach",
   "cookie.title": "Wir verwenden Cookies",
   "cookie.description": "Wir verwenden Cookies und localStorage, um die App zu betreiben und relevante Anzeigen zu schalten. Siehe unsere",
@@ -3038,7 +3031,7 @@ const de: Dict = {
   "boundary.message": "Ein unerwarteter Fehler ist aufgetreten. Deine Daten sind sicher — versuche, die Seite neu zu laden, oder kehre zum Dashboard zurück.",
   "boundary.retry": "Erneut versuchen",
   "boundary.toDashboard": "Zum Dashboard",
-
+ 
   "register.weak": "Schwach",
   "register.fair": "Akzeptabel",
   "register.strong": "Stark",
@@ -3046,7 +3039,7 @@ const de: Dict = {
   "register.passwordShort": "Passwort muss mindestens 8 Zeichen haben.",
   "register.passwordWeak": "Passwort zu schwach. Zahlen oder Symbole hinzufügen.",
   "tests.allLevels": "Alle Niveaus",
-
+ 
   "ai.coming_soon_desc": "Der KI-Tutor kommt bald. Wir arbeiten hart daran, dir das beste Lernerlebnis zu bieten!",
   "ai.coming_soon_badge": "bald",
   "ai.feature_grammar": "Grammatik-Hilfe",
@@ -3056,13 +3049,13 @@ const de: Dict = {
   "ai.open_panel": "AI Tutor öffnen",
   "ai.open_panel_new": "AI Tutor öffnen — neue Nachrichten",
   "nav.arena": "Legende",
-
+ 
   "arena.back": "← Dashboard",
   "arena.subtitle": "Schließe Saisons ab. Verdiene XP. Werde fließend.",
   "arena.locked": "Gesperrt",
   "arena.levelComplete": "Abgeschlossen",
   "arena.backToSeasons": "← Alle Saisons",
-
+ 
   "testpage.back": "← Dashboard",
   "testpage.allLevels": "Alle Level",
   "testpage.noTests": "Keine Tests gefunden",
@@ -3073,13 +3066,13 @@ const de: Dict = {
   "testpage.backToTests": "← Zurück zu den Tests",
   "testpage.dashboard": "Dashboard",
   "testpage.noLessons": "Keine Lektionen gefunden",
-
+ 
   "grammarpage.back": "← Dashboard",
   "grammarpage.searchPlaceholder": "Lektionen suchen...",
   "grammarpage.allLevels": "Alle Level",
-
+ 
   "vocabpage.back": "Zurück zum Dashboard",
-
+ 
   "mistakespage.back": "← Fehler",
   "mistakespage.backDetail": "Zurück zu den Fehlern",
   "mistakespage.practiceAgain": "Erneut üben",
@@ -3092,19 +3085,19 @@ const de: Dict = {
   "mistakesview.unreviewed": "Nicht überprüft",
   "mistakesview.reviewed": "Überprüft",
   "mistakesview.all": "alle",
-
+ 
   "generic.back_dashboard": "Zurück",
   "generic.cancel": "Abbrechen",
   "generic.save": "Speichern",
   "generic.loading": "Laden...",
-
+ 
   "placeholder.email": "du@beispiel.de",
   "placeholder.username": "Benutzername",
   "placeholder.password": "Mind. 8 Zeichen",
   "placeholder.confirmPassword": "Passwort wiederholen",
   "placeholder.identifier": "Benutzername oder E-Mail",
   "placeholder.passwordLogin": "Passwort eingeben",
-
+ 
   // ✅ Aangevuld (audit — taal-controle): ontbrekende sleutels t.o.v. 'en'
   "dashboard.continueInLang": "Setze fort, wo du aufgehört hast in",
   "profile.xpToNext": "{xpCurrent} / {xpNeeded} XP -> Level {nextLevel}",
@@ -3135,7 +3128,7 @@ const de: Dict = {
   "testpage.clear": "löschen",
   "vocabpage.learnedCount": "{learned}/{total} gelernt",
   "mistakeslevel.noResults": "Alle Fehler löschen",
-
+ 
   // ✅ Aangevuld (audit ronde 3 — volledige tekst-controle)
   "resetpw.errorTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein.",
   "resetpw.errorMismatch": "Die Passwörter stimmen nicht überein.",
@@ -3234,7 +3227,7 @@ const de: Dict = {
   "arena.season": "Staffel",
   "arena.xpEarned": "+{xp} XP verdient!",
   "arena.tryAgain": "Versuch es nochmal!",
-
+ 
   "arena.type.translation": "Übersetzen",
   "arena.type.multipleChoice": "Wähle die richtige Antwort",
   "arena.type.fillBlank": "Ausfüllen",
@@ -3528,7 +3521,7 @@ const de: Dict = {
   "privacy.s3.li2": "Bereitstellung des Sprachlerndienstes (Lektionen, Tests, XP, Streak)",
   "privacy.s3.li4": "Absicherung des Dienstes (Rate Limiting, Missbrauchserkennung)",
   "privacy.s3.li5": "Anzeige von Werbung für kostenlose Nutzer (Google AdSense)",
-  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",,
+  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",
   "privacy.s3.noSale": "❌ Wir verkaufen deine personenbezogenen Daten NICHT an Dritte.",
   "privacy.s4.title": "4. Wie lange speichern wir deine Daten? (Aufbewahrungsfristen)",
   "privacy.s4.li1": "Kontodaten: Solange dein Konto aktiv ist. Bei Löschung innerhalb von 30 Tagen entfernt.",
@@ -3542,7 +3535,7 @@ const de: Dict = {
   "privacy.s5.vercelName": "Vercel (Hosting & Serverless-Funktionen)",
   "privacy.s5.vercelInfo": "Hosting der Website und API. Vercel hat seinen Sitz in den USA, ist aber DSGVO-konform (Standardvertragsklauseln).",
   "privacy.s5.anthropicName": "Anthropic / Claude-API (KI-Tutor)",
-  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",,
+  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",
   "privacy.s5.adsenseName": "Google AdSense (Werbung)",
   "privacy.s5.adsenseInfo": "Zeigt kostenlosen Nutzern Werbung an. Google kann Cookies für personalisierte Werbung setzen.",
   "privacy.s5.privacyLinkText": "Datenschutzerklärung →",
@@ -3592,13 +3585,13 @@ const de: Dict = {
   "privacy.s12.response": "Antwort innerhalb von 30 Tagen (gesetzliche DSGVO-Frist).",
   "legal.translationNotice": "Dieses Dokument wurde ursprünglich auf Niederländisch verfasst. Bei Abweichungen zwischen den Sprachversionen ist die niederländische Fassung maßgeblich.",
 };
-
+ 
 // ─────────────────────────────────────────────
 // ESPAÑOL
 // ─────────────────────────────────────────────
 const es: Dict = {
   ...en,
-
+ 
   "topbar.level": "Nivel",
   "topbar.xp": "XP",
   "topbar.logout": "Cerrar sesión",
@@ -3611,7 +3604,7 @@ const es: Dict = {
   "topbar.privacyPolicy": "Política de privacidad",
   "topbar.termsOfService": "Términos del servicio",
   "grammar.loadMore": "Cargar más lecciones",
-
+ 
   "login.title": "Bienvenido de nuevo",
   "login.subtitle": "Inicia sesión para continuar",
   "login.identifier": "Nombre de usuario o correo",
@@ -3639,7 +3632,7 @@ const es: Dict = {
   "login.mfaVerifyButton": "Verificar",
   "login.forgotEmailInvalid": "Introduce una dirección de correo válida.",
   "login.forgotErrorSend": "No se pudo enviar el correo de restablecimiento. Inténtalo de nuevo.",
-
+ 
   "register.title": "Crear tu cuenta",
   "register.subtitle": "Empieza a aprender hoy",
   "register.email": "Correo electrónico",
@@ -3659,7 +3652,7 @@ const es: Dict = {
   "register.errorConfirmMatch": "Las contraseñas no coinciden.",
   "register.errorEmailExists": "Ya existe una cuenta con este correo.",
   "register.errorUsernameTaken": "Este nombre de usuario ya está ocupado.",
-
+ 
   "dashboard.welcome": "Bienvenido de nuevo,",
   "dashboard.noLanguagePrompt": "¡Elige un idioma abajo para empezar a aprender!",
   "dashboard.learningLanguage": "Aprendiendo",
@@ -3713,13 +3706,13 @@ const es: Dict = {
   "dashboard.streakBonus": "¡Bonus de racha! +{xp} XP por 7 días",
   "dashboard.streakBonus30": "Campeón 30 días",
   "dashboard.levelUp": "🎉 ¡Estás listo para subir de nivel!",
-
+ 
   "lang.en": "Inglés",
   "lang.nl": "Neerlandés",
   "lang.fr": "Francés",
   "lang.de": "Alemán",
   "lang.es": "Español",
-
+ 
   "wotd.title": "Palabra del Día",
   "wotd.i_know": "Lo sé",
   "wotd.show_hint": "¿Necesitas una pista?",
@@ -3732,7 +3725,7 @@ const es: Dict = {
   "wotd.words_learned": "palabras aprendidas",
   "wotd.youre_done": "Has terminado por hoy",
   "wotd.see_tomorrow": "¡Hasta mañana!",
-
+ 
   "grammar.title": "Lecciones de Gramática",
   "grammar.back_lessons": "Volver a las Lecciones",
   "grammar.learn": "Aprender",
@@ -3753,7 +3746,7 @@ const es: Dict = {
   "grammar.mistakes_title": "Errores comunes",
   "grammar.review": "Repaso rápido",
   "grammar.qa": "Preguntas de práctica",
-
+ 
   "vocab.title": "Vocabulario",
   "vocab.back": "Volver al Vocabulario",
   "vocab.mark_learned": "Marcar como aprendido",
@@ -3761,7 +3754,7 @@ const es: Dict = {
   "vocab.search": "Buscar palabras...",
   "vocab.example": "Ejemplo",
   "vocab.progress": "aprendido",
-
+ 
   "tests.title": "Tests y Cuestionarios",
   "tests.back": "Volver a los Tests",
   "tests.search": "Buscar tests...",
@@ -3774,7 +3767,7 @@ const es: Dict = {
   "tests.submit": "Entregar test",
   "tests.previous": "Anterior",
   "tests.next": "Siguiente",
-
+ 
   "exercise.title": "Modo Práctica",
   "exercise.subtitle": "Elige un tema y responde preguntas.",
   "exercise.all_topics": "Todos los temas",
@@ -3787,7 +3780,7 @@ const es: Dict = {
   "exercise.complete": "¡Práctica completada!",
   "exercise.accuracy": "precisión",
   "exercise.earned": "XP ganados",
-
+ 
   "mistakes.title": "Revisión de Errores",
   "mistakes.subtitle": "Aprende de tus errores",
   "mistakes.search": "Buscar errores...",
@@ -3807,7 +3800,7 @@ const es: Dict = {
   "mistakes.practice_again": "Practicar de nuevo",
   "mistakes.source_exercise": "Práctica",
   "mistakes.source_test": "Test",
-
+ 
   "ai.title": "Tutor IA",
   "ai.grammar_feat": "Explicaciones de gramática",
   "ai.translate_feat": "Traduce cualquier cosa",
@@ -3820,7 +3813,7 @@ const es: Dict = {
   "ai.translate_desc": "Traduce frases y oraciones",
   "ai.convo_desc": "Practica hablar naturalmente",
   "ai.powered_by": "impulsado por Claude",
-
+ 
   "profile.member_since": "Miembro desde",
   "profile.learning_langs": "Idiomas de aprendizaje",
   "profile.earned": "¡Ganado!",
@@ -3841,7 +3834,7 @@ const es: Dict = {
   "profile.daysActiveThisWeek": "{activeDays} de 7 días activos esta semana",
   "profile.achievements": "Logros",
   "profile.backToDashboard": "Volver al Panel",
-
+ 
   "settings.title": "Configuración",
   "settings.back": "Volver al Panel",
   "settings.account": "Cuenta",
@@ -3904,7 +3897,7 @@ const es: Dict = {
   "settings.deleteConfirmText": "Escribe tu nombre de usuario {username} para confirmar la eliminación permanente. Esto no se puede deshacer.",
   "settings.deleteConfirmPlaceholder": "Escribe \"{username}\" para confirmar",
   "settings.deleteButton": "Eliminar",
-
+ 
   "nav.home": "Inicio",
   "nav.profile": "Perfil",
   "nav.grammar": "Gramática",
@@ -3915,7 +3908,7 @@ const es: Dict = {
   "nav.mistakes": "Errores",
   "nav.ai_chat": "Chat IA",
   "ai.coming_soon": "Próximamente",
-
+ 
   "register.veryWeak": "Muy débil",
   "cookie.title": "Usamos cookies",
   "cookie.description": "Usamos cookies y localStorage para hacer funcionar la app y mostrar anuncios relevantes. Ver nuestra",
@@ -3933,7 +3926,7 @@ const es: Dict = {
   "boundary.message": "Se produjo un error inesperado. Tus datos están seguros — intenta recargar la página o vuelve al panel principal.",
   "boundary.retry": "Intentar de nuevo",
   "boundary.toDashboard": "Al panel principal",
-
+ 
   "register.weak": "Débil",
   "register.fair": "Regular",
   "register.strong": "Fuerte",
@@ -3941,7 +3934,7 @@ const es: Dict = {
   "register.passwordShort": "La contraseña debe tener al menos 8 caracteres.",
   "register.passwordWeak": "Contraseña muy débil. Agrega números o símbolos.",
   "tests.allLevels": "Todos los niveles",
-
+ 
   "ai.coming_soon_desc": "El tutor de IA llegará pronto. ¡Trabajamos duro para darte la mejor experiencia de aprendizaje!",
   "ai.coming_soon_badge": "pronto",
   "ai.feature_grammar": "Ayuda de gramática",
@@ -3951,13 +3944,13 @@ const es: Dict = {
   "ai.open_panel": "Abrir AI Tutor",
   "ai.open_panel_new": "Abrir AI Tutor — mensajes nuevos",
   "nav.arena": "Leyenda",
-
+ 
   "arena.back": "← Panel",
   "arena.subtitle": "Completa temporadas. Gana XP. Vuélvete fluido.",
   "arena.locked": "Bloqueado",
   "arena.levelComplete": "Completado",
   "arena.backToSeasons": "← Todas las Temporadas",
-
+ 
   "testpage.back": "← Panel",
   "testpage.allLevels": "Todos los Niveles",
   "testpage.noTests": "No se encontraron tests",
@@ -3968,13 +3961,13 @@ const es: Dict = {
   "testpage.backToTests": "← Volver a los Tests",
   "testpage.dashboard": "Panel",
   "testpage.noLessons": "No se encontraron lecciones",
-
+ 
   "grammarpage.back": "← Panel",
   "grammarpage.searchPlaceholder": "Buscar lecciones...",
   "grammarpage.allLevels": "Todos los Niveles",
-
+ 
   "vocabpage.back": "Volver al Panel",
-
+ 
   "mistakespage.back": "← Errores",
   "mistakespage.backDetail": "Volver a los Errores",
   "mistakespage.practiceAgain": "Practicar de Nuevo",
@@ -3987,19 +3980,19 @@ const es: Dict = {
   "mistakesview.unreviewed": "Sin revisar",
   "mistakesview.reviewed": "Revisado",
   "mistakesview.all": "todo",
-
+ 
   "generic.back_dashboard": "Volver",
   "generic.cancel": "Cancelar",
   "generic.save": "Guardar",
   "generic.loading": "Cargando...",
-
+ 
   "placeholder.email": "tu@ejemplo.com",
   "placeholder.username": "nombre de usuario",
   "placeholder.password": "Mín. 8 caracteres",
   "placeholder.confirmPassword": "Repetir contraseña",
   "placeholder.identifier": "nombre de usuario o correo",
   "placeholder.passwordLogin": "Introduce la contraseña",
-
+ 
   // ✅ Aangevuld (audit — taal-controle): ontbrekende sleutels t.o.v. 'en'
   "dashboard.continueInLang": "Continúa donde lo dejaste en",
   "profile.xpToNext": "{xpCurrent} / {xpNeeded} XP -> Nivel {nextLevel}",
@@ -4030,7 +4023,7 @@ const es: Dict = {
   "testpage.clear": "borrar",
   "vocabpage.learnedCount": "{learned}/{total} aprendido",
   "mistakeslevel.noResults": "Borrar todos los errores",
-
+ 
   // ✅ Aangevuld (audit ronde 3 — volledige tekst-controle)
   "resetpw.errorTooShort": "La contraseña debe tener al menos 8 caracteres.",
   "resetpw.errorMismatch": "Las contraseñas no coinciden.",
@@ -4129,7 +4122,7 @@ const es: Dict = {
   "arena.season": "Temporada",
   "arena.xpEarned": "¡+{xp} XP ganados!",
   "arena.tryAgain": "¡Inténtalo de nuevo!",
-
+ 
   "arena.type.translation": "Traduce",
   "arena.type.multipleChoice": "Elige la correcta",
   "arena.type.fillBlank": "Completa",
@@ -4423,7 +4416,7 @@ const es: Dict = {
   "privacy.s3.li2": "Prestación del servicio de aprendizaje de idiomas (lecciones, pruebas, XP, racha)",
   "privacy.s3.li4": "Protección del servicio (limitación de solicitudes, detección de abusos)",
   "privacy.s3.li5": "Mostrar anuncios a los usuarios del plan gratuito (Google AdSense)",
-  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",,
+  "privacy.s3.li6": "Processing AI Tutor messages through the configured AI provider",
   "privacy.s3.noSale": "❌ NO vendemos tus datos personales a terceros.",
   "privacy.s4.title": "4. ¿Durante cuánto tiempo conservamos tus datos? (Plazos de conservación)",
   "privacy.s4.li1": "Datos de cuenta: mientras tu cuenta esté activa. Se borran en un plazo de 30 días tras la eliminación.",
@@ -4437,7 +4430,7 @@ const es: Dict = {
   "privacy.s5.vercelName": "Vercel (alojamiento y funciones serverless)",
   "privacy.s5.vercelInfo": "Alojamiento del sitio web y la API. Vercel tiene su sede en EE. UU. pero cumple con el RGPD (cláusulas contractuales tipo).",
   "privacy.s5.anthropicName": "Anthropic / API de Claude (Tutor de IA)",
-  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",,
+  "privacy.s5.anthropicInfo": "AI chat messages are forwarded to the configured AI provider to generate responses.",
   "privacy.s5.adsenseName": "Google AdSense (publicidad)",
   "privacy.s5.adsenseInfo": "Muestra publicidad a los usuarios del plan gratuito. Google puede colocar cookies para publicidad personalizada.",
   "privacy.s5.privacyLinkText": "Política de privacidad →",
@@ -4487,19 +4480,19 @@ const es: Dict = {
   "privacy.s12.response": "Respuesta en un plazo de 30 días (plazo legal del RGPD).",
   "legal.translationNotice": "Este documento se redactó originalmente en neerlandés. En caso de discrepancia entre las versiones lingüísticas, prevalecerá la versión en neerlandés.",
 };
-
+ 
 // ─────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────
 const all: Record<string, Dict> = { en, nl, fr, de, es };
-
+ 
 export type TranslationKey = keyof typeof en;
-
+ 
 export function getTranslation(lang: UILanguage, key: TranslationKey): string {
   const dict = all[lang] ?? en;
   return (dict[key as string] ?? en[key as string] ?? key) as string;
 }
-
+ 
 export function getTranslations(lang: UILanguage): Dict {
   return all[lang] ?? en;
 }
