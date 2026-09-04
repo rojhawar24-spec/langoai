@@ -43,7 +43,7 @@ BEGIN
       LOWER(NEW.email),
       NULLIF(meta->>'currentLanguage', ''),
       CASE WHEN meta->>'theme' IN ('light','dark') THEN meta->>'theme' ELSE 'light' END,
-      COALESCE(NULLIF(meta->>'interfaceLanguage',''), 'en'),
+      COALESCE(NULLIF(meta->>'interfaceLanguage',''), 'en')
     )
     ON CONFLICT (id) DO NOTHING;
   END IF;
