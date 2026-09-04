@@ -91,7 +91,7 @@ export async function apiRegister(data: {
   if (availError) throw new Error("register_failed");
   if (isAvailable === false) throw new Error("username_taken");
 
-  const startResponse = await fetch("/api/verification-start", {
+  const startResponse = await fetch("/api/email-check", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: data.email.toLowerCase() }),
