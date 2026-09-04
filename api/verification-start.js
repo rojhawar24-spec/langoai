@@ -1,4 +1,4 @@
-﻿import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
 
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
-    console.error("Missing VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+    console.error("Missing env");
     return res.status(500).json({ error: "server_configuration_error" });
   }
 
@@ -34,7 +34,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "invalid_email" });
   }
 
-  // GEEN rate-limit meer — kan geen 429 meer teruggeven
   const requestId = crypto.randomUUID();
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
