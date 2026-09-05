@@ -127,6 +127,7 @@ function minutesUntilNextHeart(): number {
 }
 
 function HeartsDisplay({ hearts, dark, justLost }: { hearts: number; dark: boolean; justLost: boolean }) {
+  const { t } = useTranslate();
   return (
     <span className="flex items-center gap-0.5" role="status" aria-live="polite" aria-label={`${hearts} ${t("arena.heartsLabel")}`}>
       {Array.from({ length: MAX_HEARTS }).map((_, idx) => (
@@ -378,16 +379,22 @@ const TYPE_META: Record<QType, { label: string; icon: string; color: string }> =
 class SoundEngine {
   private ctx: AudioContext | null = null;
   private muted = false;
-  private getCtx(): AudioContext {
-    if (!this.ctx) this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    if (this.ctx.state === "suspended") this.ctx.resume();
-    return this.ctx;
+  private getCtx(): AudioContext | null {
+    try {
+      if (!this.ctx) this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      if (this.ctx.state === "suspended") void this.ctx.resume();
+      return this.ctx;
+    } catch {
+      return null;
+    }
   }
   setMuted(m: boolean) { this.muted = m; }
   isMuted() { return this.muted; }
   playCorrect() {
     if (this.muted) return;
-    const ctx = this.getCtx(); const now = ctx.currentTime;
+    const ctx = this.getCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
     [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
       const osc = ctx.createOscillator(); const gain = ctx.createGain();
       osc.connect(gain); gain.connect(ctx.destination);
@@ -400,7 +407,9 @@ class SoundEngine {
   }
   playWrong() {
     if (this.muted) return;
-    const ctx = this.getCtx(); const now = ctx.currentTime;
+    const ctx = this.getCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
     const o1 = ctx.createOscillator(); const o2 = ctx.createOscillator(); const g = ctx.createGain();
     o1.connect(g); o2.connect(g); g.connect(ctx.destination);
     o1.type = "sawtooth"; o2.type = "square";
@@ -411,7 +420,9 @@ class SoundEngine {
   }
   playClick() {
     if (this.muted) return;
-    const ctx = this.getCtx(); const now = ctx.currentTime;
+    const ctx = this.getCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
     const osc = ctx.createOscillator(); const gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
     osc.type = "sine"; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.08);
@@ -420,7 +431,9 @@ class SoundEngine {
   }
   playNext() {
     if (this.muted) return;
-    const ctx = this.getCtx(); const now = ctx.currentTime;
+    const ctx = this.getCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
     const osc = ctx.createOscillator(); const gain = ctx.createGain(); const filter = ctx.createBiquadFilter();
     osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
     osc.type = "sawtooth"; filter.type = "bandpass";
@@ -431,7 +444,9 @@ class SoundEngine {
   }
   playComplete() {
     if (this.muted) return;
-    const ctx = this.getCtx(); const now = ctx.currentTime;
+    const ctx = this.getCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
     [{ freq: 523.25, time: 0, dur: 0.15 }, { freq: 659.25, time: 0.15, dur: 0.15 },
      { freq: 783.99, time: 0.3, dur: 0.15 }, { freq: 1046.50, time: 0.45, dur: 0.3 },
      { freq: 783.99, time: 0.8, dur: 0.1 }, { freq: 1046.50, time: 0.95, dur: 0.5 }
@@ -446,7 +461,9 @@ class SoundEngine {
   }
   playUnlock() {
     if (this.muted) return;
-    const ctx = this.getCtx(); const now = ctx.currentTime;
+    const ctx = this.getCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
     [880, 1108.73, 1318.51, 1760].forEach((freq, i) => {
       const osc = ctx.createOscillator(); const gain = ctx.createGain();
       osc.connect(gain); gain.connect(ctx.destination); osc.type = "sine";
@@ -2166,12 +2183,15 @@ export default function ArenaPage() {
   const unlocked = useMemo(() => unlockedSeasons(lang), [lang, progressVersion]);
   const seasons = langIndex?.seasons ?? [];
 
-  const openSeason = async (seasonId: number, t: typeof SEASON_THEMES[0]) => {
+  const openSeason = async (seasonId: number, themeCfg: typeof SEASON_THEMES[0]) => {
     soundEngine.playClick();
     setLoadingSeason(true);
     const season = await fetchJson<Season>(`/arena/${lang}/season-${seasonId}.json`);
     setLoadingSeason(false);
-    if (season) { setActiveSeason(season); setActiveTheme(t); }
+    if (season) {
+      setActiveSeason({ ...season, id: seasonId });
+      setActiveTheme(themeCfg);
+    }
   };
 
   if (activeSeason) {
