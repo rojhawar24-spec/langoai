@@ -74,7 +74,7 @@ export async function apiRegister(data: {
   theme: "light" | "dark";
   interfaceLanguage: string;
 }): Promise<UserData> {
-  const { data: isAvailable, error: availError } = await supabase.rpc(
+  const { data: isAvailable, error: availError } = await (supabase as any).rpc(
     "username_available",
     { check_username: data.username }
   );
@@ -129,7 +129,7 @@ export async function apiRegister(data: {
   }
 
   // FIX 409: trigger handle_new_user kan het profiel al hebben aangemaakt
-  let { data: profile, error: profileError } = await supabase
+  let { data: profile, error: profileError } = await (supabase as any)
     .from("profiles")
     .upsert(
       {
@@ -151,7 +151,7 @@ export async function apiRegister(data: {
 
   // Fallback: als upsert toch faalt, bestaand profiel laden
   if (profileError || !profile) {
-    const existing = await supabase
+    const existing = await (supabase as any)
       .from("profiles")
       .select("*")
       .eq("id", authData.user.id)
@@ -238,7 +238,7 @@ export async function apiLogin(
   let email = trimmedIdentifier;
 
   if (!email.includes("@")) {
-    const { data: foundEmail, error: rpcError } = await supabase.rpc(
+    const { data: foundEmail, error: rpcError } = await (supabase as any).rpc(
       "get_email_by_username",
       { lookup_username: email }
     );
@@ -377,7 +377,7 @@ export async function apiUpdateUser(
   } = await supabase.auth.getSession();
   if (!session?.user) throw new Error("not_authenticated");
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("profiles")
     .update(userToRow(updates))
     .eq("id", session.user.id)
