@@ -1,55 +1,73 @@
 // src/pages/ResetPasswordPage.tsx
-// ✅ Pagina waar Supabase naartoe redirect na klikken reset link
-
 import { useState, useEffect, useRef, type FormEvent, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { useTranslate } from "@/i18n/I18nContext";
 
 export default function ResetPasswordPage() {
-  const navigate            = useNavigate();
-  const { t }               = useTranslate();
-  const [newPw,     setNewPw]     = useState("");
+  const navigate = useNavigate();
+  const { t } = useTranslate();
+  const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
-  const [error,     setError]     = useState("");
-  const [success,   setSuccess]   = useState(false);
-  // ✅ FIX (audit — memory/nav leak): als de gebruiker binnen de 3s wegnavigeert
-  // ná een geslaagde reset, mag deze timer de navigatie niet alsnog forceren.
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [validLink, setValidLink] = useState(false);
+  const [checking, setChecking] = useState(true);
   const redirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     return () => {
       if (redirectTimerRef.current) clearTimeout(redirectTimerRef.current);
     };
   }, []);
-  const [loading,   setLoading]   = useState(false);
-  const [validLink, setValidLink] = useState(false);
 
-  // 🔒 FIX (found while checking this page end-to-end — a real bypass,
-  // not a code-quality nitpick): this used to check
-  // supabase.auth.getSession() and treat ANY existing session as "the
-  // user clicked a valid reset link." But an already-logged-in user
-  // simply navigating to /reset-password also has a session — nothing
-  // here distinguished "just clicked a genuine recovery email link" from
-  // "already logged in for an unrelated reason." That meant anyone with
-  // temporary access to a logged-in session (a stolen/shared session, an
-  // unlocked device) could set a brand-new password on THIS page without
-  // ever proving they knew the current one — bypassing the exact
-  // safeguard Settings' own Change Password flow correctly enforces
-  // (re-entering the current password via signInWithPassword) for the
-  // identical action.
-  //
-  // Supabase fires a SPECIFIC "PASSWORD_RECOVERY" event via
-  // onAuthStateChange — emitted INSTEAD OF "SIGNED_IN" specifically when
-  // the URL contains a password-recovery link — precisely to make this
-  // distinguishable. Verified against Supabase's own current docs before
-  // relying on it, since getting an auth flow wrong from a guess would be
-  // worse than not touching it. Only that specific event now unlocks
-  // this form; a plain existing session no longer does.
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string) => {
-      if (event === "PASSWORD_RECOVERY") setValidLink(true);
+    let alive = true;
+
+    // 1) Luister naar recovery-event
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        if (alive) {
+          setValidLink(true);
+          setChecking(false);
+        }
+      }
     });
-    return () => subscription.unsubscribe();
+
+    // 2) Hash/query tokens (implicit flow) + bestaande recovery-sessie
+    const boot = async () => {
+      // Geef Supabase tijd om hash (#access_token=...&type=recovery) te verwerken
+      await new Promise((r) => setTimeout(r, 400));
+
+      const href = window.location.href;
+      const hash = window.location.hash || "";
+      const search = window.location.search || "";
+
+      const looksLikeRecovery =
+        hash.includes("type=recovery") ||
+        search.includes("type=recovery") ||
+        href.includes("type=recovery");
+
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!alive) return;
+
+      if (looksLikeRecovery || session) {
+        // Bij recovery-link is er een sessie; toon formulier
+        if (looksLikeRecovery || session) {
+          setValidLink(true);
+        }
+      }
+      setChecking(false);
+    };
+
+    void boot();
+
+    return () => {
+      alive = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   async function handleReset(e: FormEvent) {
@@ -70,11 +88,21 @@ export default function ResetPasswordPage() {
 
     if (supaErr) {
       setError(t("resetpw.errorGeneral"));
-    } else {
-      setSuccess(true);
-      redirectTimerRef.current = setTimeout(() => navigate("/login", { replace: true }), 3000);
+      setLoading(false);
+      return;
     }
+
+    setSuccess(true);
     setLoading(false);
+    redirectTimerRef.current = setTimeout(() => navigate("/login", { replace: true }), 3000);
+  }
+
+  if (checking) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 dark:bg-slate-900">
+        <p className="text-sm text-slate-500">Loading…</p>
+      </div>
+    );
   }
 
   if (!validLink) {
@@ -82,7 +110,9 @@ export default function ResetPasswordPage() {
       <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 dark:bg-slate-900">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <p className="text-4xl">⚠️</p>
-          <h1 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{t("resetpw.invalidTitle")}</h1>
+          <h1 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">
+            {t("resetpw.invalidTitle")}
+          </h1>
           <p className="mt-2 text-sm text-slate-500">{t("resetpw.invalidBody")}</p>
           <button
             onClick={() => navigate("/login")}
@@ -100,7 +130,9 @@ export default function ResetPasswordPage() {
       <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 dark:bg-slate-900">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <p className="text-5xl">✅</p>
-          <h1 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{t("resetpw.successTitle")}</h1>
+          <h1 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">
+            {t("resetpw.successTitle")}
+          </h1>
           <p className="mt-2 text-sm text-slate-500">{t("resetpw.redirecting")}</p>
         </div>
       </div>
