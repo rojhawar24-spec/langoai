@@ -38,6 +38,188 @@ const MASCOT_META: Record<MascotMood, { emoji: string; key: TranslationKey }> = 
   supportive: { emoji: "🦊💪", key: "mascot.supportive" },
 };
 
+
+function DashboardRobotMascot({ message }: { message: string }) {
+  return (
+    <section
+      className="relative mb-8 overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_55px_-28px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-white/[0.035] dark:shadow-[0_24px_70px_-35px_rgba(0,0,0,.8)]"
+      aria-label="AI learning mascot"
+    >
+      <style>{`
+        @keyframes dashboardRobotFloat {
+          0%, 100% { transform: translate3d(0, 0, 0) rotateY(-5deg) rotateX(2deg); }
+          50% { transform: translate3d(0, -5px, 0) rotateY(2deg) rotateX(0deg); }
+        }
+        @keyframes dashboardRobotGlow {
+          0%, 100% { opacity: .42; transform: scale(.96); }
+          50% { opacity: .72; transform: scale(1.04); }
+        }
+        @keyframes dashboardRobotBlink {
+          0%, 92%, 100% { transform: scaleY(1); }
+          94%, 97% { transform: scaleY(.1); }
+        }
+        @keyframes dashboardRobotScan {
+          0% { transform: translateX(-140%); opacity: 0; }
+          15% { opacity: .5; }
+          55% { opacity: .08; }
+          100% { transform: translateX(260%); opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .dashboard-robot-motion,
+          .dashboard-robot-eye,
+          .dashboard-robot-glow,
+          .dashboard-robot-scan {
+            animation: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/20 blur-3xl dark:bg-indigo-500/10" />
+      <div className="pointer-events-none absolute -right-20 bottom-[-60px] h-48 w-48 rounded-full bg-cyan-300/20 blur-3xl dark:bg-cyan-500/10" />
+
+      <div className="relative grid items-center gap-6 px-5 py-5 sm:grid-cols-[190px_minmax(0,1fr)] sm:px-7 sm:py-6">
+        {/* 3D robot */}
+        <div
+          className="relative mx-auto h-[175px] w-[190px] shrink-0"
+          style={{ perspective: "900px" }}
+          aria-hidden="true"
+        >
+          <div
+            className="dashboard-robot-glow absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/35 blur-3xl dark:bg-cyan-400/20"
+            style={{ animation: "dashboardRobotGlow 3.6s ease-in-out infinite" }}
+          />
+
+          <div
+            className="dashboard-robot-motion relative h-full w-full"
+            style={{
+              transformStyle: "preserve-3d",
+              animation: "dashboardRobotFloat 3.6s ease-in-out infinite",
+            }}
+          >
+            {/* ground shadow */}
+            <div className="absolute bottom-2 left-1/2 h-4 w-28 -translate-x-1/2 rounded-[50%] bg-slate-950/12 blur-md dark:bg-black/40" />
+
+            {/* back body depth */}
+            <div
+              className="absolute left-1/2 top-[56%] h-[27%] w-[58%] -translate-x-1/2 rounded-[26%] bg-slate-500/70 shadow-inner"
+              style={{ transform: "translateZ(-7px) translateX(-50%)" }}
+            />
+
+            {/* body */}
+            <div
+              className="absolute left-1/2 top-[54%] h-[30%] w-[58%] -translate-x-1/2 rounded-[25%_25%_22%_22%] border-2 border-slate-400/80 bg-gradient-to-b from-slate-50 via-slate-200 to-slate-400 shadow-[inset_0_8px_12px_rgba(255,255,255,.75),inset_0_-12px_18px_rgba(15,23,42,.16),0_12px_18px_rgba(15,23,42,.18)]"
+              style={{ transform: "translateZ(10px) translateX(-50%)" }}
+            >
+              <div className="absolute left-1/2 top-[30%] h-8 w-[62%] -translate-x-1/2 rounded-xl border border-slate-300/80 bg-slate-100/80 shadow-inner" />
+              <div className="absolute left-1/2 top-[63%] h-1.5 w-7 -translate-x-1/2 rounded-full bg-cyan-300 shadow-[0_0_9px_rgba(103,232,249,.95)]" />
+              <div className="absolute inset-x-[18%] bottom-[10%] h-px bg-slate-500/35" />
+            </div>
+
+            {/* arms */}
+            <div
+              className="absolute left-[7%] top-[59%] h-8 w-12 rounded-full border-2 border-slate-500/70 bg-gradient-to-b from-slate-100 to-slate-400 shadow-lg"
+              style={{ transform: "translateZ(7px) rotate(25deg)", transformOrigin: "right center" }}
+            >
+              <span className="absolute right-[-8px] top-1/2 h-5 w-4 -translate-y-1/2 rounded-full border border-slate-500/70 bg-slate-500" />
+            </div>
+            <div
+              className="absolute right-[7%] top-[59%] h-8 w-12 rounded-full border-2 border-slate-500/70 bg-gradient-to-b from-slate-100 to-slate-400 shadow-lg"
+              style={{ transform: "translateZ(7px) rotate(-25deg)", transformOrigin: "left center" }}
+            >
+              <span className="absolute left-[-8px] top-1/2 h-5 w-4 -translate-y-1/2 rounded-full border border-slate-500/70 bg-slate-500" />
+            </div>
+
+            {/* legs */}
+            <div
+              className="absolute bottom-[7%] left-[31%] h-[22%] w-[16%] rounded-[38%] border-2 border-slate-500/70 bg-gradient-to-b from-slate-300 to-slate-500 shadow-lg"
+              style={{ transform: "translateZ(8px)" }}
+            />
+            <div
+              className="absolute bottom-[7%] right-[31%] h-[22%] w-[16%] rounded-[38%] border-2 border-slate-500/70 bg-gradient-to-b from-slate-300 to-slate-500 shadow-lg"
+              style={{ transform: "translateZ(8px)" }}
+            />
+
+            {/* neck */}
+            <div
+              className="absolute left-1/2 top-[47%] h-[10%] w-[20%] -translate-x-1/2 rounded-lg border border-slate-500/80 bg-gradient-to-b from-slate-600 to-slate-900 shadow-inner"
+              style={{ transform: "translateZ(7px) translateX(-50%)" }}
+            />
+
+            {/* head back shell */}
+            <div
+              className="absolute left-1/2 top-[8%] h-[47%] w-[76%] -translate-x-1/2 rounded-[29%] bg-slate-500/70 shadow-inner"
+              style={{ transform: "translateZ(-5px) translateX(-50%)" }}
+            />
+
+            {/* head */}
+            <div
+              className="absolute left-1/2 top-[5%] h-[49%] w-[78%] -translate-x-1/2 rounded-[29%] border-2 border-slate-400 bg-gradient-to-b from-white via-slate-100 to-slate-300 shadow-[inset_0_8px_16px_rgba(255,255,255,.9),inset_0_-12px_20px_rgba(15,23,42,.14),0_14px_24px_rgba(15,23,42,.20)]"
+              style={{ transform: "translateZ(14px) translateX(-50%)" }}
+            >
+              {/* side ears */}
+              <div className="absolute -left-[8%] top-[25%] h-[43%] w-[11%] rounded-l-2xl border-2 border-slate-500/70 bg-gradient-to-b from-slate-200 to-slate-500 shadow-md" />
+              <div className="absolute -right-[8%] top-[25%] h-[43%] w-[11%] rounded-r-2xl border-2 border-slate-500/70 bg-gradient-to-b from-slate-200 to-slate-500 shadow-md" />
+
+              {/* screen */}
+              <div
+                className="absolute inset-[10%] overflow-hidden rounded-[24%] border-2 border-slate-500/90 bg-[radial-gradient(circle_at_50%_28%,#334155_0%,#0f172a_48%,#020617_100%)] shadow-[inset_0_0_24px_rgba(0,0,0,.78),inset_0_4px_10px_rgba(255,255,255,.08)]"
+                style={{ transform: "translateZ(9px)" }}
+              >
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_15%,rgba(255,255,255,.14),transparent_28%)]" />
+
+                {/* screen scan light */}
+                <div
+                  className="dashboard-robot-scan absolute inset-y-0 left-[-30%] w-[35%] rotate-[10deg] bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent blur-sm"
+                  style={{ animation: "dashboardRobotScan 4.8s linear infinite" }}
+                />
+
+                {/* fox face */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <div className="dashboard-robot-eye text-[42px] leading-none drop-shadow-[0_0_12px_rgba(251,146,60,.35)]">
+                    🦊
+                  </div>
+                  <div className="mt-1 h-1.5 w-8 rounded-full bg-cyan-300/90 shadow-[0_0_10px_rgba(103,232,249,.9)]" />
+                </div>
+
+                <div className="absolute left-[13%] top-[11%] h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_7px_rgba(103,232,249,.95)]" />
+                <div className="absolute right-[13%] top-[11%] h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_7px_rgba(103,232,249,.95)]" />
+              </div>
+
+              {/* top shell detail */}
+              <div className="absolute left-[22%] top-[4%] h-1.5 w-[56%] rounded-full bg-slate-300/80" />
+            </div>
+          </div>
+        </div>
+
+        {/* message */}
+        <div className="min-w-0 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/80 bg-cyan-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-700 dark:border-cyan-400/20 dark:bg-cyan-500/10 dark:text-cyan-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_7px_rgba(34,211,238,.85)]" />
+            AI Learning Companion
+          </div>
+
+          <p className="mt-3 text-lg font-black tracking-tight text-slate-900 dark:text-white sm:text-xl">
+            {message}
+          </p>
+
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+            Your learning companion is here to keep you focused and moving forward.
+          </p>
+
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
+              ⚡ Smart feedback
+            </span>
+            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
+              🦊 Always ready
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
  
 const LEARNING_LANGUAGES = [
   { code: "en", nameKey: "lang.en" as const, flag: "🇬🇧", color: "from-blue-500 to-indigo-600" },
@@ -353,10 +535,7 @@ export default function DashboardPage() {
         </div>
 
         {/* ── AI MASCOTTE ── */}
-        <div className="mb-8 flex items-start gap-3 rounded-2xl border border-indigo-100 bg-indigo-50/50 p-4 dark:border-indigo-900/30 dark:bg-indigo-950/20">
-          <span className="text-3xl" aria-hidden="true">{mascot.emoji}</span>
-          <p className="mt-1.5 text-sm font-medium text-slate-700 dark:text-slate-300">{t(mascot.key)}</p>
-        </div>
+        <DashboardRobotMascot message={t(mascot.key)} />
  
         {/* ── VANDAAG: XP OVER + DAILY CHEST ── */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2">
