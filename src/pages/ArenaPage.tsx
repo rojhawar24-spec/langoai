@@ -163,7 +163,7 @@ function CoinShop({ open, onClose, coins, setCoins, dark, themeColor }: {
     previouslyFocused.current = document.activeElement;
     dialogRef.current?.focus();
 
-    function handleKeydown(e: KeyboardEvent) {
+    function handleKeydown(e: globalThis.KeyboardEvent) {
       if (e.key === "Escape") {
         onClose();
         return;
@@ -214,13 +214,14 @@ function CoinShop({ open, onClose, coins, setCoins, dark, themeColor }: {
     setBusy(true);
     const { data, error } = await supabase.rpc("buy_heart");
     setBusy(false);
-    if (error || !data) {
+    const payload = data as { coins?: number } | null;
+    if (error || !payload) {
       setMsg(t("arena.shopNotEnoughCoins"));
       return;
     }
     const p = load();
     save({ ...p, hearts: Math.min(MAX_HEARTS, (p.hearts ?? MAX_HEARTS) + 1), heartsUpdatedAt: new Date().toISOString() });
-    setCoins(data.coins);
+    setCoins(payload.coins ?? 0);
     refreshUser();
     soundEngine.playCorrect();
     setMsg(t("arena.shopHeartBought"));
@@ -231,12 +232,13 @@ function CoinShop({ open, onClose, coins, setCoins, dark, themeColor }: {
     setBusy(true);
     const { data, error } = await supabase.rpc("buy_streak_repair");
     setBusy(false);
-    if (error || !data) {
+    const payload = data as { coins?: number } | null;
+    if (error || !payload) {
       setMsg(t("arena.shopNotEnoughCoins"));
       return;
     }
     markDateActive(getYesterdayLocal());
-    setCoins(data.coins);
+    setCoins(payload.coins ?? 0);
     refreshUser();
     soundEngine.playCorrect();
     setMsg(t("arena.shopStreakBought"));
@@ -256,16 +258,17 @@ function CoinShop({ open, onClose, coins, setCoins, dark, themeColor }: {
       const { data, error } = await supabase.rpc("open_mystery_box");
       setBusy(false);
       setBoxOpening(false);
-      if (error || !data) {
+      const payload = data as { prizeType?: string; prizeAmount?: number; profile?: { coins?: number } } | null;
+      if (error || !payload) {
         setMsg(t("arena.shopNotEnoughCoins"));
         return;
       }
-      if (data.prizeType === "coins") {
-        setMsg(t("arena.shopMysteryCoins").replace("{amount}", String(data.prizeAmount)));
+      if (payload.prizeType === "coins") {
+        setMsg(t("arena.shopMysteryCoins").replace("{amount}", String(payload.prizeAmount ?? 0)));
       } else {
         setMsg(t("arena.shopMysteryShield"));
       }
-      setCoins(data.profile.coins);
+      setCoins(payload.profile?.coins ?? 0);
       refreshUser();
       soundEngine.playCorrect();
     }, 600);
@@ -2060,20 +2063,20 @@ function SeasonView({ season, lang, onBack, award, themeConfig }: {
         p_lang: lang,
         p_season_id: season.id,
         p_level_id: activeLvl,
-      }).then(({ data, error }) => {
+      } as never).then(({ data, error }) => {
         if (error) {
           const msg = String(error.message || "");
           if (msg.includes("arena_level_already_completed")) {
-            // UI may already show complete; no extra reward
             return;
           }
           console.error("complete_arena_level RPC failed:", error);
           return;
         }
-        if (data?.profile) {
-          setCoins(data.profile.coins ?? data.profile.Coins);
+        const payload = data as { profile?: { coins?: number; Coins?: number } } | null;
+        if (payload?.profile) {
+          setCoins(payload.profile.coins ?? payload.profile.Coins ?? 0);
           refreshUser();
-        } else if (data) {
+        } else if (payload) {
           refreshUser();
         }
       });
