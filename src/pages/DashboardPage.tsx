@@ -37,16 +37,14 @@ const MASCOT_META: Record<MascotMood, { emoji: string; key: TranslationKey }> = 
   supportive: { emoji: "🤖💪", key: "mascot.supportive" },
 };
 
-// Kleur + smile-curve per mood. De smile is een quadratic bezier: het
-// controlepunt ligt ONDER de twee eindpunten, dus de curve dipt in het
-// midden naar beneden -> een "kom"-vorm -> lacht. Groter verschil in
-// y = brede glimlach, kleiner verschil = subtiele glimlach.
+// ─── NIEUWE MOOD_STYLE (zachte kleuren, premium look) ───
 const MOOD_STYLE: Record<MascotMood, { rgb: string; smile: string }> = {
-  greeting:   { rgb: "56,189,248",  smile: "M78,118 Q100,132 122,118" },
-  happy:      { rgb: "52,211,153", smile: "M72,114 Q100,140 128,114" },
-  supportive: { rgb: "251,191,36", smile: "M84,120 Q100,126 116,120" },
+  greeting:   { rgb: "125,211,252", smile: "M83,158 Q110,172 137,158" },
+  happy:      { rgb: "110,231,183", smile: "M76,153 Q110,182 144,153" },
+  supportive: { rgb: "252,211,142", smile: "M90,161 Q110,167 130,161" },
 };
 
+// ─── NIEUWE ROBOT-COMPONENT (rustig, glanzend, geen felle effecten) ───
 function DashboardRobotMascot({
   message,
   mood = "greeting",
@@ -61,148 +59,130 @@ function DashboardRobotMascot({
       className="relative mb-8 overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_55px_-28px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-white/[0.035] dark:shadow-[0_24px_70px_-35px_rgba(0,0,0,.8)]"
       aria-label="AI learning mascot"
     >
-      <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/20 blur-3xl dark:bg-indigo-500/10" />
-      <div className="pointer-events-none absolute -right-20 bottom-[-60px] h-48 w-48 rounded-full bg-cyan-300/20 blur-3xl dark:bg-cyan-500/10" />
+      <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/15 blur-3xl dark:bg-indigo-500/10" />
+      <div className="pointer-events-none absolute -right-20 bottom-[-60px] h-48 w-48 rounded-full bg-cyan-300/15 blur-3xl dark:bg-cyan-500/10" />
 
       <div className="relative grid items-center gap-6 px-5 py-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:px-7 sm:py-7">
-        {/* 3D-achtige robot, gerenderd als één schone SVG (geen losse divs
-            met transform-hacks die op sommige schermen konden clippen). */}
-        <div className="relative mx-auto h-[210px] w-[180px] shrink-0" aria-hidden="true">
+        {/* robot — één rustige, glanzende SVG, geen drukke effecten */}
+        <div className="relative mx-auto h-[220px] w-[190px] shrink-0" aria-hidden="true">
+          {/* zachte, statische ambient-gloed onder de kop — geen felle pulse */}
           <div
-            className="pointer-events-none absolute left-1/2 top-[40%] h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-            style={{
-              background: `radial-gradient(circle, rgba(${c.rgb},.45), transparent 70%)`,
-              animation: "mascotGlow 3.6s ease-in-out infinite",
-            }}
+            className="pointer-events-none absolute left-1/2 top-[34%] h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+            style={{ background: `radial-gradient(circle, rgba(${c.rgb},.28), transparent 72%)` }}
           />
 
           <style>{`
             @keyframes mascotFloat {
               0%, 100% { transform: translateY(0); }
-              50% { transform: translateY(-6px); }
-            }
-            @keyframes mascotGlow {
-              0%, 100% { opacity: .4; transform: translate(-50%, -50%) scale(.94); }
-              50% { opacity: .75; transform: translate(-50%, -50%) scale(1.08); }
+              50% { transform: translateY(-5px); }
             }
             @keyframes mascotBlink {
               0%, 92%, 100% { transform: scaleY(1); }
               94%, 97% { transform: scaleY(.12); }
             }
-            @keyframes mascotScan {
-              0% { transform: translateX(-70px); opacity: 0; }
-              15% { opacity: .45; }
-              55% { opacity: .08; }
-              100% { transform: translateX(70px); opacity: 0; }
-            }
             @media (prefers-reduced-motion: reduce) {
-              .mascot-float, .mascot-eyes, .mascot-scan {
-                animation: none !important;
-              }
+              .mascot-float, .mascot-eyes { animation: none !important; }
             }
           `}</style>
 
-          <svg viewBox="0 0 200 230" className="relative h-full w-full">
+          <svg viewBox="0 0 220 240" className="relative h-full w-full">
             <defs>
-              <linearGradient id="mascotHead" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="mHead" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="55%" stopColor="#f1f5f9" />
-                <stop offset="100%" stopColor="#cbd5e1" />
+                <stop offset="60%" stopColor="#f3f5f8" />
+                <stop offset="100%" stopColor="#d4dae2" />
               </linearGradient>
-              <linearGradient id="mascotBody" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="mBody" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="60%" stopColor="#e2e8f0" />
-                <stop offset="100%" stopColor="#94a3b8" />
+                <stop offset="65%" stopColor="#e9ecf1" />
+                <stop offset="100%" stopColor="#c3cad4" />
               </linearGradient>
-              <linearGradient id="mascotLimb" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="mLimb" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="100%" stopColor="#94a3b8" />
+                <stop offset="100%" stopColor="#c3cad4" />
               </linearGradient>
-              <linearGradient id="mascotNeck" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#475569" />
+              <linearGradient id="mDark" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#334155" />
                 <stop offset="100%" stopColor="#0f172a" />
               </linearGradient>
-              <radialGradient id="mascotVisor" cx="50%" cy="35%" r="75%">
-                <stop offset="0%" stopColor="#1e293b" />
-                <stop offset="55%" stopColor="#0f172a" />
+              <radialGradient id="mVisor" cx="42%" cy="30%" r="80%">
+                <stop offset="0%" stopColor="#20293b" />
+                <stop offset="55%" stopColor="#0f1626" />
                 <stop offset="100%" stopColor="#020617" />
               </radialGradient>
-              <clipPath id="mascotVisorClip">
-                <rect x="62" y="44" width="76" height="58" rx="28" />
+              <clipPath id="mVisorClip">
+                <rect x="52" y="82" width="116" height="88" rx="42" />
               </clipPath>
-              <filter id="mascotGlowFx" x="-80%" y="-80%" width="260%" height="260%">
-                <feGaussianBlur stdDeviation="2.6" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
+              <filter id="mSoftGlow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="2.2" result="b" />
+                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
               </filter>
             </defs>
 
-            <g
-              className="mascot-float"
-              style={{ animation: "mascotFloat 4s ease-in-out infinite", transformOrigin: "100px 120px" }}
-            >
-              {/* schaduw op de grond */}
-              <ellipse cx="100" cy="220" rx="46" ry="7" fill="rgba(15,23,42,.15)" />
+            <g className="mascot-float" style={{ animation: "mascotFloat 4.2s ease-in-out infinite", transformOrigin: "110px 120px" }}>
+              {/* schaduw */}
+              <ellipse cx="110" cy="230" rx="48" ry="7" fill="rgba(15,23,42,.14)" />
 
               {/* benen */}
-              <rect x="72" y="188" width="18" height="26" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
-              <rect x="110" y="188" width="18" height="26" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
+              <rect x="82" y="196" width="19" height="28" rx="9.5" fill="url(#mLimb)" stroke="#c3cad4" />
+              <rect x="119" y="196" width="19" height="28" rx="9.5" fill="url(#mLimb)" stroke="#c3cad4" />
+              <rect x="79" y="218" width="25" height="12" rx="6" fill="url(#mDark)" />
+              <rect x="116" y="218" width="25" height="12" rx="6" fill="url(#mDark)" />
 
-              {/* lichaam */}
-              <rect x="55" y="140" width="90" height="68" rx="30" fill="url(#mascotBody)" stroke="#cbd5e1" strokeWidth="2" />
-              <rect x="67" y="149" width="15" height="10" rx="3" fill="#34d399" opacity="0.85" />
-              <rect x="118" y="149" width="15" height="10" rx="3" fill="#fb7185" opacity="0.85" />
-              <rect x="90" y="184" width="20" height="4" rx="2" fill={`rgb(${c.rgb})`} filter="url(#mascotGlowFx)" />
+              {/* lichaam — compact, ondergeschikt aan de kop, net als de foto */}
+              <rect x="62" y="148" width="96" height="56" rx="26" fill="url(#mBody)" stroke="#d4dae2" strokeWidth="2" />
+              {/* klein donker "venster" met een vleugje circuit-kleur, subtiel i.p.v. felle blokken */}
+              <rect x="99" y="156" width="22" height="16" rx="4" fill="url(#mDark)" />
+              <rect x="103" y="160" width="3.5" height="3.5" rx="1" fill="#5eead4" opacity="0.9" />
+              <rect x="109" y="160" width="3.5" height="3.5" rx="1" fill="#fca5a5" opacity="0.9" />
+              <rect x="103" y="166" width="3.5" height="3.5" rx="1" fill="#93c5fd" opacity="0.9" />
+              <rect x="109" y="166" width="3.5" height="3.5" rx="1" fill="#fcd34d" opacity="0.85" />
 
-              {/* armen */}
-              <g transform="rotate(18 65 152)">
-                <rect x="18" y="143" width="47" height="18" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
-                <circle cx="20" cy="152" r="10" fill="#94a3b8" />
+              {/* nek */}
+              <rect x="95" y="120" width="30" height="32" rx="10" fill="url(#mDark)" />
+
+              {/* armen — één rustig segment, geen dubbele gewrichten die kunnen clippen */}
+              <g transform="rotate(14 60 162)">
+                <rect x="24" y="153" width="42" height="18" rx="9" fill="url(#mLimb)" stroke="#c3cad4" />
               </g>
-              <g transform="rotate(-18 135 152)">
-                <rect x="135" y="143" width="47" height="18" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
-                <circle cx="180" cy="152" r="10" fill="#94a3b8" />
+              <circle cx="26" cy="162" r="10" fill="url(#mDark)" />
+              <g transform="rotate(-14 160 162)">
+                <rect x="154" y="153" width="42" height="18" rx="9" fill="url(#mLimb)" stroke="#c3cad4" />
               </g>
+              <circle cx="194" cy="162" r="10" fill="url(#mDark)" />
 
-              {/* nek — verbindt kop en lijf zonder zichtbare kier */}
-              <rect x="86" y="112" width="28" height="30" rx="8" fill="url(#mascotNeck)" />
+              {/* oren — bredere bezel + zachte highlight, rustiger dan vorige versie */}
+              <circle cx="38" cy="98" r="18" fill="url(#mLimb)" stroke="#c3cad4" strokeWidth="2" />
+              <circle cx="38" cy="98" r="11" fill="url(#mDark)" />
+              <circle cx="33" cy="93" r="2.4" fill="#ffffff" opacity="0.35" />
+              <circle cx="182" cy="98" r="18" fill="url(#mLimb)" stroke="#c3cad4" strokeWidth="2" />
+              <circle cx="182" cy="98" r="11" fill="url(#mDark)" />
+              <circle cx="177" cy="93" r="2.4" fill="#ffffff" opacity="0.35" />
 
-              {/* oren */}
-              <circle cx="34" cy="58" r="16" fill="url(#mascotLimb)" stroke="#94a3b8" strokeWidth="2" />
-              <circle cx="34" cy="58" r="10" fill="#1e293b" />
-              <circle cx="166" cy="58" r="16" fill="url(#mascotLimb)" stroke="#94a3b8" strokeWidth="2" />
-              <circle cx="166" cy="58" r="10" fill="#1e293b" />
+              {/* kop — grotere, rondere "capsule", dominant zoals op de foto */}
+              <rect x="30" y="24" width="160" height="150" rx="70" fill="url(#mHead)" stroke="#d4dae2" strokeWidth="2" />
+              {/* zachte, statische glans i.p.v. bewegende scanlijn */}
+              <ellipse cx="70" cy="55" rx="38" ry="18" fill="#ffffff" opacity="0.5" filter="url(#mSoftGlow)" />
+              <line x1="84" y1="36" x2="136" y2="36" stroke="#d4dae2" strokeWidth="1.5" />
+              <circle cx="80" cy="36" r="1.6" fill="#b7c0cc" />
+              <circle cx="140" cy="36" r="1.6" fill="#b7c0cc" />
 
-              {/* kop */}
-              <rect x="44" y="10" width="112" height="112" rx="46" fill="url(#mascotHead)" stroke="#cbd5e1" strokeWidth="2" />
-              <line x1="76" y1="22" x2="124" y2="22" stroke="#cbd5e1" strokeWidth="1.5" />
-              <circle cx="72" cy="22" r="1.6" fill="#94a3b8" />
-              <circle cx="128" cy="22" r="1.6" fill="#94a3b8" />
+              {/* visor — breder, met meer ademruimte tot de rand van de kop */}
+              <rect x="52" y="82" width="116" height="88" rx="42" fill="url(#mVisor)" />
+              <g clipPath="url(#mVisorClip)">
+                <ellipse cx="80" cy="98" rx="26" ry="13" fill="#ffffff" opacity="0.06" />
 
-              {/* visor + gezicht */}
-              <rect x="62" y="44" width="76" height="58" rx="28" fill="url(#mascotVisor)" />
-              <g clipPath="url(#mascotVisorClip)">
-                <ellipse cx="82" cy="56" rx="18" ry="9" fill="#ffffff" opacity="0.08" />
-                <rect
-                  className="mascot-scan"
-                  x="55"
-                  y="44"
-                  width="20"
-                  height="58"
-                  fill="#ffffff"
-                  opacity="0.12"
-                  style={{ animation: "mascotScan 5s linear infinite" }}
-                />
+                {/* ogen — zachte "pillow"-vorm i.p.v. platte bolletjes, dichter bij de referentiefoto */}
                 <g
                   className="mascot-eyes"
-                  style={{ animation: "mascotBlink 5.5s ease-in-out infinite", transformOrigin: "100px 68px", transformBox: "fill-box" }}
+                  style={{ animation: "mascotBlink 6s ease-in-out infinite", transformOrigin: "110px 118px", transformBox: "fill-box" }}
                 >
-                  <circle cx="85" cy="68" r="6.5" fill={`rgb(${c.rgb})`} filter="url(#mascotGlowFx)" />
-                  <circle cx="115" cy="68" r="6.5" fill={`rgb(${c.rgb})`} filter="url(#mascotGlowFx)" />
+                  <rect x="86" y="108" width="15" height="20" rx="7.5" fill={`rgb(${c.rgb})`} filter="url(#mSoftGlow)" />
+                  <rect x="119" y="108" width="15" height="20" rx="7.5" fill={`rgb(${c.rgb})`} filter="url(#mSoftGlow)" />
                 </g>
-                <path d={c.smile} fill="none" stroke={`rgb(${c.rgb})`} strokeWidth="3.2" strokeLinecap="round" filter="url(#mascotGlowFx)" />
+
+                {/* smile — met duidelijke ruimte t.o.v. de ogen, net als de foto */}
+                <path d={c.smile} fill="none" stroke={`rgb(${c.rgb})`} strokeWidth="3.4" strokeLinecap="round" filter="url(#mSoftGlow)" />
               </g>
             </g>
           </svg>
@@ -210,8 +190,8 @@ function DashboardRobotMascot({
 
         {/* boodschap */}
         <div className="min-w-0 text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/80 bg-cyan-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-700 dark:border-cyan-400/20 dark:bg-cyan-500/10 dark:text-cyan-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_7px_rgba(34,211,238,.85)]" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
             AI Learning Companion
           </div>
 
