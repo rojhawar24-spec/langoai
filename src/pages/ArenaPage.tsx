@@ -91,7 +91,7 @@ const HEART_REGEN_MINUTES = 30;
 // useAuth()'s user.coins. `coins` stays in the Progress type/blob above
 // only because old saved data in existing users' browsers may still have
 // it — nothing reads or writes it anymore.
-const COINS_PER_LEVEL = 2;
+const _COINS_PER_LEVEL = 2;
 const HEART_COST = 10;
 const STREAK_REPAIR_COST = 20;
 const MYSTERY_BOX_COST = 12;
@@ -126,7 +126,7 @@ function minutesUntilNextHeart(): number {
   return Math.max(0, Math.ceil(HEART_REGEN_MINUTES - (elapsedMin % HEART_REGEN_MINUTES)));
 }
 
-function HeartsDisplay({ hearts, dark, justLost }: { hearts: number; dark: boolean; justLost: boolean }) {
+function HeartsDisplay({ hearts, dark: _dark, justLost }: { hearts: number; dark: boolean; justLost: boolean }) {
   const { t } = useTranslate();
   return (
     <span className="flex items-center gap-0.5" role="status" aria-live="polite" aria-label={`${hearts} ${t("arena.heartsLabel")}`}>
@@ -2030,7 +2030,7 @@ function SnakePath({ levels, completed, onSelect, theme }: {
 }
 
 // ─── SEASON VIEW ───────────────────────────────────────────────────────────────
-function SeasonView({ season, lang, onBack, award, themeConfig }: {
+function SeasonView({ season, lang, onBack, award: _award, themeConfig }: {
   season: Season; lang: string; onBack: () => void; award: (n: number) => void; themeConfig: typeof SEASON_THEMES[0];
 }) {
   const { theme } = useTheme();
