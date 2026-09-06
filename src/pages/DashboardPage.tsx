@@ -28,21 +28,23 @@ const WEATHER_META: Record<string, { emoji: string; key: TranslationKey }> = {
   rainbow:     { emoji: "🌈", key: "dashboard.weatherRainbow" },
 };
 
-// ✅ AI Mascotte — simpel, emoji-gebaseerd (geen custom illustraties nodig),
-// 3 stemmingen op basis van dezelfde data die de rest van het Dashboard al
-// gebruikt (streak + dagdoel). Geen eigen state/opslag nodig.
+// ✅ AI Mascotte — 3 stemmingen op basis van dezelfde data die de rest van
+// het Dashboard al gebruikt (streak + dagdoel). Geen eigen state/opslag nodig.
 type MascotMood = "greeting" | "happy" | "supportive";
 const MASCOT_META: Record<MascotMood, { emoji: string; key: TranslationKey }> = {
-  greeting:   { emoji: "🦊", key: "mascot.greeting" },
-  happy:      { emoji: "🦊✨", key: "mascot.happy" },
-  supportive: { emoji: "🦊💪", key: "mascot.supportive" },
+  greeting:   { emoji: "🤖", key: "mascot.greeting" },
+  happy:      { emoji: "🤖✨", key: "mascot.happy" },
+  supportive: { emoji: "🤖💪", key: "mascot.supportive" },
 };
 
-
-const MOOD_STYLE: Record<MascotMood, { rgb: string; smile: number }> = {
-  greeting:   { rgb: "56,189,248",  smile: 40 }, // cyaan — neutrale, vriendelijke blik
-  happy:      { rgb: "52,211,153", smile: 52 }, // groen — brede glimlach
-  supportive: { rgb: "251,191,36", smile: 26 }, // amber — zachte, kleine glimlach
+// Kleur + smile-curve per mood. De smile is een quadratic bezier: het
+// controlepunt ligt ONDER de twee eindpunten, dus de curve dipt in het
+// midden naar beneden -> een "kom"-vorm -> lacht. Groter verschil in
+// y = brede glimlach, kleiner verschil = subtiele glimlach.
+const MOOD_STYLE: Record<MascotMood, { rgb: string; smile: string }> = {
+  greeting:   { rgb: "56,189,248",  smile: "M78,118 Q100,132 122,118" },
+  happy:      { rgb: "52,211,153", smile: "M72,114 Q100,140 128,114" },
+  supportive: { rgb: "251,191,36", smile: "M84,120 Q100,126 116,120" },
 };
 
 function DashboardRobotMascot({
@@ -59,187 +61,154 @@ function DashboardRobotMascot({
       className="relative mb-8 overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_55px_-28px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-white/[0.035] dark:shadow-[0_24px_70px_-35px_rgba(0,0,0,.8)]"
       aria-label="AI learning mascot"
     >
-      <style>{`
-        @keyframes dashboardRobotFloat {
-          0%, 100% { transform: translate3d(0, 0, 0) rotateY(-4deg) rotateX(2deg); }
-          50% { transform: translate3d(0, -6px, 0) rotateY(3deg) rotateX(0deg); }
-        }
-        @keyframes dashboardRobotGlow {
-          0%, 100% { opacity: .4; transform: scale(.94); }
-          50% { opacity: .75; transform: scale(1.06); }
-        }
-        @keyframes dashboardRobotBlink {
-          0%, 92%, 100% { transform: scaleY(1); }
-          94%, 97% { transform: scaleY(.12); }
-        }
-        @keyframes dashboardRobotScan {
-          0% { transform: translateX(-140%); opacity: 0; }
-          15% { opacity: .5; }
-          55% { opacity: .08; }
-          100% { transform: translateX(260%); opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .dashboard-robot-motion,
-          .dashboard-robot-eye,
-          .dashboard-robot-glow,
-          .dashboard-robot-scan {
-            animation: none !important;
-          }
-        }
-      `}</style>
-
       <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/20 blur-3xl dark:bg-indigo-500/10" />
       <div className="pointer-events-none absolute -right-20 bottom-[-60px] h-48 w-48 rounded-full bg-cyan-300/20 blur-3xl dark:bg-cyan-500/10" />
 
-      <div className="relative grid items-center gap-6 px-5 py-6 sm:grid-cols-[200px_minmax(0,1fr)] sm:px-7 sm:py-7">
-        {/* 3D robot */}
-        <div
-          className="relative mx-auto h-[210px] w-[190px] shrink-0"
-          style={{ perspective: "1000px" }}
-          aria-hidden="true"
-        >
-          {/* ambient glow, colored by mood */}
+      <div className="relative grid items-center gap-6 px-5 py-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:px-7 sm:py-7">
+        {/* 3D-achtige robot, gerenderd als één schone SVG (geen losse divs
+            met transform-hacks die op sommige schermen konden clippen). */}
+        <div className="relative mx-auto h-[210px] w-[180px] shrink-0" aria-hidden="true">
           <div
-            className="dashboard-robot-glow absolute left-1/2 top-[38%] h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+            className="pointer-events-none absolute left-1/2 top-[40%] h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
             style={{
-              background: `radial-gradient(circle, rgba(${c.rgb},.4), transparent 70%)`,
-              animation: "dashboardRobotGlow 3.6s ease-in-out infinite",
+              background: `radial-gradient(circle, rgba(${c.rgb},.45), transparent 70%)`,
+              animation: "mascotGlow 3.6s ease-in-out infinite",
             }}
           />
 
-          <div
-            className="dashboard-robot-motion relative h-full w-full"
-            style={{
-              transformStyle: "preserve-3d",
-              animation: "dashboardRobotFloat 4s ease-in-out infinite",
-            }}
-          >
-            {/* ground shadow */}
-            <div className="absolute bottom-1 left-1/2 h-4 w-28 -translate-x-1/2 rounded-[50%] bg-slate-950/14 blur-md dark:bg-black/45" />
+          <style>{`
+            @keyframes mascotFloat {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-6px); }
+            }
+            @keyframes mascotGlow {
+              0%, 100% { opacity: .4; transform: translate(-50%, -50%) scale(.94); }
+              50% { opacity: .75; transform: translate(-50%, -50%) scale(1.08); }
+            }
+            @keyframes mascotBlink {
+              0%, 92%, 100% { transform: scaleY(1); }
+              94%, 97% { transform: scaleY(.12); }
+            }
+            @keyframes mascotScan {
+              0% { transform: translateX(-70px); opacity: 0; }
+              15% { opacity: .45; }
+              55% { opacity: .08; }
+              100% { transform: translateX(70px); opacity: 0; }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .mascot-float, .mascot-eyes, .mascot-scan {
+                animation: none !important;
+              }
+            }
+          `}</style>
 
-            {/* legs (small, tucked under body — like reference) */}
-            <div
-              className="absolute bottom-1 left-[32%] h-[11%] w-[15%] rounded-[42%] border border-slate-400/60 bg-gradient-to-b from-slate-200 to-slate-500 shadow-md"
-              style={{ transform: "translateZ(4px)" }}
-            />
-            <div
-              className="absolute bottom-1 right-[32%] h-[11%] w-[15%] rounded-[42%] border border-slate-400/60 bg-gradient-to-b from-slate-200 to-slate-500 shadow-md"
-              style={{ transform: "translateZ(4px)" }}
-            />
+          <svg viewBox="0 0 200 230" className="relative h-full w-full">
+            <defs>
+              <linearGradient id="mascotHead" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="55%" stopColor="#f1f5f9" />
+                <stop offset="100%" stopColor="#cbd5e1" />
+              </linearGradient>
+              <linearGradient id="mascotBody" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="60%" stopColor="#e2e8f0" />
+                <stop offset="100%" stopColor="#94a3b8" />
+              </linearGradient>
+              <linearGradient id="mascotLimb" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="100%" stopColor="#94a3b8" />
+              </linearGradient>
+              <linearGradient id="mascotNeck" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#475569" />
+                <stop offset="100%" stopColor="#0f172a" />
+              </linearGradient>
+              <radialGradient id="mascotVisor" cx="50%" cy="35%" r="75%">
+                <stop offset="0%" stopColor="#1e293b" />
+                <stop offset="55%" stopColor="#0f172a" />
+                <stop offset="100%" stopColor="#020617" />
+              </radialGradient>
+              <clipPath id="mascotVisorClip">
+                <rect x="62" y="44" width="76" height="58" rx="28" />
+              </clipPath>
+              <filter id="mascotGlowFx" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="2.6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
 
-            {/* body back depth */}
-            <div
-              className="absolute left-1/2 bottom-[9%] h-[34%] w-[56%] -translate-x-1/2 rounded-[42%_42%_48%_48%] bg-slate-400/60 shadow-inner"
-              style={{ transform: "translateZ(-6px) translateX(-50%)" }}
-            />
-
-            {/* body */}
-            <div
-              className="absolute left-1/2 bottom-[9%] h-[36%] w-[58%] -translate-x-1/2 overflow-hidden rounded-[42%_42%_48%_48%] border-2 border-slate-300 bg-gradient-to-b from-white via-slate-100 to-slate-300 shadow-[inset_0_10px_16px_rgba(255,255,255,.9),inset_0_-14px_20px_rgba(15,23,42,.15),0_16px_24px_rgba(15,23,42,.18)]"
-              style={{ transform: "translateZ(6px) translateX(-50%)" }}
+            <g
+              className="mascot-float"
+              style={{ animation: "mascotFloat 4s ease-in-out infinite", transformOrigin: "100px 120px" }}
             >
-              {/* subtle chest seam */}
-              <div className="absolute inset-x-[18%] top-[26%] h-px bg-slate-400/40" />
-              {/* little circuit peeks at the shoulders, like the reference photo */}
-              <div className="absolute left-[10%] top-[4%] h-3 w-4 rounded-sm bg-gradient-to-br from-emerald-400/80 to-cyan-500/80" />
-              <div className="absolute right-[10%] top-[4%] h-3 w-4 rounded-sm bg-gradient-to-br from-rose-400/80 to-amber-400/80" />
-              <div
-                className="absolute left-1/2 bottom-[16%] h-1 w-6 -translate-x-1/2 rounded-full"
-                style={{ background: `rgb(${c.rgb})`, boxShadow: `0 0 8px rgba(${c.rgb},.8)` }}
-              />
-            </div>
+              {/* schaduw op de grond */}
+              <ellipse cx="100" cy="220" rx="46" ry="7" fill="rgba(15,23,42,.15)" />
 
-            {/* arms */}
-            <div
-              className="absolute left-[0%] top-[48%] h-9 w-14 rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-white to-slate-300 shadow-lg"
-              style={{ transform: "translateZ(5px) rotate(18deg)", transformOrigin: "right center" }}
-            >
-              <span className="absolute -right-2 top-1/2 h-5 w-4 -translate-y-1/2 rounded-full border border-slate-400/70 bg-slate-500" />
-            </div>
-            <div
-              className="absolute right-[0%] top-[48%] h-9 w-14 rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-white to-slate-300 shadow-lg"
-              style={{ transform: "translateZ(5px) rotate(-18deg)", transformOrigin: "left center" }}
-            >
-              <span className="absolute -left-2 top-1/2 h-5 w-4 -translate-y-1/2 rounded-full border border-slate-400/70 bg-slate-500" />
-            </div>
+              {/* benen */}
+              <rect x="72" y="188" width="18" height="26" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
+              <rect x="110" y="188" width="18" height="26" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
 
-            {/* head back shell */}
-            <div
-              className="absolute left-1/2 top-0 h-[62%] w-[84%] -translate-x-1/2 rounded-[46%] bg-slate-400/60 shadow-inner"
-              style={{ transform: "translateZ(-6px) translateX(-50%)" }}
-            />
+              {/* lichaam */}
+              <rect x="55" y="140" width="90" height="68" rx="30" fill="url(#mascotBody)" stroke="#cbd5e1" strokeWidth="2" />
+              <rect x="67" y="149" width="15" height="10" rx="3" fill="#34d399" opacity="0.85" />
+              <rect x="118" y="149" width="15" height="10" rx="3" fill="#fb7185" opacity="0.85" />
+              <rect x="90" y="184" width="20" height="4" rx="2" fill={`rgb(${c.rgb})`} filter="url(#mascotGlowFx)" />
 
-            {/* ears — round domes like the reference */}
-            <div
-              className="absolute -left-[4%] top-[24%] h-[26%] w-[14%] rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-slate-100 to-slate-500 shadow-lg"
-              style={{ transform: "translateZ(3px)" }}
-            >
-              <div className="absolute inset-[3px] rounded-full bg-slate-800/85" />
-              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-500" />
-            </div>
-            <div
-              className="absolute -right-[4%] top-[24%] h-[26%] w-[14%] rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-slate-100 to-slate-500 shadow-lg"
-              style={{ transform: "translateZ(3px)" }}
-            >
-              <div className="absolute inset-[3px] rounded-full bg-slate-800/85" />
-              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-500" />
-            </div>
+              {/* armen */}
+              <g transform="rotate(18 65 152)">
+                <rect x="18" y="143" width="47" height="18" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
+                <circle cx="20" cy="152" r="10" fill="#94a3b8" />
+              </g>
+              <g transform="rotate(-18 135 152)">
+                <rect x="135" y="143" width="47" height="18" rx="9" fill="url(#mascotLimb)" stroke="#94a3b8" />
+                <circle cx="180" cy="152" r="10" fill="#94a3b8" />
+              </g>
 
-            {/* head — big, rounded, dominant like the reference photo */}
-            <div
-              className="absolute left-1/2 top-0 h-[62%] w-[78%] -translate-x-1/2 rounded-[46%] border-2 border-slate-300 bg-gradient-to-b from-white via-slate-50 to-slate-200 shadow-[inset_0_12px_20px_rgba(255,255,255,.95),inset_0_-16px_24px_rgba(15,23,42,.12),0_20px_30px_rgba(15,23,42,.2)]"
-              style={{ transform: "translateZ(16px) translateX(-50%)" }}
-            >
-              {/* seam bolts on top, like the reference */}
-              <div className="absolute inset-x-[22%] top-[9%] h-px bg-slate-300" />
-              <div className="absolute left-[18%] top-[9%] h-1 w-1 -translate-y-1/2 rounded-full bg-slate-400" />
-              <div className="absolute right-[18%] top-[9%] h-1 w-1 -translate-y-1/2 rounded-full bg-slate-400" />
+              {/* nek — verbindt kop en lijf zonder zichtbare kier */}
+              <rect x="86" y="112" width="28" height="30" rx="8" fill="url(#mascotNeck)" />
 
-              {/* glass visor */}
-              <div
-                className="absolute inset-x-[11%] top-[24%] bottom-[10%] overflow-hidden rounded-[40%] bg-[radial-gradient(circle_at_50%_22%,#1e293b_0%,#0f172a_55%,#020617_100%)] shadow-[inset_0_0_26px_rgba(0,0,0,.85),inset_0_4px_10px_rgba(255,255,255,.07)]"
-                style={{ transform: "translateZ(10px)" }}
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_16%,rgba(255,255,255,.14),transparent_30%)]" />
+              {/* oren */}
+              <circle cx="34" cy="58" r="16" fill="url(#mascotLimb)" stroke="#94a3b8" strokeWidth="2" />
+              <circle cx="34" cy="58" r="10" fill="#1e293b" />
+              <circle cx="166" cy="58" r="16" fill="url(#mascotLimb)" stroke="#94a3b8" strokeWidth="2" />
+              <circle cx="166" cy="58" r="10" fill="#1e293b" />
 
-                {/* light sweep across the glass */}
-                <div
-                  className="dashboard-robot-scan absolute inset-y-0 left-[-30%] w-[35%] rotate-[8deg] bg-gradient-to-r from-transparent via-white/12 to-transparent blur-sm"
-                  style={{ animation: "dashboardRobotScan 5s linear infinite" }}
+              {/* kop */}
+              <rect x="44" y="10" width="112" height="112" rx="46" fill="url(#mascotHead)" stroke="#cbd5e1" strokeWidth="2" />
+              <line x1="76" y1="22" x2="124" y2="22" stroke="#cbd5e1" strokeWidth="1.5" />
+              <circle cx="72" cy="22" r="1.6" fill="#94a3b8" />
+              <circle cx="128" cy="22" r="1.6" fill="#94a3b8" />
+
+              {/* visor + gezicht */}
+              <rect x="62" y="44" width="76" height="58" rx="28" fill="url(#mascotVisor)" />
+              <g clipPath="url(#mascotVisorClip)">
+                <ellipse cx="82" cy="56" rx="18" ry="9" fill="#ffffff" opacity="0.08" />
+                <rect
+                  className="mascot-scan"
+                  x="55"
+                  y="44"
+                  width="20"
+                  height="58"
+                  fill="#ffffff"
+                  opacity="0.12"
+                  style={{ animation: "mascotScan 5s linear infinite" }}
                 />
-
-                {/* face: glowing eyes + curved smile, color follows mood */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                  <div className="dashboard-robot-eye flex items-center gap-6" style={{ animation: "dashboardRobotBlink 5.5s ease-in-out infinite" }}>
-                    <span
-                      className="block h-3.5 w-3.5 rounded-full"
-                      style={{ background: `rgb(${c.rgb})`, boxShadow: `0 0 10px rgba(${c.rgb},.9), 0 0 24px rgba(${c.rgb},.5)` }}
-                    />
-                    <span
-                      className="block h-3.5 w-3.5 rounded-full"
-                      style={{ background: `rgb(${c.rgb})`, boxShadow: `0 0 10px rgba(${c.rgb},.9), 0 0 24px rgba(${c.rgb},.5)` }}
-                    />
-                  </div>
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: `${c.smile}px`,
-                      height: "16px",
-                      borderBottom: `3px solid rgb(${c.rgb})`,
-                      borderRadius: "0 0 50% 50%",
-                      boxShadow: `0 4px 10px -2px rgba(${c.rgb},.6)`,
-                    }}
-                  />
-                </div>
-
-                <div className="absolute left-[15%] top-[10%] h-1.5 w-1.5 rounded-full bg-cyan-200/80" />
-                <div className="absolute right-[15%] top-[10%] h-1.5 w-1.5 rounded-full bg-cyan-200/80" />
-              </div>
-            </div>
-          </div>
+                <g
+                  className="mascot-eyes"
+                  style={{ animation: "mascotBlink 5.5s ease-in-out infinite", transformOrigin: "100px 68px", transformBox: "fill-box" }}
+                >
+                  <circle cx="85" cy="68" r="6.5" fill={`rgb(${c.rgb})`} filter="url(#mascotGlowFx)" />
+                  <circle cx="115" cy="68" r="6.5" fill={`rgb(${c.rgb})`} filter="url(#mascotGlowFx)" />
+                </g>
+                <path d={c.smile} fill="none" stroke={`rgb(${c.rgb})`} strokeWidth="3.2" strokeLinecap="round" filter="url(#mascotGlowFx)" />
+              </g>
+            </g>
+          </svg>
         </div>
 
-        {/* message */}
+        {/* boodschap */}
         <div className="min-w-0 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/80 bg-cyan-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-700 dark:border-cyan-400/20 dark:bg-cyan-500/10 dark:text-cyan-300">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_7px_rgba(34,211,238,.85)]" />
@@ -275,12 +244,12 @@ const LEARNING_LANGUAGES = [
   { code: "de", nameKey: "lang.de" as const, flag: "🇩🇪", color: "from-red-500 to-rose-600" },
   { code: "es", nameKey: "lang.es" as const, flag: "🇪🇸", color: "from-yellow-500 to-orange-500" },
 ];
- 
+
 export default function DashboardPage() {
   const { user, updateProfile, refreshUser } = useAuth();
   const { t } = useTranslate();
   const navigate = useNavigate();
- 
+
   useStreakReconciler();
   const { newBadge, checkBadges, clearNewBadge } = useBadgeChecker();
   const [langChosen, setLangChosen] = useState(false);
@@ -298,7 +267,7 @@ export default function DashboardPage() {
   const [giftSendError, setGiftSendError] = useState<string | null>(null);
   const [redeemInput, setRedeemInput] = useState("");
   const [redeemMessage, setRedeemMessage] = useState<string | null>(null);
- 
+
   useEffect(() => {
     if (!user) return;
     const key = `langoai_language_chosen_${user.id ?? user.username}`;
@@ -335,9 +304,9 @@ export default function DashboardPage() {
     // waardoor een oneindige loop ontstaat (user → checkBadges → badge → render → …)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalXP, computedStreak]);
- 
+
   if (!user) return null;
- 
+
   const languageChoiceKey = `langoai_language_chosen_${user.id ?? user.username}`;
   const selectedLang = LEARNING_LANGUAGES.find((lang) => lang.code === user.currentLanguage);
   const xpNeededForNext = xpForNextLevel(user.level);
@@ -350,7 +319,7 @@ export default function DashboardPage() {
     : dailyGoal.percent >= 100 || computedStreak >= 7 ? "happy"
     : "greeting";
   const mascot = MASCOT_META[mascotMood];
- 
+
   // 🔒 FIX (audit #7): this used to also overwrite interfaceLanguage,
   // silently flipping the whole UI to whatever language you're learning.
   // Picking a learning language here no longer touches the interface
@@ -459,7 +428,7 @@ export default function DashboardPage() {
     setRedeemInput("");
     refreshUser();
   }
- 
+
   // ─────────────────────────────────────────────
   // TAAL KEUZE — eerste scherm
   // ─────────────────────────────────────────────
@@ -478,7 +447,7 @@ export default function DashboardPage() {
           <div className="absolute -right-32 top-1/3 h-[500px] w-[500px] animate-pulse rounded-full bg-purple-600/15 blur-[100px] [animation-delay:2s]" />
           <div className="absolute bottom-0 left-1/4 h-[400px] w-[400px] animate-pulse rounded-full bg-blue-600/10 blur-[80px] [animation-delay:4s]" />
         </div>
- 
+
         <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
           <div className="w-full max-w-md">
             <div className="mb-8 text-center">
@@ -499,7 +468,7 @@ export default function DashboardPage() {
                 {t("dashboard.chooseLanguage")}
               </p>
             </div>
- 
+
             <div className="flex flex-col gap-3">
               {LEARNING_LANGUAGES.map((lang) => (
                 <button type="button" key={lang.code}
@@ -528,7 +497,7 @@ export default function DashboardPage() {
       </div>
     );
   }
- 
+
   // ─────────────────────────────────────────────
   // VOLLEDIG DASHBOARD
   // ─────────────────────────────────────────────
@@ -546,11 +515,11 @@ export default function DashboardPage() {
         <div className="absolute -right-32 top-1/3 h-[500px] w-[500px] animate-pulse rounded-full bg-purple-600/15 blur-[100px] [animation-delay:2s]" />
         <div className="absolute bottom-0 left-1/4 h-[400px] w-[400px] animate-pulse rounded-full bg-blue-600/10 blur-[80px] [animation-delay:4s]" />
       </div>
- 
+
       {newBadge && <BadgeNotification badge={newBadge} onDone={clearNewBadge} />}
- 
+
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-10 sm:px-6">
- 
+
         {/* ── WELKOM ── */}
         <div className="mb-10">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500 dark:text-indigo-400">
@@ -583,7 +552,7 @@ export default function DashboardPage() {
 
         {/* ── AI MASCOTTE ── */}
         <DashboardRobotMascot message={t(mascot.key)} mood={mascotMood} />
- 
+
         {/* ── VANDAAG: XP OVER + DAILY CHEST ── */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2">
           <div className="relative flex items-center gap-3 overflow-hidden rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
@@ -628,7 +597,7 @@ export default function DashboardPage() {
 
         {/* ── STATS CARDS ── */}
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
- 
+
           {/* Niveau */}
           <div className="group relative overflow-hidden rounded-2xl border border-amber-200/80 bg-amber-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-100 dark:border-amber-500/20 dark:bg-white/[0.03] dark:hover:border-amber-500/30 dark:hover:shadow-amber-500/10">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent dark:via-amber-500/30" />
@@ -640,7 +609,7 @@ export default function DashboardPage() {
               <div className="mt-3 h-1 w-8 rounded-full bg-amber-400" />
             </div>
           </div>
- 
+
           {/* XP */}
           <div className="group relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-indigo-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-100 dark:border-indigo-500/20 dark:bg-white/[0.03] dark:hover:border-indigo-500/30 dark:hover:shadow-indigo-500/10">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-300/60 to-transparent dark:via-indigo-500/30" />
@@ -652,7 +621,7 @@ export default function DashboardPage() {
               <div className="mt-3 h-1 w-8 rounded-full bg-indigo-500" />
             </div>
           </div>
- 
+
           {/* Streak */}
           <div className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
             hasActivityToday
@@ -678,7 +647,7 @@ export default function DashboardPage() {
               }`} />
             </div>
           </div>
- 
+
           {/* Taal */}
           <div className="group relative overflow-hidden rounded-2xl border border-emerald-200/80 bg-emerald-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-100 dark:border-emerald-500/20 dark:bg-white/[0.03] dark:hover:border-emerald-500/30 dark:hover:shadow-emerald-500/10">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/60 to-transparent dark:via-emerald-500/30" />
@@ -693,10 +662,10 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
- 
+
         {/* ── XP PROGRESS + DAILY GOAL ── */}
         <div className="mb-8 grid gap-4 xl:grid-cols-2">
- 
+
           {/* XP Progress */}
           <div className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:ring-1 dark:ring-indigo-500/10">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/80 to-transparent dark:from-indigo-500/8 dark:to-transparent" />
@@ -749,7 +718,7 @@ export default function DashboardPage() {
               </p>
             </div>
           </div>
- 
+
           {/* Daily Goal + Streak */}
           <div className="relative overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:ring-1 dark:ring-orange-500/10">
             <div className="absolute inset-0 bg-gradient-to-br from-orange-50/80 to-transparent dark:from-orange-500/6 dark:to-transparent" />
@@ -785,7 +754,7 @@ export default function DashboardPage() {
                     <span className="text-xs text-slate-400 dark:text-slate-500">/ {dailyGoal.goal}</span>
                   </div>
                 </div>
- 
+
                 <div className="flex-1">
                   {dailyGoal.percent >= 100 ? (
                     <p className="text-base font-bold text-emerald-600 dark:text-emerald-400">{t("dashboard.dailyGoalReached")}</p>
@@ -801,7 +770,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
                   )}
- 
+
                   <div className="mt-4 border-t border-slate-100 pt-4 dark:border-white/5">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">{hasActivityToday ? "🔥" : "💤"}</span>
@@ -845,7 +814,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
- 
+
               {/* Last 7 days */}
               <div className="mt-5 border-t border-slate-100 pt-4 dark:border-white/5">
                 <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-600">
@@ -875,7 +844,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
- 
+
         {/* ── LEGEND ARENA ── */}
         <div className="mb-8">
           <button type="button" onClick={() => navigate("/arena")}
@@ -909,7 +878,7 @@ export default function DashboardPage() {
             </div>
           </button>
         </div>
- 
+
         {/* ── TAAL KEUZE ── */}
         <div className="mb-8">
           <h2 className="mb-4 text-base font-black tracking-tight text-slate-900 dark:text-white">
@@ -1039,16 +1008,16 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
- 
+
         <AdSlot variant="banner" className="mb-8" />
- 
+
         {/* ── QUICK ACTIONS ── */}
         <div className="mb-6">
           <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
             {t("dashboard.quickActions")}
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
- 
+
             {/* Lessen */}
             <button type="button" onClick={() => navigate("/grammar")}
               className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-indigo-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-indigo-500/10"
@@ -1067,7 +1036,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </button>
- 
+
             {/* Fout Herstel */}
             <button type="button" onClick={() => navigate("/mistakes")}
               className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-rose-200 hover:shadow-xl hover:shadow-rose-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-rose-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-rose-500/10"
@@ -1086,7 +1055,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </button>
- 
+
             {/* Toets jezelf */}
             <button type="button" onClick={() => navigate("/tests")}
               className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-emerald-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-emerald-500/10"
@@ -1105,7 +1074,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </button>
- 
+
             {/* Woord van de Dag */}
             <button type="button" onClick={() => navigate("/wotd")}
               className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-amber-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-amber-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-amber-500/10"
@@ -1124,7 +1093,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </button>
- 
+
           </div>
         </div>
       </div>
