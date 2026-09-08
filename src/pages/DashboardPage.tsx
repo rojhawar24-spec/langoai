@@ -251,8 +251,18 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user) return;
     const key = `langoai_language_chosen_${user.id ?? user.username}`;
-    setLangChosen(localStorage.getItem(key) === "true");
-  }, [user?.id, user?.username]);
+    const alreadyChosen =
+      localStorage.getItem(key) === "true" ||
+      !!user.currentLanguage;
+    setLangChosen(alreadyChosen);
+    if (alreadyChosen) {
+      try {
+        localStorage.setItem(key, "true");
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [user?.id, user?.username, user?.currentLanguage]);
 
   useEffect(() => {
     if (!user) return;
