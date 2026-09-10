@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowRight,
   BookOpen,
   Check,
   ChevronDown,
   ChevronRight,
+  Flame,
   FileText,
   Gift as GiftIcon,
-  Flame,
   Shield,
   Star,
   Trophy,
@@ -137,13 +136,16 @@ function DashboardRobotMascot({
       aria-label="AI learning mascot"
     >
       <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/15 blur-3xl dark:bg-indigo-500/10" />
-      <div className="pointer-events-none absolute -bottom-16 -right-16 h-44 w-44 rounded-full bg-cyan-300/15 blur-3xl dark:bg-cyan-500/10" />
+      <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-cyan-300/15 blur-3xl dark:bg-cyan-500/10" />
 
-      <div className="relative grid items-center gap-5 px-5 py-5 sm:grid-cols-[170px_minmax(0,1fr)] sm:px-7 sm:py-6">
+      <div className="relative grid items-center gap-5 px-5 py-5 sm:grid-cols-[175px_minmax(0,1fr)] sm:px-7 sm:py-6">
         {/* ROBOT */}
-        <div className="relative mx-auto h-[195px] w-[170px] shrink-0" aria-hidden="true">
+        <div
+          className="relative mx-auto h-[200px] w-[175px] shrink-0"
+          aria-hidden="true"
+        >
           <div
-            className="pointer-events-none absolute left-1/2 top-[34%] h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+            className="pointer-events-none absolute left-1/2 top-[34%] h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
             style={{
               background: `radial-gradient(circle, rgba(${c.rgb},.28), transparent 72%)`,
             }}
@@ -278,7 +280,7 @@ function DashboardRobotMascot({
                 transformOrigin: "110px 120px",
               }}
             >
-              {/* Shadow */}
+              {/* SHADOW */}
               <ellipse
                 cx="110"
                 cy="230"
@@ -287,7 +289,7 @@ function DashboardRobotMascot({
                 fill="rgba(15,23,42,.14)"
               />
 
-              {/* Legs */}
+              {/* LEGS */}
               <rect
                 x="82"
                 y="196"
@@ -326,7 +328,7 @@ function DashboardRobotMascot({
                 fill="url(#mDark)"
               />
 
-              {/* Body */}
+              {/* BODY */}
               <rect
                 x="62"
                 y="148"
@@ -338,7 +340,7 @@ function DashboardRobotMascot({
                 strokeWidth="2"
               />
 
-              {/* Mini control window */}
+              {/* CONTROL WINDOW */}
               <rect
                 x="99"
                 y="156"
@@ -388,7 +390,7 @@ function DashboardRobotMascot({
                 opacity="0.85"
               />
 
-              {/* Neck */}
+              {/* NECK */}
               <rect
                 x="95"
                 y="120"
@@ -398,7 +400,7 @@ function DashboardRobotMascot({
                 fill="url(#mDark)"
               />
 
-              {/* Left arm */}
+              {/* LEFT ARM */}
               <g transform="rotate(14 60 162)">
                 <rect
                   x="24"
@@ -418,7 +420,7 @@ function DashboardRobotMascot({
                 fill="url(#mDark)"
               />
 
-              {/* Right arm */}
+              {/* RIGHT ARM */}
               <g transform="rotate(-14 160 162)">
                 <rect
                   x="154"
@@ -438,7 +440,7 @@ function DashboardRobotMascot({
                 fill="url(#mDark)"
               />
 
-              {/* Ears */}
+              {/* EARS */}
               <circle
                 cx="38"
                 cy="98"
@@ -487,7 +489,7 @@ function DashboardRobotMascot({
                 opacity="0.35"
               />
 
-              {/* Head */}
+              {/* HEAD */}
               <rect
                 x="30"
                 y="24"
@@ -499,7 +501,7 @@ function DashboardRobotMascot({
                 strokeWidth="2"
               />
 
-              {/* Highlight */}
+              {/* HIGHLIGHT */}
               <ellipse
                 cx="70"
                 cy="55"
@@ -533,7 +535,7 @@ function DashboardRobotMascot({
                 fill="#b7c0cc"
               />
 
-              {/* Visor */}
+              {/* VISOR */}
               <rect
                 x="52"
                 y="82"
@@ -553,14 +555,16 @@ function DashboardRobotMascot({
                   opacity="0.06"
                 />
 
-                {/* Eyes */}
+                {/* EYES */}
                 <g
                   className="mascot-eyes"
                   style={{
                     animation:
                       "mascotBlink 6s ease-in-out infinite",
-                    transformOrigin: "110px 118px",
-                    transformBox: "fill-box",
+                    transformOrigin:
+                      "110px 118px",
+                    transformBox:
+                      "fill-box",
                   }}
                 >
                   <rect
@@ -584,7 +588,7 @@ function DashboardRobotMascot({
                   />
                 </g>
 
-                {/* Smile */}
+                {/* SMILE */}
                 <path
                   d={c.smile}
                   fill="none"
@@ -598,7 +602,7 @@ function DashboardRobotMascot({
           </svg>
         </div>
 
-        {/* MASCOT MESSAGE */}
+        {/* MESSAGE */}
         <div className="min-w-0 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
@@ -629,7 +633,7 @@ function DashboardRobotMascot({
 }
 
 /* =========================================================
-   LANGUAGES
+   LEARNING LANGUAGES
 ========================================================= */
 
 const LEARNING_LANGUAGES = [
@@ -637,36 +641,128 @@ const LEARNING_LANGUAGES = [
     code: "en",
     nameKey: "lang.en" as const,
     flag: "🇬🇧",
-    color: "from-blue-500 to-indigo-600",
   },
   {
     code: "nl",
     nameKey: "lang.nl" as const,
     flag: "🇳🇱",
-    color: "from-orange-500 to-amber-500",
   },
   {
     code: "fr",
     nameKey: "lang.fr" as const,
     flag: "🇫🇷",
-    color: "from-blue-500 to-violet-600",
   },
   {
     code: "de",
     nameKey: "lang.de" as const,
     flag: "🇩🇪",
-    color: "from-red-500 to-rose-600",
   },
   {
     code: "es",
     nameKey: "lang.es" as const,
     flag: "🇪🇸",
-    color: "from-yellow-500 to-orange-500",
   },
 ];
 
 /* =========================================================
-   DASHBOARD
+   LEARNING CARD
+========================================================= */
+
+function LearningCard({
+  title,
+  subtitle,
+  icon,
+  tone,
+  onClick,
+  featured = false,
+}: {
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  tone: "indigo" | "emerald" | "rose" | "amber";
+  onClick: () => void;
+  featured?: boolean;
+}) {
+  const tones = {
+    indigo: {
+      card: "border-indigo-200 bg-indigo-50/80 dark:border-indigo-500/25 dark:bg-indigo-500/10",
+      icon: "bg-indigo-500 text-white shadow-indigo-500/25",
+      hover:
+        "hover:border-indigo-300 hover:shadow-indigo-100/60 dark:hover:border-indigo-500/50",
+      arrow:
+        "text-indigo-300 group-hover:text-indigo-500 dark:text-indigo-500",
+    },
+    emerald: {
+      card: "border-emerald-200 bg-emerald-50/80 dark:border-emerald-500/25 dark:bg-emerald-500/10",
+      icon: "bg-emerald-500 text-white shadow-emerald-500/25",
+      hover:
+        "hover:border-emerald-300 hover:shadow-emerald-100/60 dark:hover:border-emerald-500/50",
+      arrow:
+        "text-emerald-300 group-hover:text-emerald-500 dark:text-emerald-500",
+    },
+    rose: {
+      card: "border-rose-200 bg-rose-50/80 dark:border-rose-500/25 dark:bg-rose-500/10",
+      icon: "bg-rose-500 text-white shadow-rose-500/25",
+      hover:
+        "hover:border-rose-300 hover:shadow-rose-100/60 dark:hover:border-rose-500/50",
+      arrow:
+        "text-rose-300 group-hover:text-rose-500 dark:text-rose-500",
+    },
+    amber: {
+      card: "border-amber-200 bg-amber-50/80 dark:border-amber-500/25 dark:bg-amber-500/10",
+      icon: "bg-amber-500 text-white shadow-amber-500/25",
+      hover:
+        "hover:border-amber-300 hover:shadow-amber-100/60 dark:hover:border-amber-500/50",
+      arrow:
+        "text-amber-300 group-hover:text-amber-500 dark:text-amber-500",
+    },
+  };
+
+  const current = tones[tone];
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`group relative flex min-h-[190px] flex-col gap-5 overflow-hidden rounded-2xl border p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl dark:hover:bg-white/[0.05] ${current.card} ${current.hover} ${
+        featured
+          ? "ring-2 ring-indigo-200/70 dark:ring-indigo-500/20"
+          : ""
+      }`}
+    >
+      {featured && (
+        <div className="absolute right-3 top-3 rounded-full bg-indigo-500/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-300">
+          Primary
+        </div>
+      )}
+
+      <div className="flex items-center justify-between">
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-md ${current.icon}`}
+        >
+          {icon}
+        </div>
+
+        <ChevronRight
+          className={`h-4 w-4 transition-all duration-200 group-hover:translate-x-0.5 ${current.arrow}`}
+        />
+      </div>
+
+      <div className="mt-auto">
+        <p className="text-base font-black text-slate-900 dark:text-white">
+          {title}
+        </p>
+
+        <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+          {subtitle}
+        </p>
+      </div>
+    </button>
+  );
+}
+
+/* =========================================================
+   MAIN DASHBOARD
 ========================================================= */
 
 export default function DashboardPage() {
@@ -687,29 +783,50 @@ export default function DashboardPage() {
     clearNewBadge,
   } = useBadgeChecker();
 
-  const [langChosen, setLangChosen] = useState(false);
-  const [chestClaimedToday, setChestClaimedToday] = useState(false);
-  const [claiming, setClaiming] = useState(false);
+  const [langChosen, setLangChosen] =
+    useState(false);
 
-  const hasShield = (user?.streakFreezes ?? 0) > 0;
+  const [chestClaimedToday, setChestClaimedToday] =
+    useState(false);
 
-  const [giftsOpen, setGiftsOpen] = useState(false);
-  const [generatedGiftCode, setGeneratedGiftCode] =
-    useState<string | null>(null);
-  const [giftSendError, setGiftSendError] =
-    useState<string | null>(null);
-  const [redeemInput, setRedeemInput] = useState("");
-  const [redeemMessage, setRedeemMessage] =
-    useState<string | null>(null);
+  const [claiming, setClaiming] =
+    useState(false);
+
+  const [giftsOpen, setGiftsOpen] =
+    useState(false);
+
+  const [
+    generatedGiftCode,
+    setGeneratedGiftCode,
+  ] = useState<string | null>(null);
+
+  const [
+    giftSendError,
+    setGiftSendError,
+  ] = useState<string | null>(null);
+
+  const [
+    redeemInput,
+    setRedeemInput,
+  ] = useState("");
+
+  const [
+    redeemMessage,
+    setRedeemMessage,
+  ] = useState<string | null>(null);
+
+  const hasShield =
+    (user?.streakFreezes ?? 0) > 0;
 
   /* =========================================================
-     LANGUAGE STATE
+     LANGUAGE INITIALIZATION
   ========================================================= */
 
   useEffect(() => {
     if (!user) return;
 
-    const key = `langoai_language_chosen_${user.id ?? user.username}`;
+    const key =
+      `langoai_language_chosen_${user.id ?? user.username}`;
 
     const alreadyChosen =
       localStorage.getItem(key) === "true" ||
@@ -719,9 +836,12 @@ export default function DashboardPage() {
 
     if (alreadyChosen) {
       try {
-        localStorage.setItem(key, "true");
+        localStorage.setItem(
+          key,
+          "true"
+        );
       } catch {
-        // ignore localStorage errors
+        // ignore
       }
     }
   }, [
@@ -731,7 +851,7 @@ export default function DashboardPage() {
   ]);
 
   /* =========================================================
-     DAILY CHEST
+     DAILY CHEST INITIALIZATION
   ========================================================= */
 
   useEffect(() => {
@@ -743,7 +863,9 @@ export default function DashboardPage() {
         .slice(0, 10);
 
       setChestClaimedToday(
-        localStorage.getItem(DAILY_CHEST_KEY) === today
+        localStorage.getItem(
+          DAILY_CHEST_KEY
+        ) === today
       );
     } catch {
       setChestClaimedToday(false);
@@ -786,7 +908,7 @@ export default function DashboardPage() {
       streak: computedStreak,
     });
 
-    // Intentionally excluded to avoid badge loop.
+    // Intentionally excluded.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalXP, computedStreak]);
 
@@ -795,29 +917,38 @@ export default function DashboardPage() {
   }
 
   /* =========================================================
-     DERIVED VALUES
+     DERIVED
   ========================================================= */
 
   const languageChoiceKey =
     `langoai_language_chosen_${user.id ?? user.username}`;
 
-  const selectedLang = LEARNING_LANGUAGES.find(
-    (lang) => lang.code === user.currentLanguage
-  );
+  const selectedLang =
+    LEARNING_LANGUAGES.find(
+      (lang) =>
+        lang.code ===
+        user.currentLanguage
+    );
 
-  const xpNeededForNext = xpForNextLevel(user.level);
+  const xpNeededForNext =
+    xpForNextLevel(user.level);
 
   const xpCurrent =
     user.totalXP -
     xpRequiredForLevel(user.level);
 
   const xpProgress = Math.min(
-    (xpCurrent / xpNeededForNext) * 100,
+    Math.max(
+      (xpCurrent / xpNeededForNext) *
+        100,
+      0
+    ),
     100
   );
 
   const xpNeeded = Math.max(
-    xpNeededForNext - xpCurrent,
+    xpNeededForNext -
+      xpCurrent,
     0
   );
 
@@ -830,34 +961,52 @@ export default function DashboardPage() {
     ];
 
   const mascotMood: MascotMood =
-    !hasActivityToday && computedStreak > 0
+    !hasActivityToday &&
+    computedStreak > 0
       ? "supportive"
-      : dailyGoal.percent >= 100 ||
+      : dailyGoal.percent >=
+          100 ||
         computedStreak >= 7
       ? "happy"
       : "greeting";
 
-  const mascot = MASCOT_META[mascotMood];
+  const mascot =
+    MASCOT_META[mascotMood];
 
   /* =========================================================
      ACTIONS
   ========================================================= */
 
-  function selectLanguage(code: string) {
+  function selectLanguage(
+    code: string
+  ) {
     updateProfile({
       currentLanguage: code,
     });
 
-    localStorage.setItem(languageChoiceKey, "true");
+    localStorage.setItem(
+      languageChoiceKey,
+      "true"
+    );
+
     setLangChosen(true);
   }
 
-  function continueLearning() {
+  function openArena() {
+    navigate("/arena");
+  }
+
+  function openGrammar() {
     navigate("/grammar");
   }
 
   async function claimChest() {
-    if (chestClaimedToday || claiming) return;
+    if (
+      chestClaimedToday ||
+      claiming
+    ) {
+      return;
+    }
 
     const today = new Date()
       .toISOString()
@@ -866,14 +1015,16 @@ export default function DashboardPage() {
     setClaiming(true);
 
     try {
-      const { data, error } =
-        await supabase.rpc(
-          "complete_learning_activity",
-          {
-            p_kind: "daily_goal",
-            p_ref: today,
-          }
-        );
+      const {
+        data,
+        error,
+      } = await supabase.rpc(
+        "complete_learning_activity",
+        {
+          p_kind: "daily_goal",
+          p_ref: today,
+        }
+      );
 
       if (error) {
         const msg = String(
@@ -889,7 +1040,9 @@ export default function DashboardPage() {
             "Je hebt de dagelijkse XP-bonus al geclaimd vandaag."
           );
 
-          setChestClaimedToday(true);
+          setChestClaimedToday(
+            true
+          );
 
           try {
             localStorage.setItem(
@@ -900,14 +1053,18 @@ export default function DashboardPage() {
             // ignore
           }
         } else if (
-          msg.includes("not_authenticated") ||
+          msg.includes(
+            "not_authenticated"
+          ) ||
           msg.includes("JWT")
         ) {
           alert(
             "Je bent niet meer ingelogd. Log opnieuw in."
           );
         } else if (
-          msg.includes("daily_xp_cap_reached")
+          msg.includes(
+            "daily_xp_cap_reached"
+          )
         ) {
           alert(
             "Dagelijkse XP-limiet bereikt. Probeer morgen opnieuw."
@@ -918,7 +1075,7 @@ export default function DashboardPage() {
           );
 
           console.error(
-            "complete_learning_activity (daily_goal) failed:",
+            "complete_learning_activity failed:",
             error
           );
         }
@@ -926,10 +1083,11 @@ export default function DashboardPage() {
         return;
       }
 
-      const payload = data as {
-        xpAwarded?: number;
-        profile?: unknown;
-      } | null;
+      const payload =
+        data as {
+          xpAwarded?: number;
+          profile?: unknown;
+        } | null;
 
       const xpAwarded =
         payload?.xpAwarded ??
@@ -948,7 +1106,9 @@ export default function DashboardPage() {
         // ignore
       }
 
-      setChestClaimedToday(true);
+      setChestClaimedToday(
+        true
+      );
 
       await refreshUser();
     } finally {
@@ -969,6 +1129,7 @@ export default function DashboardPage() {
         "buy_streak_shield RPC failed:",
         error
       );
+
       return;
     }
 
@@ -985,24 +1146,33 @@ export default function DashboardPage() {
           type: "shield";
         }
   ) {
-    const { data, error } =
-      await supabase.rpc(
-        "create_gift_code",
-        {
-          p_prize_type: payload.type,
-          p_prize_amount:
-            payload.type === "coins"
-              ? payload.amount
-              : 0,
-        }
-      );
+    const {
+      data,
+      error,
+    } = await supabase.rpc(
+      "create_gift_code",
+      {
+        p_prize_type:
+          payload.type,
+        p_prize_amount:
+          payload.type ===
+          "coins"
+            ? payload.amount
+            : 0,
+      }
+    );
 
     if (error || !data) {
       setGiftSendError(
-        t("dashboard.giftNotEnoughCoins")
+        t(
+          "dashboard.giftNotEnoughCoins"
+        )
       );
 
-      setGeneratedGiftCode(null);
+      setGeneratedGiftCode(
+        null
+      );
+
       return;
     }
 
@@ -1013,7 +1183,9 @@ export default function DashboardPage() {
   }
 
   async function shareGiftCode() {
-    if (!generatedGiftCode) return;
+    if (!generatedGiftCode) {
+      return;
+    }
 
     if (navigator.share) {
       try {
@@ -1022,7 +1194,7 @@ export default function DashboardPage() {
           text: generatedGiftCode,
         });
       } catch {
-        // User cancelled share sheet
+        // cancelled
       }
 
       return;
@@ -1034,10 +1206,12 @@ export default function DashboardPage() {
       );
 
       window.alert(
-        t("dashboard.giftCopiedConfirm")
+        t(
+          "dashboard.giftCopiedConfirm"
+        )
       );
     } catch {
-      // Clipboard unavailable
+      // ignore
     }
   }
 
@@ -1047,19 +1221,23 @@ export default function DashboardPage() {
 
     if (!trimmed) {
       setRedeemMessage(
-        t("dashboard.giftInvalidCode")
+        t(
+          "dashboard.giftInvalidCode"
+        )
       );
 
       return;
     }
 
-    const { data, error } =
-      await supabase.rpc(
-        "redeem_gift_code",
-        {
-          p_code: trimmed,
-        }
-      );
+    const {
+      data,
+      error,
+    } = await supabase.rpc(
+      "redeem_gift_code",
+      {
+        p_code: trimmed,
+      }
+    );
 
     if (error || !data) {
       const msg = String(
@@ -1067,30 +1245,45 @@ export default function DashboardPage() {
       );
 
       if (
-        msg.includes("already_used")
+        msg.includes(
+          "already_used"
+        )
       ) {
         setRedeemMessage(
-          t("dashboard.giftAlreadyUsed")
+          t(
+            "dashboard.giftAlreadyUsed"
+          )
         );
       } else {
         setRedeemMessage(
-          t("dashboard.giftInvalidCode")
+          t(
+            "dashboard.giftInvalidCode"
+          )
         );
       }
 
       return;
     }
 
-    if (data.prizeType === "coins") {
+    if (
+      data.prizeType ===
+      "coins"
+    ) {
       setRedeemMessage(
-        t("dashboard.giftRedeemedCoins").replace(
+        t(
+          "dashboard.giftRedeemedCoins"
+        ).replace(
           "{amount}",
-          String(data.prizeAmount)
+          String(
+            data.prizeAmount
+          )
         )
       );
     } else {
       setRedeemMessage(
-        t("dashboard.giftRedeemedShield")
+        t(
+          "dashboard.giftRedeemedShield"
+        )
       );
     }
 
@@ -1100,20 +1293,18 @@ export default function DashboardPage() {
   }
 
   /* =========================================================
-     LANGUAGE FIRST SCREEN
+     LANGUAGE SCREEN
   ========================================================= */
 
   if (!langChosen) {
     return (
       <div className="relative min-h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0f1a]">
-        {/* LIGHT BACKGROUND */}
         <div className="pointer-events-none fixed inset-0 z-0 dark:hidden">
           <div className="absolute -left-32 -top-32 h-[500px] w-[500px] rounded-full bg-indigo-100/60 blur-[100px]" />
           <div className="absolute -right-32 top-1/2 h-[400px] w-[400px] rounded-full bg-purple-100/50 blur-[80px]" />
           <div className="absolute bottom-0 left-1/3 h-[300px] w-[300px] rounded-full bg-blue-100/40 blur-[60px]" />
         </div>
 
-        {/* DARK BACKGROUND */}
         <div className="pointer-events-none fixed inset-0 z-0 hidden dark:block">
           <div className="absolute -left-40 -top-40 h-[700px] w-[700px] animate-pulse rounded-full bg-indigo-600/20 blur-[140px]" />
           <div className="absolute -right-32 top-1/3 h-[500px] w-[500px] animate-pulse rounded-full bg-purple-600/15 blur-[100px]" />
@@ -1122,7 +1313,6 @@ export default function DashboardPage() {
 
         <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
           <div className="w-full max-w-md">
-            {/* HEADER */}
             <div className="mb-8 text-center">
               <div className="relative mx-auto mb-5 inline-flex">
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-400 to-purple-600 opacity-40 blur-2xl" />
@@ -1133,7 +1323,9 @@ export default function DashboardPage() {
               </div>
 
               <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-                {t("dashboard.welcome")}{" "}
+                {t(
+                  "dashboard.welcome"
+                )}{" "}
                 <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text text-transparent">
                   {user.username}
                 </span>
@@ -1141,11 +1333,12 @@ export default function DashboardPage() {
               </h1>
 
               <p className="mt-3 text-base font-medium text-slate-500 dark:text-slate-400">
-                {t("dashboard.chooseLanguage")}
+                {t(
+                  "dashboard.chooseLanguage"
+                )}
               </p>
             </div>
 
-            {/* LANGUAGE OPTIONS */}
             <div className="flex flex-col gap-3">
               {LEARNING_LANGUAGES.map(
                 (lang) => (
@@ -1168,11 +1361,15 @@ export default function DashboardPage() {
 
                       <div className="flex-1">
                         <p className="text-base font-black text-slate-900 dark:text-white">
-                          {t(lang.nameKey)}
+                          {t(
+                            lang.nameKey
+                          )}
                         </p>
 
                         <p className="text-xs text-slate-400 dark:text-slate-500">
-                          {t("dashboard.continueLearning")}
+                          {t(
+                            "dashboard.continueLearning"
+                          )}
                         </p>
                       </div>
 
@@ -1221,16 +1418,18 @@ export default function DashboardPage() {
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         {/* ===================================================
-            WELCOME
+            HEADER
         =================================================== */}
 
-        <div className="mb-8">
+        <header className="mb-8">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500 dark:text-indigo-400">
             Dashboard
           </p>
 
           <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-            {t("dashboard.welcome")}{" "}
+            {t(
+              "dashboard.welcome"
+            )}{" "}
             <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text text-transparent">
               {user.username}
             </span>
@@ -1243,10 +1442,14 @@ export default function DashboardPage() {
                 {selectedLang.flag}
               </span>
 
-              {t("dashboard.learningLanguage")}{" "}
+              {t(
+                "dashboard.learningLanguage"
+              )}{" "}
 
               <strong className="font-semibold text-slate-800 dark:text-white">
-                {t(selectedLang.nameKey)}
+                {t(
+                  selectedLang.nameKey
+                )}
               </strong>
 
               <button
@@ -1262,10 +1465,138 @@ export default function DashboardPage() {
               </button>
             </p>
           )}
-        </div>
+        </header>
 
         {/* ===================================================
-            AI MASCOT
+            LEGEND ARENA — MAIN EVENT
+        =================================================== */}
+
+        <section className="mb-8">
+          <button
+            type="button"
+            onClick={openArena}
+            aria-label={t(
+              "dashboard.arenaTitle"
+            )}
+            className="group relative block w-full overflow-hidden rounded-[32px] p-[1px] text-left shadow-[0_24px_70px_-32px_rgba(79,70,229,.65)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_32px_80px_-32px_rgba(79,70,229,.72)] active:translate-y-0"
+          >
+            {/* Outer gradient border */}
+            <div className="absolute inset-0 rounded-[32px] bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 opacity-95" />
+
+            {/* Hover light */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[32px]">
+              <div className="absolute -left-1/2 top-0 h-full w-1/2 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 ease-out group-hover:translate-x-[400%]" />
+            </div>
+
+            {/* Main card */}
+            <div className="relative overflow-hidden rounded-[31px] bg-[#080b16]">
+              {/* Background glows */}
+              <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-indigo-500/20 blur-[90px]" />
+              <div className="pointer-events-none absolute -right-24 -bottom-28 h-80 w-80 rounded-full bg-violet-500/20 blur-[100px]" />
+              <div className="pointer-events-none absolute right-1/3 top-1/2 h-48 w-48 rounded-full bg-fuchsia-500/10 blur-[80px]" />
+
+              {/* Decorative rings */}
+              <div className="pointer-events-none absolute right-[-90px] top-[-110px] h-[280px] w-[280px] rounded-full border border-white/[0.06]" />
+              <div className="pointer-events-none absolute right-[-45px] top-[-65px] h-[190px] w-[190px] rounded-full border border-white/[0.05]" />
+
+              <div className="relative flex flex-col gap-7 p-6 sm:p-8 lg:flex-row lg:items-center lg:gap-10">
+                {/* Trophy / Arena visual */}
+                <div className="relative mx-auto shrink-0 lg:mx-0">
+                  <div className="absolute inset-0 scale-90 rounded-[30px] bg-indigo-500/25 blur-2xl transition-transform duration-500 group-hover:scale-110" />
+
+                  <div className="relative flex h-28 w-28 items-center justify-center rounded-[30px] border border-white/10 bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-[0_18px_45px_-15px_rgba(99,102,241,.8)] ring-1 ring-white/10 sm:h-32 sm:w-32 sm:rounded-[34px]">
+                    <Trophy className="h-14 w-14 text-white drop-shadow-lg sm:h-16 sm:w-16" />
+
+                    <span className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/10 text-sm shadow-lg backdrop-blur-md">
+                      ✦
+                    </span>
+                  </div>
+
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-indigo-200 backdrop-blur-md">
+                    Main Event
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="min-w-0 flex-1 text-center lg:text-left">
+                  <div className="mb-3 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                    <span className="rounded-full bg-indigo-500/20 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300 ring-1 ring-indigo-400/20">
+                      {t(
+                        "dashboard.mainEvent"
+                      )}
+                    </span>
+
+                    <span className="rounded-full bg-white/[0.06] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400 ring-1 ring-white/[0.06]">
+                      Season
+                    </span>
+                  </div>
+
+                  <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                    {t(
+                      "dashboard.arenaTitle"
+                    )}
+                  </h2>
+
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+                    {t(
+                      "dashboard.arenaSub"
+                    )}
+                  </p>
+
+                  {/* Arena progression mini row */}
+                  <div className="mt-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.07] px-3 py-1.5 text-[11px] font-bold text-slate-200 ring-1 ring-white/[0.06]">
+                      <Star className="h-3.5 w-3.5 text-yellow-300" />
+                      Season levels
+                    </span>
+
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.07] px-3 py-1.5 text-[11px] font-bold text-slate-200 ring-1 ring-white/[0.06]">
+                      <Shield className="h-3.5 w-3.5 text-cyan-300" />
+                      Unlock
+                    </span>
+
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.07] px-3 py-1.5 text-[11px] font-bold text-slate-200 ring-1 ring-white/[0.06]">
+                      ⚡ Earn EP
+                    </span>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="flex shrink-0 items-center justify-center lg:justify-end">
+                  <span className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-sm font-black text-slate-900 shadow-xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-2xl sm:px-6">
+                    {t(
+                      "dashboard.arenaTitle"
+                    )}
+
+                    <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </div>
+
+              {/* Bottom season strip */}
+              <div className="relative border-t border-white/[0.07] bg-white/[0.025] px-6 py-3.5 sm:px-8">
+                <div className="flex flex-col gap-2 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                    Your competitive journey
+                  </p>
+
+                  <div className="flex items-center justify-center gap-2 text-[11px] font-semibold text-slate-400 sm:justify-end">
+                    <span>Levels</span>
+                    <span className="text-slate-600">•</span>
+                    <span>Unlock</span>
+                    <span className="text-slate-600">•</span>
+                    <span>Play</span>
+                    <span className="text-slate-600">•</span>
+                    <span className="text-indigo-300">Earn EP</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </section>
+
+        {/* ===================================================
+            AI COMPANION
         =================================================== */}
 
         <DashboardRobotMascot
@@ -1274,46 +1605,7 @@ export default function DashboardPage() {
         />
 
         {/* ===================================================
-            PRIMARY LEARNING ACTION
-        =================================================== */}
-
-        <section className="mb-8 overflow-hidden rounded-[28px] border border-indigo-200/80 bg-white shadow-[0_20px_55px_-30px_rgba(79,70,229,.45)] dark:border-indigo-500/20 dark:bg-white/[0.035]">
-          <div className="relative p-5 sm:p-7">
-            <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-indigo-200/40 blur-3xl dark:bg-indigo-500/10" />
-
-            <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <div className="min-w-0">
-                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
-                  <Zap className="h-3.5 w-3.5" />
-                  Your next step
-                </div>
-
-                <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-                  {t("dashboard.continueLearning")}
-                </h2>
-
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  Keep building your skills with your next lesson, grammar practice and focused learning.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={continueLearning}
-                className="group inline-flex shrink-0 items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-4 text-sm font-black text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/30 active:translate-y-0"
-              >
-                <BookOpen className="h-5 w-5" />
-
-                {t("dashboard.continueLearning")}
-
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ===================================================
-            TODAY
+            TODAY STATUS
         =================================================== */}
 
         <div className="mb-8 grid gap-4 sm:grid-cols-2">
@@ -1328,13 +1620,20 @@ export default function DashboardPage() {
 
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] font-black uppercase tracking-[0.18em] text-indigo-500 dark:text-indigo-400">
-                  {t("dashboard.dailyGoal")}
+                  {t(
+                    "dashboard.dailyGoal"
+                  )}
                 </p>
 
                 <p className="mt-1 text-sm font-bold text-slate-800 dark:text-white">
-                  {dailyGoal.percent >= 100
-                    ? t("dashboard.dailyGoalReached")
-                    : t("dashboard.xpLeftToday").replace(
+                  {dailyGoal.percent >=
+                  100
+                    ? t(
+                        "dashboard.dailyGoalReached"
+                      )
+                    : t(
+                        "dashboard.xpLeftToday"
+                      ).replace(
                         "{xp}",
                         String(
                           Math.max(
@@ -1405,132 +1704,156 @@ export default function DashboardPage() {
         </div>
 
         {/* ===================================================
-            STATS
+            CORE STATS
         =================================================== */}
 
-        <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {/* LEVEL */}
-          <div className="group relative overflow-hidden rounded-2xl border border-amber-200/80 bg-amber-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-100 dark:border-amber-500/20 dark:bg-white/[0.03] dark:hover:border-amber-500/30">
-            <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-amber-200/60 blur-xl dark:bg-amber-500/10" />
+        <section className="mb-8">
+          <div className="mb-4">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              Progress
+            </p>
 
-            <div className="relative">
-              <div className="mb-3 text-2xl">
-                ⭐
-              </div>
-
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400">
-                {t("dashboard.level")}
-              </p>
-
-              <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
-                {user.level}
-              </p>
-
-              <div className="mt-3 h-1 w-8 rounded-full bg-amber-400" />
-            </div>
+            <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+              Your progress
+            </h2>
           </div>
 
-          {/* XP */}
-          <div className="group relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-indigo-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-100 dark:border-indigo-500/20 dark:bg-white/[0.03] dark:hover:border-indigo-500/30">
-            <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-indigo-200/60 blur-xl dark:bg-indigo-500/10" />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {/* LEVEL */}
+            <div className="group relative overflow-hidden rounded-2xl border border-amber-200/80 bg-amber-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-100 dark:border-amber-500/20 dark:bg-white/[0.03]">
+              <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-amber-200/60 blur-xl dark:bg-amber-500/10" />
 
-            <div className="relative">
-              <div className="mb-3 text-2xl">
-                ⚡
+              <div className="relative">
+                <div className="mb-3 text-2xl">
+                  ⭐
+                </div>
+
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400">
+                  {t(
+                    "dashboard.level"
+                  )}
+                </p>
+
+                <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
+                  {user.level}
+                </p>
+
+                <div className="mt-3 h-1 w-8 rounded-full bg-amber-400" />
               </div>
+            </div>
 
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-                {t("dashboard.totalXP")}
-              </p>
+            {/* XP */}
+            <div className="group relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-indigo-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-100 dark:border-indigo-500/20 dark:bg-white/[0.03]">
+              <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-indigo-200/60 blur-xl dark:bg-indigo-500/10" />
 
-              <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
-                {user.totalXP.toLocaleString()}
-              </p>
+              <div className="relative">
+                <div className="mb-3 text-2xl">
+                  ⚡
+                </div>
 
-              <div className="mt-3 h-1 w-8 rounded-full bg-indigo-500" />
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+                  {t(
+                    "dashboard.totalXP"
+                  )}
+                </p>
+
+                <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
+                  {user.totalXP.toLocaleString()}
+                </p>
+
+                <div className="mt-3 h-1 w-8 rounded-full bg-indigo-500" />
+              </div>
+            </div>
+
+            {/* STREAK */}
+            <div
+              className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+                hasActivityToday
+                  ? "border-orange-200/80 bg-orange-50 hover:shadow-orange-100 dark:border-orange-500/20"
+                  : "border-slate-200/80 bg-slate-50 dark:border-white/[0.06]"
+              } dark:bg-white/[0.03]`}
+            >
+              <div className="relative">
+                <div className="mb-3 text-2xl">
+                  {hasActivityToday
+                    ? "🔥"
+                    : "💤"}
+                </div>
+
+                <p
+                  className={`text-[11px] font-semibold uppercase tracking-widest ${
+                    hasActivityToday
+                      ? "text-orange-600 dark:text-orange-400"
+                      : "text-slate-500"
+                  }`}
+                >
+                  {t(
+                    "dashboard.streak"
+                  )}
+                </p>
+
+                <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
+                  {computedStreak}{" "}
+                  {t(
+                    "dashboard.days"
+                  )}
+                </p>
+
+                <div
+                  className={`mt-3 h-1 w-8 rounded-full ${
+                    hasActivityToday
+                      ? "bg-orange-400"
+                      : "bg-slate-300 dark:bg-slate-600"
+                  }`}
+                />
+              </div>
+            </div>
+
+            {/* LANGUAGE */}
+            <div className="group relative overflow-hidden rounded-2xl border border-emerald-200/80 bg-emerald-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-100 dark:border-emerald-500/20 dark:bg-white/[0.03]">
+              <div className="relative">
+                <div className="mb-3 text-2xl">
+                  {selectedLang
+                    ? selectedLang.flag
+                    : "🌍"}
+                </div>
+
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+                  {t(
+                    "dashboard.language"
+                  )}
+                </p>
+
+                <p className="mt-0.5 truncate text-xl font-black text-slate-900 dark:text-white">
+                  {selectedLang
+                    ? t(
+                        selectedLang.nameKey
+                      )
+                    : t(
+                        "dashboard.none"
+                      )}
+                </p>
+
+                <div className="mt-3 h-1 w-8 rounded-full bg-emerald-500" />
+              </div>
             </div>
           </div>
-
-          {/* STREAK */}
-          <div
-            className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-              hasActivityToday
-                ? "border-orange-200/80 bg-orange-50 hover:shadow-orange-100 dark:border-orange-500/20 dark:hover:border-orange-500/30"
-                : "border-slate-200/80 bg-slate-50 dark:border-white/[0.06]"
-            } dark:bg-white/[0.03]`}
-          >
-            <div className="relative">
-              <div className="mb-3 text-2xl">
-                {hasActivityToday
-                  ? "🔥"
-                  : "💤"}
-              </div>
-
-              <p
-                className={`text-[11px] font-semibold uppercase tracking-widest ${
-                  hasActivityToday
-                    ? "text-orange-600 dark:text-orange-400"
-                    : "text-slate-500"
-                }`}
-              >
-                {t("dashboard.streak")}
-              </p>
-
-              <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
-                {computedStreak}{" "}
-                {t("dashboard.days")}
-              </p>
-
-              <div
-                className={`mt-3 h-1 w-8 rounded-full ${
-                  hasActivityToday
-                    ? "bg-orange-400"
-                    : "bg-slate-300 dark:bg-slate-600"
-                }`}
-              />
-            </div>
-          </div>
-
-          {/* LANGUAGE */}
-          <div className="group relative overflow-hidden rounded-2xl border border-emerald-200/80 bg-emerald-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-100 dark:border-emerald-500/20 dark:bg-white/[0.03] dark:hover:border-emerald-500/30">
-            <div className="relative">
-              <div className="mb-3 text-2xl">
-                {selectedLang
-                  ? selectedLang.flag
-                  : "🌍"}
-              </div>
-
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-                {t("dashboard.language")}
-              </p>
-
-              <p className="mt-0.5 truncate text-xl font-black text-slate-900 dark:text-white">
-                {selectedLang
-                  ? t(
-                      selectedLang.nameKey
-                    )
-                  : t(
-                      "dashboard.none"
-                    )}
-              </p>
-
-              <div className="mt-3 h-1 w-8 rounded-full bg-emerald-500" />
-            </div>
-          </div>
-        </div>
+        </section>
 
         {/* ===================================================
-            PROGRESS
+            XP + DAILY PROGRESS
         =================================================== */}
 
         <div className="mb-8 grid gap-4 xl:grid-cols-2">
           {/* XP PROGRESS */}
-          <div className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:ring-1 dark:ring-indigo-500/10">
+          <div className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/80 to-transparent dark:from-indigo-500/8 dark:to-transparent" />
 
             <div className="relative p-6">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
-                {t("dashboard.level")}{" "}
+                {t(
+                  "dashboard.level"
+                )}{" "}
                 {user.level}
               </p>
 
@@ -1551,7 +1874,9 @@ export default function DashboardPage() {
                       {" "}
                       /{" "}
                       {xpNeededForNext.toLocaleString()}{" "}
-                      {t("topbar.xp")}
+                      {t(
+                        "topbar.xp"
+                      )}
                     </span>
                   </span>
 
@@ -1607,8 +1932,8 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* DAILY GOAL + STREAK */}
-          <div className="relative overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:ring-1 dark:ring-orange-500/10">
+          {/* DAILY GOAL */}
+          <div className="relative overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
             <div className="absolute inset-0 bg-gradient-to-br from-orange-50/80 to-transparent dark:from-orange-500/6 dark:to-transparent" />
 
             <div className="relative p-6">
@@ -1627,7 +1952,7 @@ export default function DashboardPage() {
                   >
                     <defs>
                       <linearGradient
-                        id="ringGrad"
+                        id="ringGradDashboard"
                         x1="0%"
                         y1="0%"
                         x2="100%"
@@ -1659,7 +1984,7 @@ export default function DashboardPage() {
                       cy="60"
                       r="52"
                       fill="none"
-                      stroke="url(#ringGrad)"
+                      stroke="url(#ringGradDashboard)"
                       strokeWidth="10"
                       strokeLinecap="round"
                       strokeDasharray={
@@ -1670,7 +1995,10 @@ export default function DashboardPage() {
                         Math.PI *
                         52 *
                         (1 -
-                          dailyGoal.percent /
+                          Math.min(
+                            dailyGoal.percent,
+                            100
+                          ) /
                             100)
                       }
                       style={{
@@ -1688,7 +2016,8 @@ export default function DashboardPage() {
                     </span>
 
                     <span className="text-xs text-slate-400 dark:text-slate-500">
-                      / {dailyGoal.goal}
+                      /{" "}
+                      {dailyGoal.goal}
                     </span>
                   </div>
                 </div>
@@ -1709,10 +2038,15 @@ export default function DashboardPage() {
                       )}
                     </p>
                   ) : (
-                    <div>
+                    <>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        {dailyGoal.current}{" "}
-                        / {dailyGoal.goal}{" "}
+                        {
+                          dailyGoal.current
+                        }{" "}
+                        /{" "}
+                        {
+                          dailyGoal.goal
+                        }{" "}
                         {t(
                           "topbar.xp"
                         )}
@@ -1728,7 +2062,7 @@ export default function DashboardPage() {
                           "topbar.xp"
                         )}
                       </p>
-                    </div>
+                    </>
                   )}
 
                   <div className="mt-4 border-t border-slate-100 pt-4 dark:border-white/5">
@@ -1741,7 +2075,9 @@ export default function DashboardPage() {
 
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-slate-800 dark:text-white">
-                          {computedStreak}{" "}
+                          {
+                            computedStreak
+                          }{" "}
                           {t(
                             "dashboard.streakActive"
                           )}
@@ -1780,7 +2116,7 @@ export default function DashboardPage() {
                               onClick={
                                 buyStreakShield
                               }
-                              className="mt-1 inline-flex items-center gap-1 rounded-full bg-cyan-50 px-2 py-0.5 text-xs font-bold text-cyan-700 transition-colors hover:bg-cyan-100 dark:bg-cyan-500/10 dark:text-cyan-300 dark:hover:bg-cyan-500/20"
+                              className="mt-1 inline-flex items-center gap-1 rounded-full bg-cyan-50 px-2 py-0.5 text-xs font-bold text-cyan-700 transition-colors hover:bg-cyan-100 dark:bg-cyan-500/10 dark:text-cyan-300"
                             >
                               <Shield className="h-3 w-3" />
                               {t(
@@ -1839,7 +2175,9 @@ export default function DashboardPage() {
                         title={day.date}
                       >
                         <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-600">
-                          {day.label}
+                          {
+                            day.label
+                          }
                         </span>
 
                         <div
@@ -1864,7 +2202,7 @@ export default function DashboardPage() {
 
                 {computedStreak >=
                   7 && (
-                  <div className="mt-3 rounded-xl bg-indigo-50 px-3 py-2 text-center text-xs font-bold text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 dark:ring-1 dark:ring-indigo-500/20">
+                  <div className="mt-3 rounded-xl bg-indigo-50 px-3 py-2 text-center text-xs font-bold text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
                     🎉{" "}
                     {t(
                       "dashboard.streakBonus"
@@ -1888,208 +2226,100 @@ export default function DashboardPage() {
         </div>
 
         {/* ===================================================
-            LEARNING HUB
+            LEARNING
         =================================================== */}
 
         <section className="mb-8">
-          <div className="mb-4 flex items-end justify-between gap-4">
-            <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
-                Learn
-              </p>
+          <div className="mb-4">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
+              Learn
+            </p>
 
-              <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
-                {t(
-                  "dashboard.quickActions"
-                )}
-              </h2>
-            </div>
+            <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+              {t(
+                "dashboard.quickActions"
+              )}
+            </h2>
 
-            <button
-              type="button"
-              onClick={continueLearning}
-              className="hidden items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-700 sm:inline-flex dark:text-indigo-400 dark:hover:text-indigo-300"
-            >
-              Open lessons
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Build your language skills through lessons, practice and review.
+            </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {/* GRAMMAR / LESSONS */}
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/grammar")
+            <LearningCard
+              title={t(
+                "dashboard.lessons"
+              )}
+              subtitle={t(
+                "dashboard.lessonsSub"
+              )}
+              icon={
+                <BookOpen className="h-6 w-6" />
               }
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border-2 border-indigo-200 bg-indigo-50/70 p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:bg-white hover:shadow-xl hover:shadow-indigo-100/60 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:hover:border-indigo-500/50 dark:hover:bg-white/[0.05]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white shadow-md shadow-indigo-500/25">
-                  <BookOpen className="h-6 w-6" />
-                </div>
+              tone="indigo"
+              featured
+              onClick={openGrammar}
+            />
 
-                <ChevronRight className="h-4 w-4 text-indigo-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-indigo-500 dark:text-indigo-500" />
-              </div>
-
-              <div>
-                <p className="text-base font-black text-slate-900 dark:text-white">
-                  Grammar & Lessons
-                </p>
-
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  Learn new grammar and continue your lessons.
-                </p>
-              </div>
-            </button>
-
-            {/* TESTS */}
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/tests")
+            <LearningCard
+              title={t(
+                "dashboard.testYourself"
+              )}
+              subtitle={`${t(
+                "dashboard.testYourselfSub"
+              )} +${
+                XP_REWARDS.TEST_PASSED
+              } ${t(
+                "topbar.xp"
+              )}`}
+              icon={
+                <FileText className="h-6 w-6" />
               }
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:bg-white hover:shadow-xl hover:shadow-emerald-100/60 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:hover:border-emerald-500/50 dark:hover:bg-white/[0.05]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-md shadow-emerald-500/20">
-                  <FileText className="h-6 w-6" />
-                </div>
-
-                <ChevronRight className="h-4 w-4 text-emerald-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-emerald-500 dark:text-emerald-500" />
-              </div>
-
-              <div>
-                <p className="text-base font-black text-slate-900 dark:text-white">
-                  {t(
-                    "dashboard.testYourself"
-                  )}
-                </p>
-
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t(
-                    "dashboard.testYourselfSub"
-                  )}{" "}
-                  +{XP_REWARDS.TEST_PASSED}{" "}
-                  {t("topbar.xp")}
-                </p>
-              </div>
-            </button>
-
-            {/* MISTAKES */}
-            <button
-              type="button"
+              tone="emerald"
               onClick={() =>
-                navigate("/mistakes")
+                navigate(
+                  "/tests"
+                )
               }
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-rose-200 bg-rose-50/70 p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-rose-300 hover:bg-white hover:shadow-xl hover:shadow-rose-100/60 dark:border-rose-500/25 dark:bg-rose-500/10 dark:hover:border-rose-500/50 dark:hover:bg-white/[0.05]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-500 text-white shadow-md shadow-rose-500/20">
-                  <Wrench className="h-6 w-6" />
-                </div>
+            />
 
-                <ChevronRight className="h-4 w-4 text-rose-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-rose-500 dark:text-rose-500" />
-              </div>
-
-              <div>
-                <p className="text-base font-black text-slate-900 dark:text-white">
-                  {t(
-                    "dashboard.mistakeReview"
-                  )}
-                </p>
-
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t(
-                    "dashboard.mistakeReviewSub"
-                  )}
-                </p>
-              </div>
-            </button>
-
-            {/* WORD OF THE DAY */}
-            <button
-              type="button"
+            <LearningCard
+              title={t(
+                "dashboard.mistakeReview"
+              )}
+              subtitle={t(
+                "dashboard.mistakeReviewSub"
+              )}
+              icon={
+                <Wrench className="h-6 w-6" />
+              }
+              tone="rose"
               onClick={() =>
-                navigate("/wotd")
+                navigate(
+                  "/mistakes"
+                )
               }
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/70 p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:bg-white hover:shadow-xl hover:shadow-amber-100/60 dark:border-amber-500/25 dark:bg-amber-500/10 dark:hover:border-amber-500/50 dark:hover:bg-white/[0.05]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500 text-white shadow-md shadow-amber-500/20">
-                  <Star className="h-6 w-6" />
-                </div>
+            />
 
-                <ChevronRight className="h-4 w-4 text-amber-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-amber-500 dark:text-amber-500" />
-              </div>
-
-              <div>
-                <p className="text-base font-black text-slate-900 dark:text-white">
-                  {t(
-                    "dashboard.wotd"
-                  )}
-                </p>
-
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t(
-                    "dashboard.wotdSub"
-                  )}
-                </p>
-              </div>
-            </button>
+            <LearningCard
+              title={t(
+                "dashboard.wotd"
+              )}
+              subtitle={t(
+                "dashboard.wotdSub"
+              )}
+              icon={
+                <Star className="h-6 w-6" />
+              }
+              tone="amber"
+              onClick={() =>
+                navigate(
+                  "/wotd"
+                )
+              }
+            />
           </div>
-        </section>
-
-        {/* ===================================================
-            LEGEND ARENA
-        =================================================== */}
-
-        <section className="mb-8">
-          <button
-            type="button"
-            onClick={() =>
-              navigate("/arena")
-            }
-            className="group relative w-full overflow-hidden rounded-[28px] p-px shadow-xl shadow-indigo-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/30 active:translate-y-0"
-          >
-            <div className="absolute inset-0 rounded-[28px] bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
-
-            <div className="relative flex items-center gap-5 rounded-[28px] bg-gradient-to-r from-slate-900/95 to-slate-900/85 px-5 py-6 text-left sm:px-8 sm:py-7 dark:from-slate-950/95 dark:to-slate-950/85">
-              <div className="relative flex-shrink-0">
-                <div className="absolute inset-0 rounded-2xl bg-indigo-500/50 blur-xl" />
-
-                <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/40 ring-1 ring-white/20">
-                  <Trophy className="h-8 w-8 text-white drop-shadow" />
-                </div>
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <div className="mb-1.5 flex items-center gap-2">
-                  <span className="rounded-full bg-indigo-500/25 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest text-indigo-300 ring-1 ring-indigo-500/40">
-                    {t(
-                      "dashboard.mainEvent"
-                    )}
-                  </span>
-                </div>
-
-                <p className="text-xl font-black tracking-tight text-white sm:text-2xl">
-                  {t(
-                    "dashboard.arenaTitle"
-                  )}
-                </p>
-
-                <p className="mt-1 text-sm font-medium text-slate-300 sm:text-base">
-                  {t(
-                    "dashboard.arenaSub"
-                  )}
-                </p>
-              </div>
-
-              <div className="hidden h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 transition-all duration-300 group-hover:translate-x-1.5 group-hover:bg-white/20 sm:flex">
-                <ChevronRight className="h-6 w-6" />
-              </div>
-            </div>
-          </button>
         </section>
 
         {/* ===================================================
@@ -2113,7 +2343,9 @@ export default function DashboardPage() {
             {selectedLang && (
               <span className="hidden rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-600 sm:inline-flex dark:bg-indigo-500/10 dark:text-indigo-300">
                 {selectedLang.flag}{" "}
-                {t(selectedLang.nameKey)}
+                {t(
+                  selectedLang.nameKey
+                )}
               </span>
             )}
           </div>
@@ -2228,7 +2460,8 @@ export default function DashboardPage() {
                         }
                         className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-indigo-200 hover:text-indigo-700 dark:border-slate-700 dark:text-slate-300"
                       >
-                        🪙 {amount}
+                        🪙{" "}
+                        {amount}
                       </button>
                     )
                   )}
@@ -2264,7 +2497,9 @@ export default function DashboardPage() {
                     </p>
 
                     <code className="block break-all rounded-lg bg-white px-2 py-1.5 text-[11px] text-slate-700 dark:bg-slate-900 dark:text-slate-300">
-                      {generatedGiftCode}
+                      {
+                        generatedGiftCode
+                      }
                     </code>
 
                     <button
@@ -2293,12 +2528,15 @@ export default function DashboardPage() {
                 <div className="flex flex-wrap gap-2">
                   <input
                     type="text"
-                    value={redeemInput}
+                    value={
+                      redeemInput
+                    }
                     onChange={(
                       event: ChangeEvent<HTMLInputElement>
                     ) =>
                       setRedeemInput(
-                        event.target.value
+                        event.target
+                          .value
                       )
                     }
                     placeholder={t(
@@ -2309,7 +2547,9 @@ export default function DashboardPage() {
 
                   <button
                     type="button"
-                    onClick={redeemGift}
+                    onClick={
+                      redeemGift
+                    }
                     disabled={
                       !redeemInput.trim()
                     }
@@ -2332,10 +2572,10 @@ export default function DashboardPage() {
         </section>
 
         {/* ===================================================
-            AD
+            ADVERTISEMENT
         =================================================== */}
 
-        <div className="mb-8">
+        <div className="mb-6">
           <AdSlot
             variant="banner"
             className="mb-0"
@@ -2343,7 +2583,7 @@ export default function DashboardPage() {
         </div>
 
         {/* ===================================================
-            FOOTER / SMALL STATUS
+            FOOTER STATUS
         =================================================== */}
 
         <div className="pb-8 text-center">
