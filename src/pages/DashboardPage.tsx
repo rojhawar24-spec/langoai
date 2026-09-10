@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState, type ChangeEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type ReactNode,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
@@ -108,7 +114,10 @@ const LEARNING_LANGUAGES = [
    MASCOT
 ========================================================= */
 
-type MascotMood = "greeting" | "happy" | "supportive";
+type MascotMood =
+  | "greeting"
+  | "happy"
+  | "supportive";
 
 const MASCOT_META: Record<
   MascotMood,
@@ -166,7 +175,7 @@ function DashboardRobotMascot({
       className="
         relative overflow-hidden rounded-[30px]
         border border-slate-200/80 bg-white
-        shadow-[0_18px_55px_-28px_rgba(15,23,42,.32)]
+        shadow-[0_18px_55px_-28px_rgba(15,23,42,.28)]
         dark:border-white/[0.07]
         dark:bg-white/[0.035]
         dark:shadow-[0_24px_70px_-35px_rgba(0,0,0,.8)]
@@ -176,9 +185,9 @@ function DashboardRobotMascot({
       <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/15 blur-3xl dark:bg-indigo-500/10" />
       <div className="pointer-events-none absolute -bottom-20 -right-16 h-48 w-48 rounded-full bg-cyan-300/15 blur-3xl dark:bg-cyan-500/10" />
 
-      <div className="relative grid items-center gap-5 px-5 py-5 sm:grid-cols-[170px_minmax(0,1fr)] sm:px-7 sm:py-6">
+      <div className="relative grid items-center gap-5 px-5 py-5 sm:grid-cols-[175px_minmax(0,1fr)] sm:px-7 sm:py-6">
         <div
-          className="relative mx-auto h-[190px] w-[170px] shrink-0"
+          className="relative mx-auto h-[200px] w-[175px] shrink-0"
           aria-hidden="true"
         >
           <div
@@ -230,8 +239,14 @@ function DashboardRobotMascot({
                 y2="1"
               >
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="60%" stopColor="#f3f5f8" />
-                <stop offset="100%" stopColor="#d4dae2" />
+                <stop
+                  offset="60%"
+                  stopColor="#f3f5f8"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="#d4dae2"
+                />
               </linearGradient>
 
               <linearGradient
@@ -242,8 +257,14 @@ function DashboardRobotMascot({
                 y2="1"
               >
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="65%" stopColor="#e9ecf1" />
-                <stop offset="100%" stopColor="#c3cad4" />
+                <stop
+                  offset="65%"
+                  stopColor="#e9ecf1"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="#c3cad4"
+                />
               </linearGradient>
 
               <linearGradient
@@ -254,7 +275,10 @@ function DashboardRobotMascot({
                 y2="1"
               >
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="100%" stopColor="#c3cad4" />
+                <stop
+                  offset="100%"
+                  stopColor="#c3cad4"
+                />
               </linearGradient>
 
               <linearGradient
@@ -264,8 +288,14 @@ function DashboardRobotMascot({
                 x2="0"
                 y2="1"
               >
-                <stop offset="0%" stopColor="#334155" />
-                <stop offset="100%" stopColor="#0f172a" />
+                <stop
+                  offset="0%"
+                  stopColor="#334155"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="#0f172a"
+                />
               </linearGradient>
 
               <radialGradient
@@ -274,9 +304,18 @@ function DashboardRobotMascot({
                 cy="30%"
                 r="80%"
               >
-                <stop offset="0%" stopColor="#20293b" />
-                <stop offset="55%" stopColor="#0f1626" />
-                <stop offset="100%" stopColor="#020617" />
+                <stop
+                  offset="0%"
+                  stopColor="#20293b"
+                />
+                <stop
+                  offset="55%"
+                  stopColor="#0f1626"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="#020617"
+                />
               </radialGradient>
 
               <clipPath id="mVisorClip">
@@ -636,16 +675,24 @@ function DashboardRobotMascot({
           </p>
 
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-            Your learning companion is here to keep you focused and moving forward.
+            {t(
+              "dashboard.mascotDescription"
+            )}
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
             <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
-              ⚡ Smart feedback
+              ⚡{" "}
+              {t(
+                "dashboard.smartFeedback"
+              )}
             </span>
 
             <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
-              🦾 Always ready
+              🦾{" "}
+              {t(
+                "dashboard.alwaysReady"
+              )}
             </span>
           </div>
         </div>
@@ -669,7 +716,11 @@ function StatCard({
   label: string;
   value: string;
   detail?: string;
-  tone: "amber" | "indigo" | "orange" | "emerald";
+  tone:
+    | "amber"
+    | "indigo"
+    | "orange"
+    | "emerald";
 }) {
   const styles = {
     amber: {
@@ -681,7 +732,6 @@ function StatCard({
         "text-amber-600 dark:text-amber-400",
       bar: "bg-amber-400",
     },
-
     indigo: {
       card:
         "border-indigo-200/80 bg-indigo-50 dark:border-indigo-500/20 dark:bg-white/[0.03]",
@@ -691,7 +741,6 @@ function StatCard({
         "text-indigo-600 dark:text-indigo-400",
       bar: "bg-indigo-500",
     },
-
     orange: {
       card:
         "border-orange-200/80 bg-orange-50 dark:border-orange-500/20 dark:bg-white/[0.03]",
@@ -701,7 +750,6 @@ function StatCard({
         "text-orange-600 dark:text-orange-400",
       bar: "bg-orange-400",
     },
-
     emerald: {
       card:
         "border-emerald-200/80 bg-emerald-50 dark:border-emerald-500/20 dark:bg-white/[0.03]",
@@ -713,26 +761,26 @@ function StatCard({
     },
   };
 
-  const style = styles[tone];
+  const current = styles[tone];
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${style.card}`}
+      className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${current.card}`}
     >
       <div className="relative">
         <div
-          className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${style.icon}`}
+          className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${current.icon}`}
         >
           {icon}
         </div>
 
         <p
-          className={`text-[10px] font-black uppercase tracking-[0.18em] ${style.label}`}
+          className={`text-[10px] font-black uppercase tracking-[0.18em] ${current.label}`}
         >
           {label}
         </p>
 
-        <p className="mt-1 text-xl font-black text-slate-900 dark:text-white">
+        <p className="mt-1 truncate text-xl font-black text-slate-900 dark:text-white">
           {value}
         </p>
 
@@ -743,7 +791,7 @@ function StatCard({
         )}
 
         <div
-          className={`mt-4 h-1 w-8 rounded-full ${style.bar}`}
+          className={`mt-4 h-1 w-8 rounded-full ${current.bar}`}
         />
       </div>
     </div>
@@ -764,7 +812,11 @@ function LearningCard({
   title: string;
   subtitle: string;
   icon: ReactNode;
-  tone: "indigo" | "emerald" | "rose" | "amber";
+  tone:
+    | "indigo"
+    | "emerald"
+    | "rose"
+    | "amber";
   onClick: () => void;
 }) {
   const tones = {
@@ -778,7 +830,6 @@ function LearningCard({
       arrow:
         "text-indigo-300 group-hover:text-indigo-500 dark:text-indigo-500",
     },
-
     emerald: {
       card:
         "border-emerald-200 bg-emerald-50/80 dark:border-emerald-500/25 dark:bg-emerald-500/10",
@@ -789,7 +840,6 @@ function LearningCard({
       arrow:
         "text-emerald-300 group-hover:text-emerald-500 dark:text-emerald-500",
     },
-
     rose: {
       card:
         "border-rose-200 bg-rose-50/80 dark:border-rose-500/25 dark:bg-rose-500/10",
@@ -800,7 +850,6 @@ function LearningCard({
       arrow:
         "text-rose-300 group-hover:text-rose-500 dark:text-rose-500",
     },
-
     amber: {
       card:
         "border-amber-200 bg-amber-50/80 dark:border-amber-500/25 dark:bg-amber-500/10",
@@ -813,23 +862,23 @@ function LearningCard({
     },
   };
 
-  const style = tones[tone];
+  const current = tones[tone];
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`group relative flex min-h-[185px] flex-col gap-5 overflow-hidden rounded-2xl border p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl dark:hover:bg-white/[0.05] ${style.card} ${style.hover}`}
+      className={`group relative flex min-h-[185px] flex-col gap-5 overflow-hidden rounded-2xl border p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl dark:hover:bg-white/[0.05] ${current.card} ${current.hover}`}
     >
       <div className="flex items-center justify-between">
         <div
-          className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-md ${style.icon}`}
+          className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-md ${current.icon}`}
         >
           {icon}
         </div>
 
         <ChevronRight
-          className={`h-4 w-4 transition-all duration-200 group-hover:translate-x-0.5 ${style.arrow}`}
+          className={`h-4 w-4 transition-all duration-200 group-hover:translate-x-0.5 ${current.arrow}`}
         />
       </div>
 
@@ -847,7 +896,7 @@ function LearningCard({
 }
 
 /* =========================================================
-   MAIN
+   MAIN DASHBOARD
 ========================================================= */
 
 export default function DashboardPage() {
@@ -871,8 +920,10 @@ export default function DashboardPage() {
   const [langChosen, setLangChosen] =
     useState(false);
 
-  const [chestClaimedToday, setChestClaimedToday] =
-    useState(false);
+  const [
+    chestClaimedToday,
+    setChestClaimedToday,
+  ] = useState(false);
 
   const [claiming, setClaiming] =
     useState(false);
@@ -904,7 +955,7 @@ export default function DashboardPage() {
     (user?.streakFreezes ?? 0) > 0;
 
   /* =========================================================
-     LANGUAGE INITIALIZATION
+     LANGUAGE
   ========================================================= */
 
   useEffect(() => {
@@ -936,7 +987,7 @@ export default function DashboardPage() {
   ]);
 
   /* =========================================================
-     DAILY CHEST INITIALIZATION
+     DAILY CHEST
   ========================================================= */
 
   useEffect(() => {
@@ -958,7 +1009,7 @@ export default function DashboardPage() {
   }, [user?.id]);
 
   /* =========================================================
-     PROGRESS DATA
+     PROGRESS
   ========================================================= */
 
   const dailyGoal = useMemo(
@@ -971,12 +1022,18 @@ export default function DashboardPage() {
     todayActive: hasActivityToday,
   } = useMemo(
     () => computeStreak(),
-    [user?.streak, user?.lastActivityDate]
+    [
+      user?.streak,
+      user?.lastActivityDate,
+    ]
   );
 
   const last7Days = useMemo(
     () => getLast7Days(),
-    [user?.streak, user?.lastActivityDate]
+    [
+      user?.streak,
+      user?.lastActivityDate,
+    ]
   );
 
   const totalXP = user?.totalXP;
@@ -989,6 +1046,7 @@ export default function DashboardPage() {
       streak: computedStreak,
     });
 
+    // Intentionally excluded:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalXP, computedStreak]);
 
@@ -997,7 +1055,7 @@ export default function DashboardPage() {
   }
 
   /* =========================================================
-     DERIVED DATA
+     DERIVED
   ========================================================= */
 
   const languageChoiceKey =
@@ -1015,7 +1073,9 @@ export default function DashboardPage() {
 
   const xpCurrent =
     user.totalXP -
-    xpRequiredForLevel(user.level);
+    xpRequiredForLevel(
+      user.level
+    );
 
   const xpProgress = Math.min(
     Math.max(
@@ -1073,6 +1133,10 @@ export default function DashboardPage() {
     setLangChosen(true);
   }
 
+  function openArena() {
+    navigate("/arena");
+  }
+
   async function claimChest() {
     if (
       chestClaimedToday ||
@@ -1111,7 +1175,9 @@ export default function DashboardPage() {
           )
         ) {
           alert(
-            "Je hebt de dagelijkse XP-bonus al geclaimd vandaag."
+            t(
+              "dashboard.dailyBonusAlreadyClaimed"
+            )
           );
 
           setChestClaimedToday(
@@ -1133,7 +1199,9 @@ export default function DashboardPage() {
           msg.includes("JWT")
         ) {
           alert(
-            "Je bent niet meer ingelogd. Log opnieuw in."
+            t(
+              "dashboard.sessionExpired"
+            )
           );
         } else if (
           msg.includes(
@@ -1141,7 +1209,9 @@ export default function DashboardPage() {
           )
         ) {
           alert(
-            "Dagelijkse XP-limiet bereikt. Probeer morgen opnieuw."
+            t(
+              "dashboard.dailyLimitReached"
+            )
           );
         } else {
           console.error(
@@ -1150,7 +1220,9 @@ export default function DashboardPage() {
           );
 
           alert(
-            "Kon dagelijkse XP-bonus niet claimen. Controleer de database."
+            t(
+              "dashboard.dailyBonusError"
+            )
           );
         }
 
@@ -1168,7 +1240,12 @@ export default function DashboardPage() {
         DAILY_XP_REWARD;
 
       alert(
-        `+${xpAwarded} XP toegevoegd!`
+        t(
+          "dashboard.xpAdded"
+        ).replace(
+          "{xp}",
+          String(xpAwarded)
+        )
       );
 
       try {
@@ -1366,7 +1443,7 @@ export default function DashboardPage() {
   }
 
   /* =========================================================
-     LANGUAGE FIRST SCREEN
+     FIRST LANGUAGE SCREEN
   ========================================================= */
 
   if (!langChosen) {
@@ -1435,7 +1512,7 @@ export default function DashboardPage() {
 
                         <p className="text-xs text-slate-400 dark:text-slate-500">
                           {t(
-                            "dashboard.continueLearning"
+                            "dashboard.selectLanguageHint"
                           )}
                         </p>
                       </div>
@@ -1458,9 +1535,12 @@ export default function DashboardPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-50 transition-colors duration-300 dark:bg-[#0b0f1a]">
+      {/* BACKGROUND */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute -left-40 -top-40 h-[600px] w-[600px] rounded-full bg-indigo-100/60 blur-[120px] dark:bg-indigo-600/20" />
-        <div className="absolute -right-32 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-100/50 blur-[100px] dark:bg-purple-600/15" />
+        <div className="absolute -left-40 -top-40 h-[620px] w-[620px] rounded-full bg-indigo-100/60 blur-[120px] dark:bg-indigo-600/20" />
+
+        <div className="absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-100/50 blur-[100px] dark:bg-purple-600/15" />
+
         <div className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-blue-100/40 blur-[90px] dark:bg-blue-600/10" />
       </div>
 
@@ -1478,7 +1558,9 @@ export default function DashboardPage() {
 
         <header className="mb-7">
           <p className="mb-1 text-[10px] font-black uppercase tracking-[0.28em] text-indigo-500 dark:text-indigo-400">
-            Dashboard
+            {t(
+              "dashboard.dashboardLabel"
+            )}
           </p>
 
           <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
@@ -1525,40 +1607,43 @@ export default function DashboardPage() {
         </header>
 
         {/* =====================================================
-            LEGEND ARENA — ABSOLUTE PRIMARY
+            LEGEND ARENA — MAIN EVENT
         ===================================================== */}
 
         <section className="mb-8">
           <button
             type="button"
-            onClick={() =>
-              navigate("/arena")
-            }
+            onClick={openArena}
+            className="group relative block w-full overflow-hidden rounded-[34px] p-[1px] text-left shadow-[0_28px_85px_-35px_rgba(79,70,229,.75)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_34px_95px_-36px_rgba(79,70,229,.82)] active:translate-y-0"
             aria-label={t(
               "dashboard.arenaTitle"
             )}
-            className="group relative block w-full overflow-hidden rounded-[34px] p-[1px] text-left shadow-[0_28px_85px_-35px_rgba(79,70,229,.75)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_34px_95px_-36px_rgba(79,70,229,.82)] active:translate-y-0"
           >
+            {/* GRADIENT FRAME */}
             <div className="absolute inset-0 rounded-[34px] bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500" />
 
+            {/* INNER */}
             <div className="relative overflow-hidden rounded-[33px] bg-[#080b16]">
-              {/* Background atmosphere */}
-              <div className="pointer-events-none absolute -left-20 -top-24 h-80 w-80 rounded-full bg-indigo-500/20 blur-[100px]" />
-              <div className="pointer-events-none absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-violet-500/20 blur-[100px]" />
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/10 blur-[90px]" />
+              {/* AMBIENT LIGHT */}
+              <div className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-indigo-500/20 blur-[100px]" />
 
-              {/* Decorative orbit */}
-              <div className="pointer-events-none absolute -right-24 -top-24 h-[300px] w-[300px] rounded-full border border-white/[0.05]" />
-              <div className="pointer-events-none absolute -right-8 -top-8 h-[180px] w-[180px] rounded-full border border-white/[0.04]" />
+              <div className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-violet-500/20 blur-[100px]" />
+
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/10 blur-[90px]" />
+
+              {/* ORBITS */}
+              <div className="pointer-events-none absolute -right-24 -top-24 h-[310px] w-[310px] rounded-full border border-white/[0.05]" />
+
+              <div className="pointer-events-none absolute -right-5 -top-5 h-[190px] w-[190px] rounded-full border border-white/[0.04]" />
 
               <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-10">
-                {/* ICON */}
+                {/* TROPHY */}
                 <div className="mx-auto lg:mx-0">
                   <div className="relative">
-                    <div className="absolute inset-0 rounded-[30px] bg-indigo-500/35 blur-2xl transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 scale-90 rounded-[32px] bg-indigo-500/35 blur-2xl transition-transform duration-500 group-hover:scale-110" />
 
                     <div className="relative flex h-28 w-28 items-center justify-center rounded-[30px] border border-white/10 bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-[0_18px_45px_-12px_rgba(99,102,241,.85)] ring-1 ring-white/10 sm:h-32 sm:w-32">
-                      <Trophy className="h-14 w-14 text-white sm:h-16 sm:w-16" />
+                      <Trophy className="h-14 w-14 text-white drop-shadow-lg sm:h-16 sm:w-16" />
 
                       <span className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-sm backdrop-blur-md">
                         ✦
@@ -1567,7 +1652,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* CONTENT */}
+                {/* ARENA CONTENT */}
                 <div className="min-w-0 text-center lg:text-left">
                   <div className="mb-3 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
                     <span className="rounded-full bg-indigo-500/20 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300 ring-1 ring-indigo-400/20">
@@ -1577,7 +1662,9 @@ export default function DashboardPage() {
                     </span>
 
                     <span className="rounded-full bg-white/[0.06] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 ring-1 ring-white/[0.06]">
-                      Season
+                      {t(
+                        "dashboard.season"
+                      )}
                     </span>
                   </div>
 
@@ -1593,50 +1680,74 @@ export default function DashboardPage() {
                     )}
                   </p>
 
+                  {/* USER STATUS */}
                   <div className="mt-5 grid grid-cols-3 gap-2 sm:max-w-lg">
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
-                      <p className="text-lg font-black text-white">
-                        {user.level}
-                      </p>
-                      <p className="mt-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        Level
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3 backdrop-blur-sm">
+                      <div className="flex items-center justify-center gap-1.5 lg:justify-start">
+                        <Star className="h-3.5 w-3.5 text-yellow-300" />
+
+                        <span className="text-lg font-black text-white">
+                          {user.level}
+                        </span>
+                      </div>
+
+                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                        {t(
+                          "dashboard.arenaLevel"
+                        )}
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
-                      <p className="text-lg font-black text-white">
-                        {user.totalXP.toLocaleString()}
-                      </p>
-                      <p className="mt-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        XP
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3 backdrop-blur-sm">
+                      <div className="flex items-center justify-center gap-1.5 lg:justify-start">
+                        <Zap className="h-3.5 w-3.5 text-cyan-300" />
+
+                        <span className="text-lg font-black text-white">
+                          {user.totalXP.toLocaleString()}
+                        </span>
+                      </div>
+
+                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                        {t(
+                          "dashboard.arenaXP"
+                        )}
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
-                      <p className="text-lg font-black text-white">
-                        {computedStreak}
-                      </p>
-                      <p className="mt-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        Streak
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3 backdrop-blur-sm">
+                      <div className="flex items-center justify-center gap-1.5 lg:justify-start">
+                        <Flame className="h-3.5 w-3.5 text-orange-300" />
+
+                        <span className="text-lg font-black text-white">
+                          {
+                            computedStreak
+                          }
+                        </span>
+                      </div>
+
+                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                        {t(
+                          "dashboard.arenaStreak"
+                        )}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* CTA */}
+                {/* MAIN BUTTON */}
                 <div className="flex justify-center lg:justify-end">
                   <span className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-white px-6 text-sm font-black text-slate-900 shadow-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-white/10">
                     {t(
                       "dashboard.arenaOpen"
                     )}
 
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </div>
               </div>
 
-              {/* Arena footer */}
-              <div className="relative border-t border-white/[0.07] bg-white/[0.025] px-6 py-4 sm:px-8">
+              {/* ARENA JOURNEY */}
+              <div className="border-t border-white/[0.07] bg-white/[0.025] px-6 py-4 sm:px-8">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 sm:text-left">
                     {t(
@@ -1650,26 +1761,32 @@ export default function DashboardPage() {
                         "dashboard.arenaLevels"
                       )}
                     </span>
+
                     <span className="text-slate-700">
                       •
                     </span>
+
                     <span>
                       {t(
                         "dashboard.arenaUnlock"
                       )}
                     </span>
+
                     <span className="text-slate-700">
                       •
                     </span>
+
                     <span>
                       {t(
                         "dashboard.arenaPlay"
                       )}
                     </span>
+
                     <span className="text-slate-700">
                       •
                     </span>
-                    <span className="text-indigo-300">
+
+                    <span className="font-black text-indigo-300">
                       {t(
                         "dashboard.arenaEarn"
                       )}
@@ -1695,10 +1812,24 @@ export default function DashboardPage() {
         </div>
 
         {/* =====================================================
-            TODAY BAR
+            TODAY
         ===================================================== */}
 
         <section className="mb-8">
+          <div className="mb-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+              {t(
+                "dashboard.todayLabel"
+              )}
+            </p>
+
+            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
+              {t(
+                "dashboard.todayTitle"
+              )}
+            </h2>
+          </div>
+
           <div className="grid gap-3 sm:grid-cols-3">
             {/* DAILY GOAL */}
             <div className="rounded-2xl border border-indigo-100 bg-white p-4 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
@@ -1742,7 +1873,7 @@ export default function DashboardPage() {
                     )}
                   </p>
 
-                  <p className="mt-0.5 text-sm font-bold text-slate-800 dark:text-white">
+                  <p className="mt-0.5 truncate text-sm font-bold text-slate-800 dark:text-white">
                     {computedStreak}{" "}
                     {t(
                       "dashboard.days"
@@ -1816,11 +1947,13 @@ export default function DashboardPage() {
 
         <section className="mb-8">
           <div className="mb-4">
-            <p className="mb-1 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              Progress
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+              {t(
+                "dashboard.progressLabel"
+              )}
             </p>
 
-            <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
               {t(
                 "dashboard.progressTitle"
               )}
@@ -1863,11 +1996,11 @@ export default function DashboardPage() {
                 "dashboard.days"
               )}`}
               detail={
-                hasActivityToday
-                  ? undefined
-                  : t(
+                !hasActivityToday
+                  ? t(
                       "dashboard.streakAtRisk"
                     )
+                  : undefined
               }
               tone="orange"
             />
@@ -1904,7 +2037,7 @@ export default function DashboardPage() {
         </section>
 
         {/* =====================================================
-            XP / DAILY GOAL
+            XP + DAILY GOAL
         ===================================================== */}
 
         <section className="mb-8 grid gap-4 xl:grid-cols-2">
@@ -2005,7 +2138,7 @@ export default function DashboardPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-orange-50/80 to-transparent dark:from-orange-500/6" />
 
             <div className="relative p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500 dark:text-orange-400">
                     {t(
@@ -2020,7 +2153,7 @@ export default function DashboardPage() {
                   </h3>
                 </div>
 
-                <div className="relative h-20 w-20">
+                <div className="relative h-20 w-20 shrink-0">
                   <svg
                     className="-rotate-90"
                     viewBox="0 0 100 100"
@@ -2040,9 +2173,9 @@ export default function DashboardPage() {
                       cy="50"
                       r="42"
                       fill="none"
+                      stroke="url(#dashboardGoalGradient)"
                       strokeWidth="9"
                       strokeLinecap="round"
-                      stroke="url(#dashboardGoalGradient)"
                       strokeDasharray={
                         2 *
                         Math.PI *
@@ -2073,6 +2206,7 @@ export default function DashboardPage() {
                           offset="0%"
                           stopColor="#6366f1"
                         />
+
                         <stop
                           offset="100%"
                           stopColor="#a855f7"
@@ -2116,9 +2250,11 @@ export default function DashboardPage() {
                     : "💤"}
                 </span>
 
-                <div className="min-w-0">
+                <div>
                   <p className="text-sm font-bold text-slate-800 dark:text-white">
-                    {computedStreak}{" "}
+                    {
+                      computedStreak
+                    }{" "}
                     {t(
                       "dashboard.streakActive"
                     )}
@@ -2141,14 +2277,16 @@ export default function DashboardPage() {
                     </p>
                   )}
 
-                  {hasShield ? (
+                  {hasShield && (
                     <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2 py-1 text-[10px] font-black text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300">
                       <Shield className="h-3 w-3" />
                       {t(
                         "dashboard.shieldActive"
                       )}
                     </span>
-                  ) : (
+                  )}
+
+                  {!hasShield &&
                     !hasActivityToday && (
                       <button
                         type="button"
@@ -2167,8 +2305,7 @@ export default function DashboardPage() {
                           )
                         )}
                       </button>
-                    )
-                  )}
+                    )}
                 </div>
               </div>
             </div>
@@ -2184,7 +2321,9 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                  Streak
+                  {t(
+                    "dashboard.streak"
+                  )}
                 </p>
 
                 <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white">
@@ -2226,10 +2365,6 @@ export default function DashboardPage() {
                         day.active
                           ? "bg-orange-100 text-orange-500 ring-2 ring-orange-300 dark:bg-orange-500/20 dark:text-orange-300 dark:ring-1 dark:ring-orange-500/40"
                           : "bg-slate-100 text-slate-300 dark:bg-white/[0.03] dark:text-slate-700"
-                      } ${
-                        day.isToday
-                          ? "ring-offset-2 ring-offset-white dark:ring-offset-slate-950"
-                          : ""
                       }`}
                     >
                       {day.active
@@ -2242,16 +2377,11 @@ export default function DashboardPage() {
             </div>
 
             {computedStreak >=
-              7 && (
-              <div className="mt-5 rounded-xl bg-indigo-50 px-4 py-3 text-center text-xs font-bold text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
-                🎉{" "}
+              30 && (
+              <div className="mt-5 rounded-xl bg-purple-50 px-4 py-3 text-center text-xs font-black text-purple-700 dark:bg-purple-500/10 dark:text-purple-300">
+                🏆{" "}
                 {t(
-                  "dashboard.streakBonus"
-                ).replace(
-                  "{xp}",
-                  String(
-                    XP_REWARDS.STREAK_7_DAYS
-                  )
+                  "dashboard.milestone30"
                 )}
               </div>
             )}
@@ -2265,7 +2395,9 @@ export default function DashboardPage() {
         <section className="mb-8">
           <div className="mb-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
-              Learning
+              {t(
+                "dashboard.learningLabel"
+              )}
             </p>
 
             <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -2361,13 +2493,15 @@ export default function DashboardPage() {
         </section>
 
         {/* =====================================================
-            LANGUAGE
+            LANGUAGE SELECTOR
         ===================================================== */}
 
         <section className="mb-8">
           <div className="mb-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              Language
+              {t(
+                "dashboard.languageLabel"
+              )}
             </p>
 
             <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white">
@@ -2380,7 +2514,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {LEARNING_LANGUAGES.map(
               (lang) => {
-                const isSelected =
+                const selected =
                   user.currentLanguage ===
                   lang.code;
 
@@ -2394,7 +2528,7 @@ export default function DashboardPage() {
                       )
                     }
                     className={`relative flex flex-col items-center gap-2 rounded-2xl border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
-                      isSelected
+                      selected
                         ? "border-indigo-400 bg-indigo-50 shadow-md ring-2 ring-indigo-200 dark:border-indigo-500/60 dark:bg-indigo-500/10 dark:ring-indigo-500/30"
                         : "border-slate-200 bg-white dark:border-white/[0.06] dark:bg-white/[0.03]"
                     }`}
@@ -2409,7 +2543,7 @@ export default function DashboardPage() {
                       )}
                     </span>
 
-                    {isSelected && (
+                    {selected && (
                       <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white shadow-md">
                         <Check className="h-3 w-3" />
                       </span>
@@ -2434,11 +2568,14 @@ export default function DashboardPage() {
                   !value
               )
             }
-            aria-expanded={giftsOpen}
+            aria-expanded={
+              giftsOpen
+            }
             className="flex w-full items-center justify-between p-5 text-left"
           >
             <span className="flex items-center gap-2 text-sm font-black text-slate-800 dark:text-white">
               <GiftIcon className="h-4 w-4 text-indigo-500" />
+
               {t(
                 "dashboard.giftsTitle"
               )}
@@ -2466,9 +2603,7 @@ export default function DashboardPage() {
                   {[10, 20, 30].map(
                     (amount) => (
                       <button
-                        key={
-                          amount
-                        }
+                        key={amount}
                         type="button"
                         onClick={() =>
                           sendGift({
@@ -2546,6 +2681,7 @@ export default function DashboardPage() {
 
                 <div className="flex gap-2">
                   <input
+                    type="text"
                     value={
                       redeemInput
                     }
@@ -2592,10 +2728,10 @@ export default function DashboardPage() {
         </section>
 
         {/* =====================================================
-            AD
+            ADVERTISEMENT
         ===================================================== */}
 
-        <div className="mb-6">
+        <div className="mb-8">
           <AdSlot
             variant="banner"
             className="mb-0"
