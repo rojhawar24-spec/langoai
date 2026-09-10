@@ -111,13 +111,67 @@ const LEARNING_LANGUAGES = [
 ];
 
 /* =========================================================
+   LOCAL TEXT
+   Geen nieuwe translation keys nodig.
+========================================================= */
+
+const UI_TEXT = {
+  dashboard: "Dashboard",
+  mainEvent: "Hoofdevenement",
+  season: "Seizoen",
+  arenaOpen: "Arena openen",
+  arenaLevel: "Level",
+  arenaXP: "XP",
+  arenaStreak: "Streak",
+  arenaJourney: "Jouw competitieve reis",
+  arenaLevels: "Levels",
+  arenaUnlock: "Ontgrendel",
+  arenaPlay: "Speel",
+  arenaEarn: "Verdien EP",
+  arenaFallbackDescription:
+    "Seizoenslevels. Ontgrendel, speel en verdien EP.",
+  today: "Vandaag",
+  dailyProgress: "Dagelijkse voortgang",
+  progress: "Voortgang",
+  learning: "Leren",
+  learningTitle: "Leren en verbeteren",
+  learningDescription:
+    "Verbeter je taal met lessen, oefeningen en herhaling.",
+  mascotDescription:
+    "Je AI-leerpartner helpt je gefocust te blijven en stap voor stap vooruit te gaan.",
+  smartFeedback: "Slimme feedback",
+  alwaysReady: "Altijd klaar",
+  language: "Taal",
+  languageChoose: "Kies je leertaal",
+  seasonBadge: "SEIZOEN",
+  primaryBadge: "HOOFDFEATURE",
+  levelShort: "LVL",
+  enterArena: "Naar de Arena",
+};
+
+/* =========================================================
+   SUPABASE RPC WRAPPER
+   Voorkomt TS-errors wanneer Database types RPC's nog niet
+   bevatten. Runtime gebruikt gewoon supabase.rpc().
+========================================================= */
+
+type RpcClient = {
+  rpc: (
+    functionName: string,
+    args?: Record<string, unknown>
+  ) => Promise<{
+    data: any;
+    error: any;
+  }>;
+};
+
+const rpcClient = supabase as unknown as RpcClient;
+
+/* =========================================================
    MASCOT
 ========================================================= */
 
-type MascotMood =
-  | "greeting"
-  | "happy"
-  | "supportive";
+type MascotMood = "greeting" | "happy" | "supportive";
 
 const MASCOT_META: Record<
   MascotMood,
@@ -164,18 +218,24 @@ const MOOD_STYLE: Record<
 function DashboardRobotMascot({
   message,
   mood = "greeting",
+  description,
+  smartFeedback,
+  alwaysReady,
 }: {
   message: string;
   mood?: MascotMood;
+  description: string;
+  smartFeedback: string;
+  alwaysReady: string;
 }) {
   const c = MOOD_STYLE[mood];
 
   return (
     <section
       className="
-        relative overflow-hidden rounded-[30px]
+        relative mb-8 overflow-hidden rounded-[30px]
         border border-slate-200/80 bg-white
-        shadow-[0_18px_55px_-28px_rgba(15,23,42,.28)]
+        shadow-[0_18px_55px_-28px_rgba(15,23,42,.32)]
         dark:border-white/[0.07]
         dark:bg-white/[0.035]
         dark:shadow-[0_24px_70px_-35px_rgba(0,0,0,.8)]
@@ -232,93 +292,63 @@ function DashboardRobotMascot({
           >
             <defs>
               <linearGradient
-                id="mHead"
+                id="dashboardMascotHead"
                 x1="0"
                 y1="0"
                 x2="0"
                 y2="1"
               >
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop
-                  offset="60%"
-                  stopColor="#f3f5f8"
-                />
-                <stop
-                  offset="100%"
-                  stopColor="#d4dae2"
-                />
+                <stop offset="60%" stopColor="#f3f5f8" />
+                <stop offset="100%" stopColor="#d4dae2" />
               </linearGradient>
 
               <linearGradient
-                id="mBody"
+                id="dashboardMascotBody"
                 x1="0"
                 y1="0"
                 x2="0"
                 y2="1"
               >
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop
-                  offset="65%"
-                  stopColor="#e9ecf1"
-                />
-                <stop
-                  offset="100%"
-                  stopColor="#c3cad4"
-                />
+                <stop offset="65%" stopColor="#e9ecf1" />
+                <stop offset="100%" stopColor="#c3cad4" />
               </linearGradient>
 
               <linearGradient
-                id="mLimb"
+                id="dashboardMascotLimb"
                 x1="0"
                 y1="0"
                 x2="0"
                 y2="1"
               >
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop
-                  offset="100%"
-                  stopColor="#c3cad4"
-                />
+                <stop offset="100%" stopColor="#c3cad4" />
               </linearGradient>
 
               <linearGradient
-                id="mDark"
+                id="dashboardMascotDark"
                 x1="0"
                 y1="0"
                 x2="0"
                 y2="1"
               >
-                <stop
-                  offset="0%"
-                  stopColor="#334155"
-                />
-                <stop
-                  offset="100%"
-                  stopColor="#0f172a"
-                />
+                <stop offset="0%" stopColor="#334155" />
+                <stop offset="100%" stopColor="#0f172a" />
               </linearGradient>
 
               <radialGradient
-                id="mVisor"
+                id="dashboardMascotVisor"
                 cx="42%"
                 cy="30%"
                 r="80%"
               >
-                <stop
-                  offset="0%"
-                  stopColor="#20293b"
-                />
-                <stop
-                  offset="55%"
-                  stopColor="#0f1626"
-                />
-                <stop
-                  offset="100%"
-                  stopColor="#020617"
-                />
+                <stop offset="0%" stopColor="#20293b" />
+                <stop offset="55%" stopColor="#0f1626" />
+                <stop offset="100%" stopColor="#020617" />
               </radialGradient>
 
-              <clipPath id="mVisorClip">
+              <clipPath id="dashboardMascotVisorClip">
                 <rect
                   x="52"
                   y="82"
@@ -329,7 +359,7 @@ function DashboardRobotMascot({
               </clipPath>
 
               <filter
-                id="mSoftGlow"
+                id="dashboardMascotGlow"
                 x="-100%"
                 y="-100%"
                 width="300%"
@@ -369,7 +399,7 @@ function DashboardRobotMascot({
                 width="19"
                 height="28"
                 rx="9.5"
-                fill="url(#mLimb)"
+                fill="url(#dashboardMascotLimb)"
                 stroke="#c3cad4"
               />
 
@@ -379,7 +409,7 @@ function DashboardRobotMascot({
                 width="19"
                 height="28"
                 rx="9.5"
-                fill="url(#mLimb)"
+                fill="url(#dashboardMascotLimb)"
                 stroke="#c3cad4"
               />
 
@@ -389,7 +419,7 @@ function DashboardRobotMascot({
                 width="25"
                 height="12"
                 rx="6"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <rect
@@ -398,7 +428,7 @@ function DashboardRobotMascot({
                 width="25"
                 height="12"
                 rx="6"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <rect
@@ -407,7 +437,7 @@ function DashboardRobotMascot({
                 width="96"
                 height="56"
                 rx="26"
-                fill="url(#mBody)"
+                fill="url(#dashboardMascotBody)"
                 stroke="#d4dae2"
                 strokeWidth="2"
               />
@@ -418,7 +448,7 @@ function DashboardRobotMascot({
                 width="22"
                 height="16"
                 rx="4"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <rect
@@ -467,7 +497,7 @@ function DashboardRobotMascot({
                 width="30"
                 height="32"
                 rx="10"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <g transform="rotate(14 60 162)">
@@ -477,7 +507,7 @@ function DashboardRobotMascot({
                   width="42"
                   height="18"
                   rx="9"
-                  fill="url(#mLimb)"
+                  fill="url(#dashboardMascotLimb)"
                   stroke="#c3cad4"
                 />
               </g>
@@ -486,7 +516,7 @@ function DashboardRobotMascot({
                 cx="26"
                 cy="162"
                 r="10"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <g transform="rotate(-14 160 162)">
@@ -496,7 +526,7 @@ function DashboardRobotMascot({
                   width="42"
                   height="18"
                   rx="9"
-                  fill="url(#mLimb)"
+                  fill="url(#dashboardMascotLimb)"
                   stroke="#c3cad4"
                 />
               </g>
@@ -505,14 +535,14 @@ function DashboardRobotMascot({
                 cx="194"
                 cy="162"
                 r="10"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <circle
                 cx="38"
                 cy="98"
                 r="18"
-                fill="url(#mLimb)"
+                fill="url(#dashboardMascotLimb)"
                 stroke="#c3cad4"
                 strokeWidth="2"
               />
@@ -521,7 +551,7 @@ function DashboardRobotMascot({
                 cx="38"
                 cy="98"
                 r="11"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <circle
@@ -536,7 +566,7 @@ function DashboardRobotMascot({
                 cx="182"
                 cy="98"
                 r="18"
-                fill="url(#mLimb)"
+                fill="url(#dashboardMascotLimb)"
                 stroke="#c3cad4"
                 strokeWidth="2"
               />
@@ -545,7 +575,7 @@ function DashboardRobotMascot({
                 cx="182"
                 cy="98"
                 r="11"
-                fill="url(#mDark)"
+                fill="url(#dashboardMascotDark)"
               />
 
               <circle
@@ -562,7 +592,7 @@ function DashboardRobotMascot({
                 width="160"
                 height="150"
                 rx="70"
-                fill="url(#mHead)"
+                fill="url(#dashboardMascotHead)"
                 stroke="#d4dae2"
                 strokeWidth="2"
               />
@@ -574,7 +604,7 @@ function DashboardRobotMascot({
                 ry="18"
                 fill="#ffffff"
                 opacity="0.5"
-                filter="url(#mSoftGlow)"
+                filter="url(#dashboardMascotGlow)"
               />
 
               <line
@@ -606,10 +636,10 @@ function DashboardRobotMascot({
                 width="116"
                 height="88"
                 rx="42"
-                fill="url(#mVisor)"
+                fill="url(#dashboardMascotVisor)"
               />
 
-              <g clipPath="url(#mVisorClip)">
+              <g clipPath="url(#dashboardMascotVisorClip)">
                 <ellipse
                   cx="80"
                   cy="98"
@@ -637,7 +667,7 @@ function DashboardRobotMascot({
                     height="20"
                     rx="7.5"
                     fill={`rgb(${c.rgb})`}
-                    filter="url(#mSoftGlow)"
+                    filter="url(#dashboardMascotGlow)"
                   />
 
                   <rect
@@ -647,7 +677,7 @@ function DashboardRobotMascot({
                     height="20"
                     rx="7.5"
                     fill={`rgb(${c.rgb})`}
-                    filter="url(#mSoftGlow)"
+                    filter="url(#dashboardMascotGlow)"
                   />
                 </g>
 
@@ -657,7 +687,7 @@ function DashboardRobotMascot({
                   stroke={`rgb(${c.rgb})`}
                   strokeWidth="3.4"
                   strokeLinecap="round"
-                  filter="url(#mSoftGlow)"
+                  filter="url(#dashboardMascotGlow)"
                 />
               </g>
             </g>
@@ -675,24 +705,16 @@ function DashboardRobotMascot({
           </p>
 
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-            {t(
-              "dashboard.mascotDescription"
-            )}
+            {description}
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
             <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
-              ⚡{" "}
-              {t(
-                "dashboard.smartFeedback"
-              )}
+              ⚡ {smartFeedback}
             </span>
 
             <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
-              🦾{" "}
-              {t(
-                "dashboard.alwaysReady"
-              )}
+              🦾 {alwaysReady}
             </span>
           </div>
         </div>
@@ -716,11 +738,7 @@ function StatCard({
   label: string;
   value: string;
   detail?: string;
-  tone:
-    | "amber"
-    | "indigo"
-    | "orange"
-    | "emerald";
+  tone: "amber" | "indigo" | "orange" | "emerald";
 }) {
   const styles = {
     amber: {
@@ -812,11 +830,7 @@ function LearningCard({
   title: string;
   subtitle: string;
   icon: ReactNode;
-  tone:
-    | "indigo"
-    | "emerald"
-    | "rose"
-    | "amber";
+  tone: "indigo" | "emerald" | "rose" | "amber";
   onClick: () => void;
 }) {
   const tones = {
@@ -896,7 +910,7 @@ function LearningCard({
 }
 
 /* =========================================================
-   MAIN DASHBOARD
+   MAIN
 ========================================================= */
 
 export default function DashboardPage() {
@@ -920,10 +934,8 @@ export default function DashboardPage() {
   const [langChosen, setLangChosen] =
     useState(false);
 
-  const [
-    chestClaimedToday,
-    setChestClaimedToday,
-  ] = useState(false);
+  const [chestClaimedToday, setChestClaimedToday] =
+    useState(false);
 
   const [claiming, setClaiming] =
     useState(false);
@@ -1046,7 +1058,6 @@ export default function DashboardPage() {
       streak: computedStreak,
     });
 
-    // Intentionally excluded:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalXP, computedStreak]);
 
@@ -1133,10 +1144,6 @@ export default function DashboardPage() {
     setLangChosen(true);
   }
 
-  function openArena() {
-    navigate("/arena");
-  }
-
   async function claimChest() {
     if (
       chestClaimedToday ||
@@ -1155,29 +1162,25 @@ export default function DashboardPage() {
       const {
         data,
         error,
-      } = await supabase.rpc(
+      } = await rpcClient.rpc(
         "complete_learning_activity",
         {
-          p_kind:
-            "daily_goal",
+          p_kind: "daily_goal",
           p_ref: today,
         }
       );
 
       if (error) {
-        const msg = String(
-          error.message || ""
-        );
+        const msg =
+          String(error.message || "");
 
         if (
           msg.includes(
             "activity_already_completed"
           )
         ) {
-          alert(
-            t(
-              "dashboard.dailyBonusAlreadyClaimed"
-            )
+          window.alert(
+            "Je hebt de dagelijkse XP-bonus al geclaimd vandaag."
           );
 
           setChestClaimedToday(
@@ -1198,20 +1201,16 @@ export default function DashboardPage() {
           ) ||
           msg.includes("JWT")
         ) {
-          alert(
-            t(
-              "dashboard.sessionExpired"
-            )
+          window.alert(
+            "Je bent niet meer ingelogd. Log opnieuw in."
           );
         } else if (
           msg.includes(
             "daily_xp_cap_reached"
           )
         ) {
-          alert(
-            t(
-              "dashboard.dailyLimitReached"
-            )
+          window.alert(
+            "Dagelijkse XP-limiet bereikt. Probeer morgen opnieuw."
           );
         } else {
           console.error(
@@ -1219,33 +1218,24 @@ export default function DashboardPage() {
             error
           );
 
-          alert(
-            t(
-              "dashboard.dailyBonusError"
-            )
+          window.alert(
+            "Kon dagelijkse XP-bonus niet claimen. Controleer de database."
           );
         }
 
         return;
       }
 
-      const payload =
-        data as {
-          xpAwarded?: number;
-          profile?: unknown;
-        } | null;
+      const payload = data as {
+        xpAwarded?: number;
+      } | null;
 
       const xpAwarded =
         payload?.xpAwarded ??
         DAILY_XP_REWARD;
 
-      alert(
-        t(
-          "dashboard.xpAdded"
-        ).replace(
-          "{xp}",
-          String(xpAwarded)
-        )
+      window.alert(
+        `+${xpAwarded} XP toegevoegd!`
       );
 
       try {
@@ -1271,7 +1261,7 @@ export default function DashboardPage() {
     if (hasShield) return;
 
     const { error } =
-      await supabase.rpc(
+      await rpcClient.rpc(
         "buy_streak_shield"
       );
 
@@ -1299,7 +1289,7 @@ export default function DashboardPage() {
     const {
       data,
       error,
-    } = await supabase.rpc(
+    } = await rpcClient.rpc(
       "create_gift_code",
       {
         p_prize_type:
@@ -1327,7 +1317,9 @@ export default function DashboardPage() {
     }
 
     setGiftSendError(null);
-    setGeneratedGiftCode(data);
+    setGeneratedGiftCode(
+      String(data)
+    );
 
     await refreshUser();
   }
@@ -1382,7 +1374,7 @@ export default function DashboardPage() {
     const {
       data,
       error,
-    } = await supabase.rpc(
+    } = await rpcClient.rpc(
       "redeem_gift_code",
       {
         p_code: trimmed,
@@ -1415,8 +1407,16 @@ export default function DashboardPage() {
       return;
     }
 
+    const reward =
+      data as {
+        prizeType:
+          | "coins"
+          | "shield";
+        prizeAmount: number;
+      };
+
     if (
-      data.prizeType ===
+      reward.prizeType ===
       "coins"
     ) {
       setRedeemMessage(
@@ -1425,7 +1425,7 @@ export default function DashboardPage() {
         ).replace(
           "{amount}",
           String(
-            data.prizeAmount
+            reward.prizeAmount
           )
         )
       );
@@ -1443,7 +1443,7 @@ export default function DashboardPage() {
   }
 
   /* =========================================================
-     FIRST LANGUAGE SCREEN
+     LANGUAGE SCREEN
   ========================================================= */
 
   if (!langChosen) {
@@ -1451,7 +1451,9 @@ export default function DashboardPage() {
       <div className="relative min-h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0f1a]">
         <div className="pointer-events-none fixed inset-0 z-0">
           <div className="absolute -left-32 -top-32 h-[500px] w-[500px] rounded-full bg-indigo-100/60 blur-[100px] dark:bg-indigo-600/20" />
+
           <div className="absolute -right-32 top-1/3 h-[450px] w-[450px] rounded-full bg-purple-100/50 blur-[90px] dark:bg-purple-600/15" />
+
           <div className="absolute bottom-0 left-1/4 h-[350px] w-[350px] rounded-full bg-blue-100/40 blur-[80px] dark:bg-blue-600/10" />
         </div>
 
@@ -1511,9 +1513,7 @@ export default function DashboardPage() {
                         </p>
 
                         <p className="text-xs text-slate-400 dark:text-slate-500">
-                          {t(
-                            "dashboard.selectLanguageHint"
-                          )}
+                          Kies deze taal om te beginnen
                         </p>
                       </div>
 
@@ -1535,7 +1535,6 @@ export default function DashboardPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-50 transition-colors duration-300 dark:bg-[#0b0f1a]">
-      {/* BACKGROUND */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute -left-40 -top-40 h-[620px] w-[620px] rounded-full bg-indigo-100/60 blur-[120px] dark:bg-indigo-600/20" />
 
@@ -1558,9 +1557,7 @@ export default function DashboardPage() {
 
         <header className="mb-7">
           <p className="mb-1 text-[10px] font-black uppercase tracking-[0.28em] text-indigo-500 dark:text-indigo-400">
-            {t(
-              "dashboard.dashboardLabel"
-            )}
+            {UI_TEXT.dashboard}
           </p>
 
           <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
@@ -1607,31 +1604,32 @@ export default function DashboardPage() {
         </header>
 
         {/* =====================================================
-            LEGEND ARENA — MAIN EVENT
+            LEGEND ARENA — MAIN FEATURE
         ===================================================== */}
 
         <section className="mb-8">
           <button
             type="button"
-            onClick={openArena}
-            className="group relative block w-full overflow-hidden rounded-[34px] p-[1px] text-left shadow-[0_28px_85px_-35px_rgba(79,70,229,.75)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_34px_95px_-36px_rgba(79,70,229,.82)] active:translate-y-0"
-            aria-label={t(
-              "dashboard.arenaTitle"
-            )}
+            onClick={() =>
+              navigate("/arena")
+            }
+            aria-label={
+              UI_TEXT.enterArena
+            }
+            className="group relative block w-full overflow-hidden rounded-[34px] p-[1px] text-left shadow-[0_28px_85px_-35px_rgba(79,70,229,.72)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_34px_95px_-36px_rgba(79,70,229,.82)] active:translate-y-0"
           >
-            {/* GRADIENT FRAME */}
+            {/* Gradient edge */}
             <div className="absolute inset-0 rounded-[34px] bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500" />
 
-            {/* INNER */}
             <div className="relative overflow-hidden rounded-[33px] bg-[#080b16]">
-              {/* AMBIENT LIGHT */}
+              {/* Atmosphere */}
               <div className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-indigo-500/20 blur-[100px]" />
 
               <div className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-violet-500/20 blur-[100px]" />
 
               <div className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/10 blur-[90px]" />
 
-              {/* ORBITS */}
+              {/* Decorative circles */}
               <div className="pointer-events-none absolute -right-24 -top-24 h-[310px] w-[310px] rounded-full border border-white/[0.05]" />
 
               <div className="pointer-events-none absolute -right-5 -top-5 h-[190px] w-[190px] rounded-full border border-white/[0.04]" />
@@ -1652,19 +1650,15 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* ARENA CONTENT */}
+                {/* CONTENT */}
                 <div className="min-w-0 text-center lg:text-left">
                   <div className="mb-3 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
                     <span className="rounded-full bg-indigo-500/20 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300 ring-1 ring-indigo-400/20">
-                      {t(
-                        "dashboard.mainEvent"
-                      )}
+                      {UI_TEXT.primaryBadge}
                     </span>
 
                     <span className="rounded-full bg-white/[0.06] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 ring-1 ring-white/[0.06]">
-                      {t(
-                        "dashboard.season"
-                      )}
+                      {UI_TEXT.season}
                     </span>
                   </div>
 
@@ -1677,12 +1671,13 @@ export default function DashboardPage() {
                   <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-300 sm:text-base">
                     {t(
                       "dashboard.arenaSub"
-                    )}
+                    ) ||
+                      UI_TEXT.arenaFallbackDescription}
                   </p>
 
-                  {/* USER STATUS */}
+                  {/* USER ARENA STATUS */}
                   <div className="mt-5 grid grid-cols-3 gap-2 sm:max-w-lg">
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3 backdrop-blur-sm">
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
                       <div className="flex items-center justify-center gap-1.5 lg:justify-start">
                         <Star className="h-3.5 w-3.5 text-yellow-300" />
 
@@ -1692,13 +1687,13 @@ export default function DashboardPage() {
                       </div>
 
                       <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        {t(
-                          "dashboard.arenaLevel"
-                        )}
+                        {
+                          UI_TEXT.arenaLevel
+                        }
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3 backdrop-blur-sm">
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
                       <div className="flex items-center justify-center gap-1.5 lg:justify-start">
                         <Zap className="h-3.5 w-3.5 text-cyan-300" />
 
@@ -1708,13 +1703,13 @@ export default function DashboardPage() {
                       </div>
 
                       <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        {t(
-                          "dashboard.arenaXP"
-                        )}
+                        {
+                          UI_TEXT.arenaXP
+                        }
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3 backdrop-blur-sm">
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
                       <div className="flex items-center justify-center gap-1.5 lg:justify-start">
                         <Flame className="h-3.5 w-3.5 text-orange-300" />
 
@@ -1726,40 +1721,34 @@ export default function DashboardPage() {
                       </div>
 
                       <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        {t(
-                          "dashboard.arenaStreak"
-                        )}
+                        {
+                          UI_TEXT.arenaStreak
+                        }
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* MAIN BUTTON */}
+                {/* MAIN ARENA BUTTON */}
                 <div className="flex justify-center lg:justify-end">
                   <span className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-white px-6 text-sm font-black text-slate-900 shadow-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-white/10">
-                    {t(
-                      "dashboard.arenaOpen"
-                    )}
+                    {UI_TEXT.arenaOpen}
 
                     <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </div>
               </div>
 
-              {/* ARENA JOURNEY */}
+              {/* JOURNEY */}
               <div className="border-t border-white/[0.07] bg-white/[0.025] px-6 py-4 sm:px-8">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 sm:text-left">
-                    {t(
-                      "dashboard.arenaJourney"
-                    )}
+                    {UI_TEXT.arenaJourney}
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] font-semibold text-slate-400 sm:justify-end">
                     <span>
-                      {t(
-                        "dashboard.arenaLevels"
-                      )}
+                      {UI_TEXT.arenaLevels}
                     </span>
 
                     <span className="text-slate-700">
@@ -1767,9 +1756,7 @@ export default function DashboardPage() {
                     </span>
 
                     <span>
-                      {t(
-                        "dashboard.arenaUnlock"
-                      )}
+                      {UI_TEXT.arenaUnlock}
                     </span>
 
                     <span className="text-slate-700">
@@ -1777,9 +1764,7 @@ export default function DashboardPage() {
                     </span>
 
                     <span>
-                      {t(
-                        "dashboard.arenaPlay"
-                      )}
+                      {UI_TEXT.arenaPlay}
                     </span>
 
                     <span className="text-slate-700">
@@ -1787,9 +1772,7 @@ export default function DashboardPage() {
                     </span>
 
                     <span className="font-black text-indigo-300">
-                      {t(
-                        "dashboard.arenaEarn"
-                      )}
+                      {UI_TEXT.arenaEarn}
                     </span>
                   </div>
                 </div>
@@ -1802,14 +1785,19 @@ export default function DashboardPage() {
             AI COMPANION
         ===================================================== */}
 
-        <div className="mb-8">
-          <DashboardRobotMascot
-            message={t(
-              mascot.key
-            )}
-            mood={mascotMood}
-          />
-        </div>
+        <DashboardRobotMascot
+          message={t(mascot.key)}
+          mood={mascotMood}
+          description={
+            UI_TEXT.mascotDescription
+          }
+          smartFeedback={
+            UI_TEXT.smartFeedback
+          }
+          alwaysReady={
+            UI_TEXT.alwaysReady
+          }
+        />
 
         {/* =====================================================
             TODAY
@@ -1818,15 +1806,11 @@ export default function DashboardPage() {
         <section className="mb-8">
           <div className="mb-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              {t(
-                "dashboard.todayLabel"
-              )}
+              {UI_TEXT.today}
             </p>
 
             <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-              {t(
-                "dashboard.todayTitle"
-              )}
+              {UI_TEXT.dailyProgress}
             </h2>
           </div>
 
@@ -1948,15 +1932,13 @@ export default function DashboardPage() {
         <section className="mb-8">
           <div className="mb-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              {t(
-                "dashboard.progressLabel"
-              )}
+              {UI_TEXT.progress}
             </p>
 
             <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
               {t(
                 "dashboard.progressTitle"
-              )}
+              ) || UI_TEXT.progress}
             </h2>
           </div>
 
@@ -2280,6 +2262,7 @@ export default function DashboardPage() {
                   {hasShield && (
                     <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2 py-1 text-[10px] font-black text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300">
                       <Shield className="h-3 w-3" />
+
                       {t(
                         "dashboard.shieldActive"
                       )}
@@ -2296,6 +2279,7 @@ export default function DashboardPage() {
                         className="mt-2 inline-flex items-center gap-1 rounded-full bg-cyan-50 px-2 py-1 text-[10px] font-black text-cyan-700 transition hover:bg-cyan-100 dark:bg-cyan-500/10 dark:text-cyan-300"
                       >
                         <Shield className="h-3 w-3" />
+
                         {t(
                           "dashboard.shieldBuy"
                         ).replace(
@@ -2350,9 +2334,7 @@ export default function DashboardPage() {
                   <div
                     key={day.date}
                     className="flex flex-1 flex-col items-center gap-2"
-                    title={
-                      day.date
-                    }
+                    title={day.date}
                   >
                     <span className="text-[9px] font-bold text-slate-400">
                       {
@@ -2395,21 +2377,15 @@ export default function DashboardPage() {
         <section className="mb-8">
           <div className="mb-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
-              {t(
-                "dashboard.learningLabel"
-              )}
+              {UI_TEXT.learning}
             </p>
 
             <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-              {t(
-                "dashboard.learningHubTitle"
-              )}
+              {UI_TEXT.learningTitle}
             </h2>
 
             <p className="mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
-              {t(
-                "dashboard.learningHubSub"
-              )}
+              {UI_TEXT.learningDescription}
             </p>
           </div>
 
@@ -2493,21 +2469,17 @@ export default function DashboardPage() {
         </section>
 
         {/* =====================================================
-            LANGUAGE SELECTOR
+            LANGUAGE
         ===================================================== */}
 
         <section className="mb-8">
           <div className="mb-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              {t(
-                "dashboard.languageLabel"
-              )}
+              {UI_TEXT.language}
             </p>
 
             <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white">
-              {t(
-                "dashboard.chooseLanguage"
-              )}
+              {UI_TEXT.languageChoose}
             </h2>
           </div>
 
@@ -2729,20 +2701,18 @@ export default function DashboardPage() {
 
         {/* =====================================================
             ADVERTISEMENT
+            Geen props omdat jouw AdSlot geen props accepteert.
         ===================================================== */}
 
         <div className="mb-8">
-          <AdSlot
-            variant="banner"
-            className="mb-0"
-          />
+          <AdSlot />
         </div>
 
         {/* =====================================================
             FOOTER
         ===================================================== */}
 
-        <div className="pb-8 text-center">
+        <div className="pb-10 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-500 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
             <Flame className="h-3.5 w-3.5 text-orange-400" />
 
