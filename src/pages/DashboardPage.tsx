@@ -13,11 +13,10 @@ import { useStreakReconciler } from "@/hooks/useStreakReconciler";
 import BadgeNotification from "@/components/BadgeNotification";
 import AdSlot from "@/components/AdSlot";
 
-// ✅ Daily Bonus Chest — 1x per dag gratis coins. Gebruikt dezelfde
-// coins-opslag als de Shop in de Arena (zie src/utils/coins.ts), dus het
-// bedrag verschijnt daar gewoon. Eigen datum-key, raakt verder niks aan.
+// ✅ Daily XP Bonus — 1x per dag gratis XP. Gebruikt de server-functie
+// complete_learning_activity met kind 'daily_goal' (15 XP per dag).
 const DAILY_CHEST_KEY    = "langlearn_daily_chest_date";
-const DAILY_CHEST_REWARD = 8;
+const DAILY_XP_REWARD   = XP_REWARDS.DAILY_GOAL_BONUS; // = 15
 const STREAK_SHIELD_COST = 15;
 
 const WEATHER_META: Record<string, { emoji: string; key: TranslationKey }> = {
@@ -234,6 +233,7 @@ export default function DashboardPage() {
   const { newBadge, checkBadges, clearNewBadge } = useBadgeChecker();
   const [langChosen, setLangChosen] = useState(false);
   const [chestClaimedToday, setChestClaimedToday] = useState(false);
+  const [claiming, setClaiming] = useState(false); // ✅ nieuwe state
   // 🔒 FIX (audit #2 follow-up): was useState+useEffect reading
   // hasStreakFreeze() (localStorage) once on mount/streak-change. Now that
   // grants happen server-side (schema.sql: buy_streak_shield,
@@ -248,7 +248,7 @@ export default function DashboardPage() {
   const [redeemInput, setRedeemInput] = useState("");
   const [redeemMessage, setRedeemMessage] = useState<string | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
     if (!user) return;
     const key = `langoai_language_chosen_${user.id ?? user.username}`;
     const alreadyChosen =
@@ -321,24 +321,46 @@ export default function DashboardPage() {
   }
 
   async function claimChest() {
-    if (chestClaimedToday) return;
-    // Server-authoritative: claim_daily_chest() enforces one claim per UTC day.
-    const { data, error } = await supabase.rpc("claim_daily_chest");
-    if (error || !data) {
-      const msg = String(error?.message || "");
-      if (msg.includes("daily_chest_already_claimed")) {
-        setChestClaimedToday(true);
-        try { localStorage.setItem(DAILY_CHEST_KEY, new Date().toISOString().slice(0, 10)); } catch { /* ignore */ }
+    if (chestClaimedToday || claiming) return; // ✅ voorkom dubbelklik
+
+    const today = new Date().toISOString().slice(0, 10); // UTC, zelfde als server
+    setClaiming(true); // ✅ bezig
+
+    try {
+      const { data, error } = await supabase.rpc("complete_learning_activity", {
+        p_kind: "daily_goal",
+        p_ref: today,
+      });
+
+      if (error) {
+        const msg = String(error.message || "");
+
+        if (msg.includes("activity_already_completed")) {
+          alert("Je hebt de dagelijkse XP-bonus al geclaimd vandaag.");
+          setChestClaimedToday(true);
+          try { localStorage.setItem(DAILY_CHEST_KEY, today); } catch { /* ignore */ }
+        } else if (msg.includes("not_authenticated") || msg.includes("JWT")) {
+          alert("Je bent niet (meer) ingelogd. Log opnieuw in.");
+        } else if (msg.includes("daily_xp_cap_reached")) {
+          alert("Dagelijkse XP-limiet bereikt. Probeer morgen opnieuw.");
+        } else {
+          alert("Kon dagelijkse XP-bonus niet claimen. Controleer of de database-migratie is gedraaid.");
+          console.error("complete_learning_activity (daily_goal) failed:", error);
+        }
         return;
       }
-      console.error("claim_daily_chest RPC failed:", error);
-      return;
+
+      // Server response: { xpAwarded, activityKind, profile }
+      const payload = data as { xpAwarded?: number; profile?: unknown } | null;
+      const xpAwarded = payload?.xpAwarded ?? DAILY_XP_REWARD;
+
+      alert(`+${xpAwarded} XP toegevoegd!`);
+      try { localStorage.setItem(DAILY_CHEST_KEY, today); } catch { /* ignore */ }
+      setChestClaimedToday(true);
+      await refreshUser(); // XP + level direct bijwerken in de UI
+    } finally {
+      setClaiming(false); // ✅ altijd resetten
     }
-    try {
-      localStorage.setItem(DAILY_CHEST_KEY, new Date().toISOString().slice(0, 10));
-    } catch { /* UI-only cache */ }
-    setChestClaimedToday(true);
-    refreshUser();
   }
 
   async function buyStreakShield() {
@@ -490,6 +512,12 @@ export default function DashboardPage() {
 
   // ─────────────────────────────────────────────
   // VOLLEDIG DASHBOARD
+  // Volgorde is bewust: eerst de kern (leren), dan gamification/beloning
+  // (chest, stats, arena), dan de rest. Voorheen stond Arena + een dubbele
+  // taalkeuze-sectie boven de Quick Actions, waardoor de eigenlijke
+  // les-content pas helemaal onderaan kwam. De taalkeuze-grid-sectie is
+  // verwijderd (was een exacte duplicaat van de "Change language"-knop
+  // hierboven in de welkomsttekst).
   // ─────────────────────────────────────────────
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-50 transition-colors duration-300 dark:bg-[#0b0f1a]">
@@ -543,10 +571,96 @@ export default function DashboardPage() {
         {/* ── AI MASCOTTE ── */}
         <DashboardRobotMascot message={t(mascot.key)} mood={mascotMood} />
 
+        {/* ── QUICK ACTIONS (nu bovenaan — dit is de kern van de app) ── */}
+        <div className="mb-8">
+          <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+            {t("dashboard.quickActions")}
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+
+            {/* Lessen */}
+            <button type="button" onClick={() => navigate("/grammar")}
+              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-indigo-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-indigo-500/10"
+            >
+              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-indigo-400 to-violet-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="flex items-center justify-between">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 transition-all duration-300 group-hover:bg-indigo-100 group-hover:ring-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:ring-indigo-500/20 dark:group-hover:bg-indigo-500/20">
+                  <BookOpen className="h-6 w-6" />
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-indigo-400 dark:text-slate-600 dark:group-hover:text-indigo-400" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.lessons")}</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {t("dashboard.lessonsSub")}
+                </p>
+              </div>
+            </button>
+
+            {/* Fout Herstel */}
+            <button type="button" onClick={() => navigate("/mistakes")}
+              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-rose-200 hover:shadow-xl hover:shadow-rose-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-rose-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-rose-500/10"
+            >
+              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-rose-400 to-pink-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="flex items-center justify-between">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-600 ring-1 ring-rose-100 transition-all duration-300 group-hover:bg-rose-100 group-hover:ring-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20 dark:group-hover:bg-rose-500/20">
+                  <Wrench className="h-6 w-6" />
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-rose-400 dark:text-slate-600 dark:group-hover:text-rose-400" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.mistakeReview")}</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {t("dashboard.mistakeReviewSub")}
+                </p>
+              </div>
+            </button>
+
+            {/* Toets jezelf */}
+            <button type="button" onClick={() => navigate("/tests")}
+              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-emerald-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-emerald-500/10"
+            >
+              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-emerald-400 to-teal-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="flex items-center justify-between">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-all duration-300 group-hover:bg-emerald-100 group-hover:ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20 dark:group-hover:bg-emerald-500/20">
+                  <FileText className="h-6 w-6" />
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-emerald-400 dark:text-slate-600 dark:group-hover:text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.testYourself")}</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {t("dashboard.testYourselfSub")} +{XP_REWARDS.TEST_PASSED} {t("topbar.xp")}
+                </p>
+              </div>
+            </button>
+
+            {/* Woord van de Dag */}
+            <button type="button" onClick={() => navigate("/wotd")}
+              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-amber-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-amber-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-amber-500/10"
+            >
+              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="flex items-center justify-between">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-amber-100 transition-all duration-300 group-hover:bg-amber-100 group-hover:ring-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20 dark:group-hover:bg-amber-500/20">
+                  <Star className="h-6 w-6" />
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-amber-400 dark:text-slate-600 dark:group-hover:text-amber-400" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.wotd")}</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {t("dashboard.wotdSub")}
+                </p>
+              </div>
+            </button>
+
+          </div>
+        </div>
+
         {/* ── VANDAAG: XP OVER + DAILY CHEST ── */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2">
           <div className="relative flex items-center gap-3 overflow-hidden rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xl dark:bg-indigo-500/10">
+            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xl dark:bg-indigo-500/10" aria-hidden="true">
               ⚡
             </span>
             <p className="text-sm font-bold text-slate-800 dark:text-white">
@@ -559,14 +673,14 @@ export default function DashboardPage() {
           <button
             type="button"
             onClick={claimChest}
-            disabled={chestClaimedToday}
+            disabled={chestClaimedToday || claiming} // ✅ ook tijdens laden
             className={`relative flex items-center gap-3 overflow-hidden rounded-2xl border p-5 text-left shadow-sm transition-all duration-300 ${
               chestClaimedToday
                 ? "cursor-default border-slate-200 bg-slate-50 dark:border-white/[0.06] dark:bg-white/[0.02]"
                 : "border-amber-200 bg-amber-50 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-100 dark:border-amber-500/20 dark:bg-white/[0.03] dark:hover:border-amber-500/30"
             }`}
           >
-            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-amber-100 text-xl dark:bg-amber-500/10">
+            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-amber-100 text-xl dark:bg-amber-500/10" aria-hidden="true">
               {chestClaimedToday ? "✅" : "🎁"}
             </span>
             <div className="min-w-0 flex-1">
@@ -574,12 +688,12 @@ export default function DashboardPage() {
               <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                 {chestClaimedToday
                   ? t("dashboard.chestSubtitleClaimed")
-                  : t("dashboard.chestSubtitleOpen").replace("{coins}", String(DAILY_CHEST_REWARD))}
+                  : t("dashboard.chestSubtitleOpen").replace("{xp}", String(DAILY_XP_REWARD))}
               </p>
             </div>
             {!chestClaimedToday && (
               <span className="flex-shrink-0 rounded-full bg-amber-500 px-3 py-1.5 text-xs font-bold text-white shadow-sm">
-                {t("dashboard.chestButton")}
+                {claiming ? "Bezig..." : t("dashboard.chestButton")}
               </span>
             )}
           </button>
@@ -593,7 +707,7 @@ export default function DashboardPage() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent dark:via-amber-500/30" />
             <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-amber-200/60 blur-xl dark:bg-amber-500/10" />
             <div className="relative">
-              <div className="mb-3 text-2xl">⭐</div>
+              <div className="mb-3 text-2xl" aria-hidden="true">⭐</div>
               <p className="text-[11px] font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400">{t("dashboard.level")}</p>
               <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">{user.level}</p>
               <div className="mt-3 h-1 w-8 rounded-full bg-amber-400" />
@@ -605,7 +719,7 @@ export default function DashboardPage() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-300/60 to-transparent dark:via-indigo-500/30" />
             <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-indigo-200/60 blur-xl dark:bg-indigo-500/10" />
             <div className="relative">
-              <div className="mb-3 text-2xl">⚡</div>
+              <div className="mb-3 text-2xl" aria-hidden="true">⚡</div>
               <p className="text-[11px] font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">{t("dashboard.totalXP")}</p>
               <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">{user.totalXP.toLocaleString()}</p>
               <div className="mt-3 h-1 w-8 rounded-full bg-indigo-500" />
@@ -625,7 +739,7 @@ export default function DashboardPage() {
               hasActivityToday ? "bg-orange-200/60 dark:bg-orange-500/10" : "bg-slate-200/60 dark:bg-slate-700/20"
             }`} />
             <div className="relative">
-              <div className="mb-3 text-2xl">{hasActivityToday ? "🔥" : "💤"}</div>
+              <div className="mb-3 text-2xl" aria-hidden="true">{hasActivityToday ? "🔥" : "💤"}</div>
               <p className={`text-[11px] font-semibold uppercase tracking-widest ${
                 hasActivityToday ? "text-orange-600 dark:text-orange-400" : "text-slate-500 dark:text-slate-500"
               }`}>{t("dashboard.streak")}</p>
@@ -643,7 +757,7 @@ export default function DashboardPage() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/60 to-transparent dark:via-emerald-500/30" />
             <div className="pointer-events-none absolute -right-3 -top-3 h-16 w-16 rounded-full bg-emerald-200/60 blur-xl dark:bg-emerald-500/10" />
             <div className="relative">
-              <div className="mb-3 text-2xl">{selectedLang ? selectedLang.flag : "🌍"}</div>
+              <div className="mb-3 text-2xl" aria-hidden="true">{selectedLang ? selectedLang.flag : "🌍"}</div>
               <p className="text-[11px] font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">{t("dashboard.language")}</p>
               <p className="mt-0.5 text-xl font-black text-slate-900 dark:text-white">
                 {selectedLang ? t(selectedLang.nameKey) : t("dashboard.none")}
@@ -763,7 +877,7 @@ export default function DashboardPage() {
 
                   <div className="mt-4 border-t border-slate-100 pt-4 dark:border-white/5">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl">{hasActivityToday ? "🔥" : "💤"}</span>
+                      <span className="text-2xl" aria-hidden="true">{hasActivityToday ? "🔥" : "💤"}</span>
                       <div>
                         <p className="text-sm font-bold text-slate-800 dark:text-white">
                           {computedStreak} {t("dashboard.streakActive")}
@@ -835,7 +949,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* ── LEGEND ARENA ── */}
+        {/* ── LEGEND ARENA (nu een beloning/extra i.p.v. de eerste indruk) ── */}
         <div className="mb-8">
           <button type="button" onClick={() => navigate("/arena")}
             className="group relative w-full overflow-hidden rounded-3xl p-px shadow-xl shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/35 active:translate-y-0"
@@ -867,40 +981,6 @@ export default function DashboardPage() {
               </div>
             </div>
           </button>
-        </div>
-
-        {/* ── TAAL KEUZE ── */}
-        <div className="mb-8">
-          <h2 className="mb-4 text-base font-black tracking-tight text-slate-900 dark:text-white">
-            {t("dashboard.chooseLanguage")}
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-            {LEARNING_LANGUAGES.map((lang) => {
-              const isSelected = user.currentLanguage === lang.code;
-              return (
-                <button type="button" key={lang.code}
-                  onClick={() => selectLanguage(lang.code)}
-                  className={`relative flex flex-col items-center gap-2 rounded-2xl border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 ${
-                    isSelected
-                      ? "border-indigo-400 bg-indigo-50 shadow-md ring-2 ring-indigo-200 dark:border-indigo-500/60 dark:bg-indigo-500/10 dark:ring-1 dark:ring-indigo-500/30"
-                      : "border-slate-200 bg-white hover:border-indigo-200 hover:bg-indigo-50/50 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-indigo-500/30 dark:hover:bg-white/[0.06]"
-                  }`}
-                >
-                  <span className="text-3xl drop-shadow-sm">{lang.flag}</span>
-                  <span className={`text-sm font-semibold ${
-                    isSelected ? "text-indigo-700 dark:text-indigo-300" : "text-slate-600 dark:text-slate-400"
-                  }`}>
-                    {t(lang.nameKey)}
-                  </span>
-                  {isSelected && (
-                    <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-xs font-bold text-white shadow-md shadow-indigo-500/40">
-                      ✓
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         {/* ── GIFTS ── */}
@@ -1001,91 +1081,6 @@ export default function DashboardPage() {
 
         <AdSlot variant="banner" className="mb-8" />
 
-        {/* ── QUICK ACTIONS ── */}
-        <div className="mb-6">
-          <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-            {t("dashboard.quickActions")}
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-
-            {/* Lessen */}
-            <button type="button" onClick={() => navigate("/grammar")}
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-indigo-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-indigo-500/10"
-            >
-              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-indigo-400 to-violet-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 transition-all duration-300 group-hover:bg-indigo-100 group-hover:ring-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:ring-indigo-500/20 dark:group-hover:bg-indigo-500/20">
-                  <BookOpen className="h-6 w-6" />
-                </div>
-                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-indigo-400 dark:text-slate-600 dark:group-hover:text-indigo-400" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.lessons")}</p>
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t("dashboard.lessonsSub")}
-                </p>
-              </div>
-            </button>
-
-            {/* Fout Herstel */}
-            <button type="button" onClick={() => navigate("/mistakes")}
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-rose-200 hover:shadow-xl hover:shadow-rose-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-rose-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-rose-500/10"
-            >
-              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-rose-400 to-pink-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-600 ring-1 ring-rose-100 transition-all duration-300 group-hover:bg-rose-100 group-hover:ring-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20 dark:group-hover:bg-rose-500/20">
-                  <Wrench className="h-6 w-6" />
-                </div>
-                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-rose-400 dark:text-slate-600 dark:group-hover:text-rose-400" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.mistakeReview")}</p>
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t("dashboard.mistakeReviewSub")}
-                </p>
-              </div>
-            </button>
-
-            {/* Toets jezelf */}
-            <button type="button" onClick={() => navigate("/tests")}
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-emerald-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-emerald-500/10"
-            >
-              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-emerald-400 to-teal-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-all duration-300 group-hover:bg-emerald-100 group-hover:ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20 dark:group-hover:bg-emerald-500/20">
-                  <FileText className="h-6 w-6" />
-                </div>
-                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-emerald-400 dark:text-slate-600 dark:group-hover:text-emerald-400" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.testYourself")}</p>
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t("dashboard.testYourselfSub")} +{XP_REWARDS.TEST_PASSED} {t("topbar.xp")}
-                </p>
-              </div>
-            </button>
-
-            {/* Woord van de Dag */}
-            <button type="button" onClick={() => navigate("/wotd")}
-              className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-amber-100/60 dark:border-white/[0.06] dark:bg-white/[0.03] dark:hover:border-amber-500/40 dark:hover:bg-white/[0.06] dark:hover:shadow-amber-500/10"
-            >
-              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-amber-100 transition-all duration-300 group-hover:bg-amber-100 group-hover:ring-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20 dark:group-hover:bg-amber-500/20">
-                  <Star className="h-6 w-6" />
-                </div>
-                <ChevronRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-amber-400 dark:text-slate-600 dark:group-hover:text-amber-400" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-slate-900 dark:text-white">{t("dashboard.wotd")}</p>
-                <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t("dashboard.wotdSub")}
-                </p>
-              </div>
-            </button>
-
-          </div>
-        </div>
       </div>
     </div>
   );
