@@ -9,13 +9,15 @@ import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
-  Check,
   ChevronDown,
   ChevronRight,
+  Gift,
   Flame,
   FileText,
-  Gift as GiftIcon,
+  Languages,
+  Lock,
   Shield,
+  Sparkles,
   Star,
   Trophy,
   Wrench,
@@ -26,7 +28,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useTranslate } from "@/i18n/I18nContext";
 import type { TranslationKey } from "@/i18n/translations";
-
 import { getDailyGoalProgress } from "@/utils/progress";
 import {
   computeStreak,
@@ -38,27 +39,18 @@ import {
   xpRequiredForLevel,
   XP_REWARDS,
 } from "@/utils/xp";
-
 import { useBadgeChecker } from "@/hooks/useBadgeChecker";
 import { useStreakReconciler } from "@/hooks/useStreakReconciler";
-
 import BadgeNotification from "@/components/BadgeNotification";
 import AdSlot from "@/components/AdSlot";
 
-/* =========================================================
-   CONSTANTS
-========================================================= */
-
 const DAILY_CHEST_KEY = "langlearn_daily_chest_date";
-const DAILY_XP_REWARD = XP_REWARDS.DAILY_GOAL_BONUS;
+const DAILY_CHEST_REWARD = 8;
 const STREAK_SHIELD_COST = 15;
 
 const WEATHER_META: Record<
   string,
-  {
-    emoji: string;
-    key: TranslationKey;
-  }
+  { emoji: string; key: TranslationKey }
 > = {
   storm: {
     emoji: "⛈️",
@@ -110,55 +102,40 @@ const LEARNING_LANGUAGES = [
   },
 ];
 
-/* =========================================================
-   LOCAL TEXT
-   Geen nieuwe translation keys nodig.
-========================================================= */
+type MascotMood = "greeting" | "happy" | "supportive";
 
-const UI_TEXT = {
-  dashboard: "Dashboard",
-  mainEvent: "Hoofdevenement",
-  season: "Seizoen",
-  arenaOpen: "Arena openen",
-  arenaLevel: "Level",
-  arenaXP: "XP",
-  arenaStreak: "Streak",
-  arenaJourney: "Jouw competitieve reis",
-  arenaLevels: "Levels",
-  arenaUnlock: "Ontgrendel",
-  arenaPlay: "Speel",
-  arenaEarn: "Verdien EP",
-  arenaFallbackDescription:
-    "Seizoenslevels. Ontgrendel, speel en verdien EP.",
-  today: "Vandaag",
-  dailyProgress: "Dagelijkse voortgang",
-  progress: "Voortgang",
-  learning: "Leren",
-  learningTitle: "Leren en verbeteren",
-  learningDescription:
-    "Verbeter je taal met lessen, oefeningen en herhaling.",
-  mascotDescription:
-    "Je AI-leerpartner helpt je gefocust te blijven en stap voor stap vooruit te gaan.",
-  smartFeedback: "Slimme feedback",
-  alwaysReady: "Altijd klaar",
-  language: "Taal",
-  languageChoose: "Kies je leertaal",
-  seasonBadge: "SEIZOEN",
-  primaryBadge: "HOOFDFEATURE",
-  levelShort: "LVL",
-  enterArena: "Naar de Arena",
+const MASCOT_META: Record<
+  MascotMood,
+  { key: TranslationKey; accent: string }
+> = {
+  greeting: {
+    key: "mascot.greeting",
+    accent: "125,211,252",
+  },
+  happy: {
+    key: "mascot.happy",
+    accent: "110,231,183",
+  },
+  supportive: {
+    key: "mascot.supportive",
+    accent: "252,211,142",
+  },
 };
 
-/* =========================================================
-   SUPABASE RPC WRAPPER
-   Voorkomt TS-errors wanneer Database types RPC's nog niet
-   bevatten. Runtime gebruikt gewoon supabase.rpc().
-========================================================= */
+type GiftPrize =
+  | {
+      prizeType: "coins";
+      prizeAmount: number;
+    }
+  | {
+      prizeType: "shield";
+      prizeAmount: number;
+    };
 
 type RpcClient = {
   rpc: (
     functionName: string,
-    args?: Record<string, unknown>
+    args?: Record<string, unknown>,
   ) => Promise<{
     data: any;
     error: any;
@@ -167,554 +144,192 @@ type RpcClient = {
 
 const rpcClient = supabase as unknown as RpcClient;
 
-/* =========================================================
-   MASCOT
-========================================================= */
-
-type MascotMood = "greeting" | "happy" | "supportive";
-
-const MASCOT_META: Record<
-  MascotMood,
-  {
-    emoji: string;
-    key: TranslationKey;
-  }
-> = {
-  greeting: {
-    emoji: "🤖",
-    key: "mascot.greeting",
-  },
-  happy: {
-    emoji: "🤖✨",
-    key: "mascot.happy",
-  },
-  supportive: {
-    emoji: "🤖💪",
-    key: "mascot.supportive",
-  },
-};
-
-const MOOD_STYLE: Record<
-  MascotMood,
-  {
-    rgb: string;
-    smile: string;
-  }
-> = {
-  greeting: {
-    rgb: "125,211,252",
-    smile: "M83,158 Q110,172 137,158",
-  },
-  happy: {
-    rgb: "110,231,183",
-    smile: "M76,153 Q110,182 144,153",
-  },
-  supportive: {
-    rgb: "252,211,142",
-    smile: "M90,161 Q110,167 130,161",
-  },
-};
+function cn(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
 
 function DashboardRobotMascot({
   message,
-  mood = "greeting",
-  description,
-  smartFeedback,
-  alwaysReady,
+  mood,
 }: {
   message: string;
-  mood?: MascotMood;
-  description: string;
-  smartFeedback: string;
-  alwaysReady: string;
+  mood: MascotMood;
 }) {
-  const c = MOOD_STYLE[mood];
+  const meta = MASCOT_META[mood];
 
   return (
-    <section
-      className="
-        relative mb-8 overflow-hidden rounded-[30px]
-        border border-slate-200/80 bg-white
-        shadow-[0_18px_55px_-28px_rgba(15,23,42,.32)]
-        dark:border-white/[0.07]
-        dark:bg-white/[0.035]
-        dark:shadow-[0_24px_70px_-35px_rgba(0,0,0,.8)]
-      "
-      aria-label="AI learning mascot"
-    >
-      <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-300/15 blur-3xl dark:bg-indigo-500/10" />
-      <div className="pointer-events-none absolute -bottom-20 -right-16 h-48 w-48 rounded-full bg-cyan-300/15 blur-3xl dark:bg-cyan-500/10" />
+    <section className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_50px_-30px_rgba(15,23,42,0.28)] dark:border-white/[0.07] dark:bg-[#111722] dark:shadow-[0_28px_70px_-34px_rgba(0,0,0,0.8)]">
+      <style>{`
+        @keyframes dashboardRobotFloat {
+          0%, 100% {
+            transform: translate3d(0, 0, 0);
+          }
+          50% {
+            transform: translate3d(0, -5px, 0);
+          }
+        }
 
-      <div className="relative grid items-center gap-5 px-5 py-5 sm:grid-cols-[175px_minmax(0,1fr)] sm:px-7 sm:py-6">
+        @keyframes dashboardRobotBlink {
+          0%, 90%, 100% {
+            transform: scaleY(1);
+          }
+          93%, 97% {
+            transform: scaleY(.12);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .dashboard-robot-float,
+          .dashboard-robot-blink {
+            animation: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(99,102,241,.10),transparent_28%),radial-gradient(circle_at_80%_100%,rgba(56,189,248,.08),transparent_30%)]" />
+
+      <div className="relative grid items-center gap-6 p-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:p-7">
         <div
-          className="relative mx-auto h-[200px] w-[175px] shrink-0"
+          className="relative mx-auto h-[190px] w-[170px]"
+          style={{ perspective: "900px" }}
           aria-hidden="true"
         >
           <div
-            className="pointer-events-none absolute left-1/2 top-[34%] h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+            className="dashboard-robot-float relative h-full w-full"
             style={{
-              background: `radial-gradient(circle, rgba(${c.rgb},.25), transparent 72%)`,
+              animation: "dashboardRobotFloat 4.8s ease-in-out infinite",
+              transformStyle: "preserve-3d",
             }}
-          />
-
-          <style>{`
-            @keyframes mascotFloat {
-              0%, 100% {
-                transform: translateY(0);
-              }
-              50% {
-                transform: translateY(-5px);
-              }
-            }
-
-            @keyframes mascotBlink {
-              0%, 92%, 100% {
-                transform: scaleY(1);
-              }
-              94%, 97% {
-                transform: scaleY(.12);
-              }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-              .mascot-float,
-              .mascot-eyes {
-                animation: none !important;
-              }
-            }
-          `}</style>
-
-          <svg
-            viewBox="0 0 220 240"
-            className="relative h-full w-full"
-            role="img"
-            aria-label="AI learning companion"
           >
-            <defs>
-              <linearGradient
-                id="dashboardMascotHead"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="60%" stopColor="#f3f5f8" />
-                <stop offset="100%" stopColor="#d4dae2" />
-              </linearGradient>
+            <div className="absolute bottom-1 left-1/2 h-4 w-28 -translate-x-1/2 rounded-[50%] bg-black/10 blur-lg dark:bg-black/40" />
 
-              <linearGradient
-                id="dashboardMascotBody"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="65%" stopColor="#e9ecf1" />
-                <stop offset="100%" stopColor="#c3cad4" />
-              </linearGradient>
+            <div className="absolute bottom-[8%] left-[33%] h-[12%] w-[14%] rounded-[40%] border border-slate-400/50 bg-gradient-to-b from-slate-100 via-slate-300 to-slate-500" />
+            <div className="absolute bottom-[8%] right-[33%] h-[12%] w-[14%] rounded-[40%] border border-slate-400/50 bg-gradient-to-b from-slate-100 via-slate-300 to-slate-500" />
 
-              <linearGradient
-                id="dashboardMascotLimb"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="100%" stopColor="#c3cad4" />
-              </linearGradient>
+            <div className="absolute bottom-[12%] left-1/2 h-[34%] w-[56%] -translate-x-1/2 rounded-[40%_40%_45%_45%] bg-slate-500/30 blur-[1px]" />
 
-              <linearGradient
-                id="dashboardMascotDark"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop offset="0%" stopColor="#334155" />
-                <stop offset="100%" stopColor="#0f172a" />
-              </linearGradient>
-
-              <radialGradient
-                id="dashboardMascotVisor"
-                cx="42%"
-                cy="30%"
-                r="80%"
-              >
-                <stop offset="0%" stopColor="#20293b" />
-                <stop offset="55%" stopColor="#0f1626" />
-                <stop offset="100%" stopColor="#020617" />
-              </radialGradient>
-
-              <clipPath id="dashboardMascotVisorClip">
-                <rect
-                  x="52"
-                  y="82"
-                  width="116"
-                  height="88"
-                  rx="42"
-                />
-              </clipPath>
-
-              <filter
-                id="dashboardMascotGlow"
-                x="-100%"
-                y="-100%"
-                width="300%"
-                height="300%"
-              >
-                <feGaussianBlur
-                  stdDeviation="2.2"
-                  result="b"
-                />
-                <feMerge>
-                  <feMergeNode in="b" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            <g
-              className="mascot-float"
+            <div
+              className="absolute bottom-[10%] left-1/2 h-[36%] w-[58%] -translate-x-1/2 overflow-hidden rounded-[42%_42%_48%_48%] border-2 border-slate-300 bg-gradient-to-b from-white via-slate-100 to-slate-300 shadow-[inset_0_10px_20px_rgba(255,255,255,.9),inset_0_-12px_22px_rgba(15,23,42,.15),0_14px_28px_rgba(15,23,42,.16)]"
               style={{
-                animation:
-                  "mascotFloat 4.2s ease-in-out infinite",
-                transformOrigin:
-                  "110px 120px",
+                transform: "translateZ(6px) translateX(-50%)",
               }}
             >
-              <ellipse
-                cx="110"
-                cy="230"
-                rx="48"
-                ry="7"
-                fill="rgba(15,23,42,.14)"
-              />
+              <div className="absolute inset-x-[18%] top-[28%] h-px bg-slate-400/30" />
+              <div className="absolute bottom-[15%] left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-slate-400" />
+            </div>
 
-              <rect
-                x="82"
-                y="196"
-                width="19"
-                height="28"
-                rx="9.5"
-                fill="url(#dashboardMascotLimb)"
-                stroke="#c3cad4"
-              />
+            <div
+              className="absolute left-0 top-[49%] h-8 w-14 rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-white to-slate-300 shadow-lg"
+              style={{
+                transform: "translateZ(4px) rotate(16deg)",
+                transformOrigin: "right center",
+              }}
+            >
+              <span className="absolute -right-2 top-1/2 h-5 w-4 -translate-y-1/2 rounded-full border border-slate-400/70 bg-slate-500" />
+            </div>
 
-              <rect
-                x="119"
-                y="196"
-                width="19"
-                height="28"
-                rx="9.5"
-                fill="url(#dashboardMascotLimb)"
-                stroke="#c3cad4"
-              />
+            <div
+              className="absolute right-0 top-[49%] h-8 w-14 rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-white to-slate-300 shadow-lg"
+              style={{
+                transform: "translateZ(4px) rotate(-16deg)",
+                transformOrigin: "left center",
+              }}
+            >
+              <span className="absolute -left-2 top-1/2 h-5 w-4 -translate-y-1/2 rounded-full border border-slate-400/70 bg-slate-500" />
+            </div>
 
-              <rect
-                x="79"
-                y="218"
-                width="25"
-                height="12"
-                rx="6"
-                fill="url(#dashboardMascotDark)"
-              />
+            <div
+              className="absolute left-1/2 top-0 h-[64%] w-[82%] -translate-x-1/2 rounded-[46%] bg-slate-500/35"
+              style={{
+                transform: "translateZ(-7px) translateX(-50%)",
+              }}
+            />
 
-              <rect
-                x="116"
-                y="218"
-                width="25"
-                height="12"
-                rx="6"
-                fill="url(#dashboardMascotDark)"
-              />
+            <div className="absolute -left-[4%] top-[27%] h-[24%] w-[14%] rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-slate-100 to-slate-500 shadow-md">
+              <div className="absolute inset-[4px] rounded-full bg-slate-800" />
+            </div>
 
-              <rect
-                x="62"
-                y="148"
-                width="96"
-                height="56"
-                rx="26"
-                fill="url(#dashboardMascotBody)"
-                stroke="#d4dae2"
-                strokeWidth="2"
-              />
+            <div className="absolute -right-[4%] top-[27%] h-[24%] w-[14%] rounded-full border-2 border-slate-400/60 bg-gradient-to-b from-slate-100 to-slate-500 shadow-md">
+              <div className="absolute inset-[4px] rounded-full bg-slate-800" />
+            </div>
 
-              <rect
-                x="99"
-                y="156"
-                width="22"
-                height="16"
-                rx="4"
-                fill="url(#dashboardMascotDark)"
-              />
+            <div
+              className="absolute left-1/2 top-0 h-[64%] w-[78%] -translate-x-1/2 rounded-[46%] border-2 border-slate-300 bg-gradient-to-b from-white via-slate-50 to-slate-200 shadow-[inset_0_12px_20px_rgba(255,255,255,.95),inset_0_-16px_24px_rgba(15,23,42,.12),0_18px_30px_rgba(15,23,42,.18)]"
+              style={{
+                transform: "translateZ(15px) translateX(-50%)",
+              }}
+            >
+              <div className="absolute inset-x-[22%] top-[9%] h-px bg-slate-300" />
 
-              <rect
-                x="103"
-                y="160"
-                width="3.5"
-                height="3.5"
-                rx="1"
-                fill="#5eead4"
-                opacity="0.9"
-              />
+              <div className="absolute inset-x-[10%] top-[23%] bottom-[10%] overflow-hidden rounded-[40%] bg-[radial-gradient(circle_at_50%_18%,#1e293b_0%,#0f172a_55%,#020617_100%)] shadow-[inset_0_0_26px_rgba(0,0,0,.85)]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_14%,rgba(255,255,255,.12),transparent_28%)]" />
 
-              <rect
-                x="109"
-                y="160"
-                width="3.5"
-                height="3.5"
-                rx="1"
-                fill="#fca5a5"
-                opacity="0.9"
-              />
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                  <div
+                    className="dashboard-robot-blink flex items-center gap-6"
+                    style={{
+                      animation:
+                        "dashboardRobotBlink 5.8s ease-in-out infinite",
+                    }}
+                  >
+                    <span
+                      className="h-3.5 w-3.5 rounded-full"
+                      style={{
+                        background: `rgb(${meta.accent})`,
+                        boxShadow: `0 0 10px rgba(${meta.accent},.75)`,
+                      }}
+                    />
+                    <span
+                      className="h-3.5 w-3.5 rounded-full"
+                      style={{
+                        background: `rgb(${meta.accent})`,
+                        boxShadow: `0 0 10px rgba(${meta.accent},.75)`,
+                      }}
+                    />
+                  </div>
 
-              <rect
-                x="103"
-                y="166"
-                width="3.5"
-                height="3.5"
-                rx="1"
-                fill="#93c5fd"
-                opacity="0.9"
-              />
-
-              <rect
-                x="109"
-                y="166"
-                width="3.5"
-                height="3.5"
-                rx="1"
-                fill="#fcd34d"
-                opacity="0.85"
-              />
-
-              <rect
-                x="95"
-                y="120"
-                width="30"
-                height="32"
-                rx="10"
-                fill="url(#dashboardMascotDark)"
-              />
-
-              <g transform="rotate(14 60 162)">
-                <rect
-                  x="24"
-                  y="153"
-                  width="42"
-                  height="18"
-                  rx="9"
-                  fill="url(#dashboardMascotLimb)"
-                  stroke="#c3cad4"
-                />
-              </g>
-
-              <circle
-                cx="26"
-                cy="162"
-                r="10"
-                fill="url(#dashboardMascotDark)"
-              />
-
-              <g transform="rotate(-14 160 162)">
-                <rect
-                  x="154"
-                  y="153"
-                  width="42"
-                  height="18"
-                  rx="9"
-                  fill="url(#dashboardMascotLimb)"
-                  stroke="#c3cad4"
-                />
-              </g>
-
-              <circle
-                cx="194"
-                cy="162"
-                r="10"
-                fill="url(#dashboardMascotDark)"
-              />
-
-              <circle
-                cx="38"
-                cy="98"
-                r="18"
-                fill="url(#dashboardMascotLimb)"
-                stroke="#c3cad4"
-                strokeWidth="2"
-              />
-
-              <circle
-                cx="38"
-                cy="98"
-                r="11"
-                fill="url(#dashboardMascotDark)"
-              />
-
-              <circle
-                cx="33"
-                cy="93"
-                r="2.4"
-                fill="#ffffff"
-                opacity="0.35"
-              />
-
-              <circle
-                cx="182"
-                cy="98"
-                r="18"
-                fill="url(#dashboardMascotLimb)"
-                stroke="#c3cad4"
-                strokeWidth="2"
-              />
-
-              <circle
-                cx="182"
-                cy="98"
-                r="11"
-                fill="url(#dashboardMascotDark)"
-              />
-
-              <circle
-                cx="177"
-                cy="93"
-                r="2.4"
-                fill="#ffffff"
-                opacity="0.35"
-              />
-
-              <rect
-                x="30"
-                y="24"
-                width="160"
-                height="150"
-                rx="70"
-                fill="url(#dashboardMascotHead)"
-                stroke="#d4dae2"
-                strokeWidth="2"
-              />
-
-              <ellipse
-                cx="70"
-                cy="55"
-                rx="38"
-                ry="18"
-                fill="#ffffff"
-                opacity="0.5"
-                filter="url(#dashboardMascotGlow)"
-              />
-
-              <line
-                x1="84"
-                y1="36"
-                x2="136"
-                y2="36"
-                stroke="#d4dae2"
-                strokeWidth="1.5"
-              />
-
-              <circle
-                cx="80"
-                cy="36"
-                r="1.6"
-                fill="#b7c0cc"
-              />
-
-              <circle
-                cx="140"
-                cy="36"
-                r="1.6"
-                fill="#b7c0cc"
-              />
-
-              <rect
-                x="52"
-                y="82"
-                width="116"
-                height="88"
-                rx="42"
-                fill="url(#dashboardMascotVisor)"
-              />
-
-              <g clipPath="url(#dashboardMascotVisorClip)">
-                <ellipse
-                  cx="80"
-                  cy="98"
-                  rx="26"
-                  ry="13"
-                  fill="#ffffff"
-                  opacity="0.06"
-                />
-
-                <g
-                  className="mascot-eyes"
-                  style={{
-                    animation:
-                      "mascotBlink 6s ease-in-out infinite",
-                    transformOrigin:
-                      "110px 118px",
-                    transformBox:
-                      "fill-box",
-                  }}
-                >
-                  <rect
-                    x="86"
-                    y="108"
-                    width="15"
-                    height="20"
-                    rx="7.5"
-                    fill={`rgb(${c.rgb})`}
-                    filter="url(#dashboardMascotGlow)"
-                  />
-
-                  <rect
-                    x="119"
-                    y="108"
-                    width="15"
-                    height="20"
-                    rx="7.5"
-                    fill={`rgb(${c.rgb})`}
-                    filter="url(#dashboardMascotGlow)"
-                  />
-                </g>
-
-                <path
-                  d={c.smile}
-                  fill="none"
-                  stroke={`rgb(${c.rgb})`}
-                  strokeWidth="3.4"
-                  strokeLinecap="round"
-                  filter="url(#dashboardMascotGlow)"
-                />
-              </g>
-            </g>
-          </svg>
+                  <svg width="58" height="24" viewBox="0 0 58 24">
+                    <path
+                      d={
+                        mood === "happy"
+                          ? "M10 10 Q29 24 48 10"
+                          : mood === "supportive"
+                            ? "M15 11 Q29 16 43 11"
+                            : "M12 10 Q29 20 46 10"
+                      }
+                      fill="none"
+                      stroke={`rgb(${meta.accent})`}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="min-w-0 text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+        <div className="min-w-0">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-slate-400">
+            <Sparkles className="h-3.5 w-3.5" />
             AI Learning Companion
           </div>
 
-          <p className="mt-3 text-lg font-black tracking-tight text-slate-900 dark:text-white sm:text-xl">
+          <h2 className="mt-4 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-[28px]">
             {message}
+          </h2>
+
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+            Stay focused, keep your streak alive, and turn every session into
+            real progress.
           </p>
 
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-            {description}
-          </p>
-
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
-              ⚡ {smartFeedback}
+          <div className="mt-5 flex flex-wrap gap-2">
+            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.05] dark:text-slate-300">
+              Smart feedback
             </span>
-
-            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
-              🦾 {alwaysReady}
+            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-white/[0.05] dark:text-slate-300">
+              Daily guidance
             </span>
           </div>
         </div>
@@ -723,332 +338,215 @@ function DashboardRobotMascot({
   );
 }
 
-/* =========================================================
-   STAT CARD
-========================================================= */
+function SectionHeader({
+  eyebrow,
+  title,
+  action,
+}: {
+  eyebrow?: string;
+  title: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="mb-4 flex items-end justify-between gap-4">
+      <div>
+        {eyebrow && (
+          <p className="mb-1 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
+            {eyebrow}
+          </p>
+        )}
+        <h2 className="text-xl font-black tracking-tight text-slate-950 dark:text-white sm:text-2xl">
+          {title}
+        </h2>
+      </div>
 
-function StatCard({
+      {action}
+    </div>
+  );
+}
+
+function MetricCard({
   icon,
   label,
   value,
   detail,
-  tone,
+  tone = "neutral",
 }: {
   icon: ReactNode;
   label: string;
   value: string;
   detail?: string;
-  tone: "amber" | "indigo" | "orange" | "emerald";
+  tone?: "indigo" | "orange" | "emerald" | "amber" | "neutral";
 }) {
-  const styles = {
-    amber: {
-      card:
-        "border-amber-200/80 bg-amber-50 dark:border-amber-500/20 dark:bg-white/[0.03]",
-      icon:
-        "bg-amber-500/10 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300",
-      label:
-        "text-amber-600 dark:text-amber-400",
-      bar: "bg-amber-400",
-    },
+  const tones = {
     indigo: {
-      card:
-        "border-indigo-200/80 bg-indigo-50 dark:border-indigo-500/20 dark:bg-white/[0.03]",
-      icon:
-        "bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300",
-      label:
-        "text-indigo-600 dark:text-indigo-400",
-      bar: "bg-indigo-500",
+      icon: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300",
+      dot: "bg-indigo-500",
     },
     orange: {
-      card:
-        "border-orange-200/80 bg-orange-50 dark:border-orange-500/20 dark:bg-white/[0.03]",
-      icon:
-        "bg-orange-500/10 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300",
-      label:
-        "text-orange-600 dark:text-orange-400",
-      bar: "bg-orange-400",
+      icon: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300",
+      dot: "bg-orange-500",
     },
     emerald: {
-      card:
-        "border-emerald-200/80 bg-emerald-50 dark:border-emerald-500/20 dark:bg-white/[0.03]",
-      icon:
-        "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300",
-      label:
-        "text-emerald-600 dark:text-emerald-400",
-      bar: "bg-emerald-500",
+      icon: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300",
+      dot: "bg-emerald-500",
     },
-  };
-
-  const current = styles[tone];
+    amber: {
+      icon: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300",
+      dot: "bg-amber-500",
+    },
+    neutral: {
+      icon: "bg-slate-100 text-slate-600 dark:bg-white/[0.05] dark:text-slate-300",
+      dot: "bg-slate-400",
+    },
+  }[tone];
 
   return (
-    <div
-      className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${current.card}`}
-    >
-      <div className="relative">
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_12px_32px_-24px_rgba(15,23,42,.25)] dark:border-white/[0.07] dark:bg-[#111722]">
+      <div className="flex items-start justify-between gap-3">
         <div
-          className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${current.icon}`}
+          className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-xl",
+            tones.icon,
+          )}
         >
           {icon}
         </div>
 
-        <p
-          className={`text-[10px] font-black uppercase tracking-[0.18em] ${current.label}`}
-        >
-          {label}
-        </p>
-
-        <p className="mt-1 truncate text-xl font-black text-slate-900 dark:text-white">
-          {value}
-        </p>
-
-        {detail && (
-          <p className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-            {detail}
-          </p>
-        )}
-
-        <div
-          className={`mt-4 h-1 w-8 rounded-full ${current.bar}`}
-        />
+        <span className={cn("mt-1 h-1.5 w-1.5 rounded-full", tones.dot)} />
       </div>
+
+      <p className="mt-4 text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+        {label}
+      </p>
+
+      <p className="mt-1 text-xl font-black tracking-tight text-slate-950 dark:text-white">
+        {value}
+      </p>
+
+      {detail && (
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {detail}
+        </p>
+      )}
     </div>
   );
 }
 
-/* =========================================================
-   LEARNING CARD
-========================================================= */
-
-function LearningCard({
-  title,
-  subtitle,
+function ActionCard({
   icon,
-  tone,
+  title,
+  description,
   onClick,
+  tone,
 }: {
-  title: string;
-  subtitle: string;
   icon: ReactNode;
-  tone: "indigo" | "emerald" | "rose" | "amber";
+  title: string;
+  description: string;
   onClick: () => void;
+  tone: "indigo" | "rose" | "emerald" | "amber";
 }) {
-  const tones = {
-    indigo: {
-      card:
-        "border-indigo-200 bg-indigo-50/80 dark:border-indigo-500/25 dark:bg-indigo-500/10",
-      icon:
-        "bg-indigo-500 text-white shadow-indigo-500/20",
-      hover:
-        "hover:border-indigo-300 hover:shadow-indigo-100/60 dark:hover:border-indigo-500/50",
-      arrow:
-        "text-indigo-300 group-hover:text-indigo-500 dark:text-indigo-500",
-    },
-    emerald: {
-      card:
-        "border-emerald-200 bg-emerald-50/80 dark:border-emerald-500/25 dark:bg-emerald-500/10",
-      icon:
-        "bg-emerald-500 text-white shadow-emerald-500/20",
-      hover:
-        "hover:border-emerald-300 hover:shadow-emerald-100/60 dark:hover:border-emerald-500/50",
-      arrow:
-        "text-emerald-300 group-hover:text-emerald-500 dark:text-emerald-500",
-    },
-    rose: {
-      card:
-        "border-rose-200 bg-rose-50/80 dark:border-rose-500/25 dark:bg-rose-500/10",
-      icon:
-        "bg-rose-500 text-white shadow-rose-500/20",
-      hover:
-        "hover:border-rose-300 hover:shadow-rose-100/60 dark:hover:border-rose-500/50",
-      arrow:
-        "text-rose-300 group-hover:text-rose-500 dark:text-rose-500",
-    },
-    amber: {
-      card:
-        "border-amber-200 bg-amber-50/80 dark:border-amber-500/25 dark:bg-amber-500/10",
-      icon:
-        "bg-amber-500 text-white shadow-amber-500/20",
-      hover:
-        "hover:border-amber-300 hover:shadow-amber-100/60 dark:hover:border-amber-500/50",
-      arrow:
-        "text-amber-300 group-hover:text-amber-500 dark:text-amber-500",
-    },
-  };
-
-  const current = tones[tone];
+  const styles = {
+    indigo:
+      "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300",
+    rose:
+      "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-300",
+    emerald:
+      "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300",
+    amber:
+      "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300",
+  }[tone];
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`group relative flex min-h-[185px] flex-col gap-5 overflow-hidden rounded-2xl border p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl dark:hover:bg-white/[0.05] ${current.card} ${current.hover}`}
+      className="group rounded-2xl border border-slate-200/80 bg-white p-5 text-left shadow-[0_14px_34px_-26px_rgba(15,23,42,.26)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_20px_40px_-24px_rgba(15,23,42,.34)] dark:border-white/[0.07] dark:bg-[#111722] dark:hover:border-white/[0.12]"
     >
-      <div className="flex items-center justify-between">
-        <div
-          className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-md ${current.icon}`}
-        >
+      <div className="flex items-start justify-between gap-4">
+        <div className={cn("flex h-11 w-11 items-center justify-center rounded-xl", styles)}>
           {icon}
         </div>
 
-        <ChevronRight
-          className={`h-4 w-4 transition-all duration-200 group-hover:translate-x-0.5 ${current.arrow}`}
-        />
+        <ChevronRight className="h-5 w-5 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-500 dark:text-slate-600 dark:group-hover:text-slate-300" />
       </div>
 
-      <div className="mt-auto">
-        <p className="text-base font-black text-slate-900 dark:text-white">
+      <div className="mt-5">
+        <p className="text-base font-black text-slate-950 dark:text-white">
           {title}
         </p>
-
-        <p className="mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-          {subtitle}
+        <p className="mt-1.5 text-sm leading-6 text-slate-500 dark:text-slate-400">
+          {description}
         </p>
       </div>
     </button>
   );
 }
 
-/* =========================================================
-   MAIN
-========================================================= */
-
 export default function DashboardPage() {
-  const {
-    user,
-    updateProfile,
-    refreshUser,
-  } = useAuth();
-
+  const { user, updateProfile, refreshUser } = useAuth();
   const { t } = useTranslate();
   const navigate = useNavigate();
 
   useStreakReconciler();
 
-  const {
-    newBadge,
-    checkBadges,
-    clearNewBadge,
-  } = useBadgeChecker();
+  const { newBadge, checkBadges, clearNewBadge } = useBadgeChecker();
 
-  const [langChosen, setLangChosen] =
-    useState(false);
+  const [langChosen, setLangChosen] = useState(false);
+  const [chestClaimedToday, setChestClaimedToday] = useState(false);
 
-  const [chestClaimedToday, setChestClaimedToday] =
-    useState(false);
+  const [giftsOpen, setGiftsOpen] = useState(false);
+  const [generatedGiftCode, setGeneratedGiftCode] = useState<string | null>(
+    null,
+  );
+  const [giftSendError, setGiftSendError] = useState<string | null>(null);
+  const [redeemInput, setRedeemInput] = useState("");
+  const [redeemMessage, setRedeemMessage] = useState<string | null>(null);
 
-  const [claiming, setClaiming] =
-    useState(false);
-
-  const [giftsOpen, setGiftsOpen] =
-    useState(false);
-
-  const [
-    generatedGiftCode,
-    setGeneratedGiftCode,
-  ] = useState<string | null>(null);
-
-  const [
-    giftSendError,
-    setGiftSendError,
-  ] = useState<string | null>(null);
-
-  const [
-    redeemInput,
-    setRedeemInput,
-  ] = useState("");
-
-  const [
-    redeemMessage,
-    setRedeemMessage,
-  ] = useState<string | null>(null);
-
-  const hasShield =
-    (user?.streakFreezes ?? 0) > 0;
-
-  /* =========================================================
-     LANGUAGE
-  ========================================================= */
+  const hasShield = (user?.streakFreezes ?? 0) > 0;
 
   useEffect(() => {
     if (!user) return;
 
-    const key =
-      `langoai_language_chosen_${user.id ?? user.username}`;
+    const key = `langoai_language_chosen_${user.id ?? user.username}`;
 
-    const alreadyChosen =
-      localStorage.getItem(key) === "true" ||
-      !!user.currentLanguage;
-
-    setLangChosen(alreadyChosen);
-
-    if (alreadyChosen) {
-      try {
-        localStorage.setItem(
-          key,
-          "true"
-        );
-      } catch {
-        // ignore
-      }
+    try {
+      setLangChosen(localStorage.getItem(key) === "true");
+    } catch {
+      setLangChosen(false);
     }
-  }, [
-    user?.id,
-    user?.username,
-    user?.currentLanguage,
-  ]);
-
-  /* =========================================================
-     DAILY CHEST
-  ========================================================= */
+  }, [user?.id, user?.username]);
 
   useEffect(() => {
     if (!user) return;
 
     try {
-      const today = new Date()
-        .toISOString()
-        .slice(0, 10);
-
+      const today = new Date().toISOString().slice(0, 10);
       setChestClaimedToday(
-        localStorage.getItem(
-          DAILY_CHEST_KEY
-        ) === today
+        localStorage.getItem(DAILY_CHEST_KEY) === today,
       );
     } catch {
       setChestClaimedToday(false);
     }
   }, [user?.id]);
 
-  /* =========================================================
-     PROGRESS
-  ========================================================= */
-
   const dailyGoal = useMemo(
     () => getDailyGoalProgress(),
-    [user?.totalXP]
+    [user?.totalXP],
   );
 
-  const {
-    streak: computedStreak,
-    todayActive: hasActivityToday,
-  } = useMemo(
-    () => computeStreak(),
-    [
-      user?.streak,
-      user?.lastActivityDate,
-    ]
-  );
+  const { streak: computedStreak, todayActive: hasActivityToday } =
+    useMemo(
+      () => computeStreak(),
+      [user?.streak, user?.lastActivityDate],
+    );
 
   const last7Days = useMemo(
     () => getLast7Days(),
-    [
-      user?.streak,
-      user?.lastActivityDate,
-    ]
+    [user?.streak, user?.lastActivityDate],
   );
 
-  const totalXP = user?.totalXP;
+  const totalXP = user?.totalXP ?? 0;
 
   useEffect(() => {
     if (!user) return;
@@ -1058,6 +556,8 @@ export default function DashboardPage() {
       streak: computedStreak,
     });
 
+    // The checker itself handles persistence.
+    // Keep it out of dependencies to avoid a checker -> user -> checker loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalXP, computedStreak]);
 
@@ -1065,269 +565,154 @@ export default function DashboardPage() {
     return null;
   }
 
-  /* =========================================================
-     DERIVED
-  ========================================================= */
+  const languageChoiceKey = `langoai_language_chosen_${user.id ?? user.username}`;
 
-  const languageChoiceKey =
-    `langoai_language_chosen_${user.id ?? user.username}`;
+  const selectedLang = LEARNING_LANGUAGES.find(
+    (lang) => lang.code === user.currentLanguage,
+  );
 
-  const selectedLang =
-    LEARNING_LANGUAGES.find(
-      (lang) =>
-        lang.code ===
-        user.currentLanguage
-    );
+  const level = user.level ?? 1;
 
-  const xpNeededForNext =
-    xpForNextLevel(user.level);
+  const xpNeededForNext = Math.max(
+    xpForNextLevel(level),
+    1,
+  );
 
-  const xpCurrent =
-    user.totalXP -
-    xpRequiredForLevel(
-      user.level
-    );
+  const xpCurrent = Math.max(
+    user.totalXP - xpRequiredForLevel(level),
+    0,
+  );
 
   const xpProgress = Math.min(
-    Math.max(
-      (xpCurrent /
-        xpNeededForNext) *
-        100,
-      0
-    ),
-    100
+    (xpCurrent / xpNeededForNext) * 100,
+    100,
   );
 
   const xpNeeded = Math.max(
-    xpNeededForNext -
-      xpCurrent,
-    0
+    xpNeededForNext - xpCurrent,
+    0,
   );
 
   const streakWeather =
     WEATHER_META[
-      getStreakWeather(
-        computedStreak,
-        hasActivityToday
-      )
-    ];
+      getStreakWeather(computedStreak, hasActivityToday)
+    ] ?? WEATHER_META.cloudy;
 
   const mascotMood: MascotMood =
-    !hasActivityToday &&
-    computedStreak > 0
+    !hasActivityToday && computedStreak > 0
       ? "supportive"
-      : dailyGoal.percent >=
-          100 ||
-        computedStreak >= 7
-      ? "happy"
-      : "greeting";
+      : dailyGoal.percent >= 100 || computedStreak >= 7
+        ? "happy"
+        : "greeting";
 
-  const mascot =
-    MASCOT_META[mascotMood];
-
-  /* =========================================================
-     ACTIONS
-  ========================================================= */
-
-  function selectLanguage(
-    code: string
-  ) {
+  function selectLanguage(code: string) {
     updateProfile({
       currentLanguage: code,
     });
 
-    localStorage.setItem(
-      languageChoiceKey,
-      "true"
-    );
+    try {
+      localStorage.setItem(languageChoiceKey, "true");
+    } catch {
+      // UI still works if storage is unavailable.
+    }
 
     setLangChosen(true);
   }
 
   async function claimChest() {
-    if (
-      chestClaimedToday ||
-      claiming
-    ) {
-      return;
-    }
+    if (chestClaimedToday) return;
 
-    const today = new Date()
-      .toISOString()
-      .slice(0, 10);
+    const { data, error } = await rpcClient.rpc(
+      "claim_daily_chest",
+    );
 
-    setClaiming(true);
+    if (error || !data) {
+      const message = String(error?.message ?? "");
 
-    try {
-      const {
-        data,
-        error,
-      } = await rpcClient.rpc(
-        "complete_learning_activity",
-        {
-          p_kind: "daily_goal",
-          p_ref: today,
-        }
-      );
+      if (
+        message.includes("daily_chest_already_claimed")
+      ) {
+        setChestClaimedToday(true);
 
-      if (error) {
-        const msg =
-          String(error.message || "");
-
-        if (
-          msg.includes(
-            "activity_already_completed"
-          )
-        ) {
-          window.alert(
-            "Je hebt de dagelijkse XP-bonus al geclaimd vandaag."
+        try {
+          localStorage.setItem(
+            DAILY_CHEST_KEY,
+            new Date().toISOString().slice(0, 10),
           );
-
-          setChestClaimedToday(
-            true
-          );
-
-          try {
-            localStorage.setItem(
-              DAILY_CHEST_KEY,
-              today
-            );
-          } catch {
-            // ignore
-          }
-        } else if (
-          msg.includes(
-            "not_authenticated"
-          ) ||
-          msg.includes("JWT")
-        ) {
-          window.alert(
-            "Je bent niet meer ingelogd. Log opnieuw in."
-          );
-        } else if (
-          msg.includes(
-            "daily_xp_cap_reached"
-          )
-        ) {
-          window.alert(
-            "Dagelijkse XP-limiet bereikt. Probeer morgen opnieuw."
-          );
-        } else {
-          console.error(
-            "complete_learning_activity failed:",
-            error
-          );
-
-          window.alert(
-            "Kon dagelijkse XP-bonus niet claimen. Controleer de database."
-          );
+        } catch {
+          // ignore local cache errors
         }
 
         return;
       }
 
-      const payload = data as {
-        xpAwarded?: number;
-      } | null;
-
-      const xpAwarded =
-        payload?.xpAwarded ??
-        DAILY_XP_REWARD;
-
-      window.alert(
-        `+${xpAwarded} XP toegevoegd!`
+      console.error(
+        "claim_daily_chest RPC failed:",
+        error,
       );
-
-      try {
-        localStorage.setItem(
-          DAILY_CHEST_KEY,
-          today
-        );
-      } catch {
-        // ignore
-      }
-
-      setChestClaimedToday(
-        true
-      );
-
-      await refreshUser();
-    } finally {
-      setClaiming(false);
+      return;
     }
+
+    try {
+      localStorage.setItem(
+        DAILY_CHEST_KEY,
+        new Date().toISOString().slice(0, 10),
+      );
+    } catch {
+      // ignore local cache errors
+    }
+
+    setChestClaimedToday(true);
+    refreshUser();
   }
 
   async function buyStreakShield() {
     if (hasShield) return;
 
-    const { error } =
-      await rpcClient.rpc(
-        "buy_streak_shield"
-      );
+    const { error } = await rpcClient.rpc(
+      "buy_streak_shield",
+    );
 
     if (error) {
       console.error(
-        "buy_streak_shield failed:",
-        error
+        "buy_streak_shield RPC failed:",
+        error,
       );
       return;
     }
 
-    await refreshUser();
+    refreshUser();
   }
 
   async function sendGift(
     payload:
-      | {
-          type: "coins";
-          amount: number;
-        }
-      | {
-          type: "shield";
-        }
+      | { type: "coins"; amount: number }
+      | { type: "shield" },
   ) {
-    const {
-      data,
-      error,
-    } = await rpcClient.rpc(
+    const { data, error } = await rpcClient.rpc(
       "create_gift_code",
       {
-        p_prize_type:
-          payload.type,
+        p_prize_type: payload.type,
         p_prize_amount:
-          payload.type ===
-          "coins"
-            ? payload.amount
-            : 0,
-      }
+          payload.type === "coins" ? payload.amount : 0,
+      },
     );
 
     if (error || !data) {
       setGiftSendError(
-        t(
-          "dashboard.giftNotEnoughCoins"
-        )
+        t("dashboard.giftNotEnoughCoins"),
       );
-
-      setGeneratedGiftCode(
-        null
-      );
-
+      setGeneratedGiftCode(null);
       return;
     }
 
     setGiftSendError(null);
-    setGeneratedGiftCode(
-      String(data)
-    );
-
-    await refreshUser();
+    setGeneratedGiftCode(String(data));
+    refreshUser();
   }
 
   async function shareGiftCode() {
-    if (!generatedGiftCode) {
-      return;
-    }
+    if (!generatedGiftCode) return;
 
     if (navigator.share) {
       try {
@@ -1336,7 +721,7 @@ export default function DashboardPage() {
           text: generatedGiftCode,
         });
       } catch {
-        // cancelled
+        // User cancelled sharing.
       }
 
       return;
@@ -1344,184 +729,123 @@ export default function DashboardPage() {
 
     try {
       await navigator.clipboard.writeText(
-        generatedGiftCode
+        generatedGiftCode,
       );
 
       window.alert(
-        t(
-          "dashboard.giftCopiedConfirm"
-        )
+        t("dashboard.giftCopiedConfirm"),
       );
     } catch {
-      // ignore
+      // Clipboard unavailable.
     }
   }
 
   async function redeemGift() {
-    const trimmed =
-      redeemInput.trim();
+    const trimmed = redeemInput.trim();
 
     if (!trimmed) {
       setRedeemMessage(
-        t(
-          "dashboard.giftInvalidCode"
-        )
+        t("dashboard.giftInvalidCode"),
       );
-
       return;
     }
 
-    const {
-      data,
-      error,
-    } = await rpcClient.rpc(
+    const { data, error } = await rpcClient.rpc(
       "redeem_gift_code",
       {
         p_code: trimmed,
-      }
+      },
     );
 
     if (error || !data) {
-      const msg = String(
-        error?.message ?? ""
+      const message = String(
+        error?.message ?? "",
       );
 
-      if (
-        msg.includes(
-          "already_used"
-        )
-      ) {
+      if (message.includes("already_used")) {
         setRedeemMessage(
-          t(
-            "dashboard.giftAlreadyUsed"
-          )
+          t("dashboard.giftAlreadyUsed"),
         );
       } else {
         setRedeemMessage(
-          t(
-            "dashboard.giftInvalidCode"
-          )
+          t("dashboard.giftInvalidCode"),
         );
       }
 
       return;
     }
 
-    const reward =
-      data as {
-        prizeType:
-          | "coins"
-          | "shield";
-        prizeAmount: number;
-      };
+    const reward = data as GiftPrize;
 
-    if (
-      reward.prizeType ===
-      "coins"
-    ) {
+    if (reward.prizeType === "coins") {
       setRedeemMessage(
-        t(
-          "dashboard.giftRedeemedCoins"
-        ).replace(
+        t("dashboard.giftRedeemedCoins").replace(
           "{amount}",
-          String(
-            reward.prizeAmount
-          )
-        )
+          String(reward.prizeAmount),
+        ),
       );
     } else {
       setRedeemMessage(
-        t(
-          "dashboard.giftRedeemedShield"
-        )
+        t("dashboard.giftRedeemedShield"),
       );
     }
 
     setRedeemInput("");
-
-    await refreshUser();
+    refreshUser();
   }
-
-  /* =========================================================
-     LANGUAGE SCREEN
-  ========================================================= */
 
   if (!langChosen) {
     return (
-      <div className="relative min-h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0f1a]">
-        <div className="pointer-events-none fixed inset-0 z-0">
-          <div className="absolute -left-32 -top-32 h-[500px] w-[500px] rounded-full bg-indigo-100/60 blur-[100px] dark:bg-indigo-600/20" />
-
-          <div className="absolute -right-32 top-1/3 h-[450px] w-[450px] rounded-full bg-purple-100/50 blur-[90px] dark:bg-purple-600/15" />
-
-          <div className="absolute bottom-0 left-1/4 h-[350px] w-[350px] rounded-full bg-blue-100/40 blur-[80px] dark:bg-blue-600/10" />
-        </div>
-
-        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
-          <div className="w-full max-w-md">
-            <div className="mb-8 text-center">
-              <div className="relative mx-auto mb-5 inline-flex">
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-400 to-purple-600 opacity-40 blur-2xl" />
-
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-5xl shadow-2xl shadow-indigo-500/40 ring-2 ring-white/20">
-                  🌍
-                </div>
+      <div className="min-h-screen bg-[#f6f7fb] px-4 py-10 dark:bg-[#0b0f16]">
+        <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-lg items-center">
+          <div className="w-full">
+            <div className="mb-8">
+              <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-950 text-white shadow-xl dark:bg-white dark:text-slate-950">
+                <Languages className="h-7 w-7" />
               </div>
 
-              <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-                {t(
-                  "dashboard.welcome"
-                )}{" "}
-                <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text text-transparent">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-indigo-500 dark:text-indigo-400">
+                Lango AI
+              </p>
+
+              <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+                {t("dashboard.welcome")}{" "}
+                <span className="text-indigo-500">
                   {user.username}
                 </span>
-                ! 👋
               </h1>
 
-              <p className="mt-3 text-base font-medium text-slate-500 dark:text-slate-400">
-                {t(
-                  "dashboard.chooseLanguage"
-                )}
+              <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                {t("dashboard.chooseLanguage")}
               </p>
             </div>
 
-            <div className="flex flex-col gap-3">
-              {LEARNING_LANGUAGES.map(
-                (lang) => (
-                  <button
-                    type="button"
-                    key={lang.code}
-                    onClick={() =>
-                      selectLanguage(
-                        lang.code
-                      )
-                    }
-                    className="group relative overflow-hidden rounded-2xl border-2 border-slate-200 bg-white px-6 py-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:bg-indigo-50 hover:shadow-xl active:translate-y-0 active:scale-[0.99] dark:border-white/[0.07] dark:bg-white/[0.04] dark:hover:border-indigo-500/50 dark:hover:bg-indigo-500/10"
-                  >
-                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent transition-transform duration-500 group-hover:translate-x-full dark:via-white/5" />
+            <div className="space-y-3">
+              {LEARNING_LANGUAGES.map((lang) => (
+                <button
+                  type="button"
+                  key={lang.code}
+                  onClick={() =>
+                    selectLanguage(lang.code)
+                  }
+                  className="group flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-[0_12px_32px_-26px_rgba(15,23,42,.3)] transition duration-200 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-[0_20px_40px_-26px_rgba(79,70,229,.32)] dark:border-white/[0.07] dark:bg-[#111722] dark:hover:border-indigo-400/30"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-2xl dark:bg-white/[0.05]">
+                    {lang.flag}
+                  </div>
 
-                    <div className="relative flex items-center gap-4">
-                      <span className="w-10 text-4xl transition-all duration-300 group-hover:scale-125">
-                        {lang.flag}
-                      </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-black text-slate-950 dark:text-white">
+                      {t(lang.nameKey)}
+                    </p>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                      {t("dashboard.continueLearning")}
+                    </p>
+                  </div>
 
-                      <div className="flex-1">
-                        <p className="text-base font-black text-slate-900 dark:text-white">
-                          {t(
-                            lang.nameKey
-                          )}
-                        </p>
-
-                        <p className="text-xs text-slate-400 dark:text-slate-500">
-                          Kies deze taal om te beginnen
-                        </p>
-                      </div>
-
-                      <ChevronRight className="h-5 w-5 text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-indigo-500 dark:text-slate-600" />
-                    </div>
-                  </button>
-                )
-              )}
+                  <ChevronRight className="h-5 w-5 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-indigo-500 dark:text-slate-600" />
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -1529,19 +853,27 @@ export default function DashboardPage() {
     );
   }
 
-  /* =========================================================
-     MAIN DASHBOARD
-  ========================================================= */
-
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-50 transition-colors duration-300 dark:bg-[#0b0f1a]">
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute -left-40 -top-40 h-[620px] w-[620px] rounded-full bg-indigo-100/60 blur-[120px] dark:bg-indigo-600/20" />
+    <div className="min-h-screen bg-[#f6f7fb] text-slate-950 dark:bg-[#0b0f16] dark:text-white">
+      <style>{`
+        @keyframes dashboardHeroShine {
+          0% { transform: translateX(-130%); opacity: 0; }
+          15% { opacity: .7; }
+          45% { opacity: 0; }
+          100% { transform: translateX(150%); opacity: 0; }
+        }
 
-        <div className="absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-100/50 blur-[100px] dark:bg-purple-600/15" />
+        @keyframes dashboardArenaFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-4px); }
+        }
 
-        <div className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-blue-100/40 blur-[90px] dark:bg-blue-600/10" />
-      </div>
+        @media (prefers-reduced-motion: reduce) {
+          .dashboard-arena-motion {
+            animation: none !important;
+          }
+        }
+      `}</style>
 
       {newBadge && (
         <BadgeNotification
@@ -1550,630 +882,259 @@ export default function DashboardPage() {
         />
       )}
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
+      <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6 sm:py-10">
+        {/* HEADER */}
+        <header className="mb-7 flex flex-col gap-4 sm:mb-9 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-indigo-500 dark:text-indigo-400">
+              Dashboard
+            </p>
 
-        <header className="mb-7">
-          <p className="mb-1 text-[10px] font-black uppercase tracking-[0.28em] text-indigo-500 dark:text-indigo-400">
-            {UI_TEXT.dashboard}
-          </p>
-
-          <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-            {t(
-              "dashboard.welcome"
-            )}{" "}
-            <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text text-transparent">
-              {user.username}
-            </span>
-            ! 👋
-          </h1>
-
-          {selectedLang && (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-lg shadow-sm ring-1 ring-slate-200 dark:bg-white/5 dark:ring-white/10">
-                {selectedLang.flag}
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-[38px]">
+              {t("dashboard.welcome")}{" "}
+              <span className="text-indigo-500">
+                {user.username}
               </span>
+            </h1>
 
-              <span className="text-sm text-slate-500 dark:text-slate-400">
-                {t(
-                  "dashboard.learningLanguage"
-                )}
-              </span>
+            <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+              {selectedLang && (
+                <>
+                  <span className="text-base">
+                    {selectedLang.flag}
+                  </span>
 
-              <strong className="text-sm font-bold text-slate-800 dark:text-white">
-                {t(
-                  selectedLang.nameKey
-                )}
-              </strong>
+                  <span>
+                    {t("dashboard.learningLanguage")}{" "}
+                    <strong className="font-bold text-slate-800 dark:text-slate-200">
+                      {t(selectedLang.nameKey)}
+                    </strong>
+                  </span>
+                </>
+              )}
 
               <button
                 type="button"
-                onClick={() =>
-                  setLangChosen(false)
-                }
-                className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500 transition hover:bg-indigo-50 hover:text-indigo-600 dark:bg-white/[0.06] dark:text-slate-400"
+                onClick={() => setLangChosen(false)}
+                className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-bold text-slate-500 transition hover:border-indigo-200 hover:text-indigo-600 dark:border-white/[0.07] dark:bg-white/[0.03] dark:text-slate-400 dark:hover:border-indigo-500/30 dark:hover:text-indigo-300"
               >
-                {t(
-                  "dashboard.changeLanguage"
-                )}
+                {t("dashboard.changeLanguage")}
               </button>
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-white/[0.07] dark:bg-[#111722]">
+              <p className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">
+                {t("dashboard.level")}
+              </p>
+              <p className="mt-0.5 text-lg font-black text-slate-950 dark:text-white">
+                {level}
+              </p>
             </div>
-          )}
+
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-white/[0.07] dark:bg-[#111722]">
+              <p className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">
+                {t("dashboard.totalXP")}
+              </p>
+              <p className="mt-0.5 text-lg font-black text-slate-950 dark:text-white">
+                {user.totalXP.toLocaleString()}
+              </p>
+            </div>
+          </div>
         </header>
 
-        {/* =====================================================
-            LEGEND ARENA — MAIN FEATURE
-        ===================================================== */}
-
-        <section className="mb-8">
+        {/* HERO: LEGEND ARENA */}
+        <section className="mb-7">
           <button
             type="button"
-            onClick={() =>
-              navigate("/arena")
-            }
-            aria-label={
-              UI_TEXT.enterArena
-            }
-            className="group relative block w-full overflow-hidden rounded-[34px] p-[1px] text-left shadow-[0_28px_85px_-35px_rgba(79,70,229,.72)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_34px_95px_-36px_rgba(79,70,229,.82)] active:translate-y-0"
+            onClick={() => navigate("/arena")}
+            className="group relative block w-full overflow-hidden rounded-[30px] text-left shadow-[0_28px_70px_-32px_rgba(79,70,229,.55)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_38px_80px_-30px_rgba(79,70,229,.62)]"
           >
-            {/* Gradient edge */}
-            <div className="absolute inset-0 rounded-[34px] bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500" />
+            <div className="absolute inset-0 bg-[linear-gradient(115deg,#0f172a_0%,#171c43_48%,#312e81_100%)]" />
 
-            <div className="relative overflow-hidden rounded-[33px] bg-[#080b16]">
-              {/* Atmosphere */}
-              <div className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-indigo-500/20 blur-[100px]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_18%,rgba(168,85,247,.34),transparent_30%),radial-gradient(circle_at_20%_110%,rgba(99,102,241,.24),transparent_36%)]" />
 
-              <div className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-violet-500/20 blur-[100px]" />
+            <div
+              className="pointer-events-none absolute inset-y-0 left-[-35%] w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              style={{
+                animation:
+                  "dashboardHeroShine 6s linear infinite",
+              }}
+            />
 
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-500/10 blur-[90px]" />
+            <div className="relative grid gap-7 p-6 sm:grid-cols-[1fr_auto] sm:p-8 lg:p-10">
+              <div className="min-w-0">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-200 backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-300 shadow-[0_0_12px_rgba(129,140,248,.9)]" />
+                  {t("dashboard.mainEvent")}
+                </div>
 
-              {/* Decorative circles */}
-              <div className="pointer-events-none absolute -right-24 -top-24 h-[310px] w-[310px] rounded-full border border-white/[0.05]" />
+                <div className="flex items-start gap-4">
+                  <div className="dashboard-arena-motion flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.08] shadow-[0_12px_30px_-8px_rgba(99,102,241,.65)] backdrop-blur-sm sm:h-20 sm:w-20">
+                    <Trophy className="h-8 w-8 text-white sm:h-10 sm:w-10" />
+                  </div>
 
-              <div className="pointer-events-none absolute -right-5 -top-5 h-[190px] w-[190px] rounded-full border border-white/[0.04]" />
+                  <div className="min-w-0">
+                    <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                      {t("dashboard.arenaTitle")}
+                    </h2>
 
-              <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-10">
-                {/* TROPHY */}
-                <div className="mx-auto lg:mx-0">
-                  <div className="relative">
-                    <div className="absolute inset-0 scale-90 rounded-[32px] bg-indigo-500/35 blur-2xl transition-transform duration-500 group-hover:scale-110" />
-
-                    <div className="relative flex h-28 w-28 items-center justify-center rounded-[30px] border border-white/10 bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-[0_18px_45px_-12px_rgba(99,102,241,.85)] ring-1 ring-white/10 sm:h-32 sm:w-32">
-                      <Trophy className="h-14 w-14 text-white drop-shadow-lg sm:h-16 sm:w-16" />
-
-                      <span className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-sm backdrop-blur-md">
-                        ✦
-                      </span>
-                    </div>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-indigo-100/80 sm:text-base">
+                      {t("dashboard.arenaSub")}
+                    </p>
                   </div>
                 </div>
 
-                {/* CONTENT */}
-                <div className="min-w-0 text-center lg:text-left">
-                  <div className="mb-3 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
-                    <span className="rounded-full bg-indigo-500/20 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300 ring-1 ring-indigo-400/20">
-                      {UI_TEXT.primaryBadge}
-                    </span>
+                <div className="mt-7 flex flex-wrap items-center gap-3">
+                  <span className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-slate-950 shadow-lg">
+                    {t("dashboard.arenaTitle")}
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
 
-                    <span className="rounded-full bg-white/[0.06] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 ring-1 ring-white/[0.06]">
-                      {UI_TEXT.season}
-                    </span>
-                  </div>
-
-                  <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-[42px]">
-                    {t(
-                      "dashboard.arenaTitle"
-                    )}
-                  </h2>
-
-                  <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-300 sm:text-base">
-                    {t(
-                      "dashboard.arenaSub"
-                    ) ||
-                      UI_TEXT.arenaFallbackDescription}
-                  </p>
-
-                  {/* USER ARENA STATUS */}
-                  <div className="mt-5 grid grid-cols-3 gap-2 sm:max-w-lg">
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
-                      <div className="flex items-center justify-center gap-1.5 lg:justify-start">
-                        <Star className="h-3.5 w-3.5 text-yellow-300" />
-
-                        <span className="text-lg font-black text-white">
-                          {user.level}
-                        </span>
-                      </div>
-
-                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        {
-                          UI_TEXT.arenaLevel
-                        }
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
-                      <div className="flex items-center justify-center gap-1.5 lg:justify-start">
-                        <Zap className="h-3.5 w-3.5 text-cyan-300" />
-
-                        <span className="text-lg font-black text-white">
-                          {user.totalXP.toLocaleString()}
-                        </span>
-                      </div>
-
-                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        {
-                          UI_TEXT.arenaXP
-                        }
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-3 py-3">
-                      <div className="flex items-center justify-center gap-1.5 lg:justify-start">
-                        <Flame className="h-3.5 w-3.5 text-orange-300" />
-
-                        <span className="text-lg font-black text-white">
-                          {
-                            computedStreak
-                          }
-                        </span>
-                      </div>
-
-                      <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                        {
-                          UI_TEXT.arenaStreak
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* MAIN ARENA BUTTON */}
-                <div className="flex justify-center lg:justify-end">
-                  <span className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-white px-6 text-sm font-black text-slate-900 shadow-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-white/10">
-                    {UI_TEXT.arenaOpen}
-
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.07] px-3.5 py-2.5 text-xs font-bold text-white/80">
+                    <Sparkles className="h-4 w-4" />
+                    EP
                   </span>
                 </div>
               </div>
 
-              {/* JOURNEY */}
-              <div className="border-t border-white/[0.07] bg-white/[0.025] px-6 py-4 sm:px-8">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 sm:text-left">
-                    {UI_TEXT.arenaJourney}
+              <div className="hidden items-end sm:flex">
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-5 text-right backdrop-blur-md">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-indigo-200/80">
+                    Season
                   </p>
-
-                  <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] font-semibold text-slate-400 sm:justify-end">
-                    <span>
-                      {UI_TEXT.arenaLevels}
-                    </span>
-
-                    <span className="text-slate-700">
-                      •
-                    </span>
-
-                    <span>
-                      {UI_TEXT.arenaUnlock}
-                    </span>
-
-                    <span className="text-slate-700">
-                      •
-                    </span>
-
-                    <span>
-                      {UI_TEXT.arenaPlay}
-                    </span>
-
-                    <span className="text-slate-700">
-                      •
-                    </span>
-
-                    <span className="font-black text-indigo-300">
-                      {UI_TEXT.arenaEarn}
-                    </span>
-                  </div>
+                  <p className="mt-1 text-3xl font-black text-white">
+                    {level}
+                  </p>
+                  <p className="mt-1 text-xs text-indigo-100/65">
+                    {xpCurrent.toLocaleString()} /{" "}
+                    {xpNeededForNext.toLocaleString()} XP
+                  </p>
                 </div>
               </div>
             </div>
           </button>
         </section>
 
-        {/* =====================================================
-            AI COMPANION
-        ===================================================== */}
-
-        <DashboardRobotMascot
-          message={t(mascot.key)}
-          mood={mascotMood}
-          description={
-            UI_TEXT.mascotDescription
-          }
-          smartFeedback={
-            UI_TEXT.smartFeedback
-          }
-          alwaysReady={
-            UI_TEXT.alwaysReady
-          }
-        />
-
-        {/* =====================================================
-            TODAY
-        ===================================================== */}
-
-        <section className="mb-8">
-          <div className="mb-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              {UI_TEXT.today}
-            </p>
-
-            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-              {UI_TEXT.dailyProgress}
-            </h2>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {/* DAILY GOAL */}
-            <div className="rounded-2xl border border-indigo-100 bg-white p-4 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
-                  <Zap className="h-5 w-5" />
-                </div>
-
-                <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
-                    {t(
-                      "dashboard.dailyGoal"
-                    )}
-                  </p>
-
-                  <p className="mt-0.5 truncate text-sm font-bold text-slate-800 dark:text-white">
-                    {dailyGoal.percent >=
-                    100
-                      ? t(
-                          "dashboard.dailyGoalReached"
-                        )
-                      : `${dailyGoal.current} / ${dailyGoal.goal} ${t(
-                          "topbar.xp"
-                        )}`}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* STREAK */}
-            <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500 dark:bg-orange-500/10 dark:text-orange-300">
-                  <Flame className="h-5 w-5" />
-                </div>
-
-                <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
-                    {t(
-                      "dashboard.streak"
-                    )}
-                  </p>
-
-                  <p className="mt-0.5 truncate text-sm font-bold text-slate-800 dark:text-white">
-                    {computedStreak}{" "}
-                    {t(
-                      "dashboard.days"
-                    )}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* CHEST */}
-            <button
-              type="button"
-              onClick={claimChest}
-              disabled={
-                chestClaimedToday ||
-                claiming
-              }
-              className={`rounded-2xl border p-4 text-left shadow-sm transition-all ${
-                chestClaimedToday
-                  ? "cursor-default border-slate-200 bg-slate-50 dark:border-white/[0.06] dark:bg-white/[0.02]"
-                  : "border-amber-200 bg-amber-50 hover:-translate-y-0.5 hover:shadow-md dark:border-amber-500/20 dark:bg-white/[0.03]"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-lg dark:bg-amber-500/10">
-                  {chestClaimedToday
-                    ? "✅"
-                    : "🎁"}
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
-                    {t(
-                      "dashboard.chestTitle"
-                    )}
-                  </p>
-
-                  <p className="mt-0.5 truncate text-sm font-bold text-slate-800 dark:text-white">
-                    {chestClaimedToday
-                      ? t(
-                          "dashboard.chestSubtitleClaimed"
-                        )
-                      : t(
-                          "dashboard.chestSubtitleOpen"
-                        ).replace(
-                          "{xp}",
-                          String(
-                            DAILY_XP_REWARD
-                          )
-                        )}
-                  </p>
-                </div>
-
-                {!chestClaimedToday && (
-                  <span className="rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-black text-white">
-                    {claiming
-                      ? "..."
-                      : t(
-                          "dashboard.chestButton"
-                        )}
-                  </span>
-                )}
-              </div>
-            </button>
-          </div>
-        </section>
-
-        {/* =====================================================
-            PROGRESS
-        ===================================================== */}
-
-        <section className="mb-8">
-          <div className="mb-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              {UI_TEXT.progress}
-            </p>
-
-            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-              {t(
-                "dashboard.progressTitle"
-              ) || UI_TEXT.progress}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <StatCard
-              icon={
-                <Star className="h-5 w-5" />
-              }
-              label={t(
-                "dashboard.level"
-              )}
-              value={String(
-                user.level
-              )}
-              tone="amber"
-            />
-
-            <StatCard
-              icon={
-                <Zap className="h-5 w-5" />
-              }
-              label={t(
-                "dashboard.totalXP"
-              )}
-              value={user.totalXP.toLocaleString()}
-              tone="indigo"
-            />
-
-            <StatCard
-              icon={
-                <Flame className="h-5 w-5" />
-              }
-              label={t(
-                "dashboard.streak"
-              )}
-              value={`${computedStreak} ${t(
-                "dashboard.days"
-              )}`}
-              detail={
-                !hasActivityToday
-                  ? t(
-                      "dashboard.streakAtRisk"
-                    )
-                  : undefined
-              }
-              tone="orange"
-            />
-
-            <StatCard
-              icon={
-                selectedLang ? (
-                  <span className="text-lg">
-                    {
-                      selectedLang.flag
-                    }
-                  </span>
-                ) : (
-                  <span className="text-lg">
-                    🌍
-                  </span>
-                )
-              }
-              label={t(
-                "dashboard.language"
-              )}
-              value={
-                selectedLang
-                  ? t(
-                      selectedLang.nameKey
-                    )
-                  : t(
-                      "dashboard.none"
-                    )
-              }
-              tone="emerald"
-            />
-          </div>
-        </section>
-
-        {/* =====================================================
-            XP + DAILY GOAL
-        ===================================================== */}
-
-        <section className="mb-8 grid gap-4 xl:grid-cols-2">
-          {/* XP */}
-          <div className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/80 to-transparent dark:from-indigo-500/8" />
-
-            <div className="relative p-6">
-              <div className="flex items-start justify-between gap-4">
+        {/* PROGRESS STRIP */}
+        <section className="mb-7 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_16px_40px_-28px_rgba(15,23,42,.25)] dark:border-white/[0.07] dark:bg-[#111722] sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
-                    {t(
-                      "dashboard.level"
-                    )}{" "}
-                    {user.level}
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                    {t("dashboard.xpProgress")}
                   </p>
-
-                  <h3 className="mt-1 text-2xl font-black text-slate-900 dark:text-white">
-                    {t(
-                      "dashboard.xpProgress"
-                    )}{" "}
-                    <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-                      {user.level + 1}
-                    </span>
-                  </h3>
+                  <p className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">
+                    {xpCurrent.toLocaleString()} /{" "}
+                    {xpNeededForNext.toLocaleString()}{" "}
+                    {t("topbar.xp")}
+                  </p>
                 </div>
 
-                <span className="rounded-full bg-indigo-100 px-2.5 py-1 text-xs font-black text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300">
-                  {Math.round(
-                    xpProgress
-                  )}
-                  %
+                <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-black text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
+                  {Math.round(xpProgress)}%
                 </span>
               </div>
 
-              <div className="mt-6">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    {xpCurrent.toLocaleString()}
-                    <span className="font-normal text-slate-400">
-                      {" "}
-                      /{" "}
-                      {xpNeededForNext.toLocaleString()}{" "}
-                      {t(
-                        "topbar.xp"
-                      )}
-                    </span>
-                  </span>
-                </div>
-
-                <div className="h-3 overflow-hidden rounded-full bg-slate-100 ring-1 ring-slate-200 dark:bg-white/5 dark:ring-white/10">
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{
-                      width: `${xpProgress}%`,
-                      background:
-                        "linear-gradient(90deg,#6366f1,#a855f7)",
-                      boxShadow:
-                        "0 0 14px rgba(99,102,241,.45)",
-                    }}
-                  />
-                </div>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 transition-all duration-700"
+                  style={{
+                    width: `${xpProgress}%`,
+                  }}
+                />
               </div>
 
-              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
                 {xpNeeded > 0 ? (
                   <>
-                    {t(
-                      "dashboard.needMoreXP"
-                    )}{" "}
-                    <strong className="text-slate-800 dark:text-white">
-                      {
-                        xpNeeded
-                      }
+                    {t("dashboard.needMoreXP")}{" "}
+                    <strong className="font-bold text-slate-800 dark:text-slate-200">
+                      {xpNeeded.toLocaleString()}
                     </strong>{" "}
-                    {t(
-                      "dashboard.moreXP"
-                    )}{" "}
-                    <strong className="text-slate-800 dark:text-white">
-                      {user.level +
-                        1}
-                    </strong>
-                    .
+                    {t("dashboard.moreXP")}
                   </>
                 ) : (
-                  <strong className="text-indigo-600 dark:text-indigo-400">
-                    {t(
-                      "dashboard.levelUp"
-                    )}
+                  <strong className="font-bold text-emerald-600 dark:text-emerald-400">
+                    {t("dashboard.levelUp")}
                   </strong>
                 )}
               </p>
             </div>
+
+            <div className="grid grid-cols-2 gap-2 sm:w-[300px]">
+              <div className="rounded-xl bg-slate-50 px-3 py-3 dark:bg-white/[0.04]">
+                <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-400">
+                  {t("dashboard.streak")}
+                </p>
+                <p className="mt-1 text-lg font-black text-slate-950 dark:text-white">
+                  {computedStreak} {t("dashboard.days")}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-slate-50 px-3 py-3 dark:bg-white/[0.04]">
+                <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-400">
+                  {t("dashboard.dailyGoal")}
+                </p>
+                <p className="mt-1 text-lg font-black text-slate-950 dark:text-white">
+                  {dailyGoal.current}/{dailyGoal.goal}
+                </p>
+              </div>
+            </div>
           </div>
+        </section>
 
-          {/* DAILY GOAL */}
-          <div className="relative overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/80 to-transparent dark:from-orange-500/6" />
+        {/* AI COMPANION */}
+        <section className="mb-8">
+          <DashboardRobotMascot
+            message={t(MASCOT_META[mascotMood].key)}
+            mood={mascotMood}
+          />
+        </section>
 
-            <div className="relative p-6">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500 dark:text-orange-400">
-                    {t(
-                      "dashboard.dailyGoal"
-                    )}
-                  </p>
+        {/* TODAY */}
+        <section className="mb-8">
+          <SectionHeader
+            eyebrow="Today"
+            title={t("dashboard.dailyGoal")}
+          />
 
-                  <h3 className="mt-1 text-2xl font-black text-slate-900 dark:text-white">
-                    {dailyGoal.current}{" "}
-                    /{" "}
-                    {dailyGoal.goal}
-                  </h3>
-                </div>
-
-                <div className="relative h-20 w-20 shrink-0">
+          <div className="grid gap-4 lg:grid-cols-[1.2fr_.8fr]">
+            <div className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_16px_40px_-28px_rgba(15,23,42,.25)] dark:border-white/[0.07] dark:bg-[#111722] sm:p-6">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+                <div className="relative mx-auto h-32 w-32 shrink-0 sm:mx-0">
                   <svg
-                    className="-rotate-90"
-                    viewBox="0 0 100 100"
+                    className="h-32 w-32 -rotate-90"
+                    viewBox="0 0 120 120"
                   >
                     <circle
-                      cx="50"
-                      cy="50"
-                      r="42"
+                      cx="60"
+                      cy="60"
+                      r="49"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="9"
-                      className="text-slate-100 dark:text-white/5"
+                      strokeWidth="10"
+                      className="text-slate-100 dark:text-white/[0.05]"
                     />
 
                     <circle
-                      cx="50"
-                      cy="50"
-                      r="42"
+                      cx="60"
+                      cy="60"
+                      r="49"
                       fill="none"
                       stroke="url(#dashboardGoalGradient)"
-                      strokeWidth="9"
+                      strokeWidth="10"
                       strokeLinecap="round"
-                      strokeDasharray={
+                      strokeDasharray={`${2 * Math.PI * 49}`}
+                      strokeDashoffset={`${
                         2 *
                         Math.PI *
-                        42
-                      }
-                      strokeDashoffset={
-                        2 *
-                        Math.PI *
-                        42 *
-                        (1 -
-                          Math.min(
-                            dailyGoal.percent,
-                            100
-                          ) /
-                            100)
-                      }
+                        49 *
+                        (1 - dailyGoal.percent / 100)
+                      }`}
+                      className="transition-[stroke-dashoffset] duration-700"
                     />
 
                     <defs>
@@ -2184,548 +1145,529 @@ export default function DashboardPage() {
                         x2="100%"
                         y2="100%"
                       >
-                        <stop
-                          offset="0%"
-                          stopColor="#6366f1"
-                        />
-
-                        <stop
-                          offset="100%"
-                          stopColor="#a855f7"
-                        />
+                        <stop offset="0%" stopColor="#6366f1" />
+                        <stop offset="100%" stopColor="#a855f7" />
                       </linearGradient>
                     </defs>
                   </svg>
 
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm font-black text-slate-900 dark:text-white">
-                      {Math.round(
-                        Math.min(
-                          dailyGoal.percent,
-                          100
-                        )
-                      )}
-                      %
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-2xl font-black text-slate-950 dark:text-white">
+                      {dailyGoal.current}
                     </span>
+                    <span className="text-[11px] font-semibold text-slate-400">
+                      / {dailyGoal.goal}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="text-lg font-black text-slate-950 dark:text-white">
+                    {dailyGoal.percent >= 100
+                      ? t("dashboard.dailyGoalReached")
+                      : dailyGoal.current === 0
+                        ? t("dashboard.dailyGoalEmpty")
+                        : `${dailyGoal.current} / ${dailyGoal.goal} ${t(
+                            "topbar.xp",
+                          )}`}
+                  </p>
+
+                  <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                    {dailyGoal.percent >= 100
+                      ? "You completed today's target."
+                      : `${Math.max(
+                          dailyGoal.goal - dailyGoal.current,
+                          0,
+                        )} ${t("topbar.xp")} remaining today.`}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-600 dark:bg-white/[0.04] dark:text-slate-300">
+                      <Flame className="h-3.5 w-3.5 text-orange-500" />
+                      {computedStreak} {t("dashboard.days")}
+                    </span>
+
+                    <span className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-600 dark:bg-white/[0.04] dark:text-slate-300">
+                      {streakWeather.emoji}
+                      {t(streakWeather.key)}
+                    </span>
+
+                    {hasShield ? (
+                      <span className="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-3 py-1.5 text-xs font-bold text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-300">
+                        <Shield className="h-3.5 w-3.5" />
+                        {t("dashboard.shieldActive")}
+                      </span>
+                    ) : (
+                      !hasActivityToday && (
+                        <button
+                          type="button"
+                          onClick={buyStreakShield}
+                          className="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-3 py-1.5 text-xs font-bold text-cyan-700 transition hover:bg-cyan-100 dark:bg-cyan-500/10 dark:text-cyan-300 dark:hover:bg-cyan-500/15"
+                        >
+                          <Shield className="h-3.5 w-3.5" />
+                          {t("dashboard.shieldBuy").replace(
+                            "{coins}",
+                            String(STREAK_SHIELD_COST),
+                          )}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6">
-                <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-700"
-                    style={{
-                      width: `${Math.min(
-                        dailyGoal.percent,
-                        100
-                      )}%`,
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="mt-5 flex items-start gap-3 border-t border-slate-100 pt-5 dark:border-white/5">
-                <span className="text-2xl">
-                  {hasActivityToday
-                    ? "🔥"
-                    : "💤"}
-                </span>
-
-                <div>
-                  <p className="text-sm font-bold text-slate-800 dark:text-white">
-                    {
-                      computedStreak
-                    }{" "}
-                    {t(
-                      "dashboard.streakActive"
-                    )}
+              <div className="mt-6 border-t border-slate-100 pt-5 dark:border-white/[0.06]">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                    {t("dashboard.last7days")}
                   </p>
 
-                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                    {
-                      streakWeather.emoji
-                    }{" "}
-                    {t(
-                      streakWeather.key
-                    )}
-                  </p>
-
-                  {!hasActivityToday && (
-                    <p className="mt-1 text-xs font-semibold text-orange-500 dark:text-orange-400">
-                      {t(
-                        "dashboard.streakAtRisk"
-                      )}
-                    </p>
-                  )}
-
-                  {hasShield && (
-                    <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2 py-1 text-[10px] font-black text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300">
-                      <Shield className="h-3 w-3" />
-
-                      {t(
-                        "dashboard.shieldActive"
-                      )}
-                    </span>
-                  )}
-
-                  {!hasShield &&
-                    !hasActivityToday && (
-                      <button
-                        type="button"
-                        onClick={
-                          buyStreakShield
-                        }
-                        className="mt-2 inline-flex items-center gap-1 rounded-full bg-cyan-50 px-2 py-1 text-[10px] font-black text-cyan-700 transition hover:bg-cyan-100 dark:bg-cyan-500/10 dark:text-cyan-300"
-                      >
-                        <Shield className="h-3 w-3" />
-
-                        {t(
-                          "dashboard.shieldBuy"
-                        ).replace(
-                          "{coins}",
-                          String(
-                            STREAK_SHIELD_COST
-                          )
-                        )}
-                      </button>
-                    )}
+                  <span className="text-[10px] font-semibold text-slate-400">
+                    {hasActivityToday ? "Active today" : "Not active today"}
+                  </span>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* =====================================================
-            LAST 7 DAYS
-        ===================================================== */}
-
-        <section className="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-          <div className="p-5 sm:p-6">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                  {t(
-                    "dashboard.streak"
-                  )}
-                </p>
-
-                <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white">
-                  {t(
-                    "dashboard.last7days"
-                  )}
-                </h2>
-              </div>
-
-              {computedStreak >=
-                7 && (
-                <span className="rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-black text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
-                  ⭐{" "}
-                  {t(
-                    "dashboard.milestone7"
-                  )}
-                </span>
-              )}
-            </div>
-
-            <div className="mt-5 flex items-center justify-between gap-1">
-              {last7Days.map(
-                (day) => (
-                  <div
-                    key={day.date}
-                    className="flex flex-1 flex-col items-center gap-2"
-                    title={day.date}
-                  >
-                    <span className="text-[9px] font-bold text-slate-400">
-                      {
-                        day.label
-                      }
-                    </span>
-
+                <div className="grid grid-cols-7 gap-2">
+                  {last7Days.map((day) => (
                     <div
-                      className={`flex h-9 w-9 items-center justify-center rounded-full text-sm ${
-                        day.active
-                          ? "bg-orange-100 text-orange-500 ring-2 ring-orange-300 dark:bg-orange-500/20 dark:text-orange-300 dark:ring-1 dark:ring-orange-500/40"
-                          : "bg-slate-100 text-slate-300 dark:bg-white/[0.03] dark:text-slate-700"
-                      }`}
+                      key={day.date}
+                      className="text-center"
+                      title={day.date}
                     >
-                      {day.active
-                        ? "🔥"
-                        : "·"}
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
+                      <p className="mb-2 text-[9px] font-bold text-slate-400">
+                        {day.label}
+                      </p>
 
-            {computedStreak >=
-              30 && (
-              <div className="mt-5 rounded-xl bg-purple-50 px-4 py-3 text-center text-xs font-black text-purple-700 dark:bg-purple-500/10 dark:text-purple-300">
-                🏆{" "}
-                {t(
-                  "dashboard.milestone30"
+                      <div
+                        className={cn(
+                          "mx-auto flex h-8 w-8 items-center justify-center rounded-full text-xs",
+                          day.active
+                            ? "bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300"
+                            : "bg-slate-100 text-slate-300 dark:bg-white/[0.04] dark:text-slate-600",
+                          day.isToday &&
+                            "ring-2 ring-indigo-200 dark:ring-indigo-500/20",
+                        )}
+                      >
+                        {day.active ? "✓" : "·"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {computedStreak >= 7 && (
+                  <div className="mt-4 rounded-xl bg-indigo-50 px-3 py-2.5 text-center text-xs font-bold text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
+                    {t("dashboard.streakBonus").replace(
+                      "{xp}",
+                      String(
+                        XP_REWARDS.STREAK_7_DAYS,
+                      ),
+                    )}
+                    {computedStreak >= 30 &&
+                      ` • ${t(
+                        "dashboard.streakBonus30",
+                      )}`}
+                  </div>
                 )}
               </div>
-            )}
+            </div>
+
+            <button
+              type="button"
+              onClick={claimChest}
+              disabled={chestClaimedToday}
+              className={cn(
+                "group relative overflow-hidden rounded-[24px] border p-6 text-left transition duration-200",
+                chestClaimedToday
+                  ? "cursor-default border-slate-200 bg-slate-50 dark:border-white/[0.07] dark:bg-white/[0.02]"
+                  : "border-amber-200 bg-gradient-to-br from-amber-50 to-white shadow-[0_18px_40px_-26px_rgba(245,158,11,.42)] hover:-translate-y-0.5 dark:border-amber-500/20 dark:from-amber-500/10 dark:to-[#111722]",
+              )}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div
+                  className={cn(
+                    "flex h-12 w-12 items-center justify-center rounded-2xl",
+                    chestClaimedToday
+                      ? "bg-slate-200 text-slate-500 dark:bg-white/[0.05] dark:text-slate-500"
+                      : "bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300",
+                  )}
+                >
+                  {chestClaimedToday ? (
+                    <Trophy className="h-6 w-6" />
+                  ) : (
+                    <Gift className="h-6 w-6" />
+                  )}
+                </div>
+
+                {!chestClaimedToday && (
+                  <Sparkles className="h-5 w-5 text-amber-500" />
+                )}
+              </div>
+
+              <p className="mt-6 text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                Daily reward
+              </p>
+
+              <p className="mt-1 text-xl font-black text-slate-950 dark:text-white">
+                {t("dashboard.chestTitle")}
+              </p>
+
+              <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                {chestClaimedToday
+                  ? t(
+                      "dashboard.chestSubtitleClaimed",
+                    )
+                  : t(
+                      "dashboard.chestSubtitleOpen",
+                    ).replace(
+                      "{coins}",
+                      String(DAILY_CHEST_REWARD),
+                    )}
+              </p>
+
+              {!chestClaimedToday && (
+                <div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-xs font-black text-white dark:bg-white dark:text-slate-950">
+                  {t("dashboard.chestButton")}
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+              )}
+            </button>
           </div>
         </section>
 
-        {/* =====================================================
-            LEARNING HUB
-        ===================================================== */}
-
+        {/* METRICS */}
         <section className="mb-8">
-          <div className="mb-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400">
-              {UI_TEXT.learning}
-            </p>
+          <SectionHeader
+            eyebrow="Progress"
+            title="Your overview"
+          />
 
-            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-              {UI_TEXT.learningTitle}
-            </h2>
-
-            <p className="mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
-              {UI_TEXT.learningDescription}
-            </p>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <LearningCard
-              title={t(
-                "dashboard.lessons"
-              )}
-              subtitle={t(
-                "dashboard.lessonsSub"
-              )}
-              icon={
-                <BookOpen className="h-6 w-6" />
-              }
-              tone="indigo"
-              onClick={() =>
-                navigate(
-                  "/grammar"
-                )
-              }
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <MetricCard
+              icon={<Star className="h-5 w-5" />}
+              label={t("dashboard.level")}
+              value={String(level)}
+              detail={`Next: ${level + 1}`}
+              tone="amber"
             />
 
-            <LearningCard
-              title={t(
-                "dashboard.testYourself"
-              )}
-              subtitle={`${t(
-                "dashboard.testYourselfSub"
-              )} +${
-                XP_REWARDS.TEST_PASSED
-              } ${t(
-                "topbar.xp"
-              )}`}
+            <MetricCard
+              icon={<Zap className="h-5 w-5" />}
+              label={t("dashboard.totalXP")}
+              value={user.totalXP.toLocaleString()}
+              detail={`${xpNeeded.toLocaleString()} XP to next level`}
+              tone="indigo"
+            />
+
+            <MetricCard
+              icon={<Flame className="h-5 w-5" />}
+              label={t("dashboard.streak")}
+              value={`${computedStreak}`}
+              detail={t("dashboard.days")}
+              tone="orange"
+            />
+
+            <MetricCard
               icon={
-                <FileText className="h-6 w-6" />
+                selectedLang ? (
+                  <span className="text-xl">
+                    {selectedLang.flag}
+                  </span>
+                ) : (
+                  <Languages className="h-5 w-5" />
+                )
+              }
+              label={t("dashboard.language")}
+              value={
+                selectedLang
+                  ? t(selectedLang.nameKey)
+                  : t("dashboard.none")
               }
               tone="emerald"
-              onClick={() =>
-                navigate(
-                  "/tests"
-                )
-              }
-            />
-
-            <LearningCard
-              title={t(
-                "dashboard.mistakeReview"
-              )}
-              subtitle={t(
-                "dashboard.mistakeReviewSub"
-              )}
-              icon={
-                <Wrench className="h-6 w-6" />
-              }
-              tone="rose"
-              onClick={() =>
-                navigate(
-                  "/mistakes"
-                )
-              }
-            />
-
-            <LearningCard
-              title={t(
-                "dashboard.wotd"
-              )}
-              subtitle={t(
-                "dashboard.wotdSub"
-              )}
-              icon={
-                <Star className="h-6 w-6" />
-              }
-              tone="amber"
-              onClick={() =>
-                navigate(
-                  "/wotd"
-                )
-              }
             />
           </div>
         </section>
 
-        {/* =====================================================
-            LANGUAGE
-        ===================================================== */}
-
+        {/* LEARNING HUB */}
         <section className="mb-8">
-          <div className="mb-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              {UI_TEXT.language}
-            </p>
+          <SectionHeader
+            eyebrow="Learning"
+            title="Learning hub"
+          />
 
-            <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white">
-              {UI_TEXT.languageChoose}
-            </h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <ActionCard
+              icon={<BookOpen className="h-5 w-5" />}
+              title={t("dashboard.lessons")}
+              description={t("dashboard.lessonsSub")}
+              onClick={() => navigate("/grammar")}
+              tone="indigo"
+            />
+
+            <ActionCard
+              icon={<Wrench className="h-5 w-5" />}
+              title={t("dashboard.mistakeReview")}
+              description={t(
+                "dashboard.mistakeReviewSub",
+              )}
+              onClick={() => navigate("/mistakes")}
+              tone="rose"
+            />
+
+            <ActionCard
+              icon={<FileText className="h-5 w-5" />}
+              title={t("dashboard.testYourself")}
+              description={`${t(
+                "dashboard.testYourselfSub",
+              )} +${XP_REWARDS.TEST_PASSED} ${t(
+                "topbar.xp",
+              )}`}
+              onClick={() => navigate("/tests")}
+              tone="emerald"
+            />
+
+            <ActionCard
+              icon={<Star className="h-5 w-5" />}
+              title={t("dashboard.wotd")}
+              description={t("dashboard.wotdSub")}
+              onClick={() => navigate("/wotd")}
+              tone="amber"
+            />
           </div>
+        </section>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-            {LEARNING_LANGUAGES.map(
-              (lang) => {
-                const selected =
-                  user.currentLanguage ===
-                  lang.code;
+        {/* LANGUAGE SWITCHER */}
+        <section className="mb-8">
+          <SectionHeader
+            eyebrow="Language"
+            title={t("dashboard.chooseLanguage")}
+          />
 
-                return (
-                  <button
-                    type="button"
-                    key={lang.code}
-                    onClick={() =>
-                      selectLanguage(
-                        lang.code
-                      )
-                    }
-                    className={`relative flex flex-col items-center gap-2 rounded-2xl border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
-                      selected
-                        ? "border-indigo-400 bg-indigo-50 shadow-md ring-2 ring-indigo-200 dark:border-indigo-500/60 dark:bg-indigo-500/10 dark:ring-indigo-500/30"
-                        : "border-slate-200 bg-white dark:border-white/[0.06] dark:bg-white/[0.03]"
-                    }`}
-                  >
-                    <span className="text-3xl">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {LEARNING_LANGUAGES.map((lang) => {
+              const isSelected =
+                user.currentLanguage === lang.code;
+
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => selectLanguage(lang.code)}
+                  className={cn(
+                    "relative rounded-2xl border p-4 text-left transition duration-200 hover:-translate-y-0.5",
+                    isSelected
+                      ? "border-indigo-300 bg-indigo-50 shadow-[0_16px_34px_-26px_rgba(79,70,229,.42)] dark:border-indigo-500/30 dark:bg-indigo-500/10"
+                      : "border-slate-200 bg-white hover:border-slate-300 dark:border-white/[0.07] dark:bg-[#111722] dark:hover:border-white/[0.12]",
+                  )}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-2xl">
                       {lang.flag}
                     </span>
 
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                      {t(
-                        lang.nameKey
-                      )}
-                    </span>
-
-                    {selected && (
-                      <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white shadow-md">
-                        <Check className="h-3 w-3" />
+                    {isSelected ? (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-black text-white">
+                        ✓
                       </span>
+                    ) : (
+                      <span className="h-5 w-5 rounded-full border border-slate-200 dark:border-white/[0.1]" />
                     )}
-                  </button>
-                );
+                  </div>
+
+                  <p
+                    className={cn(
+                      "mt-4 text-sm font-black",
+                      isSelected
+                        ? "text-indigo-700 dark:text-indigo-300"
+                        : "text-slate-800 dark:text-slate-200",
+                    )}
+                  >
+                    {t(lang.nameKey)}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* GIFTS */}
+        <section className="mb-8">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/[0.07] dark:bg-[#111722]">
+            <button
+              type="button"
+              onClick={() =>
+                setGiftsOpen((value) => !value)
               }
+              aria-expanded={giftsOpen}
+              className="flex w-full items-center justify-between gap-4 p-5 text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
+                  <Gift className="h-5 w-5" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-black text-slate-950 dark:text-white">
+                    {t("dashboard.giftsTitle")}
+                  </p>
+
+                  <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                    Send or redeem rewards
+                  </p>
+                </div>
+              </div>
+
+              <ChevronDown
+                className={cn(
+                  "h-5 w-5 text-slate-400 transition",
+                  giftsOpen && "rotate-180",
+                )}
+              />
+            </button>
+
+            {giftsOpen && (
+              <div className="border-t border-slate-100 p-5 dark:border-white/[0.06]">
+                <div className="grid gap-6 lg:grid-cols-2">
+                  {/* SEND */}
+                  <div>
+                    <p className="mb-3 text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                      {t("dashboard.giftSendTitle")}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {[10, 20, 30].map((amount) => (
+                        <button
+                          key={amount}
+                          type="button"
+                          onClick={() =>
+                            sendGift({
+                              type: "coins",
+                              amount,
+                            })
+                          }
+                          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-black text-slate-700 transition hover:border-indigo-200 hover:text-indigo-600 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-slate-300 dark:hover:border-indigo-500/30 dark:hover:text-indigo-300"
+                        >
+                          🪙 {amount}
+                        </button>
+                      ))}
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          sendGift({
+                            type: "shield",
+                          })
+                        }
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-black text-slate-700 transition hover:border-cyan-200 hover:text-cyan-600 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-slate-300 dark:hover:border-cyan-500/30 dark:hover:text-cyan-300"
+                      >
+                        <Shield className="h-3.5 w-3.5" />
+                        {t("dashboard.giftShield")}
+                      </button>
+                    </div>
+
+                    {giftSendError && (
+                      <p className="mt-3 text-xs font-medium text-orange-600 dark:text-orange-400">
+                        {giftSendError}
+                      </p>
+                    )}
+
+                    {generatedGiftCode && (
+                      <div className="mt-4 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4 dark:border-indigo-500/15 dark:bg-indigo-500/5">
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-indigo-500 dark:text-indigo-300">
+                          {t("dashboard.giftGenerated")}
+                        </p>
+
+                        <code className="mt-2 block break-all rounded-xl bg-white px-3 py-2.5 text-xs text-slate-700 shadow-sm dark:bg-slate-950 dark:text-slate-300">
+                          {generatedGiftCode}
+                        </code>
+
+                        <button
+                          type="button"
+                          onClick={shareGiftCode}
+                          className="mt-3 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-black text-white transition hover:bg-indigo-700"
+                        >
+                          {t("dashboard.giftShareButton")}
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* REDEEM */}
+                  <div>
+                    <p className="mb-3 text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                      {t("dashboard.giftRedeemTitle")}
+                    </p>
+
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <input
+                        type="text"
+                        value={redeemInput}
+                        onChange={(
+                          event: ChangeEvent<HTMLInputElement>,
+                        ) =>
+                          setRedeemInput(
+                            event.target.value,
+                          )
+                        }
+                        placeholder={t(
+                          "dashboard.giftRedeemPlaceholder",
+                        )}
+                        className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none ring-0 placeholder:text-slate-400 focus:border-indigo-400 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-slate-200 dark:focus:border-indigo-500/50"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={redeemGift}
+                        disabled={!redeemInput.trim()}
+                        className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-xs font-black text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                      >
+                        {t("dashboard.giftRedeemButton")}
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    {redeemMessage && (
+                      <p className="mt-3 rounded-xl bg-slate-50 px-3 py-2.5 text-xs font-semibold text-slate-600 dark:bg-white/[0.04] dark:text-slate-300">
+                        {redeemMessage}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </section>
 
-        {/* =====================================================
-            GIFTS
-        ===================================================== */}
-
-        <section className="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/[0.06] dark:bg-white/[0.03]">
-          <button
-            type="button"
-            onClick={() =>
-              setGiftsOpen(
-                (value) =>
-                  !value
-              )
-            }
-            aria-expanded={
-              giftsOpen
-            }
-            className="flex w-full items-center justify-between p-5 text-left"
-          >
-            <span className="flex items-center gap-2 text-sm font-black text-slate-800 dark:text-white">
-              <GiftIcon className="h-4 w-4 text-indigo-500" />
-
-              {t(
-                "dashboard.giftsTitle"
-              )}
-            </span>
-
-            <ChevronDown
-              className={`h-4 w-4 text-slate-400 transition-transform ${
-                giftsOpen
-                  ? "rotate-180"
-                  : ""
-              }`}
-            />
-          </button>
-
-          {giftsOpen && (
-            <div className="space-y-6 border-t border-slate-200 p-5 dark:border-white/[0.06]">
-              <div>
-                <p className="mb-3 text-xs font-bold text-slate-500 dark:text-slate-400">
-                  {t(
-                    "dashboard.giftSendTitle"
-                  )}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {[10, 20, 30].map(
-                    (amount) => (
-                      <button
-                        key={amount}
-                        type="button"
-                        onClick={() =>
-                          sendGift({
-                            type: "coins",
-                            amount,
-                          })
-                        }
-                        className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:text-slate-300"
-                      >
-                        🪙{" "}
-                        {amount}
-                      </button>
-                    )
-                  )}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      sendGift({
-                        type: "shield",
-                      })
-                    }
-                    className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:text-slate-300"
-                  >
-                    🛡️{" "}
-                    {t(
-                      "dashboard.giftShield"
-                    )}
-                  </button>
-                </div>
-
-                {giftSendError && (
-                  <p className="mt-2 text-xs font-semibold text-orange-500">
-                    {
-                      giftSendError
-                    }
-                  </p>
-                )}
-
-                {generatedGiftCode && (
-                  <div className="mt-4 rounded-xl border border-indigo-100 bg-indigo-50/60 p-4 dark:border-indigo-900/40 dark:bg-indigo-950/20">
-                    <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">
-                      {t(
-                        "dashboard.giftGenerated"
-                      )}
-                    </p>
-
-                    <code className="block break-all rounded-lg bg-white px-3 py-2 text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
-                      {
-                        generatedGiftCode
-                      }
-                    </code>
-
-                    <button
-                      type="button"
-                      onClick={
-                        shareGiftCode
-                      }
-                      className="mt-3 rounded-lg bg-indigo-600 px-3 py-2 text-xs font-bold text-white hover:bg-indigo-700"
-                    >
-                      {t(
-                        "dashboard.giftShareButton"
-                      )}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <p className="mb-3 text-xs font-bold text-slate-500 dark:text-slate-400">
-                  {t(
-                    "dashboard.giftRedeemTitle"
-                  )}
-                </p>
-
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={
-                      redeemInput
-                    }
-                    onChange={(
-                      event: ChangeEvent<HTMLInputElement>
-                    ) =>
-                      setRedeemInput(
-                        event.target
-                          .value
-                      )
-                    }
-                    placeholder={t(
-                      "dashboard.giftRedeemPlaceholder"
-                    )}
-                    className="min-w-0 flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs text-slate-700 outline-none focus:border-indigo-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={
-                      redeemGift
-                    }
-                    disabled={
-                      !redeemInput.trim()
-                    }
-                    className="shrink-0 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    {t(
-                      "dashboard.giftRedeemButton"
-                    )}
-                  </button>
-                </div>
-
-                {redeemMessage && (
-                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                    {
-                      redeemMessage
-                    }
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-        </section>
-
-        {/* =====================================================
-            ADVERTISEMENT
-            Geen props omdat jouw AdSlot geen props accepteert.
-        ===================================================== */}
-
+        {/* OPTIONAL AD */}
         <div className="mb-8">
           <AdSlot />
         </div>
 
-        {/* =====================================================
-            FOOTER
-        ===================================================== */}
+        {/* FOOTER STATUS */}
+        <section className="rounded-2xl border border-slate-200/80 bg-white px-5 py-4 dark:border-white/[0.07] dark:bg-[#111722]">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-500 dark:bg-white/[0.04] dark:text-slate-400">
+                <Lock className="h-4 w-4" />
+              </div>
 
-        <div className="pb-10 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-500 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.03]">
-            <Flame className="h-3.5 w-3.5 text-orange-400" />
+              <div>
+                <p className="text-xs font-black text-slate-800 dark:text-slate-200">
+                  Your progress is connected
+                </p>
+                <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                  XP, streaks and rewards stay synced with your account.
+                </p>
+              </div>
+            </div>
 
-            {hasActivityToday
-              ? `${computedStreak} ${t(
-                  "dashboard.days"
-                )}`
-              : t(
-                  "dashboard.streakAtRisk"
-                )}
+            <div className="flex items-center gap-2 text-[11px] font-bold text-slate-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              Active
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }
